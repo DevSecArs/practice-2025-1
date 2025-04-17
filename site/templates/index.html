@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <title>Главная - Anakta CTF</title>
 </head>
 <body>
-    {{ content }}
+    <header>
+        <h1>Anakta CTF</h1>
+    </header>
+    <section>
+        {% for category in categories %}
+            <h2><i>{{ category }}</i></h2>
+            <span>Раздел 1</span>
+            <span>Раздел 2</span>
+            <span>Раздел 3</span>
+            {% if not loop.last %}
+            <hr>
+            {% endif %}
+
+        {% endfor %}
+    </section>
+    <footer>
+        <div><p>+7 (777) 777 77-77</p></div>
+        <div><p>Agayev Arslan 241-353</p></div>
+        <div><p>Moscow Polytech</p></div>
+    </footer>
 </body>
 </html>
