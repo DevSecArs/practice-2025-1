@@ -1,31 +1,25 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <title>Главная - Anakta CTF</title>
-</head>
-<body>
-    <header>
-        <h1>Anakta CTF</h1>
-    </header>
-    <section>
-        {% for category in categories %}
-            <h2><i>{{ category }}</i></h2>
-            <span>Раздел 1</span>
-            <span>Раздел 2</span>
-            <span>Раздел 3</span>
-            {% if not loop.last %}
-            <hr>
-            {% endif %}
+{% extends 'base.html' %}
 
+{% block css_url %}{{ url_for('static', filename='index.css') }}{% endblock %}
+{% block title %}Главная - Anakta CTF{% endblock %}
+
+{% block header %}Anakta CTF{% endblock %}
+{% block content %}
+    <article>
+        {% for category, articles in data.items() %}
+            <div>
+                <h2><i>{{ category }}</i></h2>
+                {% for article in articles %}
+                    <a href="article?category={{ category }}&article={{ article }}">{{ article }}</a>
+                    {% if not loop.last %}
+                        |
+                    {% endif %}
+                {% endfor %}
+
+                {% if not loop.last %}
+                <hr>
+                {% endif %}
+            </div>
         {% endfor %}
-    </section>
-    <footer>
-        <div><p>+7 (777) 777 77-77</p></div>
-        <div><p>Agayev Arslan 241-353</p></div>
-        <div><p>Moscow Polytech</p></div>
-    </footer>
-</body>
-</html>
+    </article>
+{% endblock %}

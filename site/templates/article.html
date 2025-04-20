@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ categoty }} - {{ article }}</title>
-</head>
-<body>
-    {{ content }}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block css_url %}{{ url_for('static', filename='article.css') }}{% endblock %}
+{% block title %}{{ category }} - {{ article }}{% endblock %}
+
+{% block header %}{{ category }} - {{ article }}{% endblock %}
+{% block content %}
+    {{ content|safe }}
+{% endblock %}

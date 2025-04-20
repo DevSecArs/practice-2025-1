@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% block css_url %}{% endblock %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>{% block header %}{% endblock %}</h1>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <table>
+            <tr>
+                <td>+7 (777) 777 77-77</td>
+                <td>Агаев Арслан</td>
+                <td>Московский Политех</td>
+            </tr>
+            <tr>
+                <td>example@gmail.com</td>
+                <td>Группа 241-353</td>
+                <td>Информационная безопасность</td>
+            </tr>
+            <tr>
+                <td>Github - DevSecArs</td>
+                <td>Проект &laquo;Киберполигон&raquo;</td>
+                <td>Безопасность компьютерных систем</td>
+            </tr>
+        </table>
+    </footer>
+</body>
+</html>
