@@ -3,7 +3,16 @@
 {% block css_url %}{{ url_for('static', filename='article.css') }}{% endblock %}
 {% block title %}{{ category }} - {{ article }}{% endblock %}
 
+{% block leftLinks %}
+<a href="./">&#8617; На главную</a>
+{% endblock %}
+
 {% block header %}{{ category }} - {{ article }}{% endblock %}
+
+{% block rightLinks %}
+<a href="./">&#8618; На главную</a>
+{% endblock %}
+
 {% block content %}
     {{ content|safe }}
 {% endblock %}

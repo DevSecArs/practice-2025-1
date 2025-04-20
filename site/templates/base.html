@@ -8,7 +8,9 @@
 </head>
 <body>
     <header>
+        {% block leftLinks %}{% endblock %}
         <h1>{% block header %}{% endblock %}</h1>
+        {% block rightLinks %}{% endblock %}
     </header>
 
     {% block content %}{% endblock %}
@@ -21,7 +23,7 @@
                 <td>Московский Политех</td>
             </tr>
             <tr>
-                <td>example@gmail.com</td>
+                <td>9arslan4work6@gmail.com</td>
                 <td>Группа 241-353</td>
                 <td>Информационная безопасность</td>
             </tr>

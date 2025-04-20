@@ -1,17 +1,23 @@
 from flask import Flask, render_template, request
 from os import getcwd, listdir, path
+from urllib.parse import quote
 
 app = Flask(__name__)
 
 def get_categotries_and_articles():
     categories_path = f"{getcwd()}/articles/"
-    "кортеж с именами директорий"
     categories = [(categories_name, categories_path + categories_name) for categories_name in listdir(categories_path)]
     
     data = dict()
 
     for category_name, category_path in categories:
-        data[category_name] = [article_name[:article_name.rfind(".")] for article_name in listdir(category_path)]
+        data[category_name] = [
+            {
+                "encoded": quote(article_name[:article_name.rfind(".")], safe=""),
+                "decoded": article_name[:article_name.rfind(".")]
+            }
+            for article_name in listdir(category_path)
+        ]
 
     return data
 
@@ -40,6 +46,23 @@ def article():
         content = file.read()
 
     return render_template("article.html", content=content, category=category, article=article_name)
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/members")
+def members():
+    return render_template("members.html")
+
+@app.route("/journal")
+def journal():
+    return render_template("journal.html")
+
+@app.route("/resources")
+def resources():
+    return render_template("resources.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -16,6 +16,10 @@ header {
 }
 
 header h1 {display: inline-block; margin: 0;}
+header a {color: black; text-decoration: none; margin: 0 15px; vertical-align: super;}
+header a:hover {
+    color: blue;
+}
 
 article {
     display: inline-block;

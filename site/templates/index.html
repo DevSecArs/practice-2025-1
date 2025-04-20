@@ -3,14 +3,23 @@
 {% block css_url %}{{ url_for('static', filename='index.css') }}{% endblock %}
 {% block title %}Главная - Anakta CTF{% endblock %}
 
+{% block leftLinks %}
+<a href="./about">О проекте</a> <a href="./members">Участники</a>
+{% endblock %}
+
 {% block header %}Anakta CTF{% endblock %}
+
+{% block rightLinks %}
+<a href="./journal">Журнал</a> <a href="./resources">Ресурсы</a>
+{% endblock %}
+
 {% block content %}
     <article>
         {% for category, articles in data.items() %}
             <div>
                 <h2><i>{{ category }}</i></h2>
                 {% for article in articles %}
-                    <a href="article?category={{ category }}&article={{ article }}">{{ article }}</a>
+                    <a href="article?category={{ category }}&article={{ article.encoded }}">{{ article.decoded }}</a>
                     {% if not loop.last %}
                         |
                     {% endif %}
