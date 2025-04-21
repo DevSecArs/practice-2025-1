@@ -1,0 +1,448 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Обход ASLR и DEP в современных эксплойтах
+  </h1>
+ </div>
+ <p dir="auto">
+  С развитием технологий безопасности, такие механизмы, как
+  <strong>
+   ASLR
+  </strong>
+  (Address Space Layout
+        Randomization) и
+  <strong>
+   DEP
+  </strong>
+  (Data Execution Prevention), значительно усложнили задачу для атакующих.
+        Эти технологии защищают память от ряда популярных атак, таких как переполнение буфера, но всё же не делают
+        систему неприступной. Злоумышленники по-прежнему разрабатывают новые методы обхода этих защит, что продолжает
+        быть важной темой в области информационной безопасности.
+ </p>
+ <p dir="auto">
+  В этой статье рассмотрим, как именно обходятся
+  <strong>
+   ASLR
+  </strong>
+  и
+  <strong>
+   DEP
+  </strong>
+  , и какие
+        методы используют хакеры для эксплуатации уязвимостей.
+ </p>
+ <hr/>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418493190-1f7f4c44-7faa-40c8-ab8b-1bf6f8d5cd51.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDkzMTkwLTFmN2Y0YzQ0LTdmYWEtNDBjOC1hYjhiLTFiZjZmOGQ1Y2Q1MS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03NmFlOTVkMTlhNzMyMmQyNDA0ZGY1NjcwMGVhY2E4MzZiMjBlYjdkODMwOTJmMTVjZTFkZmQxMGMxM2E0NDYyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.D60pOSC7mTGo24yiMGsiQLwl58eLzz1x8o6QyzQPzHw" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418493190-1f7f4c44-7faa-40c8-ab8b-1bf6f8d5cd51.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDkzMTkwLTFmN2Y0YzQ0LTdmYWEtNDBjOC1hYjhiLTFiZjZmOGQ1Y2Q1MS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03NmFlOTVkMTlhNzMyMmQyNDA0ZGY1NjcwMGVhY2E4MzZiMjBlYjdkODMwOTJmMTVjZTFkZmQxMGMxM2E0NDYyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.D60pOSC7mTGo24yiMGsiQLwl58eLzz1x8o6QyzQPzHw" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что такое ASLR?
+  </h3>
+ </div>
+ <p dir="auto">
+  ASLR (случайная организация адресного пространства) — это технология защиты, которая случайным образом
+        меняет расположение важных структур в памяти, таких как стек, куча и динамически загружаемые библиотеки
+        (например, libc в Linux или kernel32.dll в Windows). Это делает сложным предсказание точных адресов в памяти,
+        что сильно затрудняет успешные атаки, основанные на знании этих адресов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как обходят ASLR?
+  </h3>
+ </div>
+ <p dir="auto">
+  <em>
+   Утечка адресов
+  </em>
+ </p>
+ <p dir="auto">
+  Одна из самых распространённых техник обхода ASLR — это использование утечек памяти. Когда программа
+        случайно выводит важные данные, такие как адреса или указатели, в логах или через другие каналы, атакующий может
+        использовать эти данные для дальнейших действий.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/423388171-df0141ac-2a8a-448b-81ba-8794a6bd8780.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzg4MTcxLWRmMDE0MWFjLTJhOGEtNDQ4Yi04MWJhLTg3OTRhNmJkODc4MC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mOTdiYTgzNzg0NDEzMGQyZjE4ZGMzZjYzNzEzZTg2MWZmNmQ0YmQzYmI1ZjFmYTYyOTI2NjFmOGNmOTJjOTQzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Acz6xsVu_aiWx3hd9U-MXCRv1vP6wSqalEGqKja8u7U" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/423388171-df0141ac-2a8a-448b-81ba-8794a6bd8780.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzg4MTcxLWRmMDE0MWFjLTJhOGEtNDQ4Yi04MWJhLTg3OTRhNmJkODc4MC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mOTdiYTgzNzg0NDEzMGQyZjE4ZGMzZjYzNzEzZTg2MWZmNmQ0YmQzYmI1ZjFmYTYyOTI2NjFmOGNmOTJjOTQzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Acz6xsVu_aiWx3hd9U-MXCRv1vP6wSqalEGqKja8u7U" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Когда программа выводит в лог или консоль адрес памяти (например, через id или указатели),
+        злоумышленник может использовать эту информацию, чтобы понять, где находятся важные данные, такие как функции
+        или буферы, и атаковать систему. В случае с ASLR это помогает точно предсказать местоположение объектов в
+        памяти.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <em>
+    Return-Oriented Programming (ROP)
+   </em>
+  </h4>
+ </div>
+ <p dir="auto">
+  Когда ASLR активирован, и атакующий не может полагаться на точные адреса памяти, он может использовать
+        метод Return-Oriented Programming (ROP).
+ </p>
+ <p dir="auto">
+  <strong>
+   ROP
+  </strong>
+  — это техника, при которой вместо выполнения произвольного кода атакующий
+        использует уже существующие инструкции, которые находятся в памяти программы. Эти инструкции называются
+        гаджетами (gadgets) и представляют собой маленькие фрагменты кода, которые завершаются командой возврата (RET).
+        Используя такие гаджеты, атакующий может построить цепочку команд, которые выполнят необходимые действия,
+        например, вызов функции или выполнение системных команд.
+ </p>
+ <p dir="auto">
+  Как работает ROP:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Атакующий находит уязвимость переполнения буфера или другую ошибку, которая позволяет
+                переписать возвратный адрес на адрес гаджета.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Программе подставляются адреса инструкций (гаджетов), которые уже присутствуют в памяти.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Эти гаджеты выполняются по очереди, выполняя произвольный код, даже если ASLR активирован.
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  Например, используя переполнение буфера, атакующий может подставить в стек адреса, указывающие на
+        существующие в памяти инструкции (гаджеты), которые выполнят нужные действия.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/423388689-e77b6bc0-ab5f-4b5e-968e-76184b75d163.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzg4Njg5LWU3N2I2YmMwLWFiNWYtNGI1ZS05NjhlLTc2MTg0Yjc1ZDE2My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMmQyYTQ0MTQ5NTllNWVjNjJlY2UyODE4OTBiZTRlMDhhOGQ3NGVmODlhYjIzMTM1NTgxNDAxODg3MmRkNDgyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.MJIcWTqyuao8Kl-CuW48REZePG4XSjR9IPsKNhZE92w" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/423388689-e77b6bc0-ab5f-4b5e-968e-76184b75d163.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzg4Njg5LWU3N2I2YmMwLWFiNWYtNGI1ZS05NjhlLTc2MTg0Yjc1ZDE2My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMmQyYTQ0MTQ5NTllNWVjNjJlY2UyODE4OTBiZTRlMDhhOGQ3NGVmODlhYjIzMTM1NTgxNDAxODg3MmRkNDgyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.MJIcWTqyuao8Kl-CuW48REZePG4XSjR9IPsKNhZE92w" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Этот код выполняет атаку Return-Oriented Programming (ROP), используя существующие инструкции
+        программы для выполнения произвольного кода.
+ </p>
+ <p dir="auto">
+  Код использует 3 инструкции:
+ </p>
+ <p dir="auto">
+  pop eax; ret — извлекает значение в регистр eax.
+ </p>
+ <p dir="auto">
+  pop ebx; ret — извлекает значение в регистр ebx.
+ </p>
+ <p dir="auto">
+  system — вызывает системную функцию для выполнения команд.
+ </p>
+ <p dir="auto">
+  Заполняется буфер строкой "A" * 64 (для переполнения).
+ </p>
+ <p dir="auto">
+  Затем вставляются гаджеты, чтобы установить значения в регистры eax и ebx как "/bin" и "sh".
+ </p>
+ <p dir="auto">
+  Наконец, вызывается system("/bin/sh"), что открывает командную оболочку.
+ </p>
+ <p dir="auto">
+  Запуск эксплойта:
+ </p>
+ <p dir="auto">
+  С помощью subprocess.run() эксплойт запускает уязвимую программу, передавая ей подготовленный payload,
+        который выполняет команду для открытия оболочки.
+ </p>
+ <p dir="auto">
+  Результат: Открывается командная оболочка (/bin/sh), что позволяет атакующему выполнять команды в
+        системе.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <em>
+    Brute Force / Перебор адресов
+   </em>
+  </h4>
+ </div>
+ <p dir="auto">
+  Если система использует ASLR с низким уровнем энтропии (например, 8 или 16 бит для адресации),
+        атакующие могут применить метод перебора адресов.
+ </p>
+ <p dir="auto">
+  • Это может быть полезно в случае, когда атакующему известно, что ASLR случайным образом меняет
+        расположение объектов в памяти, но не на очень большой диапазон.
+ </p>
+ <p dir="auto">
+  • Метод перебора может использоваться для попытки угадать правильный адрес функции или структуры,
+        путём многоразовых попыток, что может привести к успешной атаке при использовании слабых механизмов защиты.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/423392041-edb84bae-68d4-4edc-8079-273087ae5b4d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzkyMDQxLWVkYjg0YmFlLTY4ZDQtNGVkYy04MDc5LTI3MzA4N2FlNWI0ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wMGY0ZGVlMDhiNzZmZDY4NzI3ZTVlNjY2MDNiZDFlMGQwYThkZDNjMTc5YTA4YjhjZTFiOTk1MDhjM2U0NzE1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PVd9qN-N_zh4RchDujHy5H_NSeWZ-x434z6RovilN9A" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/423392041-edb84bae-68d4-4edc-8079-273087ae5b4d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzkyMDQxLWVkYjg0YmFlLTY4ZDQtNGVkYy04MDc5LTI3MzA4N2FlNWI0ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wMGY0ZGVlMDhiNzZmZDY4NzI3ZTVlNjY2MDNiZDFlMGQwYThkZDNjMTc5YTA4YjhjZTFiOTk1MDhjM2U0NzE1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PVd9qN-N_zh4RchDujHy5H_NSeWZ-x434z6RovilN9A" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Этот код демонстрирует атаку методом перебора адресов:
+ </p>
+ <p dir="auto">
+  Функция vulnerable_program переполняет буфер размером 64 байта, записывая в него данные пользователя,
+        что может привести к перезаписи памяти.
+ </p>
+ <p dir="auto">
+  Функция brute_force перебирает возможные адреса и создает payload из 64 байтов "A" (для переполнения)
+        и текущего адреса. Затем пытается выполнить уязвимую программу с каждым payload.
+ </p>
+ <p dir="auto">
+  Цель — найти правильный адрес, чтобы перезаписать память и выполнить вредоносный код.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <em>
+    JIT Spraying (Heap Spraying)
+   </em>
+  </h4>
+ </div>
+ <p dir="auto">
+  Это техника, которая активно используется для обхода ASLR в контексте браузеров и интерпретируемых
+        языков программирования (например, JavaScript). Она включает в себя «засорение» кучи предсказуемыми паттернами
+        (например, shellcode, NOP sled), что помогает атакующему обойти рандомизацию расположения данных в памяти.
+ </p>
+ <p dir="auto">
+  Принцип работы:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Атакующий заполняет кучу или область памяти предсказуемыми данными, такими как вредоносный
+                код.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Это делает трудным случайное распределение памяти, позволяя атакующему выполнить произвольный
+                код в заранее подготовленной области.
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/423393093-b2046afd-2d65-47ec-9532-388a98d3869a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzkzMDkzLWIyMDQ2YWZkLTJkNjUtNDdlYy05NTMyLTM4OGE5OGQzODY5YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iNTllMGM4ODc1MTc0MzZmODFmNzQ1MjE1MzEzMzI1NDNmMjU0MTBkYmU0ZDc0NjBmMzQ2NTQxODVmMjY5NDIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.qjZ-KZZmUjSjgMp6ftTgh8xjRZDT0biV7TAp1eWaxD4" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/423393093-b2046afd-2d65-47ec-9532-388a98d3869a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzkzMDkzLWIyMDQ2YWZkLTJkNjUtNDdlYy05NTMyLTM4OGE5OGQzODY5YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iNTllMGM4ODc1MTc0MzZmODFmNzQ1MjE1MzEzMzI1NDNmMjU0MTBkYmU0ZDc0NjBmMzQ2NTQxODVmMjY5NDIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.qjZ-KZZmUjSjgMp6ftTgh8xjRZDT0biV7TAp1eWaxD4" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Этот код демонстрирует метод Heap Spraying:
+ </p>
+ <p dir="auto">
+  Создается серия байтов \x90, чтобы обойти DEP и направить выполнение к вредоносному коду.
+ </p>
+ <p dir="auto">
+  Добавляется вредоносный код.
+ </p>
+ <p dir="auto">
+  Затем вызывается уязвимая программа, передавая ей этот payload, чтобы заполнить кучу вредоносными
+        данными.
+ </p>
+ <p dir="auto">
+  Цель — разместить вредоносный код в куче и увеличить шанс его выполнения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <em>
+    Использование неблокируемых модулей
+   </em>
+  </h4>
+ </div>
+ <p dir="auto">
+  Некоторые модули в операционной системе могут не поддерживать ASLR или поддерживать его слабо.
+        Например, старые библиотеки или системные утилиты, которые не имеют защиты ASLR.
+ </p>
+ <p dir="auto">
+  Атакующий может использовать эти модули для выполнения ROP-атак или других техник эксплуатации, не
+        полагаясь на случайные адреса.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/423394607-c66d0f12-48e2-48db-a63b-bba4fc121626.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzk0NjA3LWM2NmQwZjEyLTQ4ZTItNDhkYi1hNjNiLWJiYTRmYzEyMTYyNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lZDRjMmJmMTdmZTNmMTAyZDM0YWQ2NGEyNDRkMGU4NTc1MjExMGQxZjIyOTExOGE1NDg1NjcxODI0NWU2MDY3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.L2eYklNlnbHfAwfG6DlfvJOfeCbUMgOb-frXtfRKRhc" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/423394607-c66d0f12-48e2-48db-a63b-bba4fc121626.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxNjQsIm5iZiI6MTc0NTE0Nzg2NCwicGF0aCI6Ii8xMTQwMTA4NzUvNDIzMzk0NjA3LWM2NmQwZjEyLTQ4ZTItNDhkYi1hNjNiLWJiYTRmYzEyMTYyNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTE3NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lZDRjMmJmMTdmZTNmMTAyZDM0YWQ2NGEyNDRkMGU4NTc1MjExMGQxZjIyOTExOGE1NDg1NjcxODI0NWU2MDY3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.L2eYklNlnbHfAwfG6DlfvJOfeCbUMgOb-frXtfRKRhc" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  С помощью ctypes.CDLL("libc.so.6") загружается стандартная C-библиотека libc в Linux. Эта библиотека
+        содержит функции, такие как system(), которые могут быть использованы для выполнения системных команд.
+ </p>
+ <p dir="auto">
+  Используется функция libc.system(b"/bin/sh"), чтобы вызвать команду "/bin/sh", что открывает командную
+        оболочку.
+ </p>
+ <p dir="auto">
+  Этот подход используется для выполнения команд в системе через доступ к неблокируемым модулям, что
+        позволяет обходить защиты и получать контроль над системой.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что такое DEP?
+  </h3>
+ </div>
+ <p dir="auto">
+  DEP (Data Execution Prevention) — это технология безопасности, предназначенная для предотвращения
+        выполнения кода в областях памяти, которые предназначены исключительно для хранения данных. Например, это может
+        быть стек или куча.
+        DEP блокирует попытки выполнения кода в этих областях, что помогает предотвратить атаки, такие как переполнение
+        буфера, при которых злоумышленник пытается выполнить вредоносный код, размещённый в этих областях памяти.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Как работает DEP?
+  </h4>
+ </div>
+ <p dir="auto">
+  Стек и куча - в обычной ситуации данные, такие как переменные или массивы, хранятся в памяти, но с
+        использованием DEP эти области помечаются как только для данных. Таким образом, даже если злоумышленник сможет
+        записать вредоносный код в эти области, система не позволит выполнить его как инструкцию.
+ </p>
+ <p dir="auto">
+  Память только для данных - в память, где размещаются данные, например на стеке или в куче, нельзя
+        записывать код и выполнять его, если это не разрешено.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как обходят DEP?
+  </h3>
+ </div>
+ <p dir="auto">
+  <em>
+   Return-Oriented Programming (ROP)
+  </em>
+ </p>
+ <p dir="auto">
+  ROP — это метод обхода DEP, при котором атакующий не пытается выполнить свой код напрямую, а
+        использует уже существующие исполнимые инструкции (гаджеты), которые находятся в памяти программы. Пример:
+        атакующий может использовать ROP для вызова системной функции, например, system(), которая откроет командную
+        оболочку (shell), даже если DEP активирован.
+ </p>
+ <p dir="auto">
+  <em>
+   JIT-компиляция
+  </em>
+ </p>
+ <p dir="auto">
+  JIT (Just-In-Time) компиляция используется в некоторых приложениях, например, в браузерах, где код
+        генерируется и выполняется на лету. Этот код может быть размещён в области памяти, где DEP не действует. В
+        результате, злоумышленники могут использовать уязвимости в JIT-компиляторах для внедрения и выполнения
+        произвольного кода, минуя защиту DEP. В случае JIT-компиляции исполнимый код генерируется в процессе работы
+        программы и может быть размещён в таких областях памяти, где защиты от выполнения (DEP) нет. Это даёт
+        злоумышленникам возможность использовать уязвимости JIT-компилятора, чтобы исполняемый код оказался в
+        незащищённой области и смог выполнить произвольные инструкции.
+ </p>
+ <p dir="auto">
+  <em>
+   Системные вызовы (System Calls)
+  </em>
+ </p>
+ <p dir="auto">
+  Системные вызовы — это механизм, через который приложения могут запрашивать выполнение операций от
+        имени операционной системы. Злоумышленники могут использовать системные вызовы, чтобы загрузить или выполнить
+        код из области памяти, которая не защищена DEP. С помощью системных вызовов, таких как VirtualAlloc, можно
+        выделить память, которая будет исполнимая, и затем записать в неё произвольный код. Системные вызовы могут
+        помочь атакующим загрузить и выполнить вредоносный код из защищённой памяти, не нарушая DEP.
+ </p>
+ <p dir="auto">
+  В некоторых случаях злоумышленники могут использовать уязвимости гипервизора (например, VMWare или
+        Hyper-V) или техники виртуализации для обхода DEP. Это может быть связано с эксплуатацией слабых мест в
+        виртуализированном окружении, где виртуальные машины или гипервизоры не обеспечивают такой же уровень защиты,
+        как хостовая операционная система.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Комбинированные методы обхода ASLR и DEP
+  </h3>
+ </div>
+ <p dir="auto">
+  Современные эксплойты часто используют несколько техник сразу, чтобы обойти обе защиты.
+ </p>
+ <p dir="auto">
+  <strong>
+   Утечка адресов + ROP
+  </strong>
+ </p>
+ <p dir="auto">
+  • Утечка адресов помогает атакующему найти точные расположения объектов в памяти. Например, после того
+        как атакующий получает информацию о расположении динамически загруженных библиотек или стека, он может точно
+        вычислить, где находятся важные объекты.
+ </p>
+ <p dir="auto">
+  • Зная адреса, атакующий может затем использовать ROP, чтобы заменить возвратные адреса или другие
+        важные данные в памяти на адреса, которые указывают на существующие инструкции (гаджеты), что позволит
+        атакующему выполнить произвольный код без необходимости выполнения его в защищённых областях памяти.
+ </p>
+ <p dir="auto">
+  <strong>
+   JIT-компиляция + ROP
+  </strong>
+ </p>
+ <p dir="auto">
+  • В некоторых приложениях, таких как браузеры или интерпретируемые языки программирования,
+        используется JIT-компиляция (Just-In-Time). Этот процесс позволяет выполнять код, который генерируется на лету и
+        может быть размещён в памяти в местах, где DEP не применяется.
+ </p>
+ <p dir="auto">
+  • Атакующие могут использовать уязвимости JIT-компилятора, чтобы внедрить вредоносный код или
+        запустить цепочку ROP-гаджетов, обойдя как DEP, так и ASLR. В этом случае вредоносный код может быть выполнен в
+        области памяти, не защищённой DEP, после того как адреса для ROP-цепочек будут получены через утечку.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Современные механизмы защиты
+  </h3>
+ </div>
+ <p dir="auto">
+  Задача по защите от атак становится всё сложнее, и в ответ на методы обхода ASLR и DEP были
+        разработаны новые защитные технологии.
+ </p>
+ <p dir="auto">
+  <em>
+   Control Flow Integrity (CFI)
+  </em>
+ </p>
+ <p dir="auto">
+  CFI помогает предотвратить изменение потока выполнения программы. Даже если атакующий использует ROP,
+        он не сможет выполнить несанкционированные инструкции, так как CFI строго ограничивает, где могут происходить
+        переходы.
+ </p>
+ <p dir="auto">
+  <em>
+   Stack Canaries
+  </em>
+ </p>
+ <p dir="auto">
+  Это специальные "сторожевые" значения, которые вставляются между данными на стеке и адресами возврата.
+        Если злоумышленник пытается перезаписать адрес возврата (например, при переполнении буфера), это значение будет
+        повреждено, и программа распознает попытку атаки.
+ </p>
+ <p dir="auto">
+  <em>
+   Реализация DEP
+  </em>
+ </p>
+ <p dir="auto">
+  В некоторых системах защита от выполнения кода не ограничивается только куском памяти, но
+        распространяется на весь процесс. Такой подход даёт дополнительные гарантии безопасности и усложняет
+        использование техник вроде ROP.
+ </p>
+ <hr/>
+ <p dir="auto">
+  Невзирая на постоянное улучшение механизмов безопасности, таких как ASLR и DEP, хакеры находят новые
+        способы обойти эти защиты. Комбинированные методы, такие как использование утечек адресов и ROP, остаются
+        важными инструментами в арсенале атакующих. Однако новые технологии защиты, такие как CFI и stack canaries,
+        значительно усложняют процесс эксплуатации уязвимостей.
+        Этот постоянный процесс "обострения" между защитой и атакой требует от разработчиков и специалистов по
+        безопасности постоянной работы над улучшением защиты и созданием новых методов для борьбы с современными
+        угрозами.
+ </p>
+</article>

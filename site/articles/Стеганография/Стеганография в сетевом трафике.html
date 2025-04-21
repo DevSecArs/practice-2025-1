@@ -1,0 +1,454 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Стеганография в сетевом трафике
+  </h2>
+ </div>
+ <p dir="auto">
+  Стеганография в сети – это способ сокрытия информации внутри сетевого трафика таким образом, чтобы сам
+        факт передачи секретного сообщения оставался незамеченным.
+ </p>
+ <p dir="auto">
+  В этой статье мы рассмотрим распространенные методы стеганографии в сети, включая сокрытие данных в
+        протоколах TCP, ICMP и DNS, а также разберем практические примеры и задачи для освоения этих техник.
+ </p>
+ <p dir="auto">
+  В CTF, задачи могут включать в себя: обнаружение скрытых данных в пакетах, извлечение сообщений из
+        аномалий трафика, создание собственных стеганографических каналов для передачи данных, и многое другое.
+ </p>
+ <p dir="auto">
+  <strong>
+   Стеганография в заголовках TCP/IP:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Скрытие информации путем модификации различных полей в заголовках TCP и IP пакетов, таких как
+                Sequence Numbers, Acknowledgment Numbers, TCP Options, IP Identification Field и Flags.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Этот метод позволяет незаметно передавать небольшие объемы данных, маскируясь под обычный
+                сетевой трафик.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Стеганография в ICMP:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Использование ICMP (Internet Control Message Protocol) пакетов, в частности Echo Request и
+                Echo Reply, для скрытой передачи данных.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Данные могут быть внедрены в поле Data ICMP пакета.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Стеганография в DNS:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Скрытие информации в DNS (Domain Name System) запросах и ответах.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Этот метод может включать в себя кодирование данных в доменных именах (DNS tunneling) или
+                использование TXT записей для хранения скрытых сообщений.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Основы сетевых протоколов для стеганографии
+  </strong>
+ </p>
+ <p dir="auto">
+  Модель TCP/IP.
+ </p>
+ <p dir="auto">
+  Модель TCP/IP – это набор протоколов, определяющих способ передачи данных в сети Интернет. Она состоит
+        из четырех слоев:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/1.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Прикладной уровень (Application Layer):
+    </strong>
+    Предоставляет сетевые сервисы
+                приложениям.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Транспортный уровень (Transport Layer):
+    </strong>
+    Обеспечивает надежную или ненадежную
+                передачу данных между приложениями.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Сетевой уровень (Internet Layer):
+    </strong>
+    Отвечает за маршрутизацию пакетов данных
+                между сетями.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Канальный уровень (Link Layer):
+    </strong>
+    Обеспечивает передачу данных между двумя
+                непосредственно соединенными узлами.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Подробное рассмотрение протоколов, которые мы будем использовать:
+ </p>
+ <p dir="auto">
+  <strong>
+   TCP (Transmission Control Protocol)
+  </strong>
+  : Протокол транспортного уровня, обеспечивающий
+        надежную, упорядоченную и гарантированную доставку данных.
+ </p>
+ <p dir="auto">
+  Важные поля для стеганографии:
+ </p>
+ <p dir="auto">
+   Sequence Number: Номер первого байта данных в данном сегменте.
+ </p>
+ <p dir="auto">
+   Acknowledgment Number: Номер следующего байта, который отправитель ожидает получить.
+ </p>
+ <p dir="auto">
+   Flags: Управляющие флаги (SYN, ACK, FIN, RST, PSH, URG).
+ </p>
+ <p dir="auto">
+   Options: Дополнительные параметры TCP соединения.
+ </p>
+ <p dir="auto">
+  <strong>
+   IP (Internet Protocol)
+  </strong>
+  : Протокол сетевого уровня, отвечающий за маршрутизацию пакетов
+        данных между сетями.
+ </p>
+ <p dir="auto">
+  Важные поля для стеганографии:
+ </p>
+ <p dir="auto">
+   Identification: Идентификатор IP пакета. Используется для сборки фрагментированных пакетов.
+ </p>
+ <p dir="auto">
+   Flags: Управляющие флаги (Don’t Fragment, More Fragments).
+ </p>
+ <p dir="auto">
+   Fragment Offset: Смещение фрагмента относительно начала оригинального пакета.
+ </p>
+ <p dir="auto">
+   Options: Дополнительные параметры IP пакета.
+ </p>
+ <p dir="auto">
+  <strong>
+   ICMP (Internet Control Message Protocol)
+  </strong>
+  : Протокол сетевого уровня, используемый для
+        передачи сообщений об ошибках и служебной информации.
+ </p>
+ <p dir="auto">
+  Важные поля для стеганографии:
+ </p>
+ <p dir="auto">
+   Type: Тип ICMP сообщения (например, Echo Request, Echo Reply).
+ </p>
+ <p dir="auto">
+   Code: Код ICMP сообщения (более детальное описание типа).
+ </p>
+ <p dir="auto">
+   Checksum: Контрольная сумма для проверки целостности сообщения.
+ </p>
+ <p dir="auto">
+   Data: Поле данных, используемое для передачи дополнительной информации.
+ </p>
+ <p dir="auto">
+  <strong>
+   DNS (Domain Name System)
+  </strong>
+  : Система доменных имен, используемая для преобразования
+        доменных имен в IP адреса.
+ </p>
+ <p dir="auto">
+  Важные поля для стеганографии:
+ </p>
+ <p dir="auto">
+   Query Name: Доменное имя, которое запрашивается.
+ </p>
+ <p dir="auto">
+   Type: Тип записи DNS (например, A, TXT, CNAME).
+ </p>
+ <p dir="auto">
+   Class: Класс записи DNS (обычно IN – Internet).
+ </p>
+ <p dir="auto">
+   Data: Данные, связанные с записью DNS (например, IP адрес для A записи, текст для TXT записи).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы стеганографии в сетевом трафике
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Стеганография в заголовках TCP/IP:
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Использование Sequence Numbers:
+  </strong>
+ </p>
+ <p dir="auto">
+   Описание метода: Sequence Number (номер последовательности) – это 32-битное поле в заголовке TCP,
+        которое указывает на номер первого байта данных в данном сегменте.
+ </p>
+ <p dir="auto">
+  Этот номер используется для упорядочивания сегментов TCP и обеспечения надежной доставки данных.
+ </p>
+ <p dir="auto">
+  Для стеганографии можно использовать наименее значащие биты Sequence Number для скрытия данных.
+        Например, можно кодировать каждый бит сообщения в один бит Sequence Number. Важно помнить, что изменение
+        Sequence Number может повлиять на установленное TCP соединение, поэтому необходимо соблюдать осторожность.
+ </p>
+ <p dir="auto">
+  <strong>
+   Простой пример задачи:
+  </strong>
+ </p>
+ <p dir="auto">
+  Вам дан дамп сетевого трафика (PCAP файл). В трафике содержится TCP соединение. Проанализируйте
+        Sequence Numbers TCP пакетов и извлеките скрытое сообщение.
+ </p>
+ <p dir="auto">
+  Сообщение закодировано в наименее значащих битах Sequence Numbers.
+ </p>
+ <p dir="auto">
+  <strong>
+   1. Открытие и фильтрация PCAP файла в Wireshark:
+  </strong>
+ </p>
+ <p dir="auto">
+  • Запустите Wireshark.
+ </p>
+ <p dir="auto">
+  • Откройте файл sequence_stegano.pcap (File -&gt; Open).
+ </p>
+ <p dir="auto">
+  • Примените фильтр tcp в строке фильтра Wireshark и нажмите Enter. Это покажет только TCP пакеты.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/2.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   2. Идентификация пакетов с закодированным сообщением:
+  </strong>
+ </p>
+ <p dir="auto">
+  • Внимательно просмотрите список TCP пакетов.
+ </p>
+ <p dir="auto">
+  • Ищите пакеты, в которых, во-первых, указан [PSH, ACK] (или [P, A]) - это означает, что пакет
+        содержит данные. Во-вторых, у этих пакетов Sequence Number будет отличаться от обычных ACK пакетов (которые
+        обычно просто подтверждают получение данных).
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/3.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   3. Извлечение Sequence Numbers:
+  </strong>
+ </p>
+ <p dir="auto">
+  • После того, как вы нашли пакеты с данными, запишите их Sequence Numbers. В Wireshark можно увидеть
+        Sequence Number в столбце “Seq”. Или можно выбрать пакет и посмотреть детали в панели Packet Details (TCP -&gt;
+        Sequence number).
+ </p>
+ <p dir="auto">
+  • Вам должно быть несколько пакетов, каждый из которых содержит часть сообщения.
+ </p>
+ <p dir="auto">
+  В нашем случае это:
+ </p>
+ <p dir="auto">
+  4200737474
+ </p>
+ <p dir="auto">
+  2928584394
+ </p>
+ <p dir="auto">
+  2798024358
+ </p>
+ <p dir="auto">
+  2788084474
+ </p>
+ <p dir="auto">
+  4134962918
+ </p>
+ <p dir="auto">
+  <strong>
+   4. Декодирование сообщения с помощью Python:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-s1">scapy</span>.<span class="pl-s1">all</span> <span class="pl-k">import</span> <span class="pl-c1">*</span>
+    
+    <span class="pl-k">def</span> <span class="pl-en">decode_seq_num</span>(<span class="pl-s1">seq</span>, <span class="pl-s1">message_length</span>):
+        <span class="pl-s">"""Декодирует сообщение из Sequence Number TCP пакета."""</span>
+        <span class="pl-s1">binary_message</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>
+        <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">message_length</span>):
+            <span class="pl-s1">bit</span> <span class="pl-c1">=</span> (<span class="pl-s1">seq</span> <span class="pl-c1">&gt;&gt;</span> <span class="pl-s1">i</span>) <span class="pl-c1">&amp;</span> <span class="pl-c1">1</span>
+            <span class="pl-s1">binary_message</span> <span class="pl-c1">+=</span> <span class="pl-en">str</span>(<span class="pl-s1">bit</span>)
+    
+        <span class="pl-s1">message</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>([<span class="pl-en">chr</span>(<span class="pl-en">int</span>(<span class="pl-s1">binary_message</span>[<span class="pl-s1">i</span>:<span class="pl-s1">i</span><span class="pl-c1">+</span><span class="pl-c1">8</span>], <span class="pl-c1">2</span>)) <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">0</span>, <span class="pl-en">len</span>(<span class="pl-s1">binary_message</span>), <span class="pl-c1">8</span>)])
+        <span class="pl-k">return</span> <span class="pl-s1">message</span>
+    
+    <span class="pl-s1">sequence_numbers</span> <span class="pl-c1">=</span> [<span class="pl-c1">4200737474</span>, <span class="pl-c1">2928584394</span>, <span class="pl-c1">2798024358</span>, <span class="pl-c1">2788084474</span>, <span class="pl-c1">4134962918</span>] <span class="pl-s1">message_parts</span> <span class="pl-c1">=</span> []
+    <span class="pl-k">for</span> <span class="pl-s1">seq</span> <span class="pl-c1">in</span> <span class="pl-s1">sequence_numbers</span>:
+        <span class="pl-s1">message_part</span> <span class="pl-c1">=</span> <span class="pl-en">decode_seq_num</span>(<span class="pl-s1">seq</span>, <span class="pl-c1">32</span>)  <span class="pl-c"># Decode 4 characters (32 bits)</span>
+        <span class="pl-s1">message_parts</span>.<span class="pl-c1">append</span>(<span class="pl-s1">message_part</span>)
+    
+    <span class="pl-s1">full_message</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-s1">message_parts</span>).<span class="pl-c1">replace</span>(<span class="pl-s">'<span class="pl-cce">\x00</span>'</span>, <span class="pl-s">''</span>) <span class="pl-c">#Remove \x00</span>
+    <span class="pl-en">print</span>(<span class="pl-s">f"Decoded Message: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">full_message</span><span class="pl-kos">}</span></span>"</span>)</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Скрипт выведет декодированное сообщение (флаг)!
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/4.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Стеганография в ICMP пакетах:
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Простой пример задачи:
+  </strong>
+ </p>
+ <p dir="auto">
+  Нам нужно исследовать необычный ICMP-трафик. У вас есть дамп трафика icmp_mystery.pcap.
+ </p>
+ <p dir="auto">
+  Известно, что в трафике может быть скрытое сообщение, зашифрованное XOR-шифром. Однако ключ шифрования
+        не передается в явном виде в пакетах. Нам нужно его определить.
+ </p>
+ <p dir="auto">
+  <strong>
+   1. Открытие и фильтрация PCAP файла в Wireshark:
+  </strong>
+ </p>
+ <p dir="auto">
+  Теперь фильтруем по протоколу ICMP:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/5.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Аномалии, на которые следует обратить внимание:
+ </p>
+ <p dir="auto">
+  • Необычно большой размер ICMP-пакетов.
+ </p>
+ <p dir="auto">
+  • Повторяющиеся символы в поле данных, которые выглядят осмысленно.
+ </p>
+ <p dir="auto">
+  В нашем случае, один пакет длиной 64 байта.
+ </p>
+ <p dir="auto">
+  Просмотрим поле Data в этом пакете. Мы увидим зашифрованные данные.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/6.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Data:
+        545e5355694a5d404d7b614d617b7f627e774d7067664d74677c6f00000000000000000000000000000000000000000000000000000000000000000000000000
+ </p>
+ <p dir="auto">
+  <strong>
+   2. Анализ и взлом XOR-шифра (Python):
+  </strong>
+ </p>
+ <p dir="auto">
+  XOR-шифр очень прост. Если вы знаете часть открытого текста, можно восстановить ключ.
+ </p>
+ <p dir="auto">
+  А мы знаем, что флаг начинается с FLAG{. Это нам поможет!
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">def</span> <span class="pl-en">decrypt_message</span>(<span class="pl-s1">encrypted_bytes</span>, <span class="pl-s1">key</span>):
+        <span class="pl-s">"""Расшифровывает сообщение с помощью XOR."""</span>
+        <span class="pl-s1">decrypted_message</span> <span class="pl-c1">=</span> <span class="pl-s">""</span>.<span class="pl-c1">join</span>([<span class="pl-en">chr</span>(<span class="pl-s1">byte</span> <span class="pl-c1">^</span> <span class="pl-s1">key</span>) <span class="pl-k">for</span> <span class="pl-s1">byte</span> <span class="pl-c1">in</span> <span class="pl-s1">encrypted_bytes</span>])
+        <span class="pl-k">return</span> <span class="pl-s1">decrypted_message</span>
+    
+    <span class="pl-s1">hex_data</span> <span class="pl-c1">=</span> <span class="pl-s">"545e5355694a5d404d7b614d617b7f627e774d7067664d74677c6f00000000000000000000000000000000000000000000000000000000000000000000000000"</span>  <span class="pl-c"># Наши данные</span>
+    <span class="pl-s1">encrypted_bytes</span> <span class="pl-c1">=</span> <span class="pl-s1">bytes</span>.<span class="pl-c1">fromhex</span>(<span class="pl-s1">hex_data</span>)
+    
+    <span class="pl-c"># Попытка взлома XOR: Предполагаем, что начало сообщения "FLAG{"</span>
+    <span class="pl-s1">known_plaintext</span> <span class="pl-c1">=</span> <span class="pl-s">"FLAG{"</span>
+    <span class="pl-c"># Вычисляем ключ на основе известного начала</span>
+    <span class="pl-s1">key</span> <span class="pl-c1">=</span> <span class="pl-s1">encrypted_bytes</span>[<span class="pl-c1">0</span>] <span class="pl-c1">^</span> <span class="pl-en">ord</span>(<span class="pl-s1">known_plaintext</span>[<span class="pl-c1">0</span>]) <span class="pl-c"># Вычисляем ключ по первому байту</span>
+    
+    <span class="pl-c"># Расшифровываем все сообщение</span>
+    <span class="pl-s1">decrypted_message</span> <span class="pl-c1">=</span> <span class="pl-en">decrypt_message</span>(<span class="pl-s1">encrypted_bytes</span>, <span class="pl-s1">key</span>)
+    <span class="pl-en">print</span>(<span class="pl-s">f"Расшифрованное сообщение: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">decrypted_message</span><span class="pl-kos">}</span></span>"</span>)</pre>
+ </div>
+ <p dir="auto">
+  Флаг получен:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-31/7.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-03-31/7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+</article>

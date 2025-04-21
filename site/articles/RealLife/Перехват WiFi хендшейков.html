@@ -1,0 +1,943 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Безопасность Wi-Fi сетей: Перехват хендшейков
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h2>
+ </div>
+ <p dir="auto">
+  С развитием беспроводных технологий Wi-Fi сети стали неотъемлемой частью нашей повседневной жизни.
+        Однако вместе с удобством подключения к Интернету без проводов возникают и серьезные проблемы безопасности.
+        Одной из наиболее распространенных уязвимостей является возможность перехвата хендшейков — процесса обмена
+        аутентификационными данными между клиентом и точкой доступа.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Уязвимые протоколы Wi-Fi
+  </h2>
+ </div>
+ <p dir="auto">
+  Следующие протоколы Wi-Fi имеют уязвимости, связанные с перехватом хендшейков:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     WEP (Wired Equivalent Privacy)
+    </strong>
+    — устаревший протокол, который считается
+                полностью скомпрометированным. Его криптографические алгоритмы можно взломать за считанные минуты.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     WPA (Wi-Fi Protected Access)
+    </strong>
+    — разработан как временная замена WEP.
+                Использует протокол TKIP (Temporal Key Integrity Protocol), который также имеет серьезные уязвимости.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     WPA2-PSK (Pre-Shared Key)
+    </strong>
+    — наиболее распространенный протокол защиты
+                домашних и малых корпоративных сетей. Несмотря на использование более надежного алгоритма шифрования
+                AES-CCMP, подвержен атакам с перехватом хендшейка и последующим подбором пароля.
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/425815460-dfdb1015-afeb-423b-9275-4540e7090bd9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTU0NjAtZGZkYjEwMTUtYWZlYi00MjNiLTkyNzUtNDU0MGU3MDkwYmQ5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM0NzdiYTIxMjMyNjJiYWI2ZDRiMWZhNzBmOGFmYzk2MzMxNWY2N2QwYzFkN2QwN2YwZDkxOGY0MWU1MmFmZGUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ku6QZUDz1ocMcCHGQqP2b_EPQCwtGsVTPyviFSqodQ0" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425815460-dfdb1015-afeb-423b-9275-4540e7090bd9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTU0NjAtZGZkYjEwMTUtYWZlYi00MjNiLTkyNzUtNDU0MGU3MDkwYmQ5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM0NzdiYTIxMjMyNjJiYWI2ZDRiMWZhNzBmOGFmYzk2MzMxNWY2N2QwYzFkN2QwN2YwZDkxOGY0MWU1MmFmZGUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ku6QZUDz1ocMcCHGQqP2b_EPQCwtGsVTPyviFSqodQ0" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Необходимое оборудование и программное обеспечение
+  </h2>
+ </div>
+ <p dir="auto">
+  Для перехвата Wi-Fi хендшейков обычно требуется:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Оборудование:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Wi-Fi адаптер с поддержкой режима мониторинга
+   </strong>
+   (Monitor Mode) и инъекции пакетов (Packet
+            Injection). Популярные модели:
+   <ul dir="auto">
+    <li>
+     Alfa AWUS036ACH
+    </li>
+    <li>
+     Alfa AWUS036NHA
+    </li>
+    <li>
+     TP-Link TL-WN722N (версии 1.0)
+    </li>
+    <li>
+     Panda PAU06
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/425814855-31be4844-7878-40a3-a390-cc8c9add85f4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ4NTUtMzFiZTQ4NDQtNzg3OC00MGEzLWEzOTAtY2M4YzlhZGQ4NWY0LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTAzYTEyMzI2N2Q5OGJhZDZkOWRiOGEyOTAxYTQ1MWU1MmIwYjU0MzI4YTU1ZGQ5MTdiYWE4NjFiZTliMjMwNGEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.nFjtZJ11_u7T2XosAH-UU7lj71YeilUd0AZdhX8kNv4" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425814855-31be4844-7878-40a3-a390-cc8c9add85f4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ4NTUtMzFiZTQ4NDQtNzg3OC00MGEzLWEzOTAtY2M4YzlhZGQ4NWY0LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTAzYTEyMzI2N2Q5OGJhZDZkOWRiOGEyOTAxYTQ1MWU1MmIwYjU0MzI4YTU1ZGQ5MTdiYWE4NjFiZTliMjMwNGEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.nFjtZJ11_u7T2XosAH-UU7lj71YeilUd0AZdhX8kNv4" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Компьютер
+   </strong>
+   с операционной системой Linux (предпочтительно Kali Linux, Parrot OS или другой
+            дистрибутив для тестирования на проникновение)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Программное обеспечение:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Aircrack-ng
+   </strong>
+   — набор инструментов для аудита беспроводных сетей
+  </li>
+  <li>
+   <strong>
+    Wireshark
+   </strong>
+   — анализатор сетевого трафика
+  </li>
+  <li>
+   <strong>
+    Hashcat
+   </strong>
+   или
+   <strong>
+    John the Ripper
+   </strong>
+   — инструменты для подбора паролей
+  </li>
+  <li>
+   <strong>
+    Wifite
+   </strong>
+   — автоматизированный инструмент для атак на Wi-Fi
+  </li>
+  <li>
+   <strong>
+    Bettercap
+   </strong>
+   — фреймворк для проведения атак типа "человек посередине"
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм легитимного подключения к защищенной Wi-Fi сети
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/425814730-5748b675-f527-4550-8a2c-9903d522517f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ3MzAtNTc0OGI2NzUtZjUyNy00NTUwLThhMmMtOTkwM2Q1MjI1MTdmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBjMDYwM2RmYTJmNWY0YzBmM2Y1MTIwMzRjY2VkZjEzYmI1ODRhZmU3OGQ0N2RmMWM2ODM0MDVjM2YyZmJiOTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.emyu6majI0Ynq2goK81cTSTwpj_spArlhsaMTlpQjoY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425814730-5748b675-f527-4550-8a2c-9903d522517f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ3MzAtNTc0OGI2NzUtZjUyNy00NTUwLThhMmMtOTkwM2Q1MjI1MTdmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBjMDYwM2RmYTJmNWY0YzBmM2Y1MTIwMzRjY2VkZjEzYmI1ODRhZmU3OGQ0N2RmMWM2ODM0MDVjM2YyZmJiOTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.emyu6majI0Ynq2goK81cTSTwpj_spArlhsaMTlpQjoY" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  При нормальном сценарии подключения к Wi-Fi сети с защитой WPA/WPA2-PSK происходит следующий процесс
+        (4-way handshake):
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Обнаружение и ассоциация
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Клиент сканирует эфир и обнаруживает точку доступа по ее SSID
+    </li>
+    <li>
+     Клиент отправляет запрос на ассоциацию (Association Request)
+    </li>
+    <li>
+     Точка доступа отвечает подтверждением ассоциации (Association Response)
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Четырехэтапный хендшейк (4-way handshake)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     <strong>
+      Сообщение 1
+     </strong>
+     : Точка доступа отправляет клиенту случайное число (ANonce)
+    </li>
+    <li>
+     <strong>
+      Сообщение 2
+     </strong>
+     : Клиент генерирует свое случайное число (SNonce) и создает временный
+                    ключ шифрования PTK (Pairwise Transient Key) на основе:
+     <ul dir="auto">
+      <li>
+       PMK (Pairwise Master Key) — производная от пароля сети (PSK)
+      </li>
+      <li>
+       ANonce и SNonce (случайные числа)
+      </li>
+      <li>
+       MAC-адресов клиента и точки доступа
+      </li>
+      <li>
+       SSID сети
+                            Затем клиент отправляет SNonce и MIC (Message Integrity Code) точке доступа
+      </li>
+     </ul>
+    </li>
+    <li>
+     <strong>
+      Сообщение 3
+     </strong>
+     : Точка доступа проверяет MIC, формирует свой PTK, и отправляет клиенту
+                    GTK (Group Temporal Key) для многоадресных передач
+    </li>
+    <li>
+     <strong>
+      Сообщение 4
+     </strong>
+     : Клиент подтверждает получение GTK и завершает хендшейк
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Установление защищенного соединения
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     После успешного хендшейка клиент и точка доступа используют согласованные ключи для шифрования
+                    трафика
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Процесс атаки для перехвата хендшейка
+  </h2>
+ </div>
+ <p dir="auto">
+  Атака на Wi-Fi сеть с целью перехвата хендшейка может выполняться двумя способами:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Пассивный перехват
+  </h3>
+ </div>
+ <p dir="auto">
+  В этом режиме атакующий просто прослушивает эфир в ожидании легитимного хендшейка:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Включение режима мониторинга на Wi-Fi адаптере:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>airmon-ng start wlan0
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Прослушивание эфира и захват пакетов для выбранной сети:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>airodump-ng -c [канал] --bssid [MAC точки доступа] -w [файл вывода] wlan0mon
+    </code></pre>
+   </div>
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/425814937-0b0b03ff-e032-4332-8e66-33a1f5be5731.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ5MzctMGIwYjAzZmYtZTAzMi00MzMyLThlNjYtMzNhMWY1YmU1NzMxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWYyM2UxNzllOGRkZTA4ZjEyNjUyODg0YWU2YTk2ODdkYzQzNDQ1NWFiY2U3ZGJmODMyZWJiZjQyMWZhMzc4NzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RKRpEsj_ZiYmirYUkGa0HAilFQiiM1mfhZ9WZCM7aI8" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425814937-0b0b03ff-e032-4332-8e66-33a1f5be5731.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ5MzctMGIwYjAzZmYtZTAzMi00MzMyLThlNjYtMzNhMWY1YmU1NzMxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWYyM2UxNzllOGRkZTA4ZjEyNjUyODg0YWU2YTk2ODdkYzQzNDQ1NWFiY2U3ZGJmODMyZWJiZjQyMWZhMzc4NzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RKRpEsj_ZiYmirYUkGa0HAilFQiiM1mfhZ9WZCM7aI8" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto" start="3">
+  <li>
+   <p dir="auto">
+    Ожидание момента, когда какой-либо клиент подключится к сети или переподключится к ней
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Захваченный хендшейк сохраняется для последующего анализа
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  Пассивный перехват может занять много времени, если никто активно не подключается к сети, но он
+        полностью незаметен для пользователей и не оставляет следов в системных журналах.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Активный перехват с использованием deauth-атаки
+  </h3>
+ </div>
+ <p dir="auto">
+  Этот метод значительно ускоряет получение хендшейка за счет принудительного отключения клиентов от
+        сети:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Включение режима мониторинга и сканирование доступных сетей:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>airmon-ng start wlan0
+    airodump-ng wlan0mon
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Запуск целевого мониторинга для захвата хендшейка:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>airodump-ng -c [канал] --bssid [MAC точки доступа] -w [файл вывода] wlan0mon
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Одновременное отправление deauth-пакетов для отключения клиентов:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>aireplay-ng --deauth [количество пакетов] -a [MAC точки доступа] -c [MAC клиента] wlan0mon
+    </code></pre>
+   </div>
+   <p dir="auto">
+    <a href="https://private-user-images.githubusercontent.com/65419523/425814983-ae1451ac-6d4a-4cd6-8b48-27da84f08f2b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ5ODMtYWUxNDUxYWMtNmQ0YS00Y2Q2LThiNDgtMjdkYTg0ZjA4ZjJiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWY4ZmVkYjMyYWVkOTNhMDhkZTcwZjkxNmExNmRhMDMyZTc0MjQ1MWQ1MmEyOTMwM2QzNDg4OWM5MTNlOWFhNGEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.kv5HYH4cwES3L8oWpziELo6EMYaGFJO5dcLTq60inSI" rel="noopener noreferrer" target="_blank">
+     <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425814983-ae1451ac-6d4a-4cd6-8b48-27da84f08f2b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTQ5ODMtYWUxNDUxYWMtNmQ0YS00Y2Q2LThiNDgtMjdkYTg0ZjA4ZjJiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWY4ZmVkYjMyYWVkOTNhMDhkZTcwZjkxNmExNmRhMDMyZTc0MjQ1MWQ1MmEyOTMwM2QzNDg4OWM5MTNlOWFhNGEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.kv5HYH4cwES3L8oWpziELo6EMYaGFJO5dcLTq60inSI" style="max-width: 100%;"/>
+    </a>
+   </p>
+   <p dir="auto">
+    Можно отправить deauth всем клиентам, опустив параметр
+    <code>
+     -c [MAC клиента]
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Захват хендшейка при повторном подключении клиентов
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Проверка наличия хендшейка в захваченном файле:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>aircrack-ng [файл вывода]-01.cap
+    </code></pre>
+   </div>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Подробнее о deauth-пакетах
+  </h2>
+ </div>
+ <p dir="auto">
+  Deauthentication (деаутентификация) — это часть стандарта IEEE 802.11, предназначенная для корректного
+        завершения сессии с клиентом. В нормальных условиях deauth-пакеты используются в следующих случаях:
+ </p>
+ <ul dir="auto">
+  <li>
+   Когда клиент хочет отключиться от сети
+  </li>
+  <li>
+   Когда точка доступа хочет принудительно отключить клиента (например, при неактивности)
+  </li>
+  <li>
+   При изменении параметров сети
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как работают deauth-пакеты:
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Структура пакета
+    </strong>
+    : Deauth-пакет — это управляющий фрейм 802.11 с кодом типа
+                0xC0 (деаутентификация).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Поля пакета
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     MAC-адрес отправителя (подделывается под MAC-адрес точки доступа)
+    </li>
+    <li>
+     MAC-адрес получателя (MAC клиента или широковещательный адрес)
+    </li>
+    <li>
+     Код причины отключения (обычно 7 — "Отключение из-за неактивности")
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/425815056-c66d6aa6-a1c1-40a2-bc9f-4d7bc0bbec36.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTUwNTYtYzY2ZDZhYTYtYTFjMS00MGEyLWJjOWYtNGQ3YmMwYmJlYzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ1NzUxZWViZjg3YWQ3MTIxMmExMThiMWQxNmNkZGRmZjg4N2M5MjM5N2I2NGVjYTYwNjMwNjM4YTEzODFhYjEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RGhvPqQ3HSU-rweJMjxMDTwX2qlvtxzdprHPRSgtMCc" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425815056-c66d6aa6-a1c1-40a2-bc9f-4d7bc0bbec36.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTUwNTYtYzY2ZDZhYTYtYTFjMS00MGEyLWJjOWYtNGQ3YmMwYmJlYzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ1NzUxZWViZjg3YWQ3MTIxMmExMThiMWQxNmNkZGRmZjg4N2M5MjM5N2I2NGVjYTYwNjMwNjM4YTEzODFhYjEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RGhvPqQ3HSU-rweJMjxMDTwX2qlvtxzdprHPRSgtMCc" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto" start="3">
+  <li>
+   <strong>
+    Механизм действия
+   </strong>
+   : Когда клиент получает такой пакет, он считает, что точка доступа
+            запросила разрыв соединения, и инициирует процедуру переподключения, включающую новый хендшейк.
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/425815781-15775599-98b5-4278-aa04-b05ef256439d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTU3ODEtMTU3NzU1OTktOThiNS00Mjc4LWFhMDQtYjA1ZWYyNTY0MzlkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ2YzlmOTMyMDE2ZGU2ZjQxMzVhN2Q4MDZhMmQyODExNGU0YzNjNjJkN2MxNmNhOTBiNDJmZjMzOTJkNWI3NzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.uH_HKboQZ-EJOPM7K8vxonGAfAB226ycuZtZIJlWc_g" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/425815781-15775599-98b5-4278-aa04-b05ef256439d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjU4MTU3ODEtMTU3NzU1OTktOThiNS00Mjc4LWFhMDQtYjA1ZWYyNTY0MzlkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ2YzlmOTMyMDE2ZGU2ZjQxMzVhN2Q4MDZhMmQyODExNGU0YzNjNjJkN2MxNmNhOTBiNDJmZjMzOTJkNWI3NzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.uH_HKboQZ-EJOPM7K8vxonGAfAB226ycuZtZIJlWc_g" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto" start="4">
+  <li>
+   <strong>
+    Особенности уязвимости
+   </strong>
+   :
+   <ul dir="auto">
+    <li>
+     Deauth-пакеты не требуют аутентификации или шифрования
+    </li>
+    <li>
+     Протокол IEEE 802.11 предусматривает обязательное выполнение команды деаутентификации
+    </li>
+    <li>
+     MAC-адрес отправителя легко подделать (MAC spoofing)
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Эта уязвимость существует во всех версиях Wi-Fi, включая WPA2, и была частично устранена только в WPA3
+        с внедрением Protected Management Frames (PMF).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Анатомия Wi-Fi хендшейка
+  </h2>
+ </div>
+ <p dir="auto">
+  Хендшейк — это процесс обмена криптографической информацией для установления безопасного соединения. В
+        контексте WPA/WPA2-PSK это 4-way handshake, состоящий из четырех EAPOL-пакетов (Extensible Authentication
+        Protocol over LAN).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Из чего формируется хендшейк:
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Pre-Shared Key (PSK)
+    </strong>
+    — 256-битный ключ, полученный из пароля сети и SSID с
+                помощью функции PBKDF2-HMAC-SHA1:
+   </p>
+   <ul dir="auto">
+    <li>
+     PSK = PBKDF2(пароль, SSID, 4096, 256)
+                    где 4096 — количество итераций хэширования
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Pairwise Master Key (PMK)
+    </strong>
+    — в случае WPA/WPA2-PSK является тем же PSK
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Nonces (случайные числа)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     ANonce — случайное число, генерируемое точкой доступа
+    </li>
+    <li>
+     SNonce — случайное число, генерируемое клиентом
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Pairwise Transient Key (PTK)
+    </strong>
+    — временный ключ сессии, формируемый по формуле:
+   </p>
+   <ul dir="auto">
+    <li>
+     PTK = PRF(PMK, "Pairwise key expansion", Min(AP-MAC, Client-MAC) || Max(AP-MAC, Client-MAC) ||
+                    Min(ANonce, SNonce) || Max(ANonce, SNonce))
+                    где PRF — псевдослучайная функция, основанная на HMAC-SHA1
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Message Integrity Check (MIC)
+    </strong>
+    — код целостности сообщения, вычисляемый с
+                использованием части PTK
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как хэшируется и хранится хендшейк:
+  </h3>
+ </div>
+ <p dir="auto">
+  При захвате хендшейка атакующий получает:
+ </p>
+ <ul dir="auto">
+  <li>
+   SSID сети
+  </li>
+  <li>
+   MAC-адреса точки доступа и клиента
+  </li>
+  <li>
+   ANonce и SNonce
+  </li>
+  <li>
+   MIC (Message Integrity Check)
+  </li>
+ </ul>
+ <p dir="auto">
+  Эти данные сохраняются в формате PCAP (Packet Capture) или HCCAPX (формат для Hashcat) и содержат всю
+        информацию, необходимую для проведения брутфорс-атаки.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Процесс расшифровки (подбора пароля):
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Атакующий извлекает из захваченного хендшейка все необходимые параметры
+  </li>
+  <li>
+   Для каждого пароля-кандидата из словаря:
+   <ul dir="auto">
+    <li>
+     Вычисляется PSK = PBKDF2(пароль-кандидат, SSID, 4096, 256)
+    </li>
+    <li>
+     Вычисляется PTK на основе PSK, ANonce, SNonce и MAC-адресов
+    </li>
+    <li>
+     Вычисляется MIC и сравнивается с перехваченным значением
+    </li>
+    <li>
+     Если MIC совпадает, пароль найден
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Для ускорения подбора используются:
+ </p>
+ <ul dir="auto">
+  <li>
+   Словари паролей
+  </li>
+  <li>
+   Правила мутации паролей
+  </li>
+  <li>
+   GPU-ускорение (через Hashcat)
+  </li>
+ </ul>
+ <p dir="auto">
+  Типичная команда для подбора пароля:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>hashcat -m 22000 -a 0 captured.hccapx wordlist.txt
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Мотивация злоумышленников: сценарии атак
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Проникновение в сеть объекта
+  </h3>
+ </div>
+ <p dir="auto">
+  Несанкционированный доступ к Wi-Fi сети может быть первым шагом для проникновения в корпоративную
+        инфраструктуру. После подключения к Wi-Fi атакующий может:
+ </p>
+ <ul dir="auto">
+  <li>
+   Обойти периметровую защиту
+  </li>
+  <li>
+   Получить доступ к внутренним ресурсам
+  </li>
+  <li>
+   Провести разведку внутренней сети
+  </li>
+  <li>
+   Атаковать системы, доступные только внутри сети
+  </li>
+  <li>
+   Установить постоянный доступ (persistence)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Анонимизация
+  </h3>
+ </div>
+ <p dir="auto">
+  Доступ к чужой Wi-Fi сети позволяет злоумышленнику скрыть свою личность при проведении атак:
+ </p>
+ <ul dir="auto">
+  <li>
+   Действия будут связаны с IP-адресом владельца сети, а не атакующего
+  </li>
+  <li>
+   Затрудняется отслеживание и расследование инцидентов
+  </li>
+  <li>
+   Создается дополнительный слой анонимности, особенно в сочетании с другими методами (VPN, Tor)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. Заражение устройств в локальной сети
+  </h3>
+ </div>
+ <p dir="auto">
+  Находясь внутри сети, атакующий может:
+ </p>
+ <ul dir="auto">
+  <li>
+   Проводить атаки типа ARP-spoofing для перехвата трафика
+  </li>
+  <li>
+   Внедрять вредоносное ПО на устройства в сети
+  </li>
+  <li>
+   Устанавливать перехватчики паролей (password sniffers)
+  </li>
+  <li>
+   Проводить атаки типа "человек посередине" (MITM)
+  </li>
+  <li>
+   Использовать уязвимости в протоколах локальной сети (SMB, NBNS, LLMNR)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. Сбор информации об устройствах
+  </h3>
+ </div>
+ <p dir="auto">
+  Wi-Fi сеть часто содержит множество устройств, которые могут стать целями для атак:
+ </p>
+ <ul dir="auto">
+  <li>
+   Картографирование сети (определение активных хостов)
+  </li>
+  <li>
+   Определение типов устройств и используемых ОС
+  </li>
+  <li>
+   Выявление уязвимых устройств (IoT, устаревшее ПО)
+  </li>
+  <li>
+   Сбор учетных данных при прослушивании трафика
+  </li>
+  <li>
+   Выявление потенциальных векторов для дальнейших атак
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы защиты от атак
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Усиление защиты Wi-Fi
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Использование сложных паролей
+   </strong>
+   : не менее 12 символов, включая буквы разного регистра, цифры
+            и специальные символы
+  </li>
+  <li>
+   <strong>
+    Переход на WPA3
+   </strong>
+   там, где это возможно
+  </li>
+  <li>
+   <strong>
+    Включение Protected Management Frames (PMF)
+   </strong>
+   для защиты от deauth-атак
+  </li>
+  <li>
+   <strong>
+    Скрытие SSID
+   </strong>
+   (малоэффективно, но создает дополнительное препятствие)
+  </li>
+  <li>
+   <strong>
+    Регулярная смена паролей
+   </strong>
+   Wi-Fi сетей
+  </li>
+  <li>
+   <strong>
+    Использование Enterprise-версий WPA2/WPA3
+   </strong>
+   с индивидуальной аутентификацией пользователей
+            (802.1X, RADIUS)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Контроль доступа по MAC-адресам
+  </h3>
+ </div>
+ <p dir="auto">
+  Настройка точки доступа для работы только с известными MAC-адресами:
+ </p>
+ <ul dir="auto">
+  <li>
+   Создание "белого списка" разрешенных устройств
+  </li>
+  <li>
+   Регистрация MAC-адресов всех легитимных устройств
+  </li>
+  <li>
+   Регулярная ревизия списка разрешенных устройств
+  </li>
+ </ul>
+ <p dir="auto">
+  Однако этот метод обеспечивает лишь базовый уровень защиты, так как MAC-адреса можно подделать.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. Защита на уровне DHCP
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Статическая привязка IP-адресов к MAC-адресам
+   </strong>
+   в настройках DHCP-сервера
+  </li>
+  <li>
+   <strong>
+    DHCP snooping
+   </strong>
+   — технология, которая различает легитимные и поддельные DHCP-сообщения
+  </li>
+  <li>
+   <strong>
+    IP Source Guard
+   </strong>
+   — предотвращение IP-спуфинга путем проверки соответствия IP и MAC
+  </li>
+  <li>
+   <strong>
+    Dynamic ARP Inspection (DAI)
+   </strong>
+   — защита от ARP-спуфинга
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. Сегментация сети
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Разделение на VLAN
+   </strong>
+   для изоляции групп устройств
+  </li>
+  <li>
+   <strong>
+    Гостевая сеть
+   </strong>
+   для временных пользователей
+  </li>
+  <li>
+   <strong>
+    Network Access Control (NAC)
+   </strong>
+   для аутентификации устройств перед предоставлением доступа к
+            сети
+  </li>
+  <li>
+   <strong>
+    Использование 802.1X
+   </strong>
+   для портового контроля доступа
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5. Мониторинг и обнаружение атак
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Wireless Intrusion Prevention Systems (WIPS)
+   </strong>
+   для обнаружения атак на Wi-Fi
+  </li>
+  <li>
+   <strong>
+    Анализ сетевого трафика
+   </strong>
+   для выявления подозрительной активности
+  </li>
+  <li>
+   <strong>
+    Мониторинг журналов точек доступа
+   </strong>
+   на предмет необычных событий
+  </li>
+  <li>
+   <strong>
+    Регулярные аудиты безопасности
+   </strong>
+   Wi-Fi сетей
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   6. Организационные меры
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Политика безопасности
+   </strong>
+   для Wi-Fi сетей
+  </li>
+  <li>
+   <strong>
+    Обучение пользователей
+   </strong>
+   основам безопасности
+  </li>
+  <li>
+   <strong>
+    Ограничение зоны покрытия Wi-Fi
+   </strong>
+   (регулировка мощности передатчиков)
+  </li>
+  <li>
+   <strong>
+    Физическая безопасность
+   </strong>
+   точек доступа
+  </li>
+  <li>
+   <strong>
+    Отключение неиспользуемых Wi-Fi сетей
+   </strong>
+   в нерабочее время
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Атаки на Wi-Fi сети с перехватом хендшейков остаются одной из наиболее распространенных угроз
+        безопасности. Протоколы WEP, WPA и WPA2-PSK имеют фундаментальные уязвимости, которые позволяют атакующим
+        получить доступ к защищенным сетям при условии перехвата хендшейка и успешного подбора пароля.
+ </p>
+ <p dir="auto">
+  Для защиты от таких атак критически важно использовать сложные пароли, современные протоколы
+        безопасности (WPA3), комбинировать различные методы контроля доступа и регулярно проводить аудит безопасности
+        Wi-Fi инфраструктуры. Комплексный подход к безопасности является единственным эффективным способом
+        противодействия современным угрозам в области беспроводных технологий.
+ </p>
+</article>

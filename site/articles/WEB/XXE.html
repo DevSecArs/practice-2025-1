@@ -1,0 +1,85 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Суть уязвимости
+  </h3>
+ </div>
+ <p dir="auto">
+  Уязвимость возникает при парсинге XML файлов и позволяет вставлять внешние ресурсы. Если обработка
+        таких сущностей не запрещена, злоумышленники могут манипулировать XML, вставляя вредоносные ссылки
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Примеры
+  </h3>
+ </div>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>&lt;?xml version="1.0"?&gt;
+    &lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt; ]&gt;
+    &lt;user&gt; 
+      &lt;name&gt; &amp;xxe; &lt;/name&gt;
+    &lt;/user&gt;
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Если парсер обработает внешнюю сущность &amp;xxe, он прочитает файл /etc/passwd
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Последствия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Утечка конфиденциальной информации
+  </li>
+  <li>
+   Атаки на внутренние сети
+  </li>
+  <li>
+   Отказ в обслуживании
+  </li>
+  <li>
+   Компрометация безопасности
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Методы борьбы
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Отключение обработки внешних сущностей в XML-парсерах
+  </li>
+  <li>
+   Использование безопасных библиотек для работы с XML
+  </li>
+  <li>
+   Проверка и валидация входных данных
+  </li>
+  <li>
+   Использование менее уязвимых форматов (JSON)
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Материалы для изучения:
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="https://github.com/payloadbox/xxe-injection-payload-list">
+    https://github.com/payloadbox/xxe-injection-payload-list
+   </a>
+   - payload для XXE
+  </li>
+  <li>
+   <a href="https://portswigger.net/web-security/xxe" rel="nofollow">
+    https://portswigger.net/web-security/xxe
+   </a>
+   - Тренировачнные лабы и более подробная
+            информация по XXE
+  </li>
+ </ol>
+</article>

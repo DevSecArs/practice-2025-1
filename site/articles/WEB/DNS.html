@@ -1,0 +1,2306 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <ul dir="auto">
+  <li>
+   <a href="#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BA%D0%BE%D0%BD%D1%86%D0%B5%D0%BF%D1%86%D0%B8%D0%B8-dns">
+    Основные
+                концепции DNS
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-dns-%D0%B8-%D0%BA%D0%B0%D0%BA-%D0%BE%D0%BD-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82">
+      Что
+                        такое DNS и как он работает
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B-dns">
+      Основные
+                        компоненты DNS
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B2%D0%B8%D0%B4%D1%8B-dns-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2">
+      Виды
+                        DNS-запросов
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5-%D0%B0%D1%81%D0%BF%D0%B5%D0%BA%D1%82%D1%8B-dns">
+    Технические
+                аспекты DNS
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%D1%8B%D0%B5-%D0%B2-dns">
+      Протоколы,
+                        используемые в DNS
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-dns-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%B0-%D0%B8-%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D0%B0">
+      Формат
+                        DNS-запроса и ответа
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%82%D0%B8%D0%BF%D1%8B-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B5%D0%B9-%D0%B2-dns">
+      Типы
+                        записей в DNS
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D1%83%D0%B3%D1%80%D0%BE%D0%B7%D1%8B-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D0%B8-dns">
+    Основные
+                угрозы безопасности DNS
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#dns-%D1%81%D0%BF%D1%83%D1%84%D0%B8%D0%BD%D0%B3-dns-%D0%BF%D0%BE%D0%B4%D0%BC%D0%B5%D0%BD%D0%B0">
+      DNS
+                        спуфинг (DNS подмена)
+     </a>
+    </li>
+    <li>
+     <a href="#dns-%D0%BA%D1%8D%D1%88-%D0%BF%D0%BE%D0%B9%D0%B7%D0%BE%D0%BD%D0%B8%D0%BD%D0%B3-%D0%B7%D0%B0%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D1%8D%D1%88%D0%B0">
+      DNS
+                        кэш-пойзонинг (заражение кэша)
+     </a>
+    </li>
+    <li>
+     <a href="#dns-%D0%B0%D0%BC%D0%BF%D0%BB%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D1%83%D0%B4%D0%B0%D1%80%D0%BD%D0%B0%D1%8F-%D0%B0%D1%82%D0%B0%D0%BA%D0%B0">
+      DNS-амплификация
+                        (ударная атака)
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%8D%D0%BA%D1%81%D0%BF%D0%BB%D0%BE%D1%82%D1%8B-%D0%BD%D0%B0-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%B5-%D1%83%D1%8F%D0%B7%D0%B2%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B5%D0%B9-dns">
+      Эксплоты
+                        на основе уязвимостей DNS
+     </a>
+    </li>
+    <li>
+     <a href="#dns-%D1%82%D1%83%D0%BD%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">
+      DNS-туннелирование
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BF%D0%B5%D1%80%D0%B5%D1%85%D0%B2%D0%B0%D1%82-dns-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2">
+      Перехват
+                        DNS-запросов
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B-%D1%81-dns-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%82%D0%B0%D0%BC%D0%B8">
+      Проблемы
+                        с DNS-сертификатами
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B9-%D0%B8%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82%D0%B0">
+      Атаки
+                        с использованием технологий искусственного интеллекта
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#dns-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F">
+    DNS-сертификация
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-dns-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D0%B5%D0%B5-%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">
+      Что
+                        такое DNS-сертификация и ее назначение
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%82%D0%B8%D0%BF%D1%8B-dns-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%82%D0%BE%D0%B2">
+      Типы
+                        DNS-сертификатов
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D1%82%D0%B5%D1%82%D1%8B-ca-%D0%B8-%D0%B8%D1%85-%D1%80%D0%BE%D0%BB%D1%8C-%D0%B2-dns-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8">
+      Сертификационные
+                        авторитеты (CA) и их роль в DNS сертификации
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BE%D0%B1%D0%B7%D0%BE%D1%80-dnssec-%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D0%B9-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D0%B8-dns">
+      Обзор
+                        DNSSEC (расширений безопасности DNS)
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D1%8B-dns">
+    Методы защиты
+                DNS
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#1-%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D0%B5-dnssec">
+      1. Внедрение DNSSEC
+     </a>
+    </li>
+    <li>
+     <a href="#2-%D0%BA%D0%B2%D0%BE%D1%82%D1%8B-%D0%BD%D0%B0-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D1%8B-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%B8-rate-limiting-%D0%B2-%D0%BF%D0%BE%D0%BF%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D1%8B%D1%85-dns-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0%D1%85">
+      2.
+                        Квоты на запросы: Примеры конфигурации rate limiting в популярных DNS-серверах
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#bind">
+        BIND
+       </a>
+      </li>
+      <li>
+       <a href="#unbound">
+        Unbound
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#3-anycast-%D1%80%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D1%82%D1%80%D0%B0%D1%84%D0%B8%D0%BA%D0%B0-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-%D0%B3%D0%B5%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8-%D1%80%D0%B0%D0%B7%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5-dns-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D1%8B">
+      3.
+                        Anycast: Распределение трафика через географически разнесенные DNS-серверы
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B5%D0%B8%D0%BC%D1%83%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B0-anycast">
+        Преимущества
+                                Anycast:
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF%D1%8B-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-anycast">
+        Принципы
+                                работы Anycast:
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-anycast">
+        Пример
+                                применения Anycast:
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#4-dohdot-%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%BE%D0%B2-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-dohdot">
+      4.
+                        DoH/DoT: Конфигурация серверов с использованием DoH/DoT
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-doh">
+        Настройка DoH
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-dot">
+        Настройка DoT
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B5%D1%80%D1%8B-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D1%8B-cloudflare">
+        Дополнительные
+                                меры защиты Cloudflare:
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#5-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3%D0%B0-dns">
+      5.
+                        Добавление мониторинга DNS
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#nagios">
+        Nagios
+       </a>
+      </li>
+      <li>
+       <a href="#zabbix">
+        Zabbix
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D1%80%D0%B5%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D1%85-%D0%B0%D1%82%D0%B0%D0%BA-%D0%B8-%D0%B8%D1%85-%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7">
+    Примеры
+                реальных атак и их анализ
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D1%8B%D0%B9-%D1%80%D0%B0%D0%B7%D0%B1%D0%BE%D1%80-%D0%B1%D0%BE%D1%82%D0%BD%D0%B5%D1%82%D0%B0-mirai-%D0%B8%D0%B7-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-%D0%BD%D0%B0-dyn">
+      Подробный
+                        разбор ботнета Mirai из атаки на Dyn
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-%D0%B1%D0%BE%D1%82%D0%BD%D0%B5%D1%82-mirai">
+        Что
+                                такое ботнет Mirai?
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D1%87%D0%B8%D0%BD%D1%8B-%D0%BF%D0%BE-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%BC-iot-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B0-%D1%81%D1%82%D0%B0%D0%BB%D0%B8-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BE%D0%BC-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+        Причины,
+                                по которым IoT-устройства стали вектором атаки
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+        Анализ
+                                атаки
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#%D1%81%D1%86%D0%B5%D0%BD%D0%B0%D1%80%D0%B8%D0%B8-%D0%B0%D1%82%D0%B0%D0%BA-dns-rebinding">
+      Сценарии
+                        атак DNS Rebinding
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BA%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-dns-rebinding">
+        Как
+                                работает DNS Rebinding?
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D1%8B%D0%B5-%D1%86%D0%B5%D0%BB%D0%B8-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+        Возможные
+                                цели атаки
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D1%8B-%D0%BE%D1%82-dns-rebinding">
+      Методы
+                        защиты от DNS Rebinding
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%B1%D1%83%D0%B4%D1%83%D1%89%D0%B5%D0%B5-dns">
+    Будущее DNS
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BA%D0%B2%D0%B0%D0%BD%D1%82%D0%BE%D0%B2%D1%8B%D0%B5-%D0%B2%D1%8B%D1%87%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D1%8B%D0%B5-%D1%83%D0%B3%D1%80%D0%BE%D0%B7%D1%8B-%D0%BA%D0%B2%D0%B0%D0%BD%D1%82%D0%BE%D0%B2%D1%8B%D1%85-%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80%D0%BE%D0%B2-%D0%B4%D0%BB%D1%8F-%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D0%B8-dnssec">
+      Квантовые
+                        вычисления: Возможные угрозы квантовых компьютеров для криптографии DNSSEC
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D1%8B%D0%B5-%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D1%8F">
+        Возможные
+                                решения
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#%D1%83%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%BD%D0%BD%D0%BE%D0%B5-%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB%D0%BE%D0%B2-%D1%81%D0%BB%D0%B5%D0%B4%D1%83%D1%8E%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D0%BE%D0%BA%D0%BE%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%BB%D1%8F-%D0%BF%D0%BE%D0%B2%D1%8B%D1%88%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B4%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8-dns">
+      Улучшенное
+                        шифрование: Разработка протоколов следующего поколения для повышения конфиденциальности DNS
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B8%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9-%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82-%D0%BA%D0%B0%D0%BA-ai-%D0%BF%D0%BE%D0%BC%D0%BE%D0%B3%D0%B0%D0%B5%D1%82-%D0%B2-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3%D0%B5-%D0%B2%D1%8B%D1%8F%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B8-%D0%B0%D0%BD%D0%BE%D0%BC%D0%B0%D0%BB%D0%B8%D0%B9-%D0%B8-%D0%BF%D1%80%D0%B5%D0%B4%D0%BE%D1%82%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B8-%D0%B0%D1%82%D0%B0%D0%BA">
+      Искусственный
+                        интеллект: Как AI помогает в мониторинге, выявлении аномалий и предотвращении атак
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-ai">
+        Примеры
+                                использования AI:
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B2%D0%BD%D0%B5%D0%B4%D1%80%D0%B5%D0%BD%D0%B8%D0%B5-ai">
+        Внедрение AI:
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">
+    Заключение
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%B8%D1%82%D0%BE%D0%B3%D0%B8-%D0%B8-%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4%D1%8B">
+      Итоги и
+                        выводы
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5-%D1%81%D0%BB%D0%BE%D0%B2%D0%BE">
+      Заключительное
+                        слово
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8-%D0%B8-%D1%80%D0%B5%D1%81%D1%83%D1%80%D1%81%D1%8B">
+    Ссылки и
+                ресурсы
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BF%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5-%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD-%D1%80%D0%B5%D1%81%D1%83%D1%80%D1%81%D1%8B-%D0%B8-%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-%D0%B4%D0%BB%D1%8F-%D0%B8%D0%B7%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D1%82%D0%B5%D0%BC%D1%8B">
+      Полезные
+                        онлайн-ресурсы и инструменты для изучения темы
+     </a>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основные концепции DNS
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что такое DNS и как он работает
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS (Domain Name System) – это система, которая отвечает за преобразование доменных имен в IP-адреса и
+        наоборот. Это позволяет пользователям использовать удобные доменные имена для доступа к ресурсам в Интернете,
+        вместо запоминания числовых IP-адресов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Основные компоненты DNS
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Доменные имена:
+   </strong>
+   Человеко-читаемые адреса, такие как
+   <code>
+    example.com
+   </code>
+   .
+  </li>
+  <li>
+   <strong>
+    IP-адреса:
+   </strong>
+   Числовые адреса, такие как
+   <code>
+    192.0.2.1
+   </code>
+   .
+  </li>
+  <li>
+   <strong>
+    DNS-серверы:
+   </strong>
+   Серверы, которые хранят информацию о доменных именах и их соответствующих
+            IP-адресах. Включают корневые серверы, авторитетные серверы и рекурсивные резолверы.
+  </li>
+  <li>
+   <strong>
+    Зоны:
+   </strong>
+   Часть доменной иерархии, за которую отвечает конкретный DNS-сервер.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Виды DNS-запросов
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Рекурсивные запросы:
+   </strong>
+   Запросы, при которых DNS-сервер (рекурсивный резолвер) запрашивает
+            информацию у других серверов от имени клиента и возвращает клиенту окончательный ответ.
+  </li>
+  <li>
+   <strong>
+    Итеративные запросы:
+   </strong>
+   Запросы, при которых DNS-сервер предоставляет клиенту ссылки на другие
+            серверы, а клиент сам продолжает запрашивать информацию до получения окончательного ответа.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Технические аспекты DNS
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Протоколы, используемые в DNS
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS основывается на двух основных протоколах –
+  <strong>
+   UDP (User Datagram Protocol)
+  </strong>
+  и
+  <strong>
+   TCP (Transmission Control Protocol)
+  </strong>
+  :
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    UDP:
+   </strong>
+   Используется для большинства DNS-запросов и ответов, так как этот протокол
+            обеспечивает высокую скорость передачи данных за счёт отсутствия установки соединения. Однако он уязвим для
+            атак типа spoofing и amplification.
+  </li>
+  <li>
+   <strong>
+    TCP:
+   </strong>
+   Применяется в случаях, когда передаваемые данные превышают лимит пакета UDP (512 байт
+            для классических запросов и 4096 байт для запросов EDNS0). Также TCP используется при передаче зоновых
+            файлов между серверами.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Формат DNS-запроса и ответа
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS-запросы и ответы структурированы в виде пакетов, которые содержат следующие секции:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Заголовок (Header):
+   </strong>
+   Содержит идентификатор транзакции, флаги (например, тип запроса) и
+            счетчики записей.
+  </li>
+  <li>
+   <strong>
+    Вопрос (Question):
+   </strong>
+   Включает доменное имя, тип запроса (A, AAAA, CNAME и т.д.) и класс
+            (обычно IN – Internet).
+  </li>
+  <li>
+   <strong>
+    Ответ (Answer):
+   </strong>
+   Содержит данные, связанные с запросом, например, IP-адреса для доменного
+            имени.
+  </li>
+  <li>
+   <strong>
+    Дополнительная информация (Additional Records):
+   </strong>
+   Могут включать дополнительные данные для
+            оптимизации обработки запросов.
+  </li>
+ </ol>
+ <p dir="auto">
+  Пример анализа DNS-запроса:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>dig example.com A
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Вывод:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>; &lt;&lt;&gt;&gt; DiG 9.10.6 &lt;&lt;&gt;&gt; example.com A
+    ;; global options: +cmd
+    ;; Got answer:
+    ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 12345
+    ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+    
+    ;; QUESTION SECTION:
+    ;example.com.                   IN      A
+    
+    ;; ANSWER SECTION:
+    example.com.            3600    IN      A       93.184.216.34
+    
+    ;; Query time: 30 msec
+    ;; SERVER: 8.8.8.8#53(8.8.8.8)
+    ;; WHEN: Mon Mar 17 04:02:03 MSK 2025
+    ;; MSG SIZE  rcvd: 56
+    
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Разбор вывода:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     HEADER:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     <strong>
+      opcode:
+     </strong>
+     Тип запроса (в данном случае QUERY).
+    </li>
+    <li>
+     <strong>
+      status:
+     </strong>
+     Статус ответа (NOERROR означает, что запрос успешен).
+    </li>
+    <li>
+     <strong>
+      id:
+     </strong>
+     Уникальный идентификатор запроса, необходимый для корреляции запросов и
+                    ответов.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     QUESTION SECTION:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Здесь отображается запрос, который был отправлен.
+    </li>
+    <li>
+     В данном случае: запись типа A для домена
+     <code>
+      example.com
+     </code>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     ANSWER SECTION:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Это самая важная часть, содержащая ответ от DNS-сервера:
+     <ul dir="auto">
+      <li>
+       <strong>
+        example.com.
+       </strong>
+       – доменное имя.
+      </li>
+      <li>
+       <strong>
+        3600
+       </strong>
+       – время жизни записи в секундах (TTL), показывающее, как долго
+                            кэшировать запись.
+      </li>
+      <li>
+       <strong>
+        IN
+       </strong>
+       – класс записи (Internet).
+      </li>
+      <li>
+       <strong>
+        A
+       </strong>
+       – тип записи.
+      </li>
+      <li>
+       <strong>
+        93.184.216.34
+       </strong>
+       – возвращённый IPv4-адрес для домена
+       <code>
+        example.com
+       </code>
+       .
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Query time:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Время, затраченное на выполнение DNS-запроса (например, 30 мс).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SERVER:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Указывает на DNS-сервер, обработавший запрос. В примере это
+     <code>
+      8.8.8.8
+     </code>
+     , публичный сервер
+                    Google DNS.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     WHEN:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Дата и время выполнения команды, например,
+     <code>
+      Mon Mar 17 04:02:03 MSK 2025
+     </code>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     MSG SIZE:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Размер полученного ответа в байтах (например, 56).
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Этот разбор помогает понять, как интерпретировать вывод команды
+  <code>
+   dig
+  </code>
+  , и даёт ценную
+        информацию об обработке DNS-запросов. Если необходимо, можно использовать дополнительные флаги, такие как
+  <code>
+   +trace
+  </code>
+  для диагностики или проверки цепочки запросов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Типы записей в DNS
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS поддерживает различные типы записей, каждая из которых выполняет свою функцию:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     A:
+    </strong>
+    Привязка доменного имени к IPv4-адресу.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <code>
+     example.com → 192.0.2.1
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     AAAA:
+    </strong>
+    Привязка доменного имени к IPv6-адресу.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <code>
+     example.com → 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     CNAME:
+    </strong>
+    Указывает, что доменное имя является псевдонимом (алиасом) другого
+                доменного имени.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <code>
+     www.example.com → example.com
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     MX:
+    </strong>
+    Определяет почтовые серверы для обработки электронной почты домена.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <br/>
+    <code>
+     example.com: Priority 10 → mail.example.com
+    </code>
+    <br/>
+    <code>
+     example.com: Priority 20 → backupmail.example.com
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     TXT:
+    </strong>
+    Содержит текстовую информацию, используемую для записи метаданных. Часто
+                применяется для SPF (Sender Policy Framework) или проверки владения доменом.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <code>
+     example.com → "v=spf1 include:_spf.example.com ~all"
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     NS:
+    </strong>
+    Указывает на авторитетные DNS-серверы зоны.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <br/>
+    <code>
+     example.com → ns1.example.com, ns2.example.com
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     PTR:
+    </strong>
+    Используется для обратного DNS-разрешения, то есть определения доменного
+                имени по IP-адресу.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <code>
+     1.2.0.192.in-addr.arpa → example.com
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SOA (Start of Authority):
+    </strong>
+    Указывает исходную точку зоны DNS, содержит
+                информацию об администраторе зоны, серийном номере и параметрах обновления.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <br/>
+    <code>
+     example.com → Primary DNS: ns1.example.com, Responsible Party: admin@example.com, Serial: 2025031701, Refresh: 7200, Retry: 3600, Expire: 1209600, Minimum TTL: 86400
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SRV:
+    </strong>
+    Используется для указания информации о службах (например, для SIP,
+                XMPP).
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <br/>
+    <code>
+     _sip._tcp.example.com → Priority: 0, Weight: 5, Port: 5060, Target: sipserver.example.com
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     CAA (Certification Authority Authorization):
+    </strong>
+    Определяет, какой
+                сертификационный центр (CA) может выдавать SSL/TLS-сертификаты для домена.
+    <br/>
+    <strong>
+     Пример:
+    </strong>
+    <code>
+     example.com → 0 issue "letsencrypt.org"
+    </code>
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Каждый из этих типов записей играет свою уникальную роль в обеспечении функционирования и безопасности
+        DNS.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основные угрозы безопасности DNS
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   DNS спуфинг (DNS подмена)
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS спуфинг (или DNS подмена) – это атака, при которой злоумышленник подделывает ответы DNS-сервера,
+        чтобы перенаправить пользователей на ложные веб-сайты. Целью таких атак часто является кража личных данных
+        пользователей или распространение вредоносного ПО.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   DNS кэш-пойзонинг (заражение кэша)
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS кэш-пойзонинг – это атака, при которой злоумышленник вводит ложные данные в кэш DNS-сервера. В
+        результате этого пользователи получают поддельные ответы на свои DNS-запросы, что может привести к
+        перенаправлению на вредоносные веб-сайты.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   DNS-амплификация (ударная атака)
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS-амплификация – это разновидность DDoS-атаки, при которой злоумышленник использует DNS-серверы для
+        отправки большого объема трафика на целевую систему, что приводит к ее перегрузке и отказу в обслуживании.
+        Злоумышленник отправляет небольшие запросы на DNS-серверы с поддельным IP-адресом жертвы, а серверы отвечают
+        большими объемами данных, что увеличивает нагрузку на целевую систему.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Эксплоты на основе уязвимостей DNS
+  </h3>
+ </div>
+ <p dir="auto">
+  Злоумышленники могут использовать уязвимости в реализации DNS-серверов для выполнения атак, таких как
+        удаленное выполнение кода, эскалация привилегий и отказ в обслуживании. Эти уязвимости могут быть связаны с
+        ошибками в программном обеспечении, неправильной конфигурацией или недостаточным обновлением систем
+        безопасности.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   DNS-туннелирование
+  </h3>
+ </div>
+ <p dir="auto">
+  Одной из наиболее скрытных угроз является DNS-туннелирование. Этот метод позволяет злоумышленникам
+        передавать данные через DNS-запросы и ответы, обходя традиционные системы безопасности. Это может использоваться
+        для:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Утечки данных:
+   </strong>
+   Злоумышленники кодируют чувствительную информацию в запросах и отправляют её
+            на контролируемый ими сервер.
+  </li>
+  <li>
+   <strong>
+    Скрытной связи:
+   </strong>
+   Например, для управления ботнетами через закодированные команды в
+            DNS-запросах.
+  </li>
+ </ul>
+ <p dir="auto">
+  Защита от DNS-туннелирования включает:
+ </p>
+ <ul dir="auto">
+  <li>
+   Мониторинг трафика на предмет аномального поведения, такого как большой объём DNS-запросов к неизвестным
+            доменам.
+  </li>
+  <li>
+   Использование средств для анализа и блокировки подозрительного DNS-трафика, например, DNS-фильтров.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Перехват DNS-запросов
+  </h3>
+ </div>
+ <p dir="auto">
+  Перехват DNS-запросов, или атаки типа Man-In-The-Middle (MITM), позволяет злоумышленникам:
+ </p>
+ <ul dir="auto">
+  <li>
+   Перенаправлять пользователей на поддельные или вредоносные сайты.
+  </li>
+  <li>
+   Использовать собранную информацию для профилирования или киберпреступлений.
+  </li>
+ </ul>
+ <p dir="auto">
+  Некоторые провайдеры могут также использовать эту технику для внедрения рекламы. Методы защиты
+        включают:
+ </p>
+ <ul dir="auto">
+  <li>
+   Использование защищённых протоколов, таких как DNS-over-HTTPS (DoH) и DNS-over-TLS (DoT), для шифрования
+            DNS-трафика.
+  </li>
+  <li>
+   Регулярная проверка настроек DNS на использование надёжных серверов, таких как OpenDNS или Google Public
+            DNS.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Проблемы с DNS-сертификатами
+  </h3>
+ </div>
+ <p dir="auto">
+  Хотя сертификаты используются для защиты, компрометация сертификационных центров (CA) представляет
+        серьёзную угрозу:
+ </p>
+ <ul dir="auto">
+  <li>
+   Выдача ложных сертификатов может позволить злоумышленникам перехватывать или подменять DNS-ответы.
+  </li>
+  <li>
+   Поддельные сертификаты угрожают целостности системы доверия в интернете.
+  </li>
+ </ul>
+ <p dir="auto">
+  Для снижения рисков необходимо:
+ </p>
+ <ul dir="auto">
+  <li>
+   Внедрять и поддерживать DNSSEC, который добавляет цифровые подписи к DNS-записям.
+  </li>
+  <li>
+   Проводить регулярный аудит используемых CA и отслеживать их уязвимости.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Атаки с использованием технологий искусственного интеллекта
+  </h3>
+ </div>
+ <p dir="auto">
+  С развитием ИИ злоумышленники могут автоматизировать анализ и поиск уязвимостей в DNS-системах,
+        увеличивая частоту и сложность атак. Примеры таких угроз:
+ </p>
+ <ul dir="auto">
+  <li>
+   Генерация тысяч доменов для DGA-ботнетов (Domain Generation Algorithm) с целью обхода блокировок.
+  </li>
+  <li>
+   Использование ИИ для более точного подбора эксплойтов для взлома систем DNS.
+  </li>
+ </ul>
+ <p dir="auto">
+  Борьба с такими угрозами включает:
+ </p>
+ <ul dir="auto">
+  <li>
+   Активное использование систем с применением машинного обучения для анализа трафика и выявления аномалий.
+  </li>
+  <li>
+   Обновление инфраструктуры безопасности для противодействия новым угрозам.
+  </li>
+ </ul>
+ <p dir="auto">
+  Эти угрозы подчёркивают важность постоянного мониторинга, применения шифрования и внедрения новых
+        технологий для защиты DNS.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   DNS-сертификация
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что такое DNS-сертификация и ее назначение
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS-сертификация – это процесс проверки подлинности доменных имен с помощью криптографических
+        сертификатов. Ее цель – обеспечить безопасность и защиту данных пользователей при взаимодействии с веб-сайтами и
+        онлайн-сервисами.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Типы DNS-сертификатов
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    DV (Domain Validation):
+   </strong>
+   Сертификаты с валидацией домена. Это наиболее базовый уровень
+            сертификации, при котором проверяется только право владения доменом.
+  </li>
+  <li>
+   <strong>
+    OV (Organization Validation):
+   </strong>
+   Сертификаты с валидацией организации. Дополнительно к
+            проверке владения доменом, проверяется также информация об организации-владельце.
+  </li>
+  <li>
+   <strong>
+    EV (Extended Validation):
+   </strong>
+   Сертификаты с расширенной валидацией. Это самый высокий уровень
+            сертификации, включающий детальную проверку владения доменом и информации об организации.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Сертификационные авторитеты (CA) и их роль в DNS
+            сертификации
+  </h3>
+ </div>
+ <p dir="auto">
+  Сертификационные авторитеты (CA) – это организации, которые выпускают и управляют цифровыми
+        сертификатами. Они играют ключевую роль в обеспечении доверия и безопасности в Интернете, так как гарантируют
+        подлинность доменных имен и организаций.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Обзор DNSSEC (расширений безопасности DNS)
+  </h3>
+ </div>
+ <p dir="auto">
+  DNSSEC (Domain Name System Security Extensions) – это набор расширений для DNS, которые обеспечивают
+        криптографическую защиту данных, передаваемых через DNS. DNSSEC добавляет цифровые подписи к DNS-записям, что
+        позволяет удостовериться в их подлинности и целостности. Основные компоненты DNSSEC:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Зоны с поддержкой DNSSEC:
+   </strong>
+   Зоны DNS, в которых внедрены цифровые подписи.
+  </li>
+  <li>
+   <strong>
+    Ключи подписи (KSK и ZSK):
+   </strong>
+   Криптографические ключи, используемые для подписи и верификации
+            DNS-записей.
+  </li>
+  <li>
+   <strong>
+    Подписи (RRSIG):
+   </strong>
+   Цифровые подписи, добавляемые к DNS-записям.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы защиты DNS
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Внедрение DNSSEC
+  </h3>
+ </div>
+ <p dir="auto">
+  DNSSEC (Domain Name System Security Extensions) добавляет криптографические подписи к DNS-записям, что
+        позволяет удостовериться в их подлинности и целостности. Вот пример, как это работает:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Создание криптографических ключей:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Генерация ключей подписи зоны (ZSK) и ключей подписи ключей (KSK).
+    </li>
+   </ul>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>dnssec-keygen -a RSASHA256 -b 2048 -n ZONE example.com
+    dnssec-keygen -a RSASHA256 -b 4096 -f KSK -n ZONE example.com
+    </code></pre>
+   </div>
+   <ul dir="auto">
+    <li>
+     ZSK используется для подписания отдельных DNS-записей, а KSK для подписания ZSK.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Подпись DNS-записей:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Каждая запись в зоне подписывается ZSK. Это создает запись RRSIG, которая добавляется к каждой
+                    подписанной записи.
+    </li>
+   </ul>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>dnssec-signzone -A -3 $(head -c 1000 /dev/urandom | sha1sum | cut -b 1-16) -N INCREMENT -o example.com -t example.com.zone
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Публикация ключей:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Ключи KSK публикуются в виде DNS-записей типа DNSKEY в зоне. Эти записи позволяют резолверам
+                    проверить подлинность ZSK.
+    </li>
+   </ul>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>cat Kexample.com.*.key &gt;&gt; example.com.zone
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Обновление записей DS:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     В родительской зоне обновляются записи DS, которые содержат хеши KSK. Это позволяет резолверам
+                    верифицировать цепочку доверия от корневой зоны до подписанной зоны.
+    </li>
+   </ul>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>dnssec-dsfromkey -2 example.com.zone &gt; dsset-example.com.
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверка подписей:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Когда резолвер получает DNS-запись, он также получает соответствующую запись RRSIG.
+    </li>
+    <li>
+     Резолвер использует публичный ключ из записи DNSKEY и хеш из записи DS для верификации подписи.
+    </li>
+   </ul>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>dig +dnssec example.com
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Удостоверение подлинности и целостности:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Если верификация проходит успешно, резолвер удостоверяется, что данные подлинные и не были изменены
+                    в процессе передачи.
+    </li>
+   </ul>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>dig +dnssec +multiline +noall +answer example.com
+    </code></pre>
+   </div>
+  </li>
+ </ol>
+ <p dir="auto">
+  Внедрение DNSSEC помогает защитить систему DNS от атак, таких как DNS спуфинг и кэш-пойзонинг,
+        обеспечивая надежное и безопасное разрешение доменных имен.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Квоты на запросы: Примеры конфигурации rate limiting в
+            популярных DNS-серверах
+  </h3>
+ </div>
+ <p dir="auto">
+  Rate limiting – это техника ограничения количества запросов, которые может обработать DNS-сервер за
+        заданный промежуток времени. Она помогает защититься от DDoS-атак и злоупотреблений. Рассмотрим примеры
+        настройки для двух популярных DNS-серверов:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   BIND
+  </h4>
+ </div>
+ <p dir="auto">
+  В BIND можно настроить rate limiting с использованием модуля
+  <code>
+   rate-limit
+  </code>
+  . Пример
+        конфигурации:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>rate-limit {
+        responses-per-second 10;
+        window 5;
+        slip 2;
+    };
+    </code></pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     responses-per-second:
+    </strong>
+    Максимальное количество ответов в секунду.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     window:
+    </strong>
+    Период учета запросов в секундах.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     slip:
+    </strong>
+    Вероятность ответа с ошибкой вместо отказа.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Unbound
+  </h4>
+ </div>
+ <p dir="auto">
+  Unbound использует параметры для ограничения запросов. Пример настройки:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>server:
+        ratelimit-qps: 10
+        ratelimit-size: 10000
+        ratelimit-slabs: 16
+    </code></pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     ratelimit-qps:
+    </strong>
+    Максимальное количество запросов в секунду на клиент.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     ratelimit-size:
+    </strong>
+    Размер таблицы ограничений.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     ratelimit-slabs:
+    </strong>
+    Количество частей памяти для таблицы.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Эти конфигурации позволяют администратору защитить сервер от чрезмерных нагрузок, сохраняя его
+        работоспособность.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. Anycast: Распределение трафика через географически
+            разнесенные DNS-серверы
+  </h3>
+ </div>
+ <p dir="auto">
+  Anycast – это технология, которая позволяет нескольким серверам иметь один и тот же IP-адрес. При этом
+        запросы направляются на ближайший сервер с точки зрения маршрутизации. Это решение значительно повышает
+        производительность и устойчивость инфраструктуры DNS. Рассмотрим ключевые преимущества Anycast и принципы его
+        работы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Преимущества Anycast:
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Устойчивость системы:
+   </strong>
+   Если один сервер выходит из строя, запросы автоматически
+            перенаправляются на другие доступные серверы.
+  </li>
+  <li>
+   <strong>
+    Минимизация задержек:
+   </strong>
+   Пользователи подключаются к наиболее географически близкому серверу,
+            что снижает время отклика.
+  </li>
+  <li>
+   <strong>
+    Повышение безопасности:
+   </strong>
+   Одновременная атака на все серверы системы становится сложной
+            задачей для злоумышленников.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Принципы работы Anycast:
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Маршрутизация по протоколу BGP (Border Gateway Protocol):
+    </strong>
+    Anycast IP-адрес объявляется через BGP с нескольких географически разнесенных точек, что позволяет
+                перенаправлять трафик на ближайший доступный сервер.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование локальных серверов:
+    </strong>
+    Запросы направляются к серверам, которые находятся в максимальной близости к пользователю, что уменьшает
+                нагрузку на общую сеть.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Автоматическое переключение:
+    </strong>
+    В случае сбоя одного из серверов система автоматически перенаправляет запросы на работающие точки.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Пример применения Anycast:
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Настройка IP-адресов:
+   </strong>
+   Убедитесь, что Anycast-адрес объявлен через все серверы в сети.
+  </li>
+  <li>
+   <strong>
+    Конфигурация BGP:
+   </strong>
+   Настройте протокол BGP для автоматического определения маршрута запроса.
+  </li>
+  <li>
+   <strong>
+    Мониторинг производительности:
+   </strong>
+   Используйте специализированные инструменты для анализа
+            нагрузки и отказоустойчивости серверов.
+  </li>
+ </ol>
+ <p dir="auto">
+  Anycast значительно улучшает отказоустойчивость и производительность DNS, делая его критически важной
+        частью современных технологий.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. DoH/DoT: Конфигурация серверов с использованием DoH/DoT
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS-over-HTTPS (DoH) и DNS-over-TLS (DoT) – это протоколы, которые обеспечивают шифрование
+        DNS-запросов, защищая их от подмены и перехвата. Рассмотрим пошаговую настройку серверов, таких как Cloudflare и
+        Google Public DNS, с использованием DoH/DoT.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Настройка DoH
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Выбор сервера:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Cloudflare:
+     <code>
+      https://1.1.1.1/dns-query
+     </code>
+    </li>
+    <li>
+     Google Public DNS:
+     <code>
+      https://dns.google/dns-query
+     </code>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка клиента:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Установите DNS-клиент, поддерживающий DoH, например,
+     <code>
+      dnscrypt-proxy
+     </code>
+     .
+    </li>
+    <li>
+     Пример конфигурации для Cloudflare:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>server_names = [<span class="pl-s"><span class="pl-pds">'</span>cloudflare<span class="pl-pds">'</span></span>]
+    [static.<span class="pl-s"><span class="pl-pds">'</span>cloudflare<span class="pl-pds">'</span></span>]
+    stamp = <span class="pl-s"><span class="pl-pds">'</span>sdns://Agc...<span class="pl-pds">'</span></span></pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверка работы:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Используйте инструмент
+     <code>
+      dig
+     </code>
+     с флагом DoH:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>dig @1.1.1.1 example.com</pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Настройка DoT
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Выбор сервера:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Cloudflare:
+     <code>
+      1.1.1.1
+     </code>
+     и
+     <code>
+      1.0.0.1
+     </code>
+    </li>
+    <li>
+     Google Public DNS:
+     <code>
+      8.8.8.8
+     </code>
+     и
+     <code>
+      8.8.4.4
+     </code>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка клиента:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Установите DNS-клиент, поддерживающий DoT, например,
+     <code>
+      unbound
+     </code>
+     .
+    </li>
+    <li>
+     Пример конфигурации:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>forward-zone:
+        name: <span class="pl-s"><span class="pl-pds">"</span>.<span class="pl-pds">"</span></span>
+        forward-ssl-upstream: yes
+        forward-addr: 1.1.1.1@853</pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверка работы:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Проверьте соединение через
+     <code>
+      dig
+     </code>
+     :
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>dig +tcp @1.1.1.1 example.com</pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Дополнительные меры защиты Cloudflare:
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Мониторинг запросов:
+   </strong>
+   Cloudflare применяет системы анализа трафика, основанные на машинном
+            обучении, чтобы оперативно выявлять аномалии и предотвращать атаки.
+  </li>
+  <li>
+   <strong>
+    Защита от DDoS:
+   </strong>
+   Компания использует распределенную сеть серверов для защиты от
+            распределенных атак.
+  </li>
+ </ul>
+ <p dir="auto">
+  Технологии, реализуемые Cloudflare, устанавливают новый стандарт безопасности и конфиденциальности для
+        DNS, гарантируя, что данные пользователей остаются защищенными.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5. Добавление мониторинга DNS
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Nagios
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Добавление проверки DNS в конфигурацию:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     В файле конфигурации Nagios укажите параметры для мониторинга DNS:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>define service {
+        use generic-service
+        host_name dns-server
+        service_description DNS
+        check_command check_dns<span class="pl-k">!</span>example.com
+    }</pre>
+     </div>
+    </li>
+    <li>
+     Это позволит проверять доступность домена
+     <code>
+      example.com
+     </code>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Перезагрузка Nagios:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     После изменения конфигурации перезапустите Nagios:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>systemctl restart nagios</pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Zabbix
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Добавление элемента данных:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     В веб-интерфейсе Zabbix создайте новый элемент данных для проверки DNS:
+     <ul dir="auto">
+      <li>
+       <strong>
+        Тип проверки:
+       </strong>
+       DNS.
+      </li>
+      <li>
+       <strong>
+        Хост:
+       </strong>
+       Укажите адрес вашего DNS-сервера.
+      </li>
+      <li>
+       <strong>
+        Запрос:
+       </strong>
+       Укажите домен, например
+       <code>
+        example.com
+       </code>
+       .
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка триггеров:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Создайте триггер, который будет срабатывать при недоступности DNS:
+     <ul dir="auto">
+      <li>
+       Условие: время ответа превышает допустимое значение.
+      </li>
+      <li>
+       Действие: отправка уведомления или выполнение команды.
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Визуализация данных:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Используйте дашборды Zabbix для отображения состояния и производительности DNS-сервера.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Эти шаги помогут эффективно настроить мониторинг DNS с использованием Nagios и Zabbix, обеспечивая
+        своевременное выявление проблем.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Примеры реальных атак и их анализ
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Подробный разбор ботнета Mirai из атаки на Dyn
+  </h3>
+ </div>
+ <p dir="auto">
+  В октябре 2016 года произошла одна из крупнейших атак на DNS-провайдера Dyn, вызванная ботнетом Mirai.
+        Эта атака привела к недоступности таких популярных сайтов, как Twitter, Netflix, Spotify и GitHub, и стала
+        знаковым событием в области кибербезопасности.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Что такое ботнет Mirai?
+  </h4>
+ </div>
+ <p dir="auto">
+  Mirai – это вредоносное ПО, которое заражает устройства Интернета вещей (IoT), включая камеры
+        видеонаблюдения, маршрутизаторы и другие умные устройства. Главная цель ботнета – объединить тысячи устройств в
+        сеть для проведения распределённых атак отказа в обслуживании (DDoS).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Причины, по которым IoT-устройства стали вектором атаки
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Слабая безопасность:
+   </strong>
+   Многие IoT-устройства поставляются с предустановленными паролями,
+            которые пользователи редко изменяют.
+  </li>
+  <li>
+   <strong>
+    Недостаток обновлений:
+   </strong>
+   Производители редко выпускают обновления безопасности для
+            IoT-устройств.
+  </li>
+  <li>
+   <strong>
+    Доступность в сети:
+   </strong>
+   IoT-устройства часто имеют прямой доступ к Интернету, что упрощает их
+            компрометацию.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Анализ атаки
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Метод:
+   </strong>
+   Ботнет Mirai отправлял огромный объём запросов на DNS-серверы Dyn, исчерпывая их
+            ресурсы и делая сервис недоступным.
+  </li>
+  <li>
+   <strong>
+    Интенсивность:
+   </strong>
+   Скорость атак превышала 1 Тбит/с, что делало её одной из самых мощных
+            DDoS-атак на тот момент.
+  </li>
+  <li>
+   <strong>
+    Последствия:
+   </strong>
+   Нарушения в работе множества популярных сервисов и осознание уязвимости
+            IoT-устройств.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Сценарии атак DNS Rebinding
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS Rebinding – это техника, которая использует изменяющиеся DNS-записи, чтобы обмануть браузер
+        пользователя и получить доступ к его локальным сетевым ресурсам.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Как работает DNS Rebinding?
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   Злоумышленник регистрирует домен и настраивает DNS-сервер для выдачи короткоживущих записей (TTL).
+  </li>
+  <li>
+   Браузер пользователя разрешает доменное имя и получает первый IP-адрес, указывающий на сервер
+            злоумышленника.
+  </li>
+  <li>
+   При втором запросе браузер получает новый IP-адрес, уже указывающий на локальные ресурсы пользователя.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Возможные цели атаки
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Сетевые принтеры и NAS-устройства:
+   </strong>
+   Доступ к данным и настройкам.
+  </li>
+  <li>
+   <strong>
+    Веб-интерфейсы роутеров:
+   </strong>
+   Изменение конфигураций и компрометация сетей.
+  </li>
+  <li>
+   <strong>
+    IoT-устройства:
+   </strong>
+   Управление умными домами, включая камеры, термостаты и замки.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Методы защиты от DNS Rebinding
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Ограничение TTL:
+   </strong>
+   Настройка DNS-серверов на игнорирование короткоживущих записей.
+  </li>
+  <li>
+   <strong>
+    Использование механизма Same-Origin Policy (SOP):
+   </strong>
+   SOP предотвращает междоменное
+            взаимодействие браузеров, блокируя попытки злоумышленников получить доступ к локальным ресурсам.
+  </li>
+  <li>
+   <strong>
+    Настройка брандмауэров:
+   </strong>
+   Блокировка подозрительных DNS-запросов и адресов.
+  </li>
+ </ol>
+ <p dir="auto">
+  Эти сценарии атак показывают, насколько важно защищать как глобальные DNS-сервисы, так и локальные
+        ресурсы от злоумышленников. Тщательный мониторинг и обновление инфраструктуры – ключ к предотвращению подобных
+        угроз.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Будущее DNS
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Квантовые вычисления: Возможные угрозы квантовых
+            компьютеров для криптографии DNSSEC
+  </h3>
+ </div>
+ <p dir="auto">
+  С развитием квантовых компьютеров традиционные криптографические алгоритмы, используемые в DNSSEC
+        (Domain Name System Security Extensions), могут стать уязвимыми. Квантовые алгоритмы, такие как алгоритм Шора,
+        способны эффективно взламывать асимметричные криптографические схемы, что ставит под угрозу целостность и
+        безопасность DNS.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Возможные решения
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Разработка квантово-устойчивых алгоритмов:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Использование криптографических схем, устойчивых к квантовым атакам, таких как основанные на
+                    решетках (lattice-based) или хэш-функциях.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Обновление стандартов:
+   </strong>
+   <ul dir="auto">
+    <li>
+     IETF и другие организации должны работать над созданием стандартов, которые внедряют
+                    квантово-устойчивую криптографию в DNS.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Тестирование и миграция:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Постепенное тестирование новых алгоритмов и переход на них с минимальным риском для существующих
+                    систем.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Улучшенное шифрование: Разработка протоколов следующего
+            поколения для повышения конфиденциальности DNS
+  </h3>
+ </div>
+ <p dir="auto">
+  Протоколы, такие как DNS-over-HTTPS (DoH) и DNS-over-TLS (DoT), уже обеспечивают высокий уровень
+        безопасности, но дальнейшие разработки могут ещё больше укрепить конфиденциальность DNS. Возможности для
+        улучшения:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Повышение уровня шифрования:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Использование алгоритмов шифрования с большими ключами и повышенной стойкостью.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Защита метаданных:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Шифрование информации о запросах, включая их размеры и частоту.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Многоуровневое шифрование:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Введение дополнительных слоёв шифрования для защиты от анализа трафика.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Эти новые протоколы могут интегрировать технологии, такие как обфускация трафика и дифференциальная
+        конфиденциальность, чтобы сделать мониторинг запросов ещё сложнее.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Искусственный интеллект: Как AI помогает в мониторинге,
+            выявлении аномалий и предотвращении атак
+  </h3>
+ </div>
+ <p dir="auto">
+  Искусственный интеллект (AI) становится важным инструментом для обеспечения безопасности DNS, так как
+        он может анализировать большие объёмы данных и выявлять угрозы быстрее, чем это делает человек.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Примеры использования AI:
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Анализ трафика:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Машинное обучение помогает определить аномальное поведение, такое как всплески запросов или
+                    подозрительные IP-адреса.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Реагирование на угрозы:
+   </strong>
+   <ul dir="auto">
+    <li>
+     AI может автоматически применять защитные меры, такие как блокировка вредоносных запросов или
+                    изоляция подозрительных серверов.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Прогнозирование атак:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Алгоритмы AI могут предсказывать потенциальные векторы атак, основываясь на предыдущих инцидентах и
+                    паттернах поведения.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Внедрение AI:
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   Использование SIEM-систем (Security Information and Event Management) с интеграцией технологий машинного
+            обучения.
+  </li>
+  <li>
+   Разработка нейронных сетей, адаптированных для анализа DNS-логов.
+  </li>
+ </ul>
+ <p dir="auto">
+  Будущее DNS тесно связано с развитием технологий, таких как квантовая криптография, улучшенные
+        протоколы шифрования и искусственный интеллект. Эти инновации помогут справляться с новыми вызовами и
+        гарантировать безопасность интернета.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Итоги и выводы
+  </h3>
+ </div>
+ <p dir="auto">
+  В данной статье мы рассмотрели критически важные аспекты системы DNS, её устройство, угрозы
+        безопасности, а также современные и будущие технологии защиты. DNS играет ключевую роль в функционировании
+        интернета, преобразуя доменные имена в IP-адреса и обеспечивая доступ к цифровым ресурсам. Однако безопасность
+        DNS не менее важна, так как атаки на эту систему могут привести к серьёзным последствиям, включая кражу данных,
+        нарушение работы сервисов и финансовые потери.
+ </p>
+ <p dir="auto">
+  Мы обсудили современные технологии защиты, такие как
+  <strong>
+   ограничение запросов (rate
+            limiting)
+  </strong>
+  , применение
+  <strong>
+   Anycast
+  </strong>
+  , и шифрование трафика с помощью протоколов
+  <strong>
+   DoH/DoT
+  </strong>
+  . Эти методы значительно повышают устойчивость и безопасность DNS, делая систему менее
+        уязвимой для атак. Особое внимание уделено технологическим решениям компаний, таких как Cloudflare, которые
+        задают высокий стандарт безопасности.
+ </p>
+ <p dir="auto">
+  Отдельно был освещён потенциал будущих технологий, включая
+  <strong>
+   квантовую криптографию
+  </strong>
+  для
+        защиты от угроз квантовых компьютеров, разработку протоколов следующего поколения с улучшенным шифрованием и
+        использование искусственного интеллекта для выявления аномалий и предотвращения атак. Эти направления
+        демонстрируют, как технологии эволюционируют, чтобы справляться с новыми вызовами в мире кибербезопасности.
+ </p>
+ <p dir="auto">
+  Мы также детально разобрали примеры реальных атак, таких как ботнет Mirai и DNS Rebinding, выявив
+        причины их успеха и методы защиты. Сценарии этих атак показывают, насколько важно защищать не только глобальные
+        DNS-сервисы, но и локальные устройства, включая IoT.
+ </p>
+ <p dir="auto">
+  Практические шаги по внедрению DNSSEC, настройке DoH/DoT и мониторингу инфраструктуры с использованием
+        инструментов, таких как Nagios и Zabbix, были представлены как руководства, которые помогут администраторам
+        обезопасить свои системы. Эти практики являются основой для предотвращения уязвимостей и обеспечения
+        стабильности работы DNS.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Заключительное слово
+  </h3>
+ </div>
+ <p dir="auto">
+  DNS продолжает быть одним из важнейших компонентов инфраструктуры интернета, и его защита требует
+        постоянного внимания и внедрения инновационных решений. Новые угрозы, такие как использование квантовых
+        компьютеров или автоматизация атак с применением искусственного интеллекта, требуют от специалистов активного
+        обновления знаний и применения передовых технологий.
+ </p>
+ <p dir="auto">
+  Эта статья подчеркивает важность комплексного подхода к защите DNS: от базовых техник, таких как
+        конфигурация серверов и мониторинг, до внедрения продвинутых решений, включая шифрование и квантово-устойчивую
+        криптографию. Регулярные исследования, мониторинг и развитие стандартов помогут сохранить безопасность и
+        стабильность интернета в долгосрочной перспективе.
+ </p>
+ <p dir="auto">
+  Будущее DNS зависит от инноваций и коллективных усилий специалистов, и мы уверены, что знания,
+        представленные в этой статье, станут надёжным шагом к созданию безопасной и эффективной DNS-инфраструктуры.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Ссылки и ресурсы
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Полезные онлайн-ресурсы и инструменты для изучения темы
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="https://www.icann.org" rel="nofollow">
+    ICANN
+   </a>
+   – Управляющая организация по распределению
+            IP-адресов и доменных имен.
+  </li>
+  <li>
+   <a href="https://www.ietf.org" rel="nofollow">
+    IETF
+   </a>
+   – Организация по разработке интернет-стандартов,
+            включая стандарты DNS.
+  </li>
+  <li>
+   <a href="https://dnssec.net" rel="nofollow">
+    DNSSEC
+   </a>
+   – Веб-сайт, посвященный вопросам безопасности DNS и
+            внедрению DNSSEC.
+  </li>
+  <li>
+   <a href="https://www.isc.org/bind/" rel="nofollow">
+    BIND
+   </a>
+   – Популярное программное обеспечение для
+            DNS-серверов.
+  </li>
+  <li>
+   <a href="https://dnsviz.net" rel="nofollow">
+    DNSViz
+   </a>
+   – Инструмент для визуализации и анализа конфигурации
+            DNS и DNSSEC.
+  </li>
+  <li>
+   <a href="https://krebsonsecurity.com" rel="nofollow">
+    Krebs on Security
+   </a>
+   – Блог Брайана Кребса о
+            кибербезопасности, включающий материалы по DNS-атакам.
+  </li>
+  <li>
+   <a href="https://www.cloudflare.com/learning/dns" rel="nofollow">
+    Cloudflare Learning
+   </a>
+   – Образовательные
+            материалы от Cloudflare, связанные с DNS и безопасностью DNS.
+  </li>
+  <li>
+   <a href="https://letsencrypt.org" rel="nofollow">
+    Let's Encrypt
+   </a>
+   – Бесплатный сертификатный авторитет,
+            предоставляющий SSL/TLS сертификаты и материалы по DNS-сертификации.
+  </li>
+ </ol>
+</article>

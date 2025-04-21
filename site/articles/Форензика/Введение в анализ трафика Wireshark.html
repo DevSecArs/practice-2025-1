@@ -1,0 +1,776 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основы регулярных выражений и их синтаксис в Wireshark
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   Что такое регулярные выражения?
+  </strong>
+  <strong>
+   Регулярные выражения (RegEx)
+  </strong>
+  — это мощный инструмент для работы с текстовыми строками,
+        позволяющий искать, заменять, проверять и извлекать данные на основе заданных паттернов или шаблонов. Регулярные
+        выражения представляют собой последовательности символов, которые описывают набор строк, соответствующих
+        определённому шаблону. В их основе лежат концепции символов-метасимволов и классов символов, которые позволяют
+        создавать гибкие и мощные шаблоны для анализа текстовых данных.
+ </p>
+ <p dir="auto">
+  В контексте сетевого анализа регулярные выражения позволяют фильтровать и извлекать данные из пакетов,
+        что даёт возможность эффективно работать с большими объёмами трафика
+ </p>
+ <p dir="auto">
+  <a href="https://camo.githubusercontent.com/37d9d87bc2df69e95a49addb5ce9dc757271b110b63269d2241e7492a6848bdf/68747470733a2f2f7975736d7067726f75702e72752f77702d636f6e74656e742f75706c6f6164732f323032322f31302f726567756c61725f65787072657373696f6e5f656d61696c5f6d61746368696e675f6578616d706c65322e6a7067" rel="noopener noreferrer nofollow" target="_blank">
+   <img alt="Регулярные выражения: работа с RegExp | YuSMP Group" data-canonical-src="https://yusmpgroup.ru/wp-content/uploads/2022/10/regular_expression_email_matching_example2.jpg" src="https://camo.githubusercontent.com/37d9d87bc2df69e95a49addb5ce9dc757271b110b63269d2241e7492a6848bdf/68747470733a2f2f7975736d7067726f75702e72752f77702d636f6e74656e742f75706c6f6164732f323032322f31302f726567756c61725f65787072657373696f6e5f656d61696c5f6d61746368696e675f6578616d706c65322e6a7067" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Краткий обзор синтаксиса и базовых операторов:
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Базовые символы:
+   </strong>
+   <ul dir="auto">
+    <li>
+     <code>
+      .
+     </code>
+     — любой одиночный символ.
+    </li>
+    <li>
+     <code>
+      \d
+     </code>
+     — цифра (аналогично [0-9]).
+    </li>
+    <li>
+     <code>
+      \w
+     </code>
+     — любая буква, цифра или подчеркивание (аналогично [a-zA-Z0-9_]).
+    </li>
+    <li>
+     <code>
+      \s
+     </code>
+     — пробельный символ (пробел, табуляция, перенос строки и т. д.).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Модификаторы и квантификаторы:
+   </strong>
+   <ul dir="auto">
+    <li>
+     <code>
+      *
+     </code>
+     — ноль или более повторений предыдущего символа.
+    </li>
+    <li>
+     <code>
+      +
+     </code>
+     — одно или более повторений предыдущего символа.
+    </li>
+    <li>
+     <code>
+      ?
+     </code>
+     — ноль или одно повторение предыдущего символа.
+    </li>
+    <li>
+     <code>
+      {n,m}
+     </code>
+     — от n до m повторений предыдущего символа.
+    </li>
+    <li>
+     <code>
+      ^
+     </code>
+     — начало строки.
+    </li>
+    <li>
+     <code>
+      $
+     </code>
+     — конец строки.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Классы символов:
+   </strong>
+   <ul dir="auto">
+    <li>
+     <code>
+      [abc]
+     </code>
+     — любая из букв a, b или c.
+    </li>
+    <li>
+     <code>
+      [^abc]
+     </code>
+     — любой символ, кроме a, b или c.
+    </li>
+    <li>
+     <code>
+      [a-z]
+     </code>
+     — любой символ в диапазоне от a до z.
+    </li>
+    <li>
+     <code>
+      \b
+     </code>
+     — граница слова.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    Группировка и логические операторы:
+   </strong>
+   <ul dir="auto">
+    <li>
+     <code>
+      ()
+     </code>
+     — группировка символов для работы с подвыражениями.
+    </li>
+    <li>
+     <code>
+      |
+     </code>
+     — логическое ИЛИ (альтернатива).
+    </li>
+    <li>
+     <code>
+      []
+     </code>
+     — указание диапазона символов.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Примеры использования:
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <em>
+    Поиск всех HTTP-запросов, содержащих определенные параметры в URL
+   </em>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Регулярное выражение:
+  </strong>
+ </p>
+ <p dir="auto">
+  <code>
+   http.request.uri matches ".*(?:\?|&amp;)token=[A-Za-z0-9]+.*"
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   http.request.uri
+  </code>
+  — это поле в пакете HTTP, которое содержит URI (Uniform Resource
+        Identifier), например, путь и параметры запроса.
+  <code>
+   matches
+  </code>
+  — это оператор, который в Wireshark используется для применения регулярного выражения
+        к содержимому поля.
+  <code>
+   .*
+  </code>
+  — это выражение означает "любая последовательность символов", включая ноль символов.
+  <code>
+   (?:...)
+  </code>
+  — это "незахватывающая" группа, которая используется для группировки символов без
+        захвата для дальнейшей обработки (например, для работы с несколькими вариантами паттернов).
+  <code>
+   \?
+  </code>
+  — это экранированный символ вопросительного знака, который означает начало строки
+        параметров в URL.
+  <code>
+   &amp;
+  </code>
+  — символ амперсанда, который используется для разделения параметров в URL.
+  <code>
+   token=[A-Za-z0-9]+
+  </code>
+  — этот фрагмент ищет параметр с именем
+  <code>
+   token
+  </code>
+  , значение
+        которого состоит из одного или более символов латинского алфавита и цифр.
+  <code>
+   .*
+  </code>
+  в конце снова позволяет захватывать любые дополнительные символы после токена.
+ </p>
+ <p dir="auto">
+  Этот фильтр позволит найти все HTTP-запросы, в которых присутствует параметр с
+        именем
+  <code>
+   token
+  </code>
+  , значением которого является строка, состоящая из латинских букв и цифр
+        (например, токены авторизации, ключи доступа и т. д.). Это особенно полезно для выявления утечек
+        конфиденциальной информации или для поиска вредоносных запросов, которые могут использовать такие токены.
+ </p>
+ <ol dir="auto" start="2">
+  <li>
+   <em>
+    Поиск подозрительных DNS-запросов на основе доменных имён с частичным совпадением
+   </em>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Регулярное выражение:
+  </strong>
+ </p>
+ <p dir="auto">
+  <code>
+   dns.qry.name matches ".*(evil|malware|phish).*"
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   dns.qry.name
+  </code>
+  — это поле в DNS-запросе, которое содержит имя домена, на которое
+        выполняется запрос.
+  <code>
+   matches
+  </code>
+  — оператор, позволяющий применить регулярное выражение.
+  <code>
+   .*
+  </code>
+  — захватывает любые символы до и после нужного паттерна.
+  <code>
+   (evil|malware|phish)
+  </code>
+  — это альтернативный паттерн, который ищет совпадение с любым из
+        указанных слов (evil, malware или phish) в имени домена.
+  <code>
+   .*
+  </code>
+  — снова захватывает все символы после этих слов.
+ </p>
+ <p dir="auto">
+  Данный фильтр позволяет искать в DNS-запросах домены, которые могут быть связаны с вредоносной
+        деятельностью. Например, домены, содержащие слова
+        вроде
+  <code>
+   evil
+  </code>
+  ,
+  <code>
+   malware
+  </code>
+  ,
+  <code>
+   phish
+  </code>
+  могут быть индикаторами
+        того, что трафик относится к атакам типа phishing или распространению вредоносного ПО. Это помогает обнаружить
+        вредоносные запросы на ранних стадиях атаки.
+ </p>
+ <ol dir="auto" start="3">
+  <li>
+   <em>
+    Поиск аномальных паттернов в содержимом TCP-пакетов
+   </em>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Регулярное выражение:
+  </strong>
+ </p>
+ <p dir="auto">
+  <code>
+   tcp.payload matches "(select|drop|union|insert)\s+into\s+.*\s+values"
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   tcp.payload
+  </code>
+  — это поле в TCP-пакете, которое содержит данные, передаваемые в теле
+        пакета.
+  <code>
+   matches
+  </code>
+  — оператор для применения регулярного выражения.
+  <code>
+   (select|drop|union|insert)
+  </code>
+  — это группа, которая ищет одно из ключевых слов SQL-запроса
+        (select, drop, union, insert), что может свидетельствовать о попытке SQL-инъекции.
+  <code>
+   \s+
+  </code>
+  — один или более пробельных символов, используемых для поиска пробелов между элементами
+        SQL-запроса.
+  <code>
+   into\s+.*\s+values
+  </code>
+  — это часть паттерна, которая ищет конструкции SQL-запроса
+        типа
+  <code>
+   INSERT INTO ... VALUES
+  </code>
+  .
+ </p>
+ <p dir="auto">
+  Этот фильтр нацелен на поиск SQL-запросов, которые могут быть частью атаки SQL-инъекции. С помощью
+        регулярных выражений мы можем обнаружить типичные паттерны, используемые злоумышленниками для выполнения атак,
+        такие как
+        команды
+  <code>
+   SELECT
+  </code>
+  ,
+  <code>
+   DROP
+  </code>
+  ,
+  <code>
+   INSERT
+  </code>
+  ,
+  <code>
+   UNION
+  </code>
+  ,
+        которые могут быть вставлены в запросы, передаваемые через TCP-соединения. Это позволяет своевременно
+        обнаруживать подозрительные активности и реагировать на возможные угрозы.
+ </p>
+ <p dir="auto">
+  <em>
+   4. Поиск всех пакетов, содержащих специфические SSL/TLS-сообщения с определёнными
+            характеристиками
+  </em>
+ </p>
+ <p dir="auto">
+  <strong>
+   Регулярное выражение:
+  </strong>
+ </p>
+ <p dir="auto">
+  <code>
+   ssl.record.data matches ".*\x30\x82.*\x02\x01.*\x30\x82.*"
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   ssl.record.data
+  </code>
+  — это поле, содержащее данные, передаваемые в SSL/TLS-запросах.
+  <code>
+   matches
+  </code>
+  — оператор для применения регулярного выражения.
+  <code>
+   .*
+  </code>
+  — это обычное регулярное выражение, которое захватывает любые символы.
+  <code>
+   \x30\x82
+  </code>
+  — это шестнадцатеричное представление для первого байта в сертификатах X.509, что
+        используется в данных SSL/TLS-сообщений.
+  <code>
+   \x02\x01
+  </code>
+  — это представление для определённого байта, который встречается в SSL-сообщениях и
+        может быть использован для идентификации структуры сертификата.
+ </p>
+ <p dir="auto">
+  Этот фильтр используется для поиска SSL/TLS-сообщений с определённой структурой, характерной для
+        сертификатов X.509. Он помогает выявлять и анализировать пакеты, которые содержат важные данные, такие как
+        цифровые подписи или сертификаты, что особенно полезно для расследований по безопасности. С помощью регулярных
+        выражений можно настроить фильтрацию по конкретным байтам, что позволяет выделить специфические элементы
+        протоколов SSL/TLS.
+ </p>
+ <p dir="auto">
+  <em>
+   5. Выявление аномальных паттернов в трафике DNS для анализа DGA (Domain Generation Algorithm)
+  </em>
+ </p>
+ <p dir="auto">
+  <strong>
+   Регулярное выражение:
+  </strong>
+ </p>
+ <p dir="auto">
+  <code>
+   dns.qry.name matches "^[a-z0-9]{10,20}\.com$"
+  </code>
+ </p>
+ <p dir="auto">
+  <code>
+   dns.qry.name
+  </code>
+  — поле, содержащее доменное имя из DNS-запроса.
+  <code>
+   matches
+  </code>
+  — оператор для регулярного выражения.
+  <code>
+   ^[a-z0-9]{10,20}\.com$
+  </code>
+  — регулярное выражение для поиска доменных имён, которые состоят из
+        10-20 символов, состоящих из латинских букв и цифр, заканчивающихся на
+  <code>
+   .com
+  </code>
+  .
+  <code>
+   ^[a-z0-9]{10,20}
+  </code>
+  — начало строки, за которым следует от 10 до 20 символов, состоящих из
+        латинских букв и цифр.
+  <code>
+   \.com$
+  </code>
+  — доменное имя заканчивается на
+  <code>
+   .com
+  </code>
+  .
+ </p>
+ <p dir="auto">
+  Данный фильтр применяется для поиска доменов, которые могут быть сгенерированы алгоритмами генерации
+        доменов (DGA), часто используемыми в ботнетах и других вредоносных приложениях. Такие домены обычно имеют
+        случайный характер и часто состоят из букв и цифр. Регулярное выражение позволяет выделить такие паттерны и
+        обнаружить домены, которые могут быть связаны с вредоносным трафиком.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   ​**A-Packets: Инструмент для анализа
+            сетевого трафика на основе файлов PCAP
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   A-Packets
+  </strong>
+  предоставляет сервис для детализированного анализа сетевых пакетов. С
+        помощью этого инструмента пользователи могут анализировать файлы в формате PCAP, которые могут быть получены с
+        помощью таких утилит, как Wireshark, tcpdump или других средств захвата трафика.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ HTTP-данных
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Извлечение переданных файлов:
+  </strong>
+  A-Packets может извлекать файлы, передаваемые
+        через HTTP, такие как изображения, документы Office, PDF-файлы и другие типы данных.
+  <strong>
+   Анализ заголовков HTTP:
+  </strong>
+  Платформа предоставляет подробную информацию о заголовках
+        HTTP-запросов и ответов, таких как
+        заголовки
+  <code>
+   User-Agent
+  </code>
+  ,
+  <code>
+   Referer
+  </code>
+  ,
+  <code>
+   Cookie
+  </code>
+  и другие.
+  <strong>
+   Идентификация уязвимостей:
+  </strong>
+  Платформа может помочь в идентификации переданных данных,
+        которые могут быть связаны с уязвимостями, например, при передаче чувствительных данных, таких как пароли.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423458660-74cf0d1f-638a-4624-b0d0-9d3b9e31e1e1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTg2NjAtNzRjZjBkMWYtNjM4YS00NjI0LWIwZDAtOWQzYjllMzFlMWUxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVhOWRiY2QyNzZlNjhmYTAyY2UzMjE2MTI3MmM0ZWUxNmE1N2Q0Nzc4YzI2MmUwNWJmMDVmNzE0NmI0MjVjNDUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RTGhCvdH_-IG4tbg_9Wjpxwq4VGjutGKvzUIMpgPPBo" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423458660-74cf0d1f-638a-4624-b0d0-9d3b9e31e1e1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTg2NjAtNzRjZjBkMWYtNjM4YS00NjI0LWIwZDAtOWQzYjllMzFlMWUxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVhOWRiY2QyNzZlNjhmYTAyY2UzMjE2MTI3MmM0ZWUxNmE1N2Q0Nzc4YzI2MmUwNWJmMDVmNzE0NmI0MjVjNDUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RTGhCvdH_-IG4tbg_9Wjpxwq4VGjutGKvzUIMpgPPBo" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Обнаружение сетевых устройств
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Определять структуру сети:
+  </strong>
+  Выявление всех подключённых устройств, включая
+        серверы, рабочие станции и устройства IoT.
+  <strong>
+   Отслеживание соединений между устройствами:
+  </strong>
+  Определение взаимодействий между устройствами,
+        что помогает анализировать несанкционированный трафик или подозрительные соединения.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423459048-af067850-8565-4b26-b51c-c0dd39e7940a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTkwNDgtYWYwNjc4NTAtODU2NS00YjI2LWI1MWMtYzBkZDM5ZTc5NDBhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTYwYTZhZjc0ZGE3YmQwZmI1MjE5ZTJmYTY0NWMyM2VhYzhiNmVmOTZiOTgxZDY2NThmNTFlMzUyNWQ3ODlkYmYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.lezoT4kDjvGjXSQBY_DQvWgROs1K6Ogxkyg0MRXtrfo" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423459048-af067850-8565-4b26-b51c-c0dd39e7940a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTkwNDgtYWYwNjc4NTAtODU2NS00YjI2LWI1MWMtYzBkZDM5ZTc5NDBhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTYwYTZhZjc0ZGE3YmQwZmI1MjE5ZTJmYTY0NWMyM2VhYzhiNmVmOTZiOTgxZDY2NThmNTFlMzUyNWQ3ODlkYmYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.lezoT4kDjvGjXSQBY_DQvWgROs1K6Ogxkyg0MRXtrfo" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ беспроводных сетей (Wi-Fi)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Изучать данные о точках доступа:
+  </strong>
+  Определить SSID, каналы и другие характеристики
+        точек доступа.
+  <strong>
+   Выявлять потенциальные уязвимости:
+  </strong>
+  Проверить наличие уязвимых точек доступа или
+        подключений, которые могут быть использованы злоумышленниками для атаки.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423459165-18c06515-502c-4661-a2ba-d8d6d45a4ef7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTkxNjUtMThjMDY1MTUtNTAyYy00NjYxLWEyYmEtZDhkNmQ0NWE0ZWY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJjYTI5MjA0ZjZjYmEzMDZjMjdhNDE4ZWEwYmMzZTJhZjMyNDE3Y2Y5OWQ0ODMzZmM1YWVkMjg0ZDdlMzM3ZWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9suT3sDRbYcnYk8xnfDU3lqg1fPbrQACzgyz1Xo0DWg" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423459165-18c06515-502c-4661-a2ba-d8d6d45a4ef7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTkxNjUtMThjMDY1MTUtNTAyYy00NjYxLWEyYmEtZDhkNmQ0NWE0ZWY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJjYTI5MjA0ZjZjYmEzMDZjMjdhNDE4ZWEwYmMzZTJhZjMyNDE3Y2Y5OWQ0ODMzZmM1YWVkMjg0ZDdlMzM3ZWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9suT3sDRbYcnYk8xnfDU3lqg1fPbrQACzgyz1Xo0DWg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Извлечение файлов из сетевых пакетов
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Восстановления переданных файлов:
+  </strong>
+  Когда данные передаются в виде файлов
+        (например, через FTP или HTTP), A-Packets позволяет восстановить и просмотреть эти файлы.
+  <strong>
+   Поиск скрытых или заражённых файлов:
+  </strong>
+  Выявление вредоносных файлов, переданных через
+        различные протоколы, таких как HTTP, FTP или SMB.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ SMB и NetBIOS
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Идентификации аномальной активности:
+  </strong>
+  Например, если SMB-сессии содержат
+        неожиданные или подозрительные запросы, это может указывать на атаки типа SMB-эксплойтов.
+  <strong>
+   Анализа сетевых ресурсов:
+  </strong>
+  Определение подключённых устройств и их ресурсов в локальной
+        сети.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423459266-f4388594-c555-4124-8a24-54a9819d78af.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTkyNjYtZjQzODg1OTQtYzU1NS00MTI0LThhMjQtNTRhOTgxOWQ3OGFmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTI2ZjM3NTNhOTA2NGVjMGUwN2QzMGU5Mjk5MzdlZjZjN2UyNjM0YjIwNjM0MmU1MWZjOGUyNGM2NDg4ZDYxODAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.m_g-k80DQGNE06M-bFgAt8lowGIxr5KtkadFlF93OEQ" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423459266-f4388594-c555-4124-8a24-54a9819d78af.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTkyNjYtZjQzODg1OTQtYzU1NS00MTI0LThhMjQtNTRhOTgxOWQ3OGFmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTI2ZjM3NTNhOTA2NGVjMGUwN2QzMGU5Mjk5MzdlZjZjN2UyNjM0YjIwNjM0MmU1MWZjOGUyNGM2NDg4ZDYxODAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.m_g-k80DQGNE06M-bFgAt8lowGIxr5KtkadFlF93OEQ" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ DNS, mDNS и NBNS
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Обнаружение подделанных DNS-запросов:
+  </strong>
+  Идентификация возможных атак с
+        использованием подмены DNS-записей.
+  <strong>
+   Изучение трафика mDNS (Multicast DNS) и NBNS (NetBIOS Name Service):
+  </strong>
+  Анализ использования
+        локальных сетевых сервисов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ ARP (Address Resolution Protocol)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Выявления атак ARP-спуфинга:
+  </strong>
+  ARP-спуфинг — это метод перехвата сетевого трафика
+        путём подмены MAC-адресов в локальной сети.
+  <strong>
+   Отслеживания топологии сети:
+  </strong>
+  Понимание, какие устройства в сети используют какой
+        MAC-адрес, может помочь в определении уязвимостей в безопасности.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423459422-516c6d1f-ec00-4fc6-83fa-3b0b3bc67bc7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTk0MjItNTE2YzZkMWYtZWMwMC00ZmM2LTgzZmEtM2IwYjNiYzY3YmM3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZhYjM4OTdhOGMwZGFiMWQxZDdhZjQ2YzNiOWQwMDA2YmQ2ZGExNDMxMDEwZGYzMDRlYTViMmU3YjMwZjBlMzImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.8tDdji0Yfj--NilG2Oc8CS679HKfxnMTkycSN3gGNTE" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423459422-516c6d1f-ec00-4fc6-83fa-3b0b3bc67bc7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTk0MjItNTE2YzZkMWYtZWMwMC00ZmM2LTgzZmEtM2IwYjNiYzY3YmM3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZhYjM4OTdhOGMwZGFiMWQxZDdhZjQ2YzNiOWQwMDA2YmQ2ZGExNDMxMDEwZGYzMDRlYTViMmU3YjMwZjBlMzImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.8tDdji0Yfj--NilG2Oc8CS679HKfxnMTkycSN3gGNTE" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Обнаружение паролей и хешей
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Извлечения паролей:
+  </strong>
+  Обнаружение слабых или небезопасных паролей, передаваемых
+        через небезопасные протоколы.
+  <strong>
+   Анализа хешей:
+  </strong>
+  Извлечение хешей паролей для анализа на предмет их уязвимости (например,
+        через атакующие методы брутфорс).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    NetworkMiner
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   NetworkMiner
+  </strong>
+  — это такой мощный и удобный инструмент для анализа сетевого
+        трафика, который поможет тебе копаться в пкапах и извлекать из них полезную информацию с минимальными усилиями.
+        Он сделан для того, чтобы ты мог быстро и эффективно извлекать данные из захваченных сетевых пакетов и
+        анализировать их без необходимости вручную разбирать каждый пакет.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423459741-8ae76d42-8f87-4fe8-b0af-4e486f08878f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTk3NDEtOGFlNzZkNDItOGY4Ny00ZmU4LWIwYWYtNGU0ODZmMDg4NzhmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBlMGFjZThkOGM3Yzk4MGUzMmM0NDIwYmE2ZjZiZWU2NWI0ZGViZWQ4MzNmNjA1OWRhZGViYzY3YTc3MWJkZTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.SjpMdGIqTx84qo5vR1YRQMYrColb9dl-LW8pSZ_EwNs" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423459741-8ae76d42-8f87-4fe8-b0af-4e486f08878f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTk3NDEtOGFlNzZkNDItOGY4Ny00ZmU4LWIwYWYtNGU0ODZmMDg4NzhmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBlMGFjZThkOGM3Yzk4MGUzMmM0NDIwYmE2ZjZiZWU2NWI0ZGViZWQ4MzNmNjA1OWRhZGViYzY3YTc3MWJkZTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.SjpMdGIqTx84qo5vR1YRQMYrColb9dl-LW8pSZ_EwNs" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Главные фичи
+  </h3>
+ </div>
+ <p dir="auto">
+  Когда ты загружаешь pcap-файл, NetworkMiner сам разбивает его на сессии, выявляет протоколы, пароли,
+        файлы и другие данные. Это как твой личный анализатор трафика, который по сути экономит кучу времени.
+ </p>
+ <p dir="auto">
+  Поддерживает HTTP, FTP, SMB, DNS, POP3, IMAP и многие другие. Это значит, что ты можешь смотреть
+        трафик по этим протоколам и извлекать полезные вещи вроде паролей, файлов и даже флагов.
+ </p>
+ <p dir="auto">
+  NetworkMiner может вытащить файлы, передаваемые по сети, такие как изображения, документы и даже
+        архивы. Сильно помогает в задачах, где нужно найти какие-то скрытые фрагменты или зашифрованные данные.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   С чем работает?
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   HTTP
+  </strong>
+  : Может парсить HTTP-трафик, вытаскивать запросы, ответы, куки, заголовки, формы.
+        Часто в таких запросах можно найти флаги или скрытые данные.
+  <strong>
+   DNS
+  </strong>
+  : Все запросы и ответы. Это полезно, когда ищешь странные DNS-запросы, которые могут
+        скрывать флаги в виде строк в типах записей (например, TXT).
+  <strong>
+   FTP, SMB и другие
+  </strong>
+  : Для этих протоколов извлекаются файлы, списки пользователей и пароли,
+        передаваемые по сети. Особенно полезно, если задача CTF включает в себя работу с такими протоколами.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как это работает?
+  </h3>
+ </div>
+ <p dir="auto">
+  Простой пример: у тебя есть pcap-файл с HTTP-трафиком. Ты загружаешь его в NetworkMiner, и он сам
+        раскладывает трафик на сессии. К примеру, если в какой-то из запросов передавался файл, скажем, изображение или
+        документ, то NetworkMiner покажет тебе этот файл, и ты сможешь его скачать.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423459897-1e601a85-379c-4296-a333-1b153d7e158f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTk4OTctMWU2MDFhODUtMzc5Yy00Mjk2LWEzMzMtMWIxNTNkN2UxNThmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTcwMzdmOTRiYjQ1Y2Y2NjE0NmRlNjY5ODlkMGUwNWNmNzFhNTBiNWRhYTk5ZTMzYWJmZTdjYTA0MDg3NGM1MjUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.6jr2cr4MkofJK4tZRTkBXTeWq9O6aqPGDHdCa23-o6k" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423459897-1e601a85-379c-4296-a333-1b153d7e158f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NTk4OTctMWU2MDFhODUtMzc5Yy00Mjk2LWEzMzMtMWIxNTNkN2UxNThmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTcwMzdmOTRiYjQ1Y2Y2NjE0NmRlNjY5ODlkMGUwNWNmNzFhNTBiNWRhYTk5ZTMzYWJmZTdjYTA0MDg3NGM1MjUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.6jr2cr4MkofJK4tZRTkBXTeWq9O6aqPGDHdCa23-o6k" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/96665435/423460003-c58432eb-fce6-434a-b13b-44fc427190a7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NjAwMDMtYzU4NDMyZWItZmNlNi00MzRhLWIxM2ItNDRmYzQyNzE5MGE3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBmZTg5MTA0MWQ4OWE3OTUzOTFlOGQ5YzU4Yjc4NzAzNDRhZWYyYzJhMTg2NDkxMjJkNmZiMmE4MTM4Mjc5NGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.IJPnsgQBabC8oAQsv3vUmJpFQknNTOclesX_xHYEgqY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/96665435/423460003-c58432eb-fce6-434a-b13b-44fc427190a7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjMsIm5iZiI6MTc0NTE1MTAyMywicGF0aCI6Ii85NjY2NTQzNS80MjM0NjAwMDMtYzU4NDMyZWItZmNlNi00MzRhLWIxM2ItNDRmYzQyNzE5MGE3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDEyMTAyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBmZTg5MTA0MWQ4OWE3OTUzOTFlOGQ5YzU4Yjc4NzAzNDRhZWYyYzJhMTg2NDkxMjJkNmZiMmE4MTM4Mjc5NGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.IJPnsgQBabC8oAQsv3vUmJpFQknNTOclesX_xHYEgqY" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Другими словами, ты не копаешься вручную в каждом пакете, чтобы найти флаг или полезную информацию —
+        это делает сам NetworkMiner. Он просто берет весь трафик и умно сортирует его по категориям: файлы, DNS-запросы,
+        HTTP-сессии и т.д.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что реально круто?
+  </h3>
+ </div>
+ <p dir="auto">
+  Это то, что выделяет NetworkMiner среди других. Он делает структуру трафика наглядной. Ты видишь все
+        запросы и ответы как цепочку событий, и это позволяет быстрее поймать ключевые моменты. Не нужно запоминать
+        каждый IP-адрес или порт, NetworkMiner покажет тебе весь трафик с выделением ключевых сессий.
+ </p>
+ <p dir="auto">
+  Интуитивно понятный. Ты загружаешь pcap-файл, и все, что нужно — это немного покликать по разным
+        вкладкам, чтобы увидеть, что за файлы, какие пароли передавались и какие флаги могут скрываться в теле запросов.
+ </p>
+ <p dir="auto">
+  Для решения CTF-задач тебе вполне хватит бесплатной версии
+  <strong>
+   NetworkMiner
+  </strong>
+  . Она
+        предоставляет все нужные инструменты для анализа сетевого трафика, поиска флагов и извлечения файлов. Скачать
+        инструмент можно с официального сайта:
+  <a href="https://www.netresec.com/?page=NetworkMiner" rel="nofollow">
+   https://www.netresec.com/?page=NetworkMiner
+  </a>
+ </p>
+</article>

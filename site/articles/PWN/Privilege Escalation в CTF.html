@@ -1,0 +1,538 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Privilege Escalation в CTF: от рядового пользователя до
+            администратора
+  </h1>
+ </div>
+ <p dir="auto">
+  Privilege Escalation, или повышение привилегий, представляет собой одну из наиболее распространенных и
+        увлекательных техник, используемых в соревнованиях формата Capture The Flag (CTF). Этот метод позволяет
+        участникам продемонстрировать глубокое понимание принципов информационной безопасности и умение находить
+        уязвимости в системах для получения доступа к защищенным ресурсам. Повышение привилегий часто является ключевым
+        этапом в решении комплексных CTF-задач, позволяя преодолеть ограничения прав доступа и захватить финальный флаг.
+        В данной статье мы рассмотрим сущность этой техники, её методы применения и приведем конкретный пример,
+        демонстрирующий эффективность Privilege Escalation в контексте CTF-соревнований.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Что такое Privilege Escalation
+  </h2>
+ </div>
+ <p dir="auto">
+  Privilege Escalation (повышение привилегий) — это использование различных уязвимостей операционной
+        системы и прикладного программного обеспечения для повышения своих полномочий в атакуемой системе. В контексте
+        Linux-систем под повышением привилегий обычно подразумевается получение прав суперпользователя (root) при работе
+        от обычного пользователя. Эта техника является важным элементом многих CTF-заданий, особенно в категориях PWN и
+        admin.
+ </p>
+ <p dir="auto">
+  Существует два основных типа эскалации привилегий:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Вертикальная
+   </strong>
+   – переход от доступа с обычными привилегиями к доступу с более высокими
+            привилегиями (например, от обычного пользователя к root).
+  </li>
+  <li>
+   <strong>
+    Горизонтальная
+   </strong>
+   – переход от одного пользователя с определенными привилегиями к другому
+            пользователю такого же уровня, но который может иметь дополнительные возможности (например, sudo для
+            конкретных команд).
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Технические аспекты Privilege Escalation
+  </h2>
+ </div>
+ <p dir="auto">
+  Эскалация привилегий – это результат действий, которые позволяют злоумышленнику получить более высокий
+        уровень разрешений в атакуемой системе. Технические аспекты включают:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Уязвимости ядра ОС
+   </strong>
+   – использование известных уязвимостей для получения привилегированного
+            доступа.
+  </li>
+  <li>
+   <strong>
+    Неправильно настроенные разрешения файлов
+   </strong>
+   – файлы с чрезмерными правами доступа или
+            неправильными атрибутами.
+  </li>
+  <li>
+   <strong>
+    SUID/SGID бинарные файлы
+   </strong>
+   – исполняемые файлы, которые запускаются с привилегиями
+            владельца/группы.
+  </li>
+  <li>
+   <strong>
+    Учетные данные, хранящиеся в открытом виде
+   </strong>
+   – пароли в конфигурационных файлах, истории
+            команд и т.д.
+  </li>
+  <li>
+   <strong>
+    Небезопасные конфигурации sudo
+   </strong>
+   – неправильно настроенные права sudo могут привести к
+            эскалации.
+  </li>
+  <li>
+   <strong>
+    Уязвимые сервисы и приложения
+   </strong>
+   – локальные службы с известными уязвимостями.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Privilege Escalation в CTF соревнованиях
+  </h2>
+ </div>
+ <p dir="auto">
+  В CTF соревнованиях задачи на повышение привилегий обычно требуют тщательного анализа системы для
+        определения путей эскалации. Флаги (секретная информация, которую нужно найти) часто располагаются в файлах,
+        доступных только привилегированным пользователям.
+ </p>
+ <p dir="auto">
+  Ключевой момент – это первоначальное исследование системы (enumeration), которое помогает определить
+        потенциальные векторы атаки. Важно проверить такие аспекты, как:
+ </p>
+ <ul dir="auto">
+  <li>
+   Версия ядра системы
+  </li>
+  <li>
+   Установленные программы и их версии
+  </li>
+  <li>
+   Права пользователей и группы
+  </li>
+  <li>
+   Доступные sudo-команды
+  </li>
+  <li>
+   Cron-задачи
+  </li>
+  <li>
+   Открытые сетевые порты
+  </li>
+  <li>
+   Неправильно настроенные файловые разрешения
+  </li>
+  <li>
+   Уязвимости в SUID приложениях
+  </li>
+ </ul>
+ <p dir="auto">
+  Рассмотрим последний пункт чуть подробнее.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Уязвимости в SUID приложениях
+  </h2>
+ </div>
+ <p dir="auto">
+  SUID (Set User ID) — это особый режим работы исполняемого файла в Linux, который позволяет запускать
+        программу с правами владельца файла, а не пользователя, который её запускает. Ошибки в SUID приложениях могут
+        помочь с повышением привелегий. Рассмотрим примеры таких ошибок и уязвимостей:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Недостаточная проверка пользовательского ввода (Input
+            Validation)
+  </h3>
+ </div>
+ <p dir="auto">
+  Отсутствие строгой проверки вводимых данных позволяет злоумышленнику передавать вредоносные команды
+        или параметры, что ведет к выполнению произвольного кода или чтению защищенных файлов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Ошибки при работе с файлами
+  </h3>
+ </div>
+ <p dir="auto">
+  Если SUID-приложение открывает или записывает файлы без проверки путей или прав доступа, атакующий
+        может использовать это для чтения чувствительных данных (например,
+  <code>
+   /etc/shadow
+  </code>
+  ) или перезаписи
+        критически важных файлов.
+ </p>
+ <p dir="auto">
+  <strong>
+   Типичный сценарий:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Приложение с SUID-битом записывает данные в файл без проверки пути.
+  </li>
+  <li>
+   Атакующий создает символическую ссылку на важный файл системы.
+  </li>
+  <li>
+   В результате приложение перезаписывает этот файл с привилегиями владельца (например, root), что приводит к
+            компрометации системы.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Переполнение буфера (Buffer Overflow)
+  </h3>
+ </div>
+ <p dir="auto">
+  Классическая уязвимость, когда приложение не проверяет длину вводимых данных и позволяет перезаписать
+        память за пределами выделенного буфера. В случае SUID-бинарника это особенно критично: злоумышленник может
+        получить контроль над процессом с повышенными привилегиями.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Неправильная обработка переменных окружения
+  </h3>
+ </div>
+ <p dir="auto">
+  Некоторые переменные окружения (
+  <code>
+   LD_PRELOAD
+  </code>
+  ,
+  <code>
+   LD_LIBRARY_PATH
+  </code>
+  ) по умолчанию
+        игнорируются при запуске SUID-приложений в целях безопасности. Однако ошибки конфигурации или реализации могут
+        привести к тому, что эти ограничения будут сняты или обойдены.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Использование небезопасных функций
+  </h3>
+ </div>
+ <p dir="auto">
+  Функции вроде
+  <code>
+   gets()
+  </code>
+  ,
+  <code>
+   strcpy()
+  </code>
+  ,
+  <code>
+   sprintf()
+  </code>
+  известны своей
+        небезопасностью и могут привести к переполнению буфера и другим проблемам безопасности. Их использование в
+        SUID-программах открывает прямой путь к эксплуатации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Неправильное выставление флага SUID
+  </h3>
+ </div>
+ <p dir="auto">
+  Одной из самых распространенных ошибок является установка бита SUID на программы, которые изначально
+        не предназначены для этого (например, текстовые редакторы). Это позволяет атакующему легко изменять системные
+        файлы с повышенными привилегиями.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Отсутствие минимальных привилегий (Least Privilege)
+  </h3>
+ </div>
+ <p dir="auto">
+  Часто владельцем SUID-программ является root, хотя для выполнения конкретной задачи достаточно было бы
+        менее привилегированного пользователя. Это увеличивает риск успешной атаки.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты для Privilege Escalation
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. LinEnum
+  </h3>
+ </div>
+ <p dir="auto">
+  LinEnum – один из наиболее популярных скриптов для автоматизированной проверки системы Linux на
+        потенциальные уязвимости повышения привилегий. Он выполняет комплексное сканирование системы и предоставляет
+        подробный отчет о возможных векторах эскалации.
+ </p>
+ <p dir="auto">
+  Основные возможности:
+ </p>
+ <ul dir="auto">
+  <li>
+   Проверка ядра и установленных пакетов
+  </li>
+  <li>
+   Поиск SUID/SGID файлов
+  </li>
+  <li>
+   Проверка прав доступа к конфигурационным файлам
+  </li>
+  <li>
+   Анализ cron-задач и запущенных процессов
+  </li>
+  <li>
+   Поиск слабостей в настройках sudo
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Linux-exploit-suggester
+  </h3>
+ </div>
+ <p dir="auto">
+  Этот инструмент специализируется на поиске подходящих эксплойтов ядра для текущей версии Linux. После
+        сканирования он предоставляет список потенциально применимых эксплойтов с указанием CVE номеров и ссылок на
+        источники.
+ </p>
+ <p dir="auto">
+  Пример использования:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>./Linux_Exploit_Suggester.pl -k 3.0.0
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Результат может выглядеть так:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>Kernel local: 3.0.0
+    Possible Exploits:
+    [+] semtex
+    CVE-2013-2094
+    Source: http://www.exploit-db.com/download/25444/
+    [+] memodipper
+    CVE-2012-0056
+    Source: http://www.exploit-db.com/exploits/18411/
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. PXEnum
+  </h3>
+ </div>
+ <p dir="auto">
+  PXEnum – мощный скрипт, основная задача которого – функция перечисления (enumeration) системы. Он
+        собирает всю доступную информацию о системе, что критически важно для определения путей эскалации.
+ </p>
+ <p dir="auto">
+  Возможности инструмента:
+ </p>
+ <ul dir="auto">
+  <li>
+   Извлечение хешей паролей
+  </li>
+  <li>
+   Получение содержимого директорий
+  </li>
+  <li>
+   Сбор подробных сведений о системе
+  </li>
+  <li>
+   Обнаружение application-серверов и приложений
+  </li>
+  <li>
+   Анализ сетевых соединений и пользователей
+  </li>
+ </ul>
+ <p dir="auto">
+  Для запуска не требуются права root:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>$ wget https://raw.githubusercontent.com/shawnduong/PXEnum/master/PXEnume.sh
+    $ chmod +x PXEnum.sh
+    $ bash PXEnum.sh
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. MIDA Multitool
+  </h3>
+ </div>
+ <p dir="auto">
+  MIDA Multitool – комплексный инструмент, созданный на базе менее популярных утилит SysEnum и
+        RootHelper. Он объединяет возможности различных инструментов, предоставляя больше функциональности.
+ </p>
+ <p dir="auto">
+  Основные компоненты:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    SysEnum
+   </strong>
+   – получение основной информации о системе
+  </li>
+  <li>
+   <strong>
+    RootHelper
+   </strong>
+   – помощь в эскалации привилегий
+  </li>
+  <li>
+   Дополнительные модули для комплексного анализа и эксплуатации
+  </li>
+ </ul>
+ <p dir="auto">
+  Этот инструмент особенно полезен в сложных CTF заданиях, где требуются различные подходы к эскалации
+        привилегий.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5. Unix-privesc-check
+  </h3>
+ </div>
+ <p dir="auto">
+  Unix-privesc-check – скрипт, который проверяет неправильные конфигурации, потенциально позволяющие
+        локальным непривилегированным пользователям повысить привилегии. Работает на различных Unix-системах, включая
+        Linux, Solaris, HPUX и FreeBSD.
+ </p>
+ <p dir="auto">
+  Преимущество этого инструмента – он написан как единый shell-скрипт, что упрощает его загрузку и
+        запуск:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>$ ./unix-privesc-check &gt; output.txt
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Скрипт проверяет разрешения файлов и другие настройки, которые могут позволить локальным пользователям
+        повысить привилегии. В выводе следует искать слово 'WARNING', указывающее на потенциальные проблемы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   6. LinuxPrivChecker
+  </h3>
+ </div>
+ <p dir="auto">
+  LinuxPrivChecker – мощный инструмент, который автоматизирует процесс поиска путей эскалации
+        привилегий. Он выполняет систематическую проверку системы на наличие уязвимостей и предоставляет подробный
+        отчет.
+ </p>
+ <p dir="auto">
+  Возможности:
+ </p>
+ <ul dir="auto">
+  <li>
+   Проверка версии ядра на известные уязвимости
+  </li>
+  <li>
+   Поиск файлов с небезопасными разрешениями
+  </li>
+  <li>
+   Анализ конфигураций пользователей и групп
+  </li>
+  <li>
+   Проверка исполняемых файлов с установленным SUID/SGID битом
+  </li>
+  <li>
+   Выявление ненадежных путей в переменной PATH
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Пример применения Privilege Escalation в CTF
+  </h2>
+ </div>
+ <p dir="auto">
+  Рассмотрим задание
+  <a href="https://tryhackme.com/room/rrootme" rel="nofollow">
+   "RootMe"
+  </a>
+  с сайта
+        "TryHackMe".
+ </p>
+ <p dir="auto">
+  Для начала проведём сканирование портов машины:
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789543-3fac7b14-b3ec-49ec-8a46-7bdb85202789.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk1NDMtM2ZhYzdiMTQtYjNlYy00OWVjLThhNDYtN2JkYjg1MjAyNzg5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTlkYjhmZTkyN2MzNDg1YjI5OTNlYjNhYjkzZTMwMTQ3NTkzZWRmNzUyMDVhY2YxYjJjZGJhYjE0N2E5ZWZhYWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.zQMXYRFJ99H6Ac1olGl6S1fABiyLmb6pDzLVzb0IG44" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_0" src="https://private-user-images.githubusercontent.com/74550408/420789543-3fac7b14-b3ec-49ec-8a46-7bdb85202789.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk1NDMtM2ZhYzdiMTQtYjNlYy00OWVjLThhNDYtN2JkYjg1MjAyNzg5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTlkYjhmZTkyN2MzNDg1YjI5OTNlYjNhYjkzZTMwMTQ3NTkzZWRmNzUyMDVhY2YxYjJjZGJhYjE0N2E5ZWZhYWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.zQMXYRFJ99H6Ac1olGl6S1fABiyLmb6pDzLVzb0IG44" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Видим открытый 80 порт с http сервисом. На самом сайте нет ничего интересного, поэтому с помощью
+        инструмента GoBuster попробуем перебрать директории.
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789605-049e6ecc-cb11-480e-957c-1d758fa6f446.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2MDUtMDQ5ZTZlY2MtY2IxMS00ODBlLTk1N2MtMWQ3NThmYTZmNDQ2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWJlZGY2NTE4N2VjOTMzMDYzM2E5YzExMjdmODU2OWJhZGE1M2EzYzMwZTZlMjc3OGMyYTZhNjBkMTJmNzAxN2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ai0hUBorb90oi1qICmQFn18KeGW28ALtI8_-vNwr_FI" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_1" src="https://private-user-images.githubusercontent.com/74550408/420789605-049e6ecc-cb11-480e-957c-1d758fa6f446.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2MDUtMDQ5ZTZlY2MtY2IxMS00ODBlLTk1N2MtMWQ3NThmYTZmNDQ2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWJlZGY2NTE4N2VjOTMzMDYzM2E5YzExMjdmODU2OWJhZGE1M2EzYzMwZTZlMjc3OGMyYTZhNjBkMTJmNzAxN2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ai0hUBorb90oi1qICmQFn18KeGW28ALtI8_-vNwr_FI" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Из необычного, видим директории "/panel" и "/uploads", переходим на "/panel" и видим предложение
+        загрузки файла. Загрузим файл с
+  <a href="https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php">
+   php-reverce-shell
+  </a>
+  (примечание: файл с расширением .php загрузить не даёт, поэтому меняем расширение на .php5 или .phttp)
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789639-d8049a89-95aa-484a-a200-395904dea575.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2MzktZDgwNDlhODktOTVhYS00ODRhLWEyMDAtMzk1OTA0ZGVhNTc1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJmZGE4MWZiNWU2NzIxZTg1NjA2YjExMWMyMmYyZGQ3YjdmNTZkMmIxZWE3ZWU2NzcyZDVhYWY3MDI2MGVlZDkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.NdA8q77chsr4-yFVEogXwd4MccEmURIKkCUXj_eYNek" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_2" src="https://private-user-images.githubusercontent.com/74550408/420789639-d8049a89-95aa-484a-a200-395904dea575.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2MzktZDgwNDlhODktOTVhYS00ODRhLWEyMDAtMzk1OTA0ZGVhNTc1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJmZGE4MWZiNWU2NzIxZTg1NjA2YjExMWMyMmYyZGQ3YjdmNTZkMmIxZWE3ZWU2NzcyZDVhYWY3MDI2MGVlZDkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.NdA8q77chsr4-yFVEogXwd4MccEmURIKkCUXj_eYNek" style="max-width: 100%;"/>
+  </a>
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789656-f859ef4c-9449-443d-92ea-222bc238c0a2.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2NTYtZjg1OWVmNGMtOTQ0OS00NDNkLTkyZWEtMjIyYmMyMzhjMGEyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZjOWNlOTEwNWY0YjA2MWZhMjFkNDBjODI4MDBjY2FlZjlmN2I0OWUyMjYyZjAwMTU3MDVjZWMzZmE5MDE1MTcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.aEaRD2ASCqEyC_mtsyRGEb0PzxZkGq9d1VvMqrJMc1o" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_3" src="https://private-user-images.githubusercontent.com/74550408/420789656-f859ef4c-9449-443d-92ea-222bc238c0a2.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2NTYtZjg1OWVmNGMtOTQ0OS00NDNkLTkyZWEtMjIyYmMyMzhjMGEyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZjOWNlOTEwNWY0YjA2MWZhMjFkNDBjODI4MDBjY2FlZjlmN2I0OWUyMjYyZjAwMTU3MDVjZWMzZmE5MDE1MTcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.aEaRD2ASCqEyC_mtsyRGEb0PzxZkGq9d1VvMqrJMc1o" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  После успешной загрузки нашего файла, мы можем увидеть его в директории "/uploads":
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789689-93f7c113-eda2-4eec-8bb4-d576d205b376.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2ODktOTNmN2MxMTMtZWRhMi00ZWVjLThiYjQtZDU3NmQyMDViMzc2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFmYzAzNzI5NWUyYzZhMzBkMjhmNTY3ZTMyMzM5ZWEzOTAzYmE3NjAxNDU5NjA0MjkxYTZjYjg1MDA0NzRjZDYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.CYuKPAYOh6ETswaOdfHpjNNguUqQlns26kS2w4DDMcE" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_4" src="https://private-user-images.githubusercontent.com/74550408/420789689-93f7c113-eda2-4eec-8bb4-d576d205b376.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk2ODktOTNmN2MxMTMtZWRhMi00ZWVjLThiYjQtZDU3NmQyMDViMzc2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFmYzAzNzI5NWUyYzZhMzBkMjhmNTY3ZTMyMzM5ZWEzOTAzYmE3NjAxNDU5NjA0MjkxYTZjYjg1MDA0NzRjZDYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.CYuKPAYOh6ETswaOdfHpjNNguUqQlns26kS2w4DDMcE" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Ставим Listener на порт, указанный в скрипте. Если всё прошло успешно, то мы получаем доступ к shell.
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789717-ac1bffe6-0390-4327-93ad-dcf78c43eed9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk3MTctYWMxYmZmZTYtMDM5MC00MzI3LTkzYWQtZGNmNzhjNDNlZWQ5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRiN2E0MDczNzU1N2FmNjBmOWE3MDI3N2FlNGE1YWViNDExOTNlN2U0MzdhMzg3MWE4YjExMzE0MGYyZjc0NmUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.PEYUl2zIe-xxu8WZD6n7cfQv24bVeEhoBpRaliug8ks" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_5" src="https://private-user-images.githubusercontent.com/74550408/420789717-ac1bffe6-0390-4327-93ad-dcf78c43eed9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk3MTctYWMxYmZmZTYtMDM5MC00MzI3LTkzYWQtZGNmNzhjNDNlZWQ5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRiN2E0MDczNzU1N2FmNjBmOWE3MDI3N2FlNGE1YWViNDExOTNlN2U0MzdhMzg3MWE4YjExMzE0MGYyZjc0NmUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.PEYUl2zIe-xxu8WZD6n7cfQv24bVeEhoBpRaliug8ks" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Попытаемся повысить свои привилегии. С помощью команды "find / -perm -u=s 2&gt;/dev/null" ищем файлы с
+        SUID разрешениями.
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789753-480da26d-2248-4245-a843-5ce43a974a7b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk3NTMtNDgwZGEyNmQtMjI0OC00MjQ1LWE4NDMtNWNlNDNhOTc0YTdiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQxNGM0OWMxMTllNTBiZDQ3NGQ4MTg4ZjM1MzM4OWFjMjRkMWRlNjcxYjAxZTk1NGEwYmI3N2EzYTJkOWU0ZTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TANi7x5Dm-7XeUzar2s-K_H77ZW3YnSvD5yjDp_wi2M" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_6" src="https://private-user-images.githubusercontent.com/74550408/420789753-480da26d-2248-4245-a843-5ce43a974a7b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk3NTMtNDgwZGEyNmQtMjI0OC00MjQ1LWE4NDMtNWNlNDNhOTc0YTdiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQxNGM0OWMxMTllNTBiZDQ3NGQ4MTg4ZjM1MzM4OWFjMjRkMWRlNjcxYjAxZTk1NGEwYmI3N2EzYTJkOWU0ZTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TANi7x5Dm-7XeUzar2s-K_H77ZW3YnSvD5yjDp_wi2M" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  По какой то причине, файл /usr/bin/python имеет эти разрешения, нам же лучше. С помощью команды
+        "./python -c 'import os; os.execl("/bin/sh", "sh", "-p")'", взятой с
+  <a href="https://gtfobins.github.io/gtfobins/python/#suid" rel="nofollow">
+   GTFOBins
+  </a>
+  , становимся root
+        пользователем. Флаг для root можно найти по директории "/root". Задание выполнено.
+  <a href="https://private-user-images.githubusercontent.com/74550408/420789801-c469a5d2-dd11-48a2-b78f-abb545d17c37.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk4MDEtYzQ2OWE1ZDItZGQxMS00OGEyLWI3OGYtYWJiNTQ1ZDE3YzM3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWJmMGRmMWE2NGZmYzY4Yjk0ZWNmNjVhODlhZmIxZjM5MTMxZmNlMDE4M2Q0Y2RkN2M2MTI0ZDk4ZjYyZjQyMTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Cujxt2TfPpS-fKLd2OBpASUiXNfa-tYNNCP1wFVsy2o" rel="noopener noreferrer" target="_blank">
+   <img alt="priv_esc_7" src="https://private-user-images.githubusercontent.com/74550408/420789801-c469a5d2-dd11-48a2-b78f-abb545d17c37.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTAsIm5iZiI6MTc0NTE0Nzg5MCwicGF0aCI6Ii83NDU1MDQwOC80MjA3ODk4MDEtYzQ2OWE1ZDItZGQxMS00OGEyLWI3OGYtYWJiNTQ1ZDE3YzM3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWJmMGRmMWE2NGZmYzY4Yjk0ZWNmNjVhODlhZmIxZjM5MTMxZmNlMDE4M2Q0Y2RkN2M2MTI0ZDk4ZjYyZjQyMTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Cujxt2TfPpS-fKLd2OBpASUiXNfa-tYNNCP1wFVsy2o" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Privilege Escalation является важным и часто встречающимся компонентом CTF-заданий, требующим от
+        участников глубокого понимания принципов информационной безопасности и умения находить и эксплуатировать
+        уязвимости в системах. Владение техниками повышения привилегий не только помогает успешно решать задания на
+        CTF-соревнованиях, но и формирует ценные навыки для работы в области информационной безопасности. Использование
+        различных методов Privilege Escalation, от эксплуатации ошибок конфигурации до применения сложных технических
+        уязвимостей, делает этот аспект CTF-соревнований особенно интересным и познавательным для участников всех
+        уровней подготовки.
+ </p>
+</article>

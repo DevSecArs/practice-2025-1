@@ -1,0 +1,988 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <ul dir="auto">
+  <li>
+   <a href="#1-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">
+    1. Введение
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-active-directory">
+      Что такое Active
+                        Directory?
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%87%D1%82%D0%BE-%D0%B7%D0%B0-%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB-ldap">
+      Что
+                        за протокол LDAP?
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BA%D0%B0%D0%BA-%D0%B2%D1%8B%D0%B3%D0%BB%D1%8F%D0%B4%D0%B8%D1%82-ldap-%D0%B2-%D1%80%D0%B5%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D0%B6%D0%B8%D0%B7%D0%BD%D0%B8">
+      Как
+                        выглядит LDAP в реальной жизни?
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%80%D0%BE%D0%BB%D1%8C-ldap-%D0%B2-active-directory">
+      Роль LDAP в Active Directory
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#2-%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0-ldap-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2-%D0%B8-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-ldapsearch">
+    2.
+                Структура LDAP-запросов и использование ldapsearch
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%83%D1%82%D0%B8%D0%BB%D0%B8%D1%82%D0%B0-ldapsearch">
+      Утилита ldapsearch
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B9-%D1%81%D0%B8%D0%BD%D1%82%D0%B0%D0%BA%D1%81%D0%B8%D1%81">
+        Основной
+                                синтаксис
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-ldap-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2-%D1%81-ldapsearch">
+      Примеры
+                        LDAP-запросов с ldapsearch
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D1%84%D0%B8%D0%BB%D1%8C%D1%82%D1%80%D0%BE%D0%B2">
+      Использование
+                        расширенных фильтров
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#3-%D0%B8%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B8-%D1%8D%D0%BA%D1%81%D0%BF%D0%BB%D1%83%D0%B0%D1%82%D0%B0%D1%86%D0%B8%D1%8F-%D1%83%D1%8F%D0%B7%D0%B2%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B5%D0%B9-ldap">
+    3.
+                Исследование и эксплуатация уязвимостей LDAP
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%B0%D0%BD%D0%BE%D0%BD%D0%B8%D0%BC%D0%BD%D1%8B%D0%B9-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF">
+      Анонимный
+                        доступ
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%81%D0%BB%D0%B0%D0%B1%D1%8B%D0%B5-%D1%83%D1%87%D0%B5%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8">
+      Слабые
+                        учетные записи
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-ldap-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D1%8B">
+      Поиск
+                        данных через LDAP-запросы
+     </a>
+    </li>
+    <li>
+     <a href="#ldap-injection">
+      LDAP Injection
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BF%D0%B0%D1%80%D0%BE%D0%BB%D0%B8-%D0%B2-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%BC-%D0%B2%D0%B8%D0%B4%D0%B5">
+      Пароли
+                        в открытом виде
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BF%D0%B5%D1%80%D0%B5%D1%85%D0%B2%D0%B0%D1%82-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-man-in-the-middle">
+      Перехват
+                        данных и атаки "man-in-the-middle"
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B0%D1%82%D0%B0%D0%BA%D0%B0-%D0%BD%D0%B0-kerberos-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-ldap">
+      Атака
+                        на Kerberos через LDAP
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%8D%D0%BA%D1%81%D0%BF%D0%BB%D1%83%D0%B0%D1%82%D0%B0%D1%86%D0%B8%D1%8F-%D1%87%D1%80%D0%B5%D0%B7%D0%BC%D0%B5%D1%80%D0%BD%D1%8B%D1%85-%D0%BF%D1%80%D0%B0%D0%B2">
+      Эксплуатация
+                        чрезмерных прав
+     </a>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Введение
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Что такое Active Directory?
+  </h4>
+ </div>
+ <p dir="auto">
+  Active Directory (AD) - это технология, разработанная компанией Microsoft, которая используется для
+        управления пользователями, компьютерами и другими ресурсами в корпоративной сети. Это центральная система,
+        которая позволяет администраторам управлять доступом к информации, защищать данные и обеспечивать эффективную
+        работу сети.
+ </p>
+ <p dir="auto">
+  Представим офис с сотнями сотрудников и компьютеров. Нам нужна система контроля доступа, чтобы
+        гарантировать, что каждый сотрудник может безопасно использовать ресурсы компании, такие как файлы, принтеры или
+        приложения. Active Directory выполняет эту функцию, выступая в качестве базы данных, в которой хранится
+        информация обо всех объектах (пользователях, компьютерах, серверах и других устройствах) в сети.
+ </p>
+ <p dir="auto">
+  AD также помогает
+  <strong>
+   организовать пользователей и ресурсы
+  </strong>
+  ,
+  <strong>
+   автоматизировать
+            задачи
+  </strong>
+  и
+  <strong>
+   обеспечить безопасность
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Что за протокол LDAP?
+  </h4>
+ </div>
+ <p dir="auto">
+  Active Directory использует различные протоколы для выполнения своих функций, одним из которых
+        является
+  <strong>
+   Lightweight Directory Access Protocol (LDAP)
+  </strong>
+  . LDAP - это протокол, который позволяет
+        приложениям и пользователям взаимодействовать с базой данных Active Directory.
+ </p>
+ <p dir="auto">
+  Проще говоря, LDAP - это язык, с помощью которого можно «делать запросы» к Active Directory:
+ </p>
+ <ul dir="auto">
+  <li>
+   Кто имеет доступ к определенному ресурсу?
+  </li>
+  <li>
+   Как зовут владельца учетной записи?
+  </li>
+  <li>
+   Какие компьютеры принадлежат этой сети?
+  </li>
+ </ul>
+ <p dir="auto">
+  LDAP организует данные в дерево, корнем которого является домен, а ветвями - организационные единицы
+        (OU).
+ </p>
+ <div class="highlight highlight-source-css-scss notranslate position-relative overflow-auto" dir="auto">
+  <pre>DC=example, DC=com (корень)
+        |
+        +-- OU=Sales (подразделение "Продажи")
+        |     +-- CN=Ivan Ivanov (учетная запись пользователя)
+        |
+        +-- OU=IT (подразделение "IT")
+              +-- CN=Server1 (учетная запись компьютера)</pre>
+ </div>
+ <p dir="auto">
+  Здесь,
+  <strong>
+   DC (Domain Component)
+  </strong>
+  указывает домен,
+  <strong>
+   OU (Organizational
+            Unit)
+  </strong>
+  организационную единицу, а
+  <strong>
+   CN (Common Name)
+  </strong>
+  - объекты, такие как
+        пользователи или устройства.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Как выглядит LDAP в реальной жизни?
+  </h4>
+ </div>
+ <p dir="auto">
+  Мы можем представить LDAP как адресную книгу, в которой хранятся записи о сотрудниках вашей компании.
+        Каждый сотрудник - это «запись» (entry), которая включает в себя имя, должность, контактную информацию и другие
+        данные. Например
+ </p>
+ <ul dir="auto">
+  <li>
+   Имя: Иван Иванов
+  </li>
+  <li>
+   Логин: ivan.ivanov
+  </li>
+  <li>
+   Электронная почта:
+   <a href="mailto:ivan.ivanov@example.com">
+    ivan.ivanov@example.com
+   </a>
+  </li>
+ </ul>
+ <p dir="auto">
+  Когда мы ищем информацию в этой "книге" - это и есть работа LDAP.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример в ИТ-среде:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Мы вводим свой логин и пароль для доступа к компьютеру компании.
+  </li>
+  <li>
+   Система проверяет ваши учетные данные по LDAP.
+  </li>
+  <li>
+   Если логин и пароль совпадают, мы получаем доступ.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Роль LDAP в Active Directory
+  </h4>
+ </div>
+ <p dir="auto">
+  Основными функциями LDAP являются
+  <strong>
+   поиск объектов
+  </strong>
+  ,
+  <strong>
+   управление
+  </strong>
+  ими и
+  <strong>
+   аутентификация
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  <strong>
+   Поиск объектов
+  </strong>
+  : LDAP позволяет находить пользователей, устройства и группы,
+        запрашивая информацию по заданным критериям. Например, администратор может найти список всех сотрудников, чья
+        фамилия начинается с «Иванов».
+ </p>
+ <p dir="auto">
+  <strong>
+   Управление
+  </strong>
+  : создание, изменение или удаление объектов (пользователей, устройств)
+        через LDAP.
+ </p>
+ <p dir="auto">
+  <strong>
+   Аутентификация
+  </strong>
+  : при входе в систему данные пользователя передаются через LDAP для
+        проверки их соответствия учетной записи в AD.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Структура LDAP-запросов и использование ldapsearch
+  </h3>
+ </div>
+ <p dir="auto">
+  Каждый LDAP-запрос состоит из нескольких ключевых элементов:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Базовый DN (Distinguished Name):
+    </strong>
+    <br/>
+    Это точка входа в иерархию LDAP, с которой начинается поиск. Например:
+   </p>
+   <ul dir="auto">
+    <li>
+     <code>
+      DC=example,DC=com
+     </code>
+     - корневой DN для домена example.com.
+    </li>
+    <li>
+     <code>
+      OU=Sales,DC=example,DC=com
+     </code>
+     - узел подразделения "Продажи" внутри домена.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Фильтр поиска:
+    </strong>
+    <br/>
+    Фильтр определяет, какие объекты будут возвращены. Он включает условия в формате
+    <code>
+     (атрибут=значение)
+    </code>
+    или более сложные конструкции, такие как логические операторы:
+   </p>
+   <ul dir="auto">
+    <li>
+     <code>
+      (objectClass=user)
+     </code>
+     - поиск всех объектов, относящихся к пользователям.
+    </li>
+    <li>
+     <code>
+      (&amp;(objectClass=user)(sAMAccountName=ivanov))
+     </code>
+     - поиск пользователя с логином
+     <code>
+      ivanov
+     </code>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Область поиска:
+    </strong>
+    <br/>
+    Определяет глубину поиска:
+   </p>
+   <ul dir="auto">
+    <li>
+     <strong>
+      Base:
+     </strong>
+     только указанный DN.
+    </li>
+    <li>
+     <strong>
+      One:
+     </strong>
+     объекты в непосредственных дочерних узлах.
+    </li>
+    <li>
+     <strong>
+      Sub:
+     </strong>
+     все узлы, включая дочерние.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Атрибуты:
+    </strong>
+    <br/>
+    Это информация, которую нужно вернуть. Например, имя, логин, адрес электронной почты. Если атрибуты не
+                указаны, возвращаются все доступные.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Утилита ldapsearch
+  </h4>
+ </div>
+ <p dir="auto">
+  Утилита
+  <strong>
+   ldapsearch
+  </strong>
+  входит в состав пакета OpenLDAP и позволяет выполнять запросы к
+        LDAP-серверам из командной строки. Она поддерживает гибкую настройку фильтров, выбор атрибутов и аутентификацию.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   Основной синтаксис
+  </h5>
+ </div>
+ <p dir="auto">
+  Пример базовой команды:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://<span class="pl-k">&lt;</span>server<span class="pl-k">&gt;</span> -b <span class="pl-s"><span class="pl-pds">"</span>&lt;BaseDN&gt;<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>&lt;Filter&gt;<span class="pl-pds">"</span></span></pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   <code>
+    -x
+   </code>
+   - указывает, что используется простая аутентификация (без SASL).
+  </li>
+  <li>
+   <code>
+    -H
+   </code>
+   - адрес LDAP-сервера, например,
+   <code>
+    ldap://172.16.8.3
+   </code>
+   .
+  </li>
+  <li>
+   <code>
+    -b
+   </code>
+   - базовый DN, с которого начинается поиск.
+  </li>
+  <li>
+   <code>
+    &lt;Filter&gt;
+   </code>
+   - фильтр поиска, например,
+   <code>
+    (objectClass=user)
+   </code>
+   .
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Примеры LDAP-запросов с ldapsearch
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   1. Получение базовой информации о домене
+  </strong>
+ </p>
+ <p dir="auto">
+  Для начала можно запросить информацию о корне домена:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://172.16.8.3 -s base -b <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=*)<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="1" src="https://github.com/ShAmRoWw/article_ldap/raw/main/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Этот запрос возвращает список основных конфигурационных данных домена, включая информацию о корневом
+        DN.
+ </p>
+ <p dir="auto">
+  <strong>
+   2. Поиск всех пользователей в домене
+  </strong>
+ </p>
+ <p dir="auto">
+  Для поиска всех учетных записей пользователей можно использовать фильтр
+  <code>
+   (objectClass=user)
+  </code>
+  и указать корневой DN:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=user)<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="2" src="https://github.com/ShAmRoWw/article_ldap/raw/main/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Чтобы отобразить только нужные атрибуты, например имя и логин, добавим их в запрос:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=user)<span class="pl-pds">"</span></span> cn sAMAccountName</pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="3" src="https://github.com/ShAmRoWw/article_ldap/raw/main/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   3. Поиск учетной записи по имени пользователя
+  </strong>
+ </p>
+ <p dir="auto">
+  Если известен логин пользователя (например,
+  <code>
+   hathat
+  </code>
+  ), можно выполнить запрос:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(&amp;(objectClass=user)(sAMAccountName=hathat))<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="4" src="https://github.com/ShAmRoWw/article_ldap/raw/main/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  И получить все атрибуты, связанные с конкретным пользователем, например имя, принадлежность к группам
+        и почтовый адрес.
+ </p>
+ <p dir="auto">
+  <strong>
+   4. Поиск всех групп и их членов
+  </strong>
+ </p>
+ <p dir="auto">
+  Для извлечения списка групп и их участников можно использовать фильтр
+  <code>
+   (objectClass=group)
+  </code>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=group)<span class="pl-pds">"</span></span> cn member</pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="5" src="https://github.com/ShAmRoWw/article_ldap/raw/main/5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Атрибут
+  <code>
+   member
+  </code>
+  покажет, какие учетные записи входят в каждую группу.
+ </p>
+ <p dir="auto">
+  <strong>
+   5. Поиск компьютеров в сети
+  </strong>
+ </p>
+ <p dir="auto">
+  Чтобы найти все учетные записи компьютеров, используем фильтр
+  <code>
+   (objectClass=computer)
+  </code>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=computer)<span class="pl-pds">"</span></span> cn</pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="6" src="https://github.com/ShAmRoWw/article_ldap/raw/main/6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Этот запрос полезен для понимания состава устройств в сети.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Использование расширенных фильтров
+  </h4>
+ </div>
+ <p dir="auto">
+  LDAP поддерживает логические операторы для создания сложных запросов. Например:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <code>
+     &amp;
+    </code>
+    (AND):
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(&amp;(objectClass=user)(department=marketing))<span class="pl-pds">"</span></span></pre>
+   </div>
+   <p dir="auto">
+    <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/7.png" rel="noopener noreferrer" target="_blank">
+     <img alt="7" src="https://github.com/ShAmRoWw/article_ldap/raw/main/7.png" style="max-width: 100%;"/>
+    </a>
+   </p>
+   <p dir="auto">
+    Возвращает всех пользователей, работающих в отделе
+    <code>
+     Marketing
+    </code>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <code>
+     |
+    </code>
+    (OR):
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(|(sAMAccountName=ivanov)(sAMAccountName=petrov))<span class="pl-pds">"</span></span></pre>
+   </div>
+   <p dir="auto">
+    <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/8.png" rel="noopener noreferrer" target="_blank">
+     <img alt="8" src="https://github.com/ShAmRoWw/article_ldap/raw/main/8.png" style="max-width: 100%;"/>
+    </a>
+   </p>
+   <p dir="auto">
+    Возвращает учетные записи
+    <code>
+     trallese
+    </code>
+    и
+    <code>
+     hathat
+    </code>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <code>
+     !
+    </code>
+    (NOT):
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ldapsearch -x -H ldap://172.16.8.3 -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(!(objectClass=computer))<span class="pl-pds">"</span></span></pre>
+   </div>
+   <p dir="auto">
+    Исключает все объекты компьютеров из результата.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. Исследование и эксплуатация уязвимостей LDAP
+  </h3>
+ </div>
+ <p dir="auto">
+  Обнаружив открытые порты с LDAP (
+  <strong>
+   389
+  </strong>
+  для
+  <strong>
+   ldap
+  </strong>
+  и
+  <strong>
+   636
+  </strong>
+  для
+  <strong>
+   ldaps
+  </strong>
+  ), мы можем перейти к проверке правильной настройки протокола.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Анонимный доступ
+  </h4>
+ </div>
+ <p dir="auto">
+  Одной из первых проверок является тест на возможность анонимного подключения. В случае, если
+        LDAP-сервер позволяет подключение без аутентификации, это открывает злоумышленнику доступ к определенным данным.
+ </p>
+ <p dir="auto">
+  С помощью
+  <strong>
+   ldapsearch
+  </strong>
+  можно попробовать выполнить запрос без ввода учетных данных:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -H ldap://<span class="pl-k">&lt;</span>server_ip<span class="pl-k">&gt;</span> -s base</pre>
+ </div>
+ <p dir="auto">
+  Если сервер отвечает, мы можем узнать базовую информацию, например:
+ </p>
+ <ul dir="auto">
+  <li>
+   Имя домена (например,
+   <code>
+    DC=example,DC=com
+   </code>
+   ).
+  </li>
+  <li>
+   Список объектов верхнего уровня (OU, CN и другие).
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Слабые учетные записи
+  </h4>
+ </div>
+ <p dir="auto">
+  После проверки анонимного доступа важно протестировать учетные записи, которые могут быть настроены с
+        минимальными правами. Часто в больших организациях есть служебные или тестовые учетные записи с простыми
+        логинами и паролями, например,
+  <code>
+   test/test
+  </code>
+  или
+  <code>
+   guest/guest
+  </code>
+  .
+ </p>
+ <p dir="auto">
+  Для автоматизации брутфорса учетных записей можно использовать такие инструменты, как
+  <strong>
+   Hydra
+  </strong>
+  или
+  <strong>
+   Medusa
+  </strong>
+  . Пример команды для брутфорса через Hydra:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>hydra -L usernames.txt -P passwords.txt ldap://<span class="pl-k">&lt;</span>server_ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Если удастся подобрать учетные данные, даже минимальный доступ можно использовать для выполнения
+        расширенных запросов к LDAP.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Поиск данных через LDAP-запросы
+  </h4>
+ </div>
+ <p dir="auto">
+  После получения доступа, анонимного или авторизованного, начинается этап сбора данных. LDAP-запросы
+        позволяют извлекать большое количество информации. С помощью
+  <code>
+   ldapsearch
+  </code>
+  или PowerShell-команд можно
+        искать:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Список всех пользователей в домене:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ldapsearch -x -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=user)<span class="pl-pds">"</span></span></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Список компьютеров в сети:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ldapsearch -x -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=computer)<span class="pl-pds">"</span></span></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Информацию о группах. Например, группы
+    <code>
+     Administrators
+    </code>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre> ldapsearch -x -b <span class="pl-s"><span class="pl-pds">"</span>CN=Administrators,CN=Builtin,DC=example,DC=com<span class="pl-pds">"</span></span></pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   LDAP Injection
+  </h4>
+ </div>
+ <p dir="auto">
+  LDAP Injection - это одна из самых опасных уязвимостей. Она возникает, когда сервер принимает
+        пользовательский ввод без должной проверки и включает его в LDAP-запрос. Это позволяет нам модифицировать
+        запросы и извлекать или изменять данные, к которым у него обычно нет доступа.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример эксплуатации:
+  </strong>
+  <br/>
+  Если веб-приложение принимает имя пользователя для поиска в LDAP и не фильтрует специальные символы, мы можем
+        вставить что-то вроде:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>*)(|(objectClass=*))
+    </code></pre>
+ </div>
+ <p dir="auto">
+  И в результате сервер вернет список всех объектов, а не только тех, которые соответствуют изначальному
+        запросу.
+ </p>
+ <p dir="auto">
+  Пример кода уязвимого запроса на стороне сервера:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate" lang="ldap"><code>(&amp;(uid={input})(objectClass=person))
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Если ввести
+  <code>
+   admin*)(|(objectClass=*
+  </code>
+  , результатом будет обход фильтрации.
+ </p>
+ <p dir="auto">
+  Защита от LDAP Injection заключается в строгой проверке пользовательского ввода и использовании
+        параметризованных запросов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Пароли в открытом виде
+  </h4>
+ </div>
+ <p dir="auto">
+  Поле
+  <strong>
+   description
+  </strong>
+  часто используется для хранения вспомогательной информации об
+        учетной записи. Однако из-за отсутствия понимания безопасности администраторы могут оставлять в нем
+        чувствительные данные, включая пароли. Это происходит по нескольким причинам:
+ </p>
+ <ul dir="auto">
+  <li>
+   Для "удобства" администратор может записать текущий пароль пользователя прямо в описание.
+  </li>
+  <li>
+   Временно выданные пароли часто указываются в описании, чтобы потом их можно было передать пользователю.
+  </li>
+  <li>
+   Личные или корпоративные привычки сотрудников вести "заметки" в таких полях.
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/article_ldap/blob/main/9.png" rel="noopener noreferrer" target="_blank">
+   <img alt="9" src="https://github.com/ShAmRoWw/article_ldap/raw/main/9.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Перехват данных и атаки "man-in-the-middle"
+  </h4>
+ </div>
+ <p dir="auto">
+  LDAP по умолчанию передает данные в открытом виде (порт 389), что делает возможным перехват запросов и
+        ответов. Это особенно опасно, если через протокол передаются учетные данные.
+ </p>
+ <p dir="auto">
+  Для проверки на этот тип уязвимости можно использовать инструменты анализа трафика, такие как
+  <strong>
+   Wireshark
+  </strong>
+  или
+  <strong>
+   mitmproxy
+  </strong>
+  . После настройки MITM-атаки и захвата трафика можно
+        обнаружить:
+ </p>
+ <ul dir="auto">
+  <li>
+   Логины и пароли, передающиеся в запросах.
+  </li>
+  <li>
+   Конфиденциальные данные о структуре сети.
+  </li>
+ </ul>
+ <p dir="auto">
+  Если сервер использует LDAPS (шифрованный LDAP на порту 636), MITM-атака становится сложнее, но
+        возможна подмена сертификатов. Например, с помощью инструмента
+  <strong>
+   Responder
+  </strong>
+  можно перехватить
+        попытки подключения к серверу, чтобы отправить жертве поддельный сертификат.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Атака на Kerberos через LDAP
+  </h4>
+ </div>
+ <p dir="auto">
+  LDAP тесно связан с Kerberos в Active Directory. Получив доступ к LDAP, можно найти учетные записи с
+        привилегиями, такие как
+  <code>
+   krbtgt
+  </code>
+  , и попытаться получить их хэши. Атака "Kerberoasting" часто
+        начинается с LDAP-запросов, чтобы найти учетные записи, у которых есть
+  <strong>
+   Service Principal Name
+            (SPN)
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  Пример запроса
+  <code>
+   ldapsearch
+  </code>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>servicePrincipalName=*<span class="pl-pds">"</span></span> sAMAccountName servicePrincipalName</pre>
+ </div>
+ <p dir="auto">
+  Найденные учетные записи можно использовать для последующей атаки с помощью таких инструментов, как
+  <strong>
+   Impacket
+  </strong>
+  или
+  <strong>
+   Rubeus
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Эксплуатация чрезмерных прав
+  </h4>
+ </div>
+ <p dir="auto">
+  В некоторых случаях учетные записи или группы имеют чрезмерные права на выполнение запросов к LDAP.
+        Например, если учетная запись имеет доступ к конфиденциальным атрибутам, таким как пароли, это можно
+        использовать для атаки.
+ </p>
+ <p dir="auto">
+  Через LDAP можно запросить атрибут
+  <code>
+   ms-MCS-AdmPwd
+  </code>
+  , в котором хранятся локальные пароли для
+        администраторов. Если учетная запись имеет доступ к этому атрибуту, мы можем получить локальный
+        администраторский доступ к компьютерам в сети.
+ </p>
+ <p dir="auto">
+  Пример команды для поиска уязвимости с помощью ldapsearch:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -b <span class="pl-s"><span class="pl-pds">"</span>DC=example,DC=com<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>(objectClass=computer)<span class="pl-pds">"</span></span> ms-MCS-AdmPwd</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Автор: Дейникин Максим Юрьевич
+  </strong>
+ </p>
+</article>

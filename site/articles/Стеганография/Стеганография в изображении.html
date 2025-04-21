@@ -1,0 +1,956 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Стеганография в изображении
+  </h1>
+ </div>
+ <p dir="auto">
+  <strong>
+   Стеганография
+  </strong>
+  — это способ спрятать информацию внутри другой информации или
+        физического объекта так, чтобы ее нельзя было обнаружить.
+        С помощью стеганографии можно спрятать практически любой цифровой контент, включая тексты, изображения, аудио- и
+        видеофайлы.
+        А когда эта спрятанная информация поступает к адресату, ее извлекают. (
+  <a href="https://www.kaspersky.ru/" rel="nofollow">
+   https://www.kaspersky.ru/
+  </a>
+  )
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Разница между стеганографией и криптографией
+  </h3>
+ </div>
+ <p dir="auto">
+  Основные различия между этими методами защиты информации:
+ </p>
+ <markdown-accessiblity-table data-catalyst="">
+  <table>
+   <thead>
+    <tr>
+     <th>
+      Характеристика
+     </th>
+     <th>
+      Стеганография
+     </th>
+     <th>
+      Криптография
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+      Основной принцип
+     </td>
+     <td>
+      Скрытие существования информации
+     </td>
+     <td>
+      Шифрование информации
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Выявляемость
+     </td>
+     <td>
+      Трудно обнаружить без специализированных методов анализа
+     </td>
+     <td>
+      Видно, что данные зашифрованы
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Безопасность
+     </td>
+     <td>
+      Основана на незаметности
+     </td>
+     <td>
+      Основана на математической стойкости алгоритмов
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Защита от модификации
+     </td>
+     <td>
+      Уязвима при малейшем изменении контейнера
+     </td>
+     <td>
+      Алгоритмы обеспечивают целостность данных
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Применение
+     </td>
+     <td>
+      Водяные знаки, защита информации, сокрытие данных
+     </td>
+     <td>
+      Шифрованная переписка, защита файлов, цифровые подписи
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </markdown-accessiblity-table>
+ <p dir="auto">
+  Оба метода можно комбинировать: сначала зашифровать данные, а затем скрыть их с помощью стеганографии,
+        что значительно повышает безопасность передаваемой информации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Области применения
+  </h3>
+ </div>
+ <p dir="auto">
+  Стеганография находит применение в различных сферах:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Защита конфиденциальных данных
+   </strong>
+   — скрытая передача информации в условиях цензуры или
+            наблюдения.
+  </li>
+  <li>
+   <strong>
+    Цифровые водяные знаки
+   </strong>
+   — защита авторских прав на изображения, видео и аудиофайлы.
+  </li>
+  <li>
+   <strong>
+    Кибербезопасность
+   </strong>
+   — скрытая коммуникация между агентами, обход контроля трафика.
+  </li>
+  <li>
+   <strong>
+    Военные и разведывательные операции
+   </strong>
+   — скрытая передача секретных сообщений.
+  </li>
+  <li>
+   <strong>
+    Компьютерные игры и ARG (Alternative Reality Games)
+   </strong>
+   — создание скрытых посланий и
+            головоломок.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   История стеганографии
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Древние методы скрытия информации
+  </h3>
+ </div>
+ <p dir="auto">
+  Идея скрытия информации появилась задолго до появления цифровых технологий. Несколько известных
+        исторических методов:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Голая кожа (V век до н.э.)
+   </strong>
+   — греческий полководец Гистией в условиях персидского контроля
+            выбрил голову слуги, написал на коже тайное послание и дождался, пока волосы отрастут.
+  </li>
+  <li>
+   <strong>
+    Невидимые чернила (I век н.э.)
+   </strong>
+   — использовались в Древнем Риме и Средневековье. Для письма
+            применяли лимонный сок или молоко, проявлявшиеся при нагревании.
+  </li>
+  <li>
+   <strong>
+    Микротекст
+   </strong>
+   — в XIX веке в письмах использовали мельчайший шрифт, чтобы спрятать информацию
+            в безобидных письмах или книгах.
+  </li>
+  <li>
+   <strong>
+    Татуировки и узоры
+   </strong>
+   — в XVII–XIX веках моряки иногда наносили татуировки с закодированными
+            сообщениями для передачи секретной информации.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Развитие методов в цифровую эпоху
+  </h3>
+ </div>
+ <p dir="auto">
+  С появлением компьютеров и интернета стеганография получила новый виток развития:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    1990-е
+   </strong>
+   — Разработка первых цифровых методов, таких как изменение наименее значащих битов
+            (LSB) в изображениях.
+  </li>
+  <li>
+   <strong>
+    2000-е
+   </strong>
+   — Появление алгоритмов, использующих преобразования (DCT, DWT, FFT), что позволило
+            более эффективно скрывать данные.
+  </li>
+  <li>
+   <strong>
+    2010-е
+   </strong>
+   — Развитие машинного обучения, позволяющего как создавать более сложные методы
+            скрытия, так и выявлять их.
+  </li>
+  <li>
+   <strong>
+    Настоящее время
+   </strong>
+   — Интеграция стеганографии в защиту авторских прав, информационную
+            безопасность и скрытые коммуникации.
+  </li>
+ </ul>
+ <p dir="auto">
+  Стеганография продолжает развиваться, оставаясь важным инструментом в мире цифровой безопасности.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Основные методы стеганографии в изображениях
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Метод наименее значащих битов (LSB)
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип работы
+  </h3>
+ </div>
+ <p dir="auto">
+  Метод LSB (Least Significant Bit) основан на изменении младших битов цветовых компонентов пикселей
+        изображения. Поскольку изменения в младших битах незначительно влияют на визуальное восприятие, скрытая
+        информация остаётся незаметной для человеческого глаза.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как это работает?
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Берётся исходное изображение (контейнер).
+  </li>
+  <li>
+   Бинарное представление скрываемых данных заменяет младшие биты цветовых каналов (обычно RGB).
+  </li>
+  <li>
+   Полученное изображение сохраняется, и оно визуально неотличимо от оригинала.
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Пример:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Исходный пиксель:
+   <code>
+    10110011 01101110 11001001
+   </code>
+   (RGB)
+  </li>
+  <li>
+   Кодируем символ "A" (ASCII:
+   <code>
+    01000001
+   </code>
+   )
+  </li>
+  <li>
+   Заменяем младшие биты:
+   <code>
+    10110010 01101111 11001000
+   </code>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Преимущества
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Простота реализации.
+  </li>
+  <li>
+   Минимальное визуальное искажение.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Недостатки
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Легко обнаруживается при стегоанализе.
+  </li>
+  <li>
+   Уязвимость к сжатию и обработке изображений.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Получение exif файлов
+  </h2>
+ </div>
+ <p dir="auto">
+  EXIF - это информация, записываемая в файл снимка большинством цифровых фотокамер, и содержащая
+        тестовую информацию: дата и время съемки, модель камеры, съёмочные параметры
+        (выдержка, баланс белого, фокусное расстояние, вспышка, источник света, диафрагма, цифровое увеличение),
+        комментарий к файлу, авторские права и т.д.
+        (
+  <a href="https://help.inbox.lv/category/10085/question/10255?language=ru" rel="nofollow">
+   https://help.inbox.lv/category/10085/question/10255?language=ru
+  </a>
+  )
+ </p>
+ <p dir="auto">
+  Как пример, можно узнать место, в котором был сделан снимок:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/ct1.jpg" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/ct1.jpg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/ct2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/ct2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Узнаем, что снимок был сделан по адресу Place des Capucines, Belsunce, Marseille 1er Arrondissement,
+        Марсель, Marseille, Буш-дю-Рон, Прованс — Альпы — Лазурный Берег, Метрополия Франции, 13001, Франция.
+ </p>
+ <p dir="auto">
+  (задание с сайта root-me.org EXIF-Metadata)
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы преобразования (DCT, DWT, FFT)
+  </h2>
+ </div>
+ <p dir="auto">
+  Методы, основанные на преобразованиях, внедряют данные в частотные компоненты изображения, что делает
+        их более устойчивыми к сжатию и обработке.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    DCT (Discrete Cosine Transform, дискретное
+                косинусное преобразование)
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Используется в JPEG-сжатии. В скрытом сообщении изменяются частотные коэффициенты после DCT, что
+        позволяет сохранить информацию даже при сжатии JPEG.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    DWT (Discrete Wavelet Transform, дискретное
+                вейвлет-преобразование)
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Позволяет внедрять данные в многомасштабные представления изображения, что делает метод более
+        устойчивым к атакам стегоанализа.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    FFT (Fast Fourier Transform, быстрое преобразование
+                Фурье)
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Применяет частотный анализ для встраивания данных в малозаметные компоненты изображения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Преимущества методов преобразования:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Высокая устойчивость к сжатию.
+  </li>
+  <li>
+   Трудность обнаружения скрытых данных.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Недостатки:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Сложность реализации.
+  </li>
+  <li>
+   Требуется больше вычислительных ресурсов.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Альфа-канал стеганография
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип работы
+  </h3>
+ </div>
+ <p dir="auto">
+  Использует канал прозрачности (альфа-канал) изображений PNG для скрытия информации. Поскольку
+        альфа-канал регулирует степень прозрачности пикселей, его изменение не всегда заметно глазу.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как работает?
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   В альфа-канале внедряется двоичный код скрытых данных.
+  </li>
+  <li>
+   Значения прозрачности слегка корректируются, чтобы избежать визуального обнаружения.
+  </li>
+  <li>
+   Восстановление информации возможно только при анализе альфа-канала.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Преимущества
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Высокая скрытность.
+  </li>
+  <li>
+   Устойчивость к изменению цветовых данных.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Недостатки
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Работает только с изображениями, поддерживающими альфа-канал (PNG, TIFF).
+  </li>
+  <li>
+   Некоторые программы могут преобразовывать PNG в формат без альфа-канала, уничтожая скрытые данные.
+  </li>
+ </ul>
+ <p dir="auto">
+  Работа с изображениями с помощью Stegsolve
+ </p>
+ <p dir="auto">
+  Для Windows ОС необходимо установить
+  <a href="http://www.caesum.com/handbook/Stegsolve.jar" rel="nofollow">
+   http://www.caesum.com/handbook/Stegsolve.jar
+  </a>
+  и Java Runtime Environment
+ </p>
+ <p dir="auto">
+  Для Linux ОС
+  <a href="https://github.com/zardus/ctf-tools/blob/master/stegsolve/install">
+   https://github.com/zardus/ctf-tools/blob/master/stegsolve/install
+  </a>
+ </p>
+ <p dir="auto">
+  С помощью Stegsolve можно посмотреть формат файла
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/ct3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/ct3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Разные планы файла
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/ct4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/ct4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Открыть несколько изображений и посмотреть из наложения:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/ct5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/ct5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Посмотреть режимы файла
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/ct6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/ct6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Использование шумов и артефактов сжатия
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип работы
+  </h3>
+ </div>
+ <p dir="auto">
+  Метод использует естественные шумы или артефакты сжатия (например, JPEG) для скрытия данных. Данные
+        внедряются в шумовые компоненты, что делает их менее заметными.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Реализация
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Анализируются шумовые характеристики изображения.
+  </li>
+  <li>
+   В шумовые области внедряются скрытые данные.
+  </li>
+  <li>
+   Изменения распределяются случайным образом, что затрудняет обнаружение.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Преимущества
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Высокая скрытность.
+  </li>
+  <li>
+   Устойчивость к обработке изображений.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Недостатки
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Трудность извлечения информации без оригинального изображения.
+  </li>
+  <li>
+   Зависимость от характеристик контейнера.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Изображение-архив
+  </h3>
+ </div>
+ <p dir="auto">
+  Изображение может оказаться архивом. Обычно это заметно, если фото весит больше, чем должно весить при
+        таких размерах.
+ </p>
+ <p dir="auto">
+  Обычно алгоритм работы такой:
+ </p>
+ <ol dir="auto">
+  <li>
+   Изменить тип файла (например сменить окончание .png на .zip или любой другой тип архива)
+  </li>
+  <li>
+   Разорхивировать файл
+  </li>
+  <li>
+   Открыть файлы архива, в зависимости от ситуации можно сразу найти флаг или применить другие методы
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Обзор инструментов
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    StegHide
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  StegHide — это один из популярных инструментов для скрытия данных в изображениях. Он использует метод
+        наименее значащих битов (LSB) для внедрения информации в пиксели изображений. StegHide поддерживает различные
+        форматы файлов, включая BMP, WAV и другие.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования StegHide:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>steghide embed -cf image.png -ef secret.txt</pre>
+ </div>
+ <p dir="auto">
+  Эта команда скрывает содержимое файла
+  <code>
+   secret.txt
+  </code>
+  в изображении
+  <code>
+   image.png
+  </code>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    OpenStego
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  OpenStego — это открытый инструмент, который также использует метод LSB для скрытия данных. Он
+        позволяет не только скрывать информацию, но и защищать её с помощью пароля, обеспечивая дополнительную
+        безопасность.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования OpenStego:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>java -jar OpenStego.jar embed -sf image.png -ef secret.txt -p password</pre>
+ </div>
+ <p dir="auto">
+  Здесь изображение
+  <code>
+   image.png
+  </code>
+  скрывает текстовый файл
+  <code>
+   secret.txt
+  </code>
+  с паролем
+  <code>
+   password
+  </code>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    SilentEye
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  SilentEye — это еще один инструмент для скрытия информации в изображениях и аудиофайлах. Он
+        предоставляет графический интерфейс и позволяет легко спрятать данные в разных форматах изображений, таких как
+        PNG, JPEG, BMP.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования SilentEye:
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   Откройте SilentEye.
+  </li>
+  <li>
+   Выберите изображение, в которое хотите вставить данные.
+  </li>
+  <li>
+   Загрузите файл с информацией, которую хотите скрыть.
+  </li>
+  <li>
+   Установите пароль для защиты скрытой информации.
+  </li>
+  <li>
+   Нажмите "Embed", чтобы сохранить изображение с скрытой информацией.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Пример реализации на Python
+  </h2>
+ </div>
+ <p dir="auto">
+  В Python можно использовать библиотеки, такие как Pillow или OpenCV, для реализации стеганографии.
+        Рассмотрим пример, как скрыть текст в изображении с использованием библиотеки Pillow:
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-c1">PIL</span> <span class="pl-k">import</span> <span class="pl-v">Image</span>
+    
+    <span class="pl-k">def</span> <span class="pl-en">encode_image</span>(<span class="pl-s1">image_path</span>, <span class="pl-s1">message</span>):
+        <span class="pl-s1">img</span> <span class="pl-c1">=</span> <span class="pl-v">Image</span>.<span class="pl-c1">open</span>(<span class="pl-s1">image_path</span>)
+        <span class="pl-s1">binary_message</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-en">format</span>(<span class="pl-en">ord</span>(<span class="pl-s1">i</span>), <span class="pl-s">'08b'</span>) <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-s1">message</span>)
+        <span class="pl-s1">binary_message</span> <span class="pl-c1">+=</span> <span class="pl-s">'1111111111111110'</span>  <span class="pl-c"># Добавляем окончание сообщения</span>
+        <span class="pl-s1">pixels</span> <span class="pl-c1">=</span> <span class="pl-s1">img</span>.<span class="pl-c1">load</span>()
+    
+        <span class="pl-s1">data_index</span> <span class="pl-c1">=</span> <span class="pl-c1">0</span>
+        <span class="pl-k">for</span> <span class="pl-s1">y</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">img</span>.<span class="pl-c1">height</span>):
+            <span class="pl-k">for</span> <span class="pl-s1">x</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">img</span>.<span class="pl-c1">width</span>):
+                <span class="pl-s1">pixel</span> <span class="pl-c1">=</span> <span class="pl-en">list</span>(<span class="pl-s1">pixels</span>[<span class="pl-s1">x</span>, <span class="pl-s1">y</span>])
+                <span class="pl-k">for</span> <span class="pl-s1">color</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">3</span>):  <span class="pl-c"># RGB</span>
+                    <span class="pl-k">if</span> <span class="pl-s1">data_index</span> <span class="pl-c1">&lt;</span> <span class="pl-en">len</span>(<span class="pl-s1">binary_message</span>):
+                        <span class="pl-s1">pixel</span>[<span class="pl-s1">color</span>] <span class="pl-c1">=</span> <span class="pl-s1">pixel</span>[<span class="pl-s1">color</span>] <span class="pl-c1">&amp;</span> <span class="pl-c1">~</span><span class="pl-c1">1</span> <span class="pl-c1">|</span> <span class="pl-en">int</span>(<span class="pl-s1">binary_message</span>[<span class="pl-s1">data_index</span>])
+                        <span class="pl-s1">data_index</span> <span class="pl-c1">+=</span> <span class="pl-c1">1</span>
+                <span class="pl-s1">pixels</span>[<span class="pl-s1">x</span>, <span class="pl-s1">y</span>] <span class="pl-c1">=</span> <span class="pl-en">tuple</span>(<span class="pl-s1">pixel</span>)
+                <span class="pl-k">if</span> <span class="pl-s1">data_index</span> <span class="pl-c1">&gt;=</span> <span class="pl-en">len</span>(<span class="pl-s1">binary_message</span>):
+                    <span class="pl-k">break</span>
+    
+        <span class="pl-s1">img</span>.<span class="pl-c1">save</span>(<span class="pl-s">'encoded_image.png'</span>)
+        <span class="pl-en">print</span>(<span class="pl-s">"Image encoded successfully."</span>)
+    
+    <span class="pl-k">def</span> <span class="pl-en">decode_image</span>(<span class="pl-s1">image_path</span>):
+        <span class="pl-s1">img</span> <span class="pl-c1">=</span> <span class="pl-v">Image</span>.<span class="pl-c1">open</span>(<span class="pl-s1">image_path</span>)
+        <span class="pl-s1">pixels</span> <span class="pl-c1">=</span> <span class="pl-s1">img</span>.<span class="pl-c1">load</span>()
+        <span class="pl-s1">binary_message</span> <span class="pl-c1">=</span> <span class="pl-s">""</span>
+        
+        <span class="pl-k">for</span> <span class="pl-s1">y</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">img</span>.<span class="pl-c1">height</span>):
+            <span class="pl-k">for</span> <span class="pl-s1">x</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-s1">img</span>.<span class="pl-c1">width</span>):
+                <span class="pl-s1">pixel</span> <span class="pl-c1">=</span> <span class="pl-s1">pixels</span>[<span class="pl-s1">x</span>, <span class="pl-s1">y</span>]
+                <span class="pl-k">for</span> <span class="pl-s1">color</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">3</span>):  <span class="pl-c"># RGB</span>
+                    <span class="pl-s1">binary_message</span> <span class="pl-c1">+=</span> <span class="pl-en">str</span>(<span class="pl-s1">pixel</span>[<span class="pl-s1">color</span>] <span class="pl-c1">&amp;</span> <span class="pl-c1">1</span>)
+        
+        <span class="pl-s1">message</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-en">chr</span>(<span class="pl-en">int</span>(<span class="pl-s1">binary_message</span>[<span class="pl-s1">i</span>:<span class="pl-s1">i</span><span class="pl-c1">+</span><span class="pl-c1">8</span>], <span class="pl-c1">2</span>)) <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-c1">0</span>, <span class="pl-en">len</span>(<span class="pl-s1">binary_message</span>), <span class="pl-c1">8</span>))
+        <span class="pl-k">return</span> <span class="pl-s1">message</span>.<span class="pl-c1">split</span>(<span class="pl-s">'1111111111111110'</span>)[<span class="pl-c1">0</span>]  <span class="pl-c"># Отделяем скрытое сообщение</span>
+    
+    <span class="pl-c"># Пример использования:</span>
+    <span class="pl-en">encode_image</span>(<span class="pl-s">'image.png'</span>, <span class="pl-s">'This is a hidden message.'</span>)
+    <span class="pl-s1">decoded_message</span> <span class="pl-c1">=</span> <span class="pl-en">decode_image</span>(<span class="pl-s">'encoded_image.png'</span>)
+    <span class="pl-en">print</span>(<span class="pl-s">"Decoded message:"</span>, <span class="pl-s1">decoded_message</span>)</pre>
+ </div>
+ <p dir="auto">
+  Этот пример показывает, как можно закодировать текстовое сообщение в изображение, а затем извлечь его
+        обратно.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Обнаружение стеганографии (стегоанализ)
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы выявления скрытых данных
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Анализ наименее значащих битов (LSB)
+    </strong>
+    Метод LSB — один из самых простых и распространенных, и он также является самым уязвимым к стегоанализу.
+                Для выявления скрытых данных можно анализировать статистику изменения пикселей и искать паттерны,
+                характерные для использования LSB.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Частотный анализ
+    </strong>
+    Методы, такие как DCT, DWT или FFT, изменяют частотные компоненты изображения, что делает его менее
+                заметным для человеческого глаза, но позволяет специалистам по стегоанализу обнаружить скрытые данные с
+                помощью анализа изменений частот.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Анализ сжатия
+    </strong>
+    Данные, внедренные в изображение, могут быть уничтожены при сильном сжатии (например, JPEG), но иногда
+                для анализа достаточно исследовать остаточные артефакты сжатия.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование алгоритмов машинного обучения
+    </strong>
+    Современные методы машинного обучения могут быть использованы для автоматического обнаружения скрытых
+                данных. Например, нейронные сети могут быть обучены на изображениях с и без скрытых данных для выявления
+                скрытых паттернов.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты для анализа изображений
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    StegExpose
+   </strong>
+   — это инструмент для анализа изображений на наличие скрытых данных, особенно в
+            методах LSB.
+  </li>
+  <li>
+   <strong>
+    zsteg
+   </strong>
+   — инструмент для выявления скрытых данных в изображениях PNG и BMP, анализирует биты
+            и частотные компоненты.
+  </li>
+  <li>
+   <strong>
+    ImageMagick
+   </strong>
+   — позволяет выполнить анализ и извлечение данных из изображений, а также
+            обработку метаданных и альфа-каналов.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Безопасность и этические аспекты
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Опасности скрытия информации
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Нарушение законов
+    </strong>
+    Использование стеганографии для скрытия информации может быть нарушением законов, особенно в контексте
+                киберпреступности, шпионажа или распространения запрещенного контента.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Риски безопасности
+    </strong>
+    Хотя стеганография может использоваться для защиты конфиденциальных данных, она также может стать
+                инструментом для скрытых атак, распространения вирусов, троянов и шпионских программ.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Ошибка в передаче
+    </strong>
+    В некоторых случаях скрытые данные могут быть случайно повреждены или уничтожены, если изображение
+                подвергается изменению (например, сжатию или редактированию).
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Использование в кибербезопасности и киберпреступности
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Кибербезопасность
+   </strong>
+   : Стеганография может использоваться для защиты данных, обеспечения
+            конфиденциальности в условиях цензуры и мониторинга.
+  </li>
+  <li>
+   <strong>
+    Киберпреступность
+   </strong>
+   : Злоумышленники могут использовать стеганографию для скрытого обмена
+            информацией, например, для управления ботнетами или для скрытого обмена файлами с вредоносным ПО.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Будущее стеганографии
+  </h2>
+ </div>
+ <p dir="auto">
+  Стеганография продолжает развиваться, и с каждым годом она становится более устойчивой к различным
+        методам анализа. В будущем можно ожидать появления новых методов, использующих более сложные математические
+        алгоритмы и машинное обучение.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Выводы и перспективы развития технологии
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Повышение сложности скрытия данных
+   </strong>
+   : Включение искусственного интеллекта и сложных
+            алгоритмов шифрования сделает стеганографию ещё более эффективной.
+  </li>
+  <li>
+   <strong>
+    Рост применения в цифровой безопасности
+   </strong>
+   : Стеганография будет продолжать использоваться для
+            защиты конфиденциальности данных и анонимности в интернете.
+  </li>
+  <li>
+   <strong>
+    Этические и правовые вопросы
+   </strong>
+   : Важно будет учитывать этические и правовые аспекты, связанные
+            с использованием стеганографии, особенно в контексте киберпреступности и защиты прав интеллектуальной
+            собственности.
+  </li>
+ </ul>
+</article>

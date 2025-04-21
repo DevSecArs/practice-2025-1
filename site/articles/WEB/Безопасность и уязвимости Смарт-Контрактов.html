@@ -1,0 +1,1734 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Безопасность и уязвимости Смарт-Контрактов
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h2>
+ </div>
+ <p dir="auto">
+  Смарт-контракты — это самоисполняемые программы, работающие на блокчейне, которые позволяют двум или
+        более сторонам взаимодействовать напрямую без необходимости доверять централизованным посредникам.
+        Они обеспечивают прозрачность, надежность и автоматизацию различных процессов, таких как переводы средств,
+        создание токенов, управление децентрализованными биржами и другими dApps.
+        Однако именно неизменяемость и публичная доступность смарт-контрактов делают их привлекательной мишенью для
+        злоумышленников.
+ </p>
+ <p dir="auto">
+  Ошибки в коде смарт-контрактов могут привести к потере значительных средств, как это уже неоднократно
+        происходило в известных инцидентах, таких как атака на The DAO или уязвимости в протоколах DeFi.
+        Поэтому важно разбираться в типичных уязвимостях и способах их предотвращения.
+ </p>
+ <p dir="auto">
+  В данной статье мы подробно рассмотрим ключевые уязвимости смарт-контрактов, механизмы их эксплуатации
+        и методы защиты. Основным источником информации является проект OWASP "Smart Contract Top 10",
+        а также другие современные исследования в области безопасности блокчейнов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Безопасность смарт-контрактов
+  </h3>
+ </div>
+ <p dir="auto">
+  Безопасность смарт-контрактов имеет решающее значение для целостности и надежности
+        блокчейн-приложений. По мере распространения цифровых транзакций и децентрализованных приложений (dApps),
+        обеспечение безопасности смарт-контрактов от уязвимостей и атак становится первоочередной задачей. В динамично
+        развивающемся ландшафте блокчейн-технологий защита смарт-контрактов означает не только сохранение цифровых
+        активов,
+        но и поддержание доверия пользователей и заинтересованных сторон. Децентрализованная природа блокчейна делает
+        его главной мишенью для кибератак, и любая уязвимость может привести к значительным финансовым и репутационным
+        потерям.
+        Поэтому понимание и внедрение мер безопасности смарт-контрактов необходимо для разработчиков, бизнеса и
+        инвесторов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Ключевые аспекты безопасности смарт-контрактов
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Четкость и простота кода:
+   </strong>
+   Писать ясный и простой код, чтобы уменьшить вероятность ошибок и
+            уязвимостей. Сложный код может скрывать потенциальные проблемы и усложнять аудит.
+  </li>
+  <li>
+   <strong>
+    Формальная проверка:
+   </strong>
+   Математическое доказательство правильности кода, чтобы убедиться, что
+            он ведет себя как задумано во всех возможных сценариях.
+  </li>
+  <li>
+   <strong>
+    Аудиты безопасности:
+   </strong>
+   Регулярные аудиты безопасности опытными профессионалами помогают
+            выявлять и устранять уязвимости до того, как они будут использованы злоумышленниками.
+  </li>
+  <li>
+   <strong>
+    Тестирование и симуляция:
+   </strong>
+   Широкое тестирование и моделирование смарт-контрактов в различных
+            сценариях помогает выявлять потенциальные проблемы и обеспечивать ожидаемое поведение контракта при разных
+            условиях.
+  </li>
+  <li>
+   <strong>
+    Обзор сообществом:
+   </strong>
+   Open source проекты выигрывают от обзоров сообществом, где разработчики
+            со всего мира могут проверять и предлагать улучшения по коду.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Повышение безопасности смарт-контрактов
+  </h4>
+ </div>
+ <p dir="auto">
+  Разработчики должны применять несколько лучших практик для повышения безопасности:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Аудиты кода:
+   </strong>
+   Привлечение сторонних аудиторов безопасности для выявления потенциальных
+            уязвимостей до развертывания. Компании, такие как Certik, специализируются на всестороннем обзоре кода.
+  </li>
+  <li>
+   <strong>
+    Программы поиска ошибок:
+   </strong>
+   Предоставление вознаграждений за обнаружение и сообщение об
+            ошибках стимулирует сообщество к улучшению безопасности.
+  </li>
+  <li>
+   <strong>
+    Механизмы паузы и обновления:
+   </strong>
+   Реализация функций для приостановки выполнения контракта и
+            возможности обновлений может смягчить воздействие обнаруженных уязвимостей.
+  </li>
+  <li>
+   <strong>
+    Ограничение скорости:
+   </strong>
+   Ограничение числа транзакций или суммы средств, находящихся под
+            риском в определенный период времени, может снизить потенциальный ущерб от атак.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   OWASP Top 10
+  </h2>
+ </div>
+ <p dir="auto">
+  Сообщество
+  <strong>
+   OWASP (Open Worldwide Application Security Project)
+  </strong>
+  опубликовало список
+        Smart Contract Top 10, который предоставляет разработчикам в области Web3 и экспертам по информационной
+        безопасности
+        подробное описание 10 самых распространенных уязвимостей смарт-контрактов.
+ </p>
+ <p dir="auto">
+  Смарт-контракты представляют собой программный код, который автоматизирует проверку и выполнение
+        контрактных условий в блокчейне, тем самым исключая необходимость использования посредников.
+        Они обеспечивают прозрачность, эффективность и надежность цифровых сделок, однако, как и обычные программы,
+        могут содержать уязвимости и создавать риски для информационной безопасности.
+ </p>
+ <p dir="auto">
+  В этом аналитическом обзоре мы представим адаптированную русскоязычную версию списка OWASP Smart
+        Contract Top 10 с комментариями, рекомендациями и простыми примерами.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Изменения 2023-2025г.
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/146094679/423268015-e89a4856-082f-4381-98a6-9ade9684d1b8.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTMsIm5iZiI6MTc0NTE0ODYxMywicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjY4MDE1LWU4OWE0ODU2LTA4MmYtNDM4MS05OGE2LTlhZGU5Njg0ZDFiOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04Yjg2YmM2YTg2ZWU3MjU2YjNlNDNiMDNhNmU0MWU3MDRhM2U1YmM1ODdhOTgwMTFlMTkxYmFiMDllZTJiNGQ0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.zs5wPhvEnD4pSZXw00FJMM8bOnmj-a72xtmXPFYH_tE" rel="noopener noreferrer" target="_blank">
+   <img alt="Mapping2023-2025" src="https://private-user-images.githubusercontent.com/146094679/423268015-e89a4856-082f-4381-98a6-9ade9684d1b8.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTMsIm5iZiI6MTc0NTE0ODYxMywicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjY4MDE1LWU4OWE0ODU2LTA4MmYtNDM4MS05OGE2LTlhZGU5Njg0ZDFiOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04Yjg2YmM2YTg2ZWU3MjU2YjNlNDNiMDNhNmU0MWU3MDRhM2U1YmM1ODdhOTgwMTFlMTkxYmFiMDllZTJiNGQ0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.zs5wPhvEnD4pSZXw00FJMM8bOnmj-a72xtmXPFYH_tE" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Уязвимости контроля доступа (Access Control Vulnerabilities
+            SC01:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Уязвимости этого типа возникают в случае неправильной реализации ограничений, касающихся того, кто и
+        как может взаимодействовать с определенными функциями смарт-контракта. К этой категории уязвимостей относится
+        небезопасное управление правами пользователей, а также ошибки в логике проверки прав. Злоумышленник может
+        использовать такую уязвимость для выполнения несанкционированных действий (например, для вызова функций) при
+        проведении дальнейших атак.
+ </p>
+ <p dir="auto">
+  Функциональность зарплатного смарт-контракта, предназначенная для обновления адреса кошелька, случайно
+        оказалась доступна любому пользователю, и ваша зарплата досталась злоумышленнику.
+ </p>
+ <p dir="auto">
+  Уязвимость контроля доступа — это недостаток безопасности, который позволяет несанкционированным
+        пользователям получить доступ или изменить данные или функции контракта. Эти уязвимости возникают, когда код
+        контракта не обеспечивает адекватных ограничений доступа в зависимости от уровней разрешений пользователя.
+        Контроль доступа в смарт-контрактах может относиться к управлению и критической логике, такой как эмиссия
+        токенов, голосование по предложениям, вывод средств, приостановка и обновление контрактов, а также изменение
+        прав собственности.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_AccessControl</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint256</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-c">// Функция сжигания без контроля доступа</span>
+        <span class="pl-k">function<span class="pl-en"> burn</span></span>(<span class="pl-c1">address</span> <span class="pl-v">account</span>, <span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-en">_burn</span>(account, amount);
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+  Злоумышленники могут получить несанкционированный доступ к критически важным функциям и данным в контракте, что
+        нарушит его целостность и безопасность.
+        Уязвимости могут привести к краже средств или активов, управляемых контрактом, что вызовет значительные
+        финансовые убытки для пользователей и заинтересованных сторон.
+        Ремедиация:
+        Убедитесь, что функции инициализации могут быть вызваны только один раз и исключительно авторизованными
+        сущностями.
+        Используйте устоявшиеся шаблоны контроля доступа, такие как Ownable или RBAC (контроль доступа на основе ролей)
+        в ваших контрактах для управления разрешениями и обеспечения того, чтобы только авторизованные пользователи
+        могли получить доступ к определенным функциям. Это можно сделать, добавив соответствующие модификаторы контроля
+        доступа, такие как onlyOwner или пользовательские роли для чувствительных функций.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (безопасная версия):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-c">// Импорт контракта Ownable из OpenZeppelin для управления правами собственности</span>
+    <span class="pl-k">import</span> <span class="pl-s">"<span class="pl-s">@openzeppelin/contracts/access/Ownable.sol</span>"</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_AccessControl</span> <span class="pl-k">is</span> <span class="pl-en">Ownable</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint256</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-c">// Функция сжигания с правильным контролем доступа, доступная только владельцу контракта</span>
+        <span class="pl-k">function<span class="pl-en"> burn</span></span>(<span class="pl-c1">address</span> <span class="pl-v">account</span>, <span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> onlyOwner {
+            <span class="pl-en">_burn</span>(account, amount);
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте в смарт-контракте механизмы Ownable или RBAC;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Проводите регулярный аудит исходного кода смарт-контракта для поиска уязвимостей контроля
+                доступа.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Известные случаи атак Access Control Vulnerabilities (SC01:2025)
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://etherscan.io/address/0x952aa09109e3ce1a66d41dc806d9024a91dd5684#code" rel="nofollow">
+    HospoWise Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/access-control-vulnerabilities-in-smart-contracts-a31757f5d707" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://bscscan.com/address/0x1a62fe088F46561bE92BB5F6e83266289b94C154#code" rel="nofollow">
+    LAND
+                NFT Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/land-hack-analysis-missing-access-control-66fb9555a3e3" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Манипуляция ценовым оракулом (Price Oracle Manipulation
+            SC02:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Манипуляция ценовым оракулом — это критическая уязвимость в смарт-контрактах, которые зависят от
+        внешних источников данных (оракулов) для получения цен или другой информации. В децентрализованных финансах
+        (DeFi) оракулы используются для предоставления смарт-контрактам данных из реального мира, таких как цены
+        активов. Однако, если данные, предоставляемые оракулом, будут манипулированы, это может привести к некорректному
+        поведению контракта. Злоумышленники могут воспользоваться этим, подделав данные оракула, что приведет к
+        серьезным последствиям, таким как несанкционированное снятие средств, получение чрезмерного кредитного плеча или
+        даже опустошение пулов ликвидности. Для предотвращения таких атак необходимы надлежащие меры защиты и механизмы
+        валидации.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">interface</span> <span class="pl-en">IPriceFeed</span> {
+        <span class="pl-k">function<span class="pl-en"> getLatestPrice</span></span>() <span class="pl-k">external</span> <span class="pl-k">view</span> <span class="pl-k">returns</span> (<span class="pl-c1">int</span>);
+    }
+    
+    <span class="pl-k">contract</span> <span class="pl-en">PriceOracleManipulation</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> owner;
+        IPriceFeed <span class="pl-k">public</span> priceFeed;
+    
+        <span class="pl-k">constructor</span>(<span class="pl-c1">address</span> <span class="pl-v">_priceFeed</span>) {
+            owner <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+            priceFeed <span class="pl-k">=</span> <span class="pl-en">IPriceFeed</span>(_priceFeed);
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> borrow</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-c1">int</span> price <span class="pl-k">=</span> priceFeed.<span class="pl-en">getLatestPrice</span>();
+            <span class="pl-k">require</span>(price <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Price must be positive</span>"</span>);
+    
+            <span class="pl-c">// Уязвимость: Отсутствует проверка или защита от манипуляции ценой</span>
+            <span class="pl-c1">uint256</span> collateralValue <span class="pl-k">=</span> <span class="pl-c1">uint256</span>(price) <span class="pl-k">*</span> amount;
+    
+            <span class="pl-c">// Логика заимствования основывается на манипулируемой цене</span>
+            <span class="pl-c">// Если злоумышленник подделает цену через оракул, он сможет взять в долг больше средств, чем положено</span>
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> repay</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-c">// Логика возврата займа</span>
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Злоумышленники могут манипулировать оракулом для завышения цены актива, что позволит им заимствовать больше
+            средств, чем они могли бы при нормальных условиях.
+  </li>
+  <li>
+   В случаях, когда манипулированная цена приводит к ложной оценке залога, добросовестные пользователи могут
+            столкнуться с ликвидацией своих позиций из-за некорректной оценки стоимости.
+  </li>
+  <li>
+   Если оракул будет скомпрометирован, атакующие могут использовать поддельные данные для опустошения пулов
+            ликвидности контракта или даже сделать контракт неплатежеспособным.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Агрегируйте данные из нескольких независимых оракулов, чтобы снизить риск манипуляции со стороны одного
+            источника.
+  </li>
+  <li>
+   Установите минимальные и максимальные пороговые значения для цен, получаемых от оракула, чтобы предотвратить
+            резкие колебания цен, влияющие на логику контракта.
+  </li>
+  <li>
+   Введите временную блокировку между обновлениями цен, чтобы избежать мгновенных изменений, которые могут быть
+            использованы злоумышленниками.
+  </li>
+  <li>
+   Используйте криптографические доказательства для обеспечения подлинности данных, получаемых от оракулов,
+            например, требуйте подписи от доверенных сторон.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленная версия):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">interface</span> <span class="pl-en">IPriceFeed</span> {
+        <span class="pl-k">function<span class="pl-en"> getLatestPrice</span></span>() <span class="pl-k">external</span> <span class="pl-k">view</span> <span class="pl-k">returns</span> (<span class="pl-c1">int</span>);
+    }
+    
+    <span class="pl-k">contract</span> <span class="pl-en">PriceOracleManipulation</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> owner;
+        IPriceFeed <span class="pl-k">public</span> priceFeed;
+        <span class="pl-c1">int</span> <span class="pl-k">public </span>minPrice <span class="pl-k">=</span> <span class="pl-c1">1000</span>; <span class="pl-c">// Минимально допустимая цена</span>
+        <span class="pl-c1">int</span> <span class="pl-k">public </span>maxPrice <span class="pl-k">=</span> <span class="pl-c1">2000</span>; <span class="pl-c">// Максимально допустимая цена</span>
+    
+        <span class="pl-k">constructor</span>(<span class="pl-c1">address</span> <span class="pl-v">_priceFeed</span>) {
+            owner <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+            priceFeed <span class="pl-k">=</span> <span class="pl-en">IPriceFeed</span>(_priceFeed);
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> borrow</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-c1">int</span> price <span class="pl-k">=</span> priceFeed.<span class="pl-en">getLatestPrice</span>();
+            <span class="pl-k">require</span>(price <span class="pl-k">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;&amp;</span> price <span class="pl-k">&gt;=</span> minPrice <span class="pl-k">&amp;&amp;</span> price <span class="pl-k">&lt;=</span> maxPrice, <span class="pl-s">"<span class="pl-s">Price manipulation detected</span>"</span>);
+    
+            <span class="pl-c1">uint256</span> collateralValue <span class="pl-k">=</span> <span class="pl-c1">uint256</span>(price) <span class="pl-k">*</span> amount;
+    
+            <span class="pl-c">// Логика заимствования с использованием проверенной цены</span>
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> repay</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-c">// Логика возврата займа</span>
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Известные случаи атак Price Oracle Manipulation SC02:2025
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://blog.solidityscan.com/polter-finance-hack-analysis-c5eaa6dcfd40" rel="nofollow">
+    Polter
+                Finance Hack Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://polygonscan.com/address/0x4248fd3e2c055a02117eb13de4276170003ca295#code" rel="nofollow">
+    BonqDAO Protocol
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/bonqdao-protocol-hack-analysis-oracle-manipulation-8e6978149a66" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Логические ошибки (Logic Errors SC03:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Логические ошибки возникают из-за выполнения неправильных/непредусмотренных действий в отношении
+        смарт-контракта. Они могут привести к некорректной обработке транзакций, неправильному распределению токенов и в
+        итоге к финансовому ущербу.
+ </p>
+ <p dir="auto">
+  Смарт-контракт, распределяющий дивиденды между акционерами вашей компании, может содержать ошибку,
+        из-за которой расчет доли каждого инвестора для выплаты дивидендов будет произведен неверно.
+ </p>
+ <p dir="auto">
+  <strong>
+   Примеры логических ошибок:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Неправильное распределение наград: Ошибки в расчете распределения наград между участниками, что приводит к
+            несправедливому выделению средств.
+  </li>
+  <li>
+   Некорректная эмиссия токенов: Неконтролируемая или ошибочная логика выпуска токенов, позволяющая создавать
+            бесконечное или нежелательное количество токенов.
+  </li>
+  <li>
+   Дисбаланс в кредитных пулах: Неверное отслеживание депозитов и снятий, вызывающее несоответствие резервов
+            пула.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_LogicErrors</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint256</span>) <span class="pl-k">public</span> userBalances;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> totalLendingPool;
+    
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">public</span> <span class="pl-k">payable</span> {
+            userBalances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+            totalLendingPool <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-k">require</span>(userBalances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">&gt;=</span> amount, <span class="pl-s">"<span class="pl-s">Insufficient balance</span>"</span>);
+    
+            <span class="pl-c">// Ошибочная логика: Уменьшение баланса пользователя без корректировки общего пула</span>
+            userBalances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">-=</span> amount;
+    
+            <span class="pl-c">// Обновление общего пула пропущено.</span>
+    
+            <span class="pl-c1">payable</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>).<span class="pl-en">transfer</span>(amount);
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> mintReward</span></span>(<span class="pl-c1">address</span> <span class="pl-v">to</span>, <span class="pl-c1">uint256</span> <span class="pl-v">rewardAmount</span>) <span class="pl-k">public</span> {
+            <span class="pl-c">// Ошибка в логике эмиссии: Нет проверки значения награды</span>
+            userBalances[to] <span class="pl-k">+=</span> rewardAmount;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Логические ошибки могут привести к неожиданному поведению смарт-контракта или сделать его полностью
+            нефункциональным. Возможные последствия:
+   <ul dir="auto">
+    <li>
+     Потеря средств: Неверное распределение наград или дисбаланс в пулах может привести к утечке средств
+                    контракта.
+    </li>
+    <li>
+     Чрезмерная эмиссия токенов: Инфляция предложения токенов подрывает доверие и снижает их стоимость.
+    </li>
+    <li>
+     Операционные сбои: Контракт может не выполнять свои предусмотренные функции.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Эти последствия могут вызвать значительные финансовые и операционные убытки для пользователей и участников
+            проекта.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленная версия):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_LogicErrors</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint256</span>) <span class="pl-k">public</span> userBalances;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> totalLendingPool;
+    
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">public</span> <span class="pl-k">payable</span> {
+            userBalances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+            totalLendingPool <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-k">require</span>(userBalances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">&gt;=</span> amount, <span class="pl-s">"<span class="pl-s">Insufficient balance</span>"</span>);
+    
+            <span class="pl-c">// Корректное уменьшение баланса пользователя и обновление общего пула</span>
+            userBalances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">-=</span> amount;
+            totalLendingPool <span class="pl-k">-=</span> amount;
+    
+            <span class="pl-c1">payable</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>).<span class="pl-en">transfer</span>(amount);
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> mintReward</span></span>(<span class="pl-c1">address</span> <span class="pl-v">to</span>, <span class="pl-c1">uint256</span> <span class="pl-v">rewardAmount</span>) <span class="pl-k">public</span> {
+            <span class="pl-k">require</span>(rewardAmount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Reward amount must be positive</span>"</span>);
+    
+            <span class="pl-c">// Защищенная логика эмиссии</span>
+            userBalances[to] <span class="pl-k">+=</span> rewardAmount;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте инструменты автоматизированного тестирования, чтобы охватить как можно большее
+                количество способов использования смарт-контракта;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Проводите регулярный аудит исходного кода смарт-контракта для поиска логических ошибок;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Документируйте предполагаемое поведение каждой функции и модуля, после чего сравнивайте его с
+                фактической реализацией.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Известные случаи Logic Errors SC03:2025
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://bscscan.com/address/0x9f00fbd6c095d2c542687ed5afb68d9c3fb2f464#code#F11#L165" rel="nofollow">
+    Level Finance Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/level-finance-hack-analysis-16fda3996ecb" rel="nofollow">
+    Hack
+                Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://bscscan.com/address/0xdca503449899d5649d32175a255a8835a03e4006#code" rel="nofollow">
+    BNO
+                Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/bno-hack-analysis-15436d73e44e" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Отсутствие валидации входных данных (Lack of Input
+            Validation SC04:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Валидация входных данных необходима для того, чтобы смарт-контракт обрабатывал только корректные и
+        ожидаемые данные. Если контракт не проверяет входящие данные, он подвергается рискам, таким как манипуляция
+        логикой, несанкционированный доступ и непредсказуемое поведение. Например, если контракт предполагает, что
+        данные от пользователя всегда валидны и не проверяет их, злоумышленники могут воспользоваться этим доверием и
+        передать вредоносные данные. Отсутствие валидации компрометирует безопасность и надежность смарт-контракта.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_LackOfInputValidation</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint256</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-k">function<span class="pl-en"> setBalance</span></span>(<span class="pl-c1">address</span> <span class="pl-v">user</span>, <span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> {
+            <span class="pl-c">// Функция позволяет любому установить произвольный баланс для любого пользователя без проверок.</span>
+            balances[user] <span class="pl-k">=</span> amount;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Атакующие могут манипулировать входными данными для кражи средств, токенов или нанесения другого финансового
+            ущерба.
+  </li>
+  <li>
+   Некорректные данные могут повредить состояние переменных контракта, что приведет к ненадежной и небезопасной
+            работе.
+  </li>
+  <li>
+   Злоумышленники могут использовать контракт для несанкционированных транзакций и операций, влияя как на
+            пользователей, так и на всю систему.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Убедитесь, что входные данные соответствуют ожидаемому типу.
+  </li>
+  <li>
+   Проверяйте, что данные находятся в допустимых границах.
+  </li>
+  <li>
+   Гарантируйте, что только авторизованные лица могут вызывать определенные функции.
+  </li>
+  <li>
+   Валидируйте структуру данных, например формат адресов или длину строк.
+  </li>
+  <li>
+   Останавливайте выполнение и предоставляйте четкие сообщения об ошибках при некорректных данных.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленная версия):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">LackOfInputValidation</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint256</span>) <span class="pl-k">public</span> balances;
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> owner;
+    
+        <span class="pl-k">constructor</span>() {
+            owner <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+        }
+    
+        <span class="pl-k">modifier<span class="pl-en"> onlyOwner</span></span>() {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span> <span class="pl-k">==</span> owner, <span class="pl-s">"<span class="pl-s">Caller is not authorized</span>"</span>);
+            <span class="pl-k">_;</span>
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> setBalance</span></span>(<span class="pl-c1">address</span> <span class="pl-v">user</span>, <span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">public</span> onlyOwner {
+            <span class="pl-k">require</span>(user <span class="pl-k">!=</span> <span class="pl-c1">address</span>(<span class="pl-c1">0</span>), <span class="pl-s">"<span class="pl-s">Invalid address</span>"</span>);
+            balances[user] <span class="pl-k">=</span> amount;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Известные случаи Lack of Input Validation SC04:2025
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://etherscan.io/address/0x2b083beaaC310CC5E190B1d2507038CcB03E7606#code" rel="nofollow">
+    Convergence Finance
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/convergence-finance-hack-analysis-12e6acd9ea08" rel="nofollow">
+    Hack
+                Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://etherscan.io/address/0x3a23F943181408EAC424116Af7b7790c94Cb97a5#code" rel="nofollow">
+    Socket
+                Gateway
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/socket-gateway-hack-analysis-b0e9567f7d3e" rel="nofollow">
+    Hack
+                Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Повторный вход (Reentrancy Attacks SC05:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Это уязвимость смарт-контрактов, которая позволяет злоумышленнику многократно вызывать функцию
+        контракта, не дожидаясь завершения предыдущего вызова. Это может привести к хищению активов,
+        несанкционированному вызову функций смарт-контракта или к изменению его состояния, которые нарушат его штатную
+        работу.
+ </p>
+ <p dir="auto">
+  Представьте, что вы приходите в банкомат, чтобы снять зарплату. Вы вставляете карту, вводите ПИН-код,
+        запрашиваете сумму для снятия наличных.
+        Банкомат списывает запрошенную сумму и выдает вам наличные. Если вы захотите снять дополнительные деньги, то вам
+        нужно будет начать новую транзакцию.
+ </p>
+ <p dir="auto">
+  Как будет выглядеть снятие наличных в случае атаки повторного входа? Вы вставляете карту, вводите
+        ПИН-код, запрашиваете сумму для снятия наличных. В момент,
+        когда банкомат начинает выдавать деньги, вы снова вводите запрос на снятие, не завершив предыдущую операцию.
+        Банкомат не успевает учесть выдачу денег с предыдущей операции и думает,
+        что должен вам еще. Таким образом, вы сможете снять денег больше, чем у вас есть на счете.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_Reentrancy</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-c1">uint</span> amount <span class="pl-k">=</span> balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+            <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Insufficient balance</span>"</span>);
+    
+            <span class="pl-c">// Vulnerability: Ether is sent before updating the user's balance, allowing reentrancy.</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Transfer failed</span>"</span>);
+    
+            <span class="pl-c">// Update balance after sending Ether</span>
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие
+  </strong>
+  :
+ </p>
+ <ul dir="auto">
+  <li>
+   Основной и наиболее опасный эффект — это возможность вывести больше средств, чем положено, что может
+            привести к полному опустошению контракта.
+  </li>
+  <li>
+   Злоумышленник может инициировать несанкционированные вызовы других функций, что приводит к непредсказуемым
+            последствиям и дополнительным уязвимостям в экосистеме.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример (Безопасная версия):
+  </h3>
+ </div>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_Reentrancy</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-c1">uint</span> amount <span class="pl-k">=</span> balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+            <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Insufficient balance</span>"</span>);
+    
+            <span class="pl-c">// Fix: Update the user's balance before sending Ether</span>
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    
+            <span class="pl-c">// Then send Ether</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Transfer failed</span>"</span>);
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Придерживайтесь использования модели Checks-Effects-Interactions (чтобы убедиться, что все внутренние
+            изменения состояния выполнены до передачи потока управления);
+  </li>
+  <li>
+   Используйте механизмы защиты типа mutex, обеспечивающие взаимное исключение исполнения важных участков кода;
+  </li>
+  <li>
+   Регулярно обновляйте Solidity до актуальных версий.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Известные случаи атак Reentrancy Attacks (SC05:2025):
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://etherscan.io/address/0xe16db319d9da7ce40b666dd2e365a4b8b3c18217#code" rel="nofollow">
+    Rari
+                Capital
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/rari-capital-re-entrancy-vulnerability-analysis-25df2bbfc803" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://etherscan.io/address/0x98a877bb507f19eb43130b688f522a13885cf604#code" rel="nofollow">
+    Orion
+                Protocol
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/orion-protocol-hack-analysis-missing-reentrancy-protection-f9af6995acb3" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Непроверенные возвращаемые значения внешних вызовов
+            (Unchecked External Calls SC06:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Такие уязвимости возникают, когда смарт-контракт вызывает другой контракт, но не проверяет результат
+        этого вызова (вызванный контракт может завершиться с ошибкой). Это может привести к нарушению логики работы
+        смарт-контракта, ошибкам при проведении транзакций и потере активов.
+ </p>
+ <p dir="auto">
+  Представьте, что вы оплачиваете онлайн-подписку на стриминговый сервис. Если сервис отправит ваш
+        платеж, но не проверит его успешное завершение, это может привести к тому, что деньги спишутся с вашего счета,
+        но не поступят на счет получателя.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.4.24</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_UncheckedExternalCall</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> owner;
+    
+        <span class="pl-k">constructor</span>() <span class="pl-k">public</span> {
+            owner <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> forward</span></span>(<span class="pl-c1">address</span> <span class="pl-v">callee</span>, <span class="pl-c1">bytes</span> <span class="pl-v">_data</span>) <span class="pl-k">public</span> {
+            <span class="pl-k">require</span>(callee.<span class="pl-c1">delegatecall</span>(_data));
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Неконтролируемые внешние вызовы могут привести к сбоям транзакций, из-за чего запланированные операции не
+            будут выполнены успешно. Это может привести к потере средств, поскольку контракт может продолжить работу под
+            ложным предположением, что перевод прошел успешно. Кроме того, это может привести к некорректному состоянию
+            контракта, делая его уязвимым к дальнейшим атакам и вызывая несоответствия в логике работы.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Всегда проверяйте возвращаемые значения функций call, delegatecall и callcode;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Используйте в Solidity функции transfer или send вместо call.value()().
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленная версия):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>; 
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_UncheckedExternalCall</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> owner;
+    
+        <span class="pl-k">constructor</span>() {
+            owner <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> forward</span></span>(<span class="pl-c1">address</span> <span class="pl-v">callee</span>, <span class="pl-c1">bytes</span> <span class="pl-k">memory</span> <span class="pl-v">_data</span>) <span class="pl-k">public</span> {
+            <span class="pl-c">// Ensure that delegatecall succeeds</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> callee.<span class="pl-c1">delegatecall</span>(_data);
+            <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Delegatecall failed</span>"</span>);  <span class="pl-c">// Check the return value to handle failure</span>
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Известные случаи Unchecked External Calls SC06:2025
+  </strong>
+  **
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://github.com/PunkFinance/punk.protocol/blob/master/contracts/models/CompoundModel.sol">
+    Punk
+                Protocol Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/security-issues-with-delegate-calls-4ae64d775b76" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Атаки с использованием Flash-займов (Flash Loan Attacks
+            SC07:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Атаки с использованием flash-займов (мгновенных займов) эксплуатируют возможность заимствовать крупные
+        суммы без залога в рамках одной транзакции. Эти атаки используют атомарную природу блокчейн-транзакций, где все
+        операции должны завершаться либо полностью успешно, либо полностью сбоем. Объединяя flash-займы с другими
+        уязвимостями, такими как манипуляция оракулом, повторный вход (reentrancy) или ошибки в логике, злоумышленники
+        могут изменить поведение смарт-контракта и вывести средства.
+ </p>
+ <p dir="auto">
+  <strong>
+   Примеры атак с использованием Flash-займов:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Манипуляция оракулом: Использование заимствованных средств для искажения данных ценового оракула и
+            последующего запуска ликвидаций с недостаточным обеспечением.
+  </li>
+  <li>
+   Осушение пулов ликвидности: Применение flash-займов для вывода ликвидности или эксплуатации недостатков в
+            механизмах AMM (автоматических маркет-мейкеров).
+  </li>
+  <li>
+   Арбитражные атаки: Использование flash-займов для манипуляции ликвидностью и получения прибыли на разнице
+            цен между платформами.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Воздействие
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Потеря средств: Злоумышленники могут опустошить резервы протокола или изменить условия обеспечения займов
+            для кражи активов.
+  </li>
+  <li>
+   Нарушение рыночной стабильности: Временные манипуляции ценами или ликвидностью, влияющие на пользователей и
+            платформы.
+  </li>
+  <li>
+   Ущерб для экосистемы: Потеря доверия к протоколам, снижение числа пользователей и финансовые убытки.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Исключение зависимости от flash-займов в критической логике: Ограничьте выполнение чувствительных функций
+            только в проверенных и предсказуемых условиях.
+  </li>
+  <li>
+   Устойчивые к манипуляциям оракулы: Используйте взвешенные по времени средние цены (TWAP) или
+            децентрализованные оракулы.
+  </li>
+  <li>
+   Комплексное тестирование: Проводите тесты с моделированием сценариев атак с использованием flash-займов и
+            проверкой крайних случаев.
+  </li>
+  <li>
+   Контроль доступа: Ограничьте доступ к критическим функциям для предотвращения несанкционированных или
+            вредоносных операций.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Известные случаи Flash Loan Attacks SC07:2025
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://blog.solidityscan.com/uwulend-hack-analysis-77eb9181a717" rel="nofollow">
+    UwUlend Hack
+   </a>
+   :
+            A Comprehensive
+   <a href="https://blog.solidityscan.com/uwulend-hack-analysis-77eb9181a717" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://blog.solidityscan.com/doughfina-hack-analysis-685ed56adb19" rel="nofollow">
+    Doughfina
+                Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/doughfina-hack-analysis-685ed56adb19" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Целочисленное переполнение/антипереполнение (Integer
+            Overflow and Underflow SC08:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Уязвимости этого типа возникают тогда, когда значение целого числа (int) в смарт-контракте превышает
+        максимально или минимально допустимые пределы.
+        Это может привести к несанкционированному изменению логики работы контракта, потере активов и другому ущербу.
+ </p>
+ <p dir="auto">
+  Недобросовестный автовладелец не хочет продавать старенький автомобиль всего за 15 тысяч рублей только
+        потому, что пробег на шестизначном одометре его ласточки равен 999 999 км.
+        Он может воспользоваться уязвимостью «Целочисленное переполнение» — проехать еще один километр, получить пробег
+        в 000 000 км (напоминаем, что там не предусмотрена седьмая цифра) и продать ее в разы дороже.
+ </p>
+ <p dir="auto">
+  Ethereum Virtual Machine (EVM) определяет типы данных фиксированного размера для целых чисел. Это
+        означает, что диапазон чисел, которые может представлять переменная типа целое число, конечен. Например, «uint8»
+        (беззнаковое целое число на 8 бит; т.е. неотрицательное) может хранить только целые числа, которые находятся в
+        пределах от 0 до 255. Попытка сохранить значение, превышающее 255, в переменную типа «uint8», приведет к
+        переполнению. Точно так же результатом вычитания «1» из «0» будет 255. Это называется недополнением. Когда
+        арифметическая операция превышает или недостаточна для максимального или минимального размера типа, происходит
+        переполнение или недополнение. Для знаковых целых чисел результат будет немного отличаться. Если мы попытаемся
+        вычесть «1» из переменной типа int8, значение которой равно -128, результат будет 127. Это связано с тем, что
+        знаковые типы целых чисел, которые могут представлять отрицательные значения, начинают отсчет заново, когда мы
+        достигаем наибольшего отрицательного значения. Два простых примера такого поведения включают периодические
+        математические функции (например, прибавление 2 к аргументу синуса оставляет значение неизменным) и одометры в
+        автомобилях, которые отслеживают пройденное расстояние (они сбрасываются на 000000 после превышения
+        максимального числа, т.е. 999999).
+ </p>
+ <p dir="auto">
+  Важно:- В Solidity версии 0.8.0 и выше компилятор автоматически проверяет переполнения и недополнения
+        в арифметических операциях, откатывая транзакцию в случае переполнения или недополнения. Solidity 0.8.0 также
+        вводит ключевое слово unchecked, которое позволяет разработчикам выполнять арифметические операции без этих
+        автоматических проверок, явно разрешая переполнение без отката. Это может быть полезно для оптимизации
+        использования газа в случаях, когда переполнение не является проблемой или когда поведение обертки требуется,
+        как в предыдущих версиях Solidity.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.4.17</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_OverflowUnderflow</span> {
+        <span class="pl-c1">uint8</span> <span class="pl-k">public</span> balance;
+    
+        <span class="pl-k">constructor</span>() <span class="pl-k">public</span> {
+            balance <span class="pl-k">=</span> <span class="pl-c1">255</span>; <span class="pl-c">// Максимальное значение для uint8</span>
+        }
+    
+        <span class="pl-c">// Увеличивает баланс на заданное значение</span>
+        <span class="pl-k">function<span class="pl-en"> increment</span></span>(<span class="pl-c1">uint8</span> <span class="pl-v">value</span>) <span class="pl-k">public</span> {
+            balance <span class="pl-k">+=</span> value; <span class="pl-c">// Уязвимость к переполнению</span>
+        }
+    
+        <span class="pl-c">// Уменьшает баланс на заданное значение</span>
+        <span class="pl-k">function<span class="pl-en"> decrement</span></span>(<span class="pl-c1">uint8</span> <span class="pl-v">value</span>) <span class="pl-k">public</span> {
+            balance <span class="pl-k">-=</span> value; <span class="pl-c">// Уязвимость к недополнению</span>
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+  Злоумышленник может использовать такие уязвимости для искусственного увеличения баланса аккаунта или количества
+        токенов, что может позволить ему вывести больше средств, чем он законно имеет.
+        Злоумышленник может изменить запланированный поток логики контракта, что приведет к несанкционированным
+        действиям, таким как кража активов или создание чрезмерного количества токенов.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте библиотеки (например, SafeMath), которые содержат функции для проведения
+                безопасных арифметических операций;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Используйте Solidity версии 0.8.0 и выше, в котором есть встроенная защита от этой уязвимости.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленная версия):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre>Копировать
+    Редактировать
+    <span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_OverflowUnderflow</span> {
+        <span class="pl-c1">uint8</span> <span class="pl-k">public</span> balance;
+    
+        <span class="pl-k">constructor</span>() {
+            balance <span class="pl-k">=</span> <span class="pl-c1">255</span>; <span class="pl-c">// Максимальное значение для uint8</span>
+        }
+    
+        <span class="pl-c">// Увеличивает баланс на заданное значение</span>
+        <span class="pl-k">function<span class="pl-en"> increment</span></span>(<span class="pl-c1">uint8</span> <span class="pl-v">value</span>) <span class="pl-k">public</span> {
+            balance <span class="pl-k">+=</span> value; <span class="pl-c">// Solidity 0.8.x автоматически проверяет переполнение</span>
+        }
+    
+        <span class="pl-c">// Уменьшает баланс на заданное значение</span>
+        <span class="pl-k">function<span class="pl-en"> decrement</span></span>(<span class="pl-c1">uint8</span> <span class="pl-v">value</span>) <span class="pl-k">public</span> {
+            <span class="pl-k">require</span>(balance <span class="pl-k">&gt;=</span> value, <span class="pl-s">"<span class="pl-s">Обнаружено недополнение</span>"</span>);
+            balance <span class="pl-k">-=</span> value;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Известные случаи атак Integer Overflow and Underflow (SC08:2025)
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://etherscan.io/address/0xe16db319d9da7ce40b666dd2e365a4b8b3c18217#code" rel="nofollow">
+    Rari
+                Capital
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/rari-capital-re-entrancy-vulnerability-analysis-25df2bbfc803" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://etherscan.io/address/0x98a877bb507f19eb43130b688f522a13885cf604#code" rel="nofollow">
+    Orion
+                Protocol
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/orion-protocol-hack-analysis-missing-reentrancy-protection-f9af6995acb3" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Небезопасная генерация случайности (Insecure Randomness
+            SC09:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  Такие уязвимости возникают при использовании небезопасных источников для генерации случайных чисел,
+        используемых при проведении транзакций. Это позволяет злоумышленнику предсказать результат генерации и
+        манипулировать им при проведении атак.
+ </p>
+ <p dir="auto">
+  Ваш начальник написал смарт-контракт лотереи для розыгрыша премии. В качестве источника случайности
+        используется номер текущего блока. Хитрый сотрудник может проанализировать блокчейн и угадать «случайное» число,
+        чтобы повысить свои шансы на выигрыш.
+ </p>
+ <p dir="auto">
+  <strong>
+   Небезопасные способы генерации случайных чисел в Solidity:
+  </strong>
+  Разработчики часто используют связанные с блоком методы для генерации случайных чисел, такие как:
+ </p>
+ <ul dir="auto">
+  <li>
+   block.timestamp: временная метка текущего блока.
+  </li>
+  <li>
+   blockhash(uint blockNumber): хэш указанного блока (только для последних 256 блоков).
+  </li>
+  <li>
+   block.difficulty: сложность текущего блока.
+  </li>
+  <li>
+   block.number: номер текущего блока.
+  </li>
+  <li>
+   block.coinbase: адрес майнера текущего блока.
+            Эти методы небезопасны, поскольку майнеры могут манипулировать ими и влиять на логику контракта.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.24</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_InsecureRandomness</span> {
+        <span class="pl-k">constructor</span>() <span class="pl-k">payable</span> {}
+    
+        <span class="pl-k">function<span class="pl-en"> guess</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">_guess</span>) <span class="pl-k">public</span> {
+            <span class="pl-c1">uint256</span> answer <span class="pl-k">=</span> <span class="pl-c1">uint256</span>(
+                <span class="pl-c1">keccak256</span>(
+                    <span class="pl-c1">abi.encodePacked</span>(<span class="pl-c1">block</span>.<span class="pl-c1">timestamp</span>, <span class="pl-c1">block</span>.<span class="pl-c1">difficulty</span>, <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>) <span class="pl-c">// Использование небезопасных методов для генерации случайного числа</span>
+                )
+            );
+    
+            <span class="pl-k">if</span> (_guess <span class="pl-k">==</span> answer) {
+                (<span class="pl-c1">bool</span> <span class="pl-v">sent</span>,) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: <span class="pl-c1">1</span> <span class="pl-c1">ether</span>}(<span class="pl-s">""</span>);
+                <span class="pl-k">require</span>(sent, <span class="pl-s">"<span class="pl-s">Failed to send Ether</span>"</span>);
+            }
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие:
+  </strong>
+  Небезопасная генерация случайных чисел может быть использована злоумышленниками для получения нечестного
+        преимущества в играх, лотереях и других контрактах, зависящих от случайности. Предсказывая или манипулируя якобы
+        случайными результатами, атакующие могут склонить исход в свою пользу. Это приводит к несправедливым выигрышам,
+        финансовым потерям других участников и подрыву доверия к смарт-контракту.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте схемы commit-reveal, в которых пользователи отправляют хешированные значения и
+                раскрывают их позже;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Используйте внешние оракул-сервисы.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Использование схем коммитмента — криптографическая примитивная техника, которая использует
+                подход commit-reveal. Широко применяется в "подбрасывании монеты", доказательствах с нулевым
+                разглашением и безопасных вычислениях, например: RANDAO.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Chainlink VRF — это доказуемо честный и проверяемый генератор случайных чисел (RNG), который
+                позволяет смарт-контрактам получать случайные значения без ущерба для безопасности или удобства.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Алгоритм Signidice — подходит для PRNG в приложениях между двумя сторонами с использованием
+                криптографических подписей.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Хэши блоков Bitcoin — можно использовать оракулы, такие как BTCRelay, которые служат мостом
+                между Ethereum и Bitcoin. Контракты в Ethereum могут запрашивать будущие хэши блоков в блокчейне Bitcoin
+                как источник энтропии. Следует учитывать, что этот метод подвержен манипуляциям со стороны майнеров и
+                должен использоваться с осторожностью.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленный контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.24</span>;
+    
+    <span class="pl-k">import</span> <span class="pl-s">"<span class="pl-s">@chainlink/contracts/src/v0.8/VRFConsumerBase.sol</span>"</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_InsecureRandomness</span> <span class="pl-k">is</span> <span class="pl-en">VRFConsumerBase</span> {
+        <span class="pl-c1">bytes32</span> <span class="pl-k">internal</span> keyHash;
+        <span class="pl-c1">uint256</span> <span class="pl-k">internal</span> fee;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> randomResult;
+    
+        <span class="pl-k">constructor</span>(<span class="pl-c1">address</span> <span class="pl-v">_vrfCoordinator</span>, <span class="pl-c1">address</span> <span class="pl-v">_linkToken</span>, <span class="pl-c1">bytes32</span> <span class="pl-v">_keyHash</span>, <span class="pl-c1">uint256</span> <span class="pl-v">_fee</span>) 
+            <span class="pl-en">VRFConsumerBase</span>(_vrfCoordinator, _linkToken) 
+        {
+            keyHash <span class="pl-k">=</span> _keyHash;
+            fee <span class="pl-k">=</span> _fee;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> requestRandomNumber</span></span>() <span class="pl-k">public</span> <span class="pl-k">returns</span> (<span class="pl-c1">bytes32</span> <span class="pl-v">requestId</span>) {
+            <span class="pl-k">require</span>(LINK.<span class="pl-en">balanceOf</span>(<span class="pl-c1">address</span>(<span class="pl-mi">this</span>)) <span class="pl-k">&gt;=</span> fee, <span class="pl-s">"<span class="pl-s">Not enough LINK</span>"</span>);
+            <span class="pl-k">return</span> <span class="pl-en">requestRandomness</span>(keyHash, fee);
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> fulfillRandomness</span></span>(<span class="pl-c1">bytes32</span> <span class="pl-v">requestId</span>, <span class="pl-c1">uint256</span> <span class="pl-v">randomness</span>) <span class="pl-k">internal</span> <span class="pl-k">override</span> {
+            randomResult <span class="pl-k">=</span> randomness;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> guess</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">_guess</span>) <span class="pl-k">public</span> {
+            <span class="pl-k">require</span>(randomResult <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Random number not generated yet</span>"</span>);
+            <span class="pl-k">if</span> (_guess <span class="pl-k">==</span> randomResult) {
+                (<span class="pl-c1">bool</span> <span class="pl-v">sent</span>,) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: <span class="pl-c1">1</span> <span class="pl-c1">ether</span>}(<span class="pl-s">""</span>);
+                <span class="pl-k">require</span>(sent, <span class="pl-s">"<span class="pl-s">Failed to send Ether</span>"</span>);
+            }
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Известные случаи Insecure Randomness SC09:2025
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://bscscan.com/address/0x26f1457f067bf26881f311833391b52ca871a4b5#code" rel="nofollow">
+    Roast
+                Football Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/roast-football-hack-analysis-e9316170c443" rel="nofollow">
+    Hack
+                Analysis
+   </a>
+  </li>
+  <li>
+   <a href="https://bscscan.com/address/0x80121da952a74c06adc1d7f85a237089b57af347#code" rel="nofollow">
+    FFIST
+                Hack
+   </a>
+   : A Comprehensive
+   <a href="https://blog.solidityscan.com/ffist-hack-analysis-9cb695c0fad9" rel="nofollow">
+    Hack Analysis
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Отказ в обслуживании (Denial of Service Attacks SC10:2025)
+  </h4>
+ </div>
+ <p dir="auto">
+  В контексте смарт-контрактов такие атаки происходят, когда злоумышленник вызывает сбой в работе
+        контракта и таким образом делает невозможным его нормальное использование. Также отказ в обслуживании в
+        смарт-контрактах может происходить из-за ошибок в исходном коде или недостатков в логике работы контракта.
+        Злоумышленник может этим воспользоваться, нарушить штатное функционирование контракта и нанести репутационный
+        или финансовый ущерб.
+ </p>
+ <p dir="auto">
+  Если в смарт-контракте есть функции, требующие больших вычислительных мощностей (например, циклы для
+        подсчета количества ваших лайков в телеграм-канале
+        «Резбез», злоумышленник может вызвать их, чтобы израсходовать весь газ и заблокировать контракт.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.24</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_DOS</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> king;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> balance;
+    
+        <span class="pl-k">function<span class="pl-en"> claimThrone</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> balance, <span class="pl-s">"<span class="pl-s">Need to pay more to become the king</span>"</span>);
+    
+            <span class="pl-c">//If the current king has a malicious fallback function that reverts, it will prevent the new king from claiming the throne, causing a Denial of Service.</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">sent</span>,) <span class="pl-k">=</span> king.<span class="pl-c1">call</span>{value: balance}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(sent, <span class="pl-s">"<span class="pl-s">Failed to send Ether</span>"</span>);
+    
+            balance <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+            king <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие
+  </strong>
+ </p>
+ <p dir="auto">
+  -Успешная атака типа «отказ в обслуживании» (DoS) может сделать смарт-контракт неработоспособным, не
+        позволяя пользователям взаимодействовать с ним должным образом. Это может нарушить работу критически важных
+        операций и сервисов, зависящих от данного контракта.
+ </p>
+ <p dir="auto">
+  -Атаки DoS могут привести к финансовым потерям, особенно в децентрализованных приложениях (dApps), где
+        смарт-контракты управляют средствами или активами.
+ </p>
+ <p dir="auto">
+  -DoS-атака может подорвать репутацию смарт-контракта и связанной с ним платформы. Пользователи могут
+        потерять доверие к безопасности и надёжности платформы, что приведёт к оттоку пользователей и потере
+        бизнес-возможностей.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте функцию call вместо функций send и transfer;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Ограничьте количество действий, которые могут быть выполнены в рамках одной транзакции;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Внедрите механизм pull-платежей для возврата или вывода активов, который разделяет процесс
+                начисления и вывода средств на две отдельные транзакции.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленный контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.24</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_DOS</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> king;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> balance;
+    
+        <span class="pl-c">// Use a safer approach to transfer funds, like transfer, which has a fixed gas stipend.</span>
+        <span class="pl-c">// This avoids using call and prevents issues with malicious fallback functions.</span>
+        <span class="pl-k">function<span class="pl-en"> claimThrone</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> balance, <span class="pl-s">"<span class="pl-s">Need to pay more to become the king</span>"</span>);
+    
+            <span class="pl-c1">address</span> previousKing <span class="pl-k">=</span> king;
+            <span class="pl-c1">uint256</span> previousBalance <span class="pl-k">=</span> balance;
+    
+            <span class="pl-c">// Update the state before transferring Ether to prevent reentrancy issues.</span>
+            king <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+            balance <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+    
+            <span class="pl-c">// Use transfer instead of call to ensure the transaction doesn't fail due to a malicious fallback.</span>
+            <span class="pl-c1">payable</span>(previousKing).<span class="pl-en">transfer</span>(previousBalance);
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Выбывшие из Топ 10 уязвимости
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Уязвимости, связанные с лимитом газа (Gas Limit
+            Vulnerabilities)
+  </h4>
+ </div>
+ <p dir="auto">
+  Уязвимости этого типа возникают, когда для выполнения функции требуется больше ресурсов, чем
+        предусмотрено в блоке. Эксплуатация этой уязвимости может привести к неполному выполнению функций
+        смарт-контракта, что приведет к блокировке активов и заморозке состояния контракта.
+ </p>
+ <p dir="auto">
+  Смарт-контракт, который управляет выплатой зарплаты, предполагает выполнение серии операций: расчет
+        суммы к выплате, отправка сотруднику расчетного листа и сам перевод средств. Если для выполнения всех этих
+        операций установлен недостаточный лимит газа, то транзакция не сможет успешно завершиться. Например, расчет
+        суммы к выплате и отправка расчетного листа пройдут успешно, но на стадии перевода средств газ закончится и
+        транзакция отменится, оставив сотрудника голодным.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Не используйте циклы, которые итерируются по динамическим структурам данных;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Используйте код, эффективно расходующий газ, и внедряйте тестовые функции с большим объемом
+                входных данных, чтобы убедиться, что они не превысят лимит газа для блока;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Разбивайте сложные вычисления на несколько транзакций.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Фронтраннинг (Front-running Attacks)
+  </h4>
+ </div>
+ <p dir="auto">
+  Такие атаки происходят, когда злоумышленник, имеющий доступ к информации об ожидающих исполнения
+        транзакциях, размещает ордер, который принесет ему прибыль от взаимодействия с такой транзакцией. Это позволяет
+        злоумышленнику перехватывать и изменять транзакции, что может привести к финансовому ущербу. Проведение таких
+        атак возможно в публичных блокчейн-сетях, где данные о транзакциях хранятся в открытом доступе.
+ </p>
+ <p dir="auto">
+  Вы хотите купить билет на концерт любимого артиста в первые часы продаж. Однако спекулянты,
+        предвосхищая высокий спрос, используют ботов и скупают все билеты, пока вы вручную бронируете места и вводите
+        данные своей карты. Теперь придется покупать билеты с рук в три раза дороже.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте схемы commit-reveal, которые скрывают фактические детали транзакции до ее
+                обработки;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Используйте механизм пакетных аукционов (batch auctions), который менее подвержен
+                фронтраннингу, поскольку не зависит от порядка транзакций;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Измените логику работы смарт-контракта таким образом, чтобы транзакции могли приниматься в
+                любом порядке.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Зависимость от временной метки (Timestamp Dependence)
+  </h4>
+ </div>
+ <p dir="auto">
+  Уязвимость возникает, когда у хакеров есть возможность манипулировать временными метками, которые
+        могут использоваться при реализации важных функций смарт-контрактов
+        (генерации псевдослучайных чисел, блокировки активов на определенный промежуток времени и других функций,
+        зависящих от времени), и таким образом влиять на логику работы смарт-контракта.
+ </p>
+ <p dir="auto">
+  Хитрый сотрудник турфирмы заработался и не успел купить горящий тур в Дубай, который продавался во
+        внутренней системе бронирования со скидкой 50% до конца рабочего дня.
+        Он может использовать уязвимость «Зависимость от временной метки» и, отмотав системное время назад, все-таки
+        совершить выгодную покупку.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Не используйте свойства block.timestamp или now при реализации ключевых функций
+                смарт-контракта;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Если нужно отслеживать время, рассмотрите возможность использования свойства block.number.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Применение OWASP Smart Contract Top 10 способствует формированию лучших практик в сфере разработки
+        блокчейн-проектов, что, в свою очередь, повышает доверие пользователей и инвесторов к современным технологиям.
+        Благодаря этому открываются новые возможности для использования таких технологий в различных отраслях экономики,
+        что способствует инновациям и цифровой трансформации.
+        Безопасность смарт-контрактов является основой успешного и надежного блокчейн-технологий. Понимание общих
+        уязвимостей и применение надежных мер безопасности позволяет разработчикам защищать цифровые активы и
+        поддерживать доверие пользователей. Постоянный мониторинг, аудит и участие сообщества через программы поиска
+        ошибок обеспечивают непрерывную безопасность и устойчивость к возникающим угрозам. По мере роста и интеграции
+        блокчейн-технологий в различные сектора, акцент на безопасность смарт-контрактов станет еще более важным.
+        Превентивные меры и приверженность безопасности помогут создать надежную и защищенную экосистему блокчейна,
+        способствующую инновациям и защищающую пользователей и их активы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Ресурсы
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   Owasp Top 10 Smart-Contracts Vulnerabilitys:
+   <a href="https://owasp.org/www-project-smart-contract-top-10/" rel="nofollow">
+    https://owasp.org/www-project-smart-contract-top-10/
+   </a>
+  </li>
+  <li>
+   Аналитический обзор списка OWASP Smart Contract Top 10:
+   <a href="https://rezbez.ru/reviews/analiticheskij-obzor-spiska-owasp-smart-contract-top-10" rel="nofollow">
+    https://rezbez.ru/reviews/analiticheskij-obzor-spiska-owasp-smart-contract-top-10
+   </a>
+  </li>
+  <li>
+   Безопасность Смарт-Контрактов: Основные Практики и Уязвимости:
+   <a href="https://auditfirst.io/ru/blog/smart-contract-security-key-practices-ru" rel="nofollow">
+    https://auditfirst.io/ru/blog/smart-contract-security-key-practices-ru
+   </a>
+  </li>
+  <li>
+   Безопасность и Уязвимости Умных Контрактов в Технологии Блокчейн:
+   <a href="https://dapp.expert/ru/news/ru_understanding-smart-contracts-and-their-vulnerabilities?utm_source=chatgpt.com" rel="nofollow">
+    https://dapp.expert/ru/news/ru_understanding-smart-contracts-and-their-vulnerabilities?utm_source=chatgpt.com
+   </a>
+  </li>
+  <li>
+   К вопросу о безопасности смарт-контрактов:
+   <a href="https://cyberleninka.ru/article/n/k-voprosu-o-bezopasnosti-smart-kontraktov/viewer" rel="nofollow">
+    https://cyberleninka.ru/article/n/k-voprosu-o-bezopasnosti-smart-kontraktov/viewer
+   </a>
+  </li>
+ </ol>
+</article>

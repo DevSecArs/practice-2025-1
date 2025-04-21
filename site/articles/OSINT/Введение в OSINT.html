@@ -1,0 +1,617 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Оглавление
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="#%D0%BE%D0%B1%D1%89%D0%B0%D1%8F-%D0%B8%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D1%8F">
+    Общая
+                информация
+   </a>
+  </li>
+  <li>
+   <a href="#ctf">
+    CTF
+   </a>
+  </li>
+  <li>
+   <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80">
+    Пример
+   </a>
+  </li>
+  <li>
+   <a href="#%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B5-%D0%BC%D0%BE%D0%B3%D1%83%D1%82-%D0%BF%D1%80%D0%B8%D0%B3%D0%BE%D0%B4%D0%B8%D1%82%D1%81%D1%8F-%D0%BF%D1%80%D0%B8-%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87">
+    Материалы
+                для решения задач
+   </a>
+  </li>
+  <li>
+   <a href="#%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8-%D0%BD%D0%B0-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B">
+    Ссылки
+                на использованные материалы
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Общая информация
+  </h2>
+ </div>
+ <p dir="auto">
+  OSINT (open-source intelligence, разведка на основе открытых данных) — сбор информации о человеке или
+        организации из открытых источников и ее последующий анализ.
+ </p>
+ <p dir="auto">
+  Специалисты по киберзащите обычно прибегают к сбору информации из общедоступных источников со
+        следующими целями:
+ </p>
+ <ul dir="auto">
+  <li>
+   Оценка защищенности объекта, определение поверхности атаки для более успешного противодействия угрозам
+  </li>
+  <li>
+   Выявление утечек данных
+  </li>
+  <li>
+   Идентификация готовящихся угроз, их источников и векторов
+  </li>
+  <li>
+   Расследование киберинцидентов и атрибуция атак
+  </li>
+ </ul>
+ <p dir="auto">
+  Злоумышленники могут использовать OSINT для выявления перспективных мишеней и слабых мест в защите
+        потенциальной жертвы, подготовки к целевым атакам с использованием социальной инженерии, а также в целях
+        доксинга.
+ </p>
+ <p dir="auto">
+  Источниками информации для OSINT могут служить:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Открытые данные (новости, подкасты, сведения о штатном расписании и контрагентах, записи в
+                блогах, социальных сетях и других интернет-сообществах, информация о доступных из Интернета портах и т.
+                д.), которые можно найти в Сети с помощью поисковых систем, в том числе специализированных, таких как
+                Shodan.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Предназначенные для публичного использования документы из невидимого сегмента Сети:
+   </p>
+   <ul dir="auto">
+    <li>
+     материалы, предоставляемые по запросу (отчеты, записи пресс-конференций, доклады, публичные
+                    заявления);
+    </li>
+    <li>
+     материалы, предоставляемые по подписке (статьи в отраслевых журналах, почтовые рассылки через
+                    специализированные сервисы).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Метаинформация, которую можно получить с помощью специализированных инструментов или при
+                анализе других материалов (например, из комментариев в коде программ).
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  Сбор информации в рамках OSINT можно проводить пассивными и активными методами. К пассивным относятся
+        любые методы, которые не предполагают взаимодействия с целевыми системами и не подлежат автоматическому
+        обнаружению. При активном сборе данных аналитик использует продвинутые техники и прочие методы, предполагающие
+        взаимодействие с целевыми системами, например регистрацию на сайте изучаемой организации с целью получить
+        доступные только зарегистрированным пользователям материалы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   CTF
+  </h2>
+ </div>
+ <p dir="auto">
+  Для решения заданий данной категории требуется применять различные законные методы сбора информации из
+        открытых источников (соц. сети, твиттер, страницы в интернете и тп). Гуглинг - один из ваших основных методов.
+        Чаще всего, это задания такого рода: найти имя/адрес/email/соц. сети человека, место на фотографии, координаты,
+        кому принадлежит домен и т.д.
+ </p>
+ <p dir="auto">
+  OSINT в capture the flag соревнованиях можно назвать разделом, в котором важно интуитивное понимание
+        задания, основанное на опыте нарешивания. Нет какого-либо определённого шаблона, ориентируясь на который, вы
+        могли бы решать таск. Необходимо много тренироваться, быть знакомым с различными случаями, и лишь тогда ваше
+        подсознание будет выдвигать предположения о вероятных вариантах развития событий и решениях.
+ </p>
+ <p dir="auto">
+  Частые ошибки, совершаемые участниками при решении данного типа заданий, основаны, в большинстве
+        своём, на банальной невнимательности и нелогичности сделанных доводов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Пример
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   CSAW CTF Qualification Round 2021
+  </strong>
+ </p>
+ <p dir="auto">
+  Категория: OSINT
+        Название: Vacation
+ </p>
+ <p dir="auto">
+  <strong>
+   Задание:
+  </strong>
+ </p>
+ <p dir="auto">
+  My mom told me she went to this amazing brewing company in the Carribbean and when I asked her the
+        name of the place, she sent me a picture of her ship. Can you help me find the name of this brewing company?
+ </p>
+ <p dir="auto">
+  Flag format: UMDCTF-{City_Companyname}
+ </p>
+ <p dir="auto">
+  Note: Companyname = first part of the company name
+ </p>
+ <p dir="auto">
+  <a href="https://drive.google.com/drive/folders/14eh2f13z32Uf7WFVNHWqHGnXE0P8y8G-?usp=sharing" rel="nofollow">
+   https://drive.google.com/drive/folders/14eh2f13z32Uf7WFVNHWqHGnXE0P8y8G-?usp=sharing
+  </a>
+ </p>
+ <p dir="auto">
+  author: itsecgary
+ </p>
+ <p dir="auto">
+  <strong>
+   Решение:
+  </strong>
+  (
+  <a href="https://github.com/mcmahoniel/ctf_write-ups/blob/main/2021/umdctf/osint/vacation/README.md">
+   источник
+  </a>
+  )
+ </p>
+ <p dir="auto">
+  Мы видим круизный лайнер, стоящий на якоре в тропическом порту, и бизнес под названием «Ромовая
+        терапия»:
+ </p>
+ <p dir="auto">
+  <a href="https://camo.githubusercontent.com/6cda5fcd4e0b3520c23fdbcf8d50d6d387ee01ceb70baa45af510d2d24757305/68747470733a2f2f74656c656772612e70682f66696c652f3333316163613530333139303234643265623366332e706e67" rel="noopener noreferrer nofollow" target="_blank">
+   <img alt="Круизный лайнер" src="https://camo.githubusercontent.com/6cda5fcd4e0b3520c23fdbcf8d50d6d387ee01ceb70baa45af510d2d24757305/68747470733a2f2f74656c656772612e70682f66696c652f3333316163613530333139303234643265623366332e706e67" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Быстрый поиск говорит нам, что это бар в Кастри, столице Сент-Люсии. Если мы откроем карту, мы увидим
+        Antillia Brewing Company через дорогу.
+ </p>
+ <p dir="auto">
+  Наш флаг в итоге выглядит так: UMDCTF-{Castries_Antillia}.
+ </p>
+ <p dir="auto">
+  Вот еще один пример, который можно почитать:
+ </p>
+ <p dir="auto">
+  <a href="https://habr.com/ru/post/338078/" rel="nofollow">
+   По следам кибердетектива
+  </a>
+  -
+        Последовательное решение заданий Cyber Detective, который проводился при конференции HackIT-2017.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Материалы, которые могут пригодится при решении задач
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Поисковики:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   censys.io
+  </li>
+  <li>
+   shodan.io
+  </li>
+  <li>
+   viz.greynoise.io/table
+  </li>
+  <li>
+   zoomeye.org
+  </li>
+  <li>
+   fofa.so
+  </li>
+  <li>
+   onyphe.io
+  </li>
+  <li>
+   app.binaryedge.io
+  </li>
+  <li>
+   hunter.io
+  </li>
+  <li>
+   wigle.net
+  </li>
+  <li>
+   Lampire.io
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Поиск информации о человеке из открытых источников:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   pipl.com/ [поисковик по социальным сетям]
+  </li>
+  <li>
+   leakedsource.ru [поиск по базам данных]
+  </li>
+  <li>
+   dumpedlqezarfife.onion [найдет письмо с паролем]
+  </li>
+  <li>
+   Leakprobe.net [найдет адрес электронной почты и источник утечки базы данных]
+  </li>
+  <li>
+   where-you.com [поисковик по социальным сетям(СНГ)]
+  </li>
+  <li>
+   vk.city4me.com [шпион ВК]
+  </li>
+  <li>
+   yasni.com [автоматический поиск в Интернете]
+  </li>
+  <li>
+   social-searcher.com [все посты пользователя]
+  </li>
+  <li>
+   socialmention.com [все упоминания о человеке]
+  </li>
+  <li>
+   nomerorg.me [телефонная база СНГ (только крупные города)]
+  </li>
+  <li>
+   namecheckup.com [проверка сайтов и приложений]
+  </li>
+  <li>
+   Instantusername.com [проверка сайтов и приложений]
+  </li>
+  <li>
+   suip.biz [osintframework онлайн]
+  </li>
+  <li>
+   phonenumber.to [поиск по номеру телефона, адрессу, ФИО]
+  </li>
+  <li>
+   spra.vkaru.net [телефонный справочник Россия, Украина, Беларусь, Казахстан, Латвия, Молдова]
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Поиск по номеру телефона:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Lampyre (Web) — веб версия поиска по любому номеру телефона, поиск по аккаунтам и телефонной книге
+  </li>
+  <li>
+   Getcontact (Getcontact - Call Identification &amp; Spam Protection) — найдет информацию о том как записан
+            номер в контактах
+  </li>
+  <li>
+   Microsoft (
+   <a href="http://account.live.com/" rel="nofollow">
+    http://account.live.com/
+   </a>
+   ) — проверка
+            привязанности номера к microsoft аккаунту
+  </li>
+  <li>
+   Avinfo.guru (
+   <a href="https://avinfo.guru/" rel="nofollow">
+    https://avinfo.guru/
+   </a>
+   ) — проверка телефона
+            владельца авто, иногда нужен VPN
+  </li>
+  <li>
+   Telefon.stop-list (Проверить телефон онлайн - найти по номеру телефона - поиск по телефону) — поиск по всем
+            фронтам, иногда нет информации
+  </li>
+  <li>
+   Telefon (Проверить телефон онлайн - найти по номеру телефона - поиск по телефону) — Поиск по всем фронтам
+  </li>
+  <li>
+   @FindNameVk_bot (Telegram – a new era of messaging) — Бот ищет историю смены фамилий профиля по открытым
+            источникам, указывает дату создания аккаунта.
+  </li>
+  <li>
+   @InfoVkUser_bot (Telegram – a new era of messaging) — Бот позволяет провести анализ друзей профиля. Сейчас
+            доступны ВУЗы и родные города.
+  </li>
+  <li>
+   @numberPhoneBot (Telegram – a new era of messaging) — найдет адрес и ФИО, не всегда находит
+  </li>
+  <li>
+   Truecaller (The world's best Caller ID &amp; Spam Blocking app | Truecaller) — телефонная книга, найдет имя
+            и оператора телефона
+  </li>
+  <li>
+   Bullshit (Поиск по объявлениям на Авите) — поиск объявлений по номеру телефона
+  </li>
+  <li>
+   Bases-brothers (
+   <a href="https://bases-brothers.ru/" rel="nofollow">
+    https://bases-brothers.ru/
+   </a>
+   ) — поиск
+            номера в объявлениях
+  </li>
+  <li>
+   Rosfirm (Адресный справочник городов России - Москва, Санкт-Петербург и другие регионы) — найдет ФИО, адрес
+            прописки и дату рождения, нужно знать город
+  </li>
+  <li>
+   Spravnik (Телефонный справочник. Крупные города и не только...!) — поиск по городскому номеру телефона,
+            найдет ФИО и адрес
+  </li>
+  <li>
+   @usersbox_bot (Telegram – a new era of messaging) — бот найдет аккаунты в ВК у которых в поле номера
+            телефона указан искомый номер
+  </li>
+  <li>
+   Spiderfoot (SpiderFoot: OSINT Automation) — автоматический поиск с использованием огромного количества
+            методов, нужно использовать в облаке если пройти регистрацию
+  </li>
+  <li>
+   Locatefamily (Locate Family | Find people for FREE!) — поиск адреса и ФИО
+  </li>
+  <li>
+   Nuga — поиск instagram
+  </li>
+  <li>
+   Live.com (
+   <a href="http://account.live.com/" rel="nofollow">
+    http://account.live.com/
+   </a>
+   ) — Проверка
+            привязки к майкрософт
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Ресурсы для работы с метаданными:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   online metadata and exif viewer
+  </li>
+  <li>
+   Image info online
+  </li>
+  <li>
+   <a href="http://exif.regex.info/exif.cgi" rel="nofollow">
+    http://exif.regex.info/exif.cgi
+   </a>
+  </li>
+  <li>
+   <a href="http://imgops.com/" rel="nofollow">
+    http://imgops.com/
+   </a>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Соц. сети и сведения:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Findclone
+  </li>
+  <li>
+   search4faces.com - Найди профили человека в соцсетях по его фотографии. Аналог findface, аналог searchface.
+  </li>
+  <li>
+   PimEyes: Face Recognition Search Engine and Reverse Image Search
+  </li>
+  <li>
+   VK.watch – история профилей ВКонтакте
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Определение возраста:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   pictriev, face search engine
+  </li>
+  <li>
+   How old do I look?
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Поисковые системы:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Яндекс.Картинки: поиск изображений в интернете, поиск по изображению
+  </li>
+  <li>
+   Поиск по картинкам - Поиск Mail.Ru
+  </li>
+  <li>
+   Google Images
+  </li>
+  <li>
+   TinEye Reverse Image Search
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Повышение качества изображения:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   LetsEnhance.io - Image enhancement powered by AI
+  </li>
+  <li>
+   Professional Face Analyser and Portrait Photo Retouching
+  </li>
+  <li>
+   Improve Photo - Enhance Picture &amp; Photo Online in one magical click!
+  </li>
+  <li>
+   MyHeritage Photo Enhancer, verbeter uw familiefoto's met 's werelds beste deep learning-technologie -
+            MyHeritage
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Телеграм Боты:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   @egrul_bot - информация о юр лицах и учредителях, ИП, адреса и взоимодействия между ними
+  </li>
+  <li>
+   @HowToFind_bot - приёмы и "секреты" ОСИНТ + обширная база полезных ботов
+  </li>
+  <li>
+   @mailsearchbot - выдаёт пароль по email
+  </li>
+  <li>
+   @buzzim_alerts_bot - проводит поиск по Телеграм
+  </li>
+  <li>
+   @AvinfoBot - по номеру смотрит объявления на авито
+  </li>
+  <li>
+   @getfb_bot - по номеру ищет аккаунт facebook
+  </li>
+  <li>
+   @EyeGodsBot - поиск по всем фронтам
+  </li>
+  <li>
+   @VKUserInfo_bot - информация о пользователе вк
+  </li>
+  <li>
+   @Dosie_Bot - поиск информации по ИНН
+  </li>
+  <li>
+   @Smart_SearchBot - поиск контактной информации
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Чекеры валидности мейлов:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Email Verification and List Cleaning Service
+  </li>
+  <li>
+   Mailvalidator
+  </li>
+  <li>
+   ZeroBounce - Email Validation Service And Deliverability Toolkit
+  </li>
+  <li>
+   Email Marker | Email Verification &amp; Cleaning Services
+  </li>
+  <li>
+   <a href="https://2ip.ru/mail-checker/" rel="nofollow">
+    https://2ip.ru/mail-checker/
+   </a>
+  </li>
+  <li>
+   <a href="http://ru.smart-ip.net/check-email/" rel="nofollow">
+    http://ru.smart-ip.net/check-email/
+   </a>
+  </li>
+  <li>
+   <a href="https://quickemailverification.com/" rel="nofollow">
+    https://quickemailverification.com/
+   </a>
+  </li>
+  <li>
+   <a href="https://ivit.pro/services/email-valid/" rel="nofollow">
+    https://ivit.pro/services/email-valid/
+   </a>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Whois:
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <a href="https://2ip.ru/whois/" rel="nofollow">
+    https://2ip.ru/whois/
+   </a>
+  </li>
+  <li>
+   <a href="http://www.ripn.su/nic/whois/" rel="nofollow">
+    http://www.ripn.su/nic/whois/
+   </a>
+  </li>
+  <li>
+   <a href="https://whoer.net/ru/checkwhois" rel="nofollow">
+    https://whoer.net/ru/checkwhois
+   </a>
+  </li>
+  <li>
+   <a href="http://www.securrity.ru/whoiz.html" rel="nofollow">
+    http://www.securrity.ru/whoiz.html
+   </a>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Ссылки на использованные материалы
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <a href="https://encyclopedia.kaspersky.ru/glossary/osint/" rel="nofollow">
+    https://encyclopedia.kaspersky.ru/glossary/osint/
+   </a>
+  </li>
+  <li>
+   <a href="https://codeby.net/threads/osintim-po-vzroslomu-ctf.76043/" rel="nofollow">
+    https://codeby.net/threads/osintim-po-vzroslomu-ctf.76043/
+   </a>
+  </li>
+  <li>
+   <a href="https://habr.com/ru/company/tssolution/blog/519664/" rel="nofollow">
+    https://habr.com/ru/company/tssolution/blog/519664/
+   </a>
+  </li>
+  <li>
+   <a href="https://spspa.ru/chto-takoe-osint-osnovnye-instrumenty-i-metody/" rel="nofollow">
+    https://spspa.ru/chto-takoe-osint-osnovnye-instrumenty-i-metody/
+   </a>
+  </li>
+ </ul>
+</article>

@@ -1,0 +1,1385 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Безопасность Wi-Fi сетей: Evil Twin
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Что такое атака Evil Twin
+  </h2>
+ </div>
+ <p dir="auto">
+  Evil Twin (Злой Близнец) — это тип атаки на беспроводные сети, при которой злоумышленник создает
+        поддельную точку доступа Wi-Fi, которая имитирует легитимную сеть. Поддельная точка доступа обычно имеет то же
+        имя сети (SSID) и часто более сильный сигнал, что заставляет устройства пользователей подключаться к ней вместо
+        оригинальной сети.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426015726-d3281f36-02e9-427a-85cf-a595cb24f322.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTU3MjYtZDMyODFmMzYtMDJlOS00MjdhLTg1Y2YtYTU5NWNiMjRmMzIyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFmOWVhZTUwMGJmZTVhY2M1ZTNhNzQzMmYyNWY0MzhmNGRiNThmNjNmY2VlNzQyOTg2N2UyNzBkZWY4NmMyOGImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.xCqgI_xJCjHo1mVEVyu5ofBKndBFDqYdIT5ki1qm6jY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426015726-d3281f36-02e9-427a-85cf-a595cb24f322.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTU3MjYtZDMyODFmMzYtMDJlOS00MjdhLTg1Y2YtYTU5NWNiMjRmMzIyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFmOWVhZTUwMGJmZTVhY2M1ZTNhNzQzMmYyNWY0MzhmNGRiNThmNjNmY2VlNzQyOTg2N2UyNzBkZWY4NmMyOGImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.xCqgI_xJCjHo1mVEVyu5ofBKndBFDqYdIT5ki1qm6jY" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Главная особенность этой атаки заключается в том, что пользователь полагает, что подключается к
+        доверенной сети, в то время как на самом деле все его данные проходят через точку доступа, контролируемую
+        злоумышленником. Это классический пример атаки типа "человек посередине" (Man-in-the-Middle, MitM) в контексте
+        беспроводных сетей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Цели и возможности атаки Evil Twin
+  </h2>
+ </div>
+ <p dir="auto">
+  Атака Evil Twin предоставляет злоумышленнику обширные возможности:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Перехват конфиденциальных данных
+    </strong>
+    : Злоумышленник может перехватывать весь
+                незашифрованный трафик, проходящий через поддельную точку доступа, включая логины, пароли, личные данные
+                и информацию о кредитных картах.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Модификация трафика
+    </strong>
+    : Атакующий может не только перехватывать, но и изменять
+                передаваемые данные, внедряя вредоносный код или перенаправляя пользователя на фишинговые сайты.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Получение доступа к закрытым ресурсам
+    </strong>
+    : После получения учетных данных
+                пользователя злоумышленник может получить доступ к корпоративным сетям и защищенным ресурсам.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Распространение вредоносного ПО
+    </strong>
+    : Через поддельную точку доступа атакующий
+                может распространять вредоносное ПО на устройства жертв.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Векторы атак через Evil Twin
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426019149-a2f3165b-dd22-4900-b24d-262eae9db4cf.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTkxNDktYTJmMzE2NWItZGQyMi00OTAwLWIyNGQtMjYyZWFlOWRiNGNmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZjOTBmOThhMTZjNDQ0ODdhNmM4YWZmZDNhMGQxNWY3ODk1NGU2MWVlZTNkOTY4YzY4N2E5NWFiYzY1ZDE0MmMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.dmeNrZQGxkBHERmcwwcSgusIxNwbbA0ZeopEt5dPFBA" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426019149-a2f3165b-dd22-4900-b24d-262eae9db4cf.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTkxNDktYTJmMzE2NWItZGQyMi00OTAwLWIyNGQtMjYyZWFlOWRiNGNmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZjOTBmOThhMTZjNDQ0ODdhNmM4YWZmZDNhMGQxNWY3ODk1NGU2MWVlZTNkOTY4YzY4N2E5NWFiYzY1ZDE0MmMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.dmeNrZQGxkBHERmcwwcSgusIxNwbbA0ZeopEt5dPFBA" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Фишинг через Evil Twin
+  </h3>
+ </div>
+ <p dir="auto">
+  Один из наиболее распространенных векторов атаки через Evil Twin — это фишинг. Злоумышленник может
+        реализовать это несколькими способами:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Перенаправление на фишинговые веб-сайты
+    </strong>
+    : Через DNS-спуфинг атакующий может
+                перенаправлять запросы к легитимным сайтам на поддельные фишинговые страницы, которые визуально
+                идентичны оригинальным.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Поддельные порталы аутентификации
+    </strong>
+    : Злоумышленник может настроить поддельную
+                страницу авторизации для Wi-Fi (captive portal), имитирующую процесс входа в сеть (например, страницу
+                авторизации в отеле или кафе). Когда пользователь вводит свои учетные данные, они попадают к атакующему.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Имитация обновлений программного обеспечения
+    </strong>
+    : Пользователю может быть
+                предложено установить фальшивое обновление, которое на самом деле является вредоносным ПО.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Атаки на корпоративные порталы
+  </h3>
+ </div>
+ <p dir="auto">
+  Evil Twin особенно опасен для корпоративных сетей:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Перехват корпоративных учетных данных
+    </strong>
+    : При попытке сотрудника подключиться к
+                поддельной корпоративной сети, злоумышленник может получить данные для доступа к внутренним ресурсам
+                компании.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Проникновение в корпоративную инфраструктуру
+    </strong>
+    : Получив учетные данные,
+                атакующий может получить доступ к VPN, внутренним системам, базам данных и другим корпоративным
+                ресурсам.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Имитация корпоративных порталов
+    </strong>
+    : Злоумышленник может создать точную копию
+                внутреннего портала компании для сбора учетных данных сотрудников.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Сниффинг данных
+  </h3>
+ </div>
+ <p dir="auto">
+  Evil Twin предоставляет широкие возможности для перехвата и анализа сетевого трафика:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Перехват незашифрованных данных
+    </strong>
+    : Все данные, передаваемые по незашифрованным
+                протоколам (HTTP вместо HTTPS, FTP вместо SFTP и т.д.), могут быть легко перехвачены.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Анализ метаданных и шаблонов трафика
+    </strong>
+    : Даже если содержимое трафика
+                зашифровано, атакующий может анализировать метаданные, такие как посещаемые сайты, время соединений и
+                объемы передаваемых данных.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Перехват сессионных cookie
+    </strong>
+    : Злоумышленник может перехватывать cookie-файлы
+                сессий для получения доступа к учетным записям пользователей без знания их паролей, если сайты не
+                используют механизм Secure Cookie.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Эволюция технологий защиты и препятствия для атаки Evil
+            Twin
+  </h2>
+ </div>
+ <p dir="auto">
+  С развитием технологий кибербезопасности, эксплуатация атаки Evil Twin становится более сложной, хотя
+        она по-прежнему остается актуальной угрозой:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Распространение HTTPS
+    </strong>
+    : Повсеместное использование HTTPS затрудняет перехват
+                чувствительных данных, хотя атаки на перенаправление с HTTP на HTTPS остаются возможными.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование Virtual Private Network
+    </strong>
+    : Использование VPN при защите от Evil
+                Twin помогает зашифровать передаваемые данные, предотвращая их перехват злоумышленником.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Улучшенные механизмы аутентификации в корпоративных сетях
+    </strong>
+    : Корпоративные сети
+                все чаще используют 802.1X и EAP (Extensible Authentication Protocol), которые обеспечивают взаимную
+                аутентификацию клиента и сети, усложняя имитацию сети.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Мониторинг безопасности Wi-Fi
+    </strong>
+    : Организации внедряют системы обнаружения и
+                предотвращения вторжений для беспроводных сетей (WIDS/WIPS), которые могут обнаруживать неавторизованные
+                точки доступа.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Методы обнаружения Evil Twin
+    </strong>
+    : Появились специализированные решения для
+                обнаружения потенциальных атак Evil Twin, которые анализируют сигнатуры точек доступа и поведенческие
+                характеристики сети.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Повышение осведомленности пользователей
+    </strong>
+    : Растет уровень информированности
+                пользователей о рисках подключения к недоверенным Wi-Fi сетям.
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426016333-60e9a769-f01d-48c3-bdc2-3d37de48ae25.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTYzMzMtNjBlOWE3NjktZjAxZC00OGMzLWJkYzItM2QzN2RlNDhhZTI1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTgyZTVjZGNiZjUwY2VmZWIwNTRmMmU4ODUwOWU3OTkyZjM5NDI0ZTZlMTBkN2E5OThkNDNlODM0NmUwNDM3YzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.N8_hOfZzfoiw9ICxMruoCVfmsV-Wea6419g9EvBKQ80" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426016333-60e9a769-f01d-48c3-bdc2-3d37de48ae25.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTYzMzMtNjBlOWE3NjktZjAxZC00OGMzLWJkYzItM2QzN2RlNDhhZTI1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTgyZTVjZGNiZjUwY2VmZWIwNTRmMmU4ODUwOWU3OTkyZjM5NDI0ZTZlMTBkN2E5OThkNDNlODM0NmUwNDM3YzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.N8_hOfZzfoiw9ICxMruoCVfmsV-Wea6419g9EvBKQ80" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Evil Twin в контексте сотовых сетей
+  </h2>
+ </div>
+ <p dir="auto">
+  Атака Evil Twin актуальна не только для Wi-Fi сетей, но и для сотовых коммуникаций. В этом контексте
+        атака реализуется с помощью поддельных базовых станций, известных как "стинг-устройства" (IMSI-catchers или
+        "стингеры"):
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Имитация базовых станций
+    </strong>
+    : Злоумышленники могут использовать
+                специализированное оборудование для создания поддельных базовых станций, к которым подключаются
+                мобильные телефоны в зоне действия.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Принудительный даунгрейд защиты
+    </strong>
+    : Фальшивая базовая станция может
+                принудительно переключать телефоны на более старые и менее защищенные протоколы (например, с 4G на 2G),
+                где шифрование слабее или отсутствует.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Перехват SMS
+    </strong>
+    : Особенно опасно перехватывание одноразовых паролей,
+                отправляемых через SMS для двухфакторной аутентификации.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Прослушивание звонков
+    </strong>
+    : В некоторых случаях возможно перехватывание и
+                прослушивание телефонных разговоров.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Отслеживание местоположения
+    </strong>
+    : Такие устройства могут использоваться для
+                отслеживания местоположения конкретных мобильных телефонов.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Необходимые инструменты для реализации атаки Evil Twin на
+            Wi-Fi сети
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Аппаратные средства
+  </h3>
+ </div>
+ <p dir="auto">
+  Для проведения атаки Evil Twin требуется следующее оборудование:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Беспроводной адаптер с поддержкой режима мониторинга и инъекций пакетов
+   </strong>
+   : Наиболее
+            популярные модели:
+   <ul dir="auto">
+    <li>
+     Alfa AWUS036ACH
+    </li>
+    <li>
+     Alfa AWUS036NHA
+    </li>
+    <li>
+     TP-Link TL-WN722N (версии 1.0)
+    </li>
+    <li>
+     Panda PAU06
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426017267-a8f1989f-2789-49b1-a91d-c4db76902d82.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTcyNjctYThmMTk4OWYtMjc4OS00OWIxLWE5MWQtYzRkYjc2OTAyZDgyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVlMDg5NTUzZDRhYjMzZWZhNmU4YzMxZDQ0NTExZGMzMGNhYzVjZGViNTUzYTM4Y2VhNzJiYWY5N2VmMzY0NDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.NjcgQOlhUiIkQfrDXWv2TzI9oVm1eh9y51aZEAUEIAM" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426017267-a8f1989f-2789-49b1-a91d-c4db76902d82.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTcyNjctYThmMTk4OWYtMjc4OS00OWIxLWE5MWQtYzRkYjc2OTAyZDgyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVlMDg5NTUzZDRhYjMzZWZhNmU4YzMxZDQ0NTExZGMzMGNhYzVjZGViNTUzYTM4Y2VhNzJiYWY5N2VmMzY0NDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.NjcgQOlhUiIkQfrDXWv2TzI9oVm1eh9y51aZEAUEIAM" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto" start="2">
+  <li>
+   <p dir="auto">
+    <strong>
+     Компьютер или одноплатный компьютер
+    </strong>
+    : Часто используются:
+   </p>
+   <ul dir="auto">
+    <li>
+     Ноутбук с Linux
+    </li>
+    <li>
+     Raspberry Pi
+    </li>
+    <li>
+     Специализированные устройства вроде WiFi Pineapple
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Дополнительный адаптер
+    </strong>
+    (опционально): Второй адаптер для обеспечения
+                интернет-соединения для поддельной точки доступа.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Программные средства
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Сравнение популярных инструментов для атаки Evil Twin
+  </h2>
+ </div>
+ <markdown-accessiblity-table data-catalyst="">
+  <table>
+   <thead>
+    <tr>
+     <th>
+      Инструмент
+     </th>
+     <th>
+      Основные возможности
+     </th>
+     <th>
+      Совместимость
+     </th>
+     <th>
+      Простота использования
+     </th>
+     <th>
+      Активная разработка
+     </th>
+     <th>
+      Особенности
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+      <strong>
+       Aircrack-ng
+      </strong>
+     </td>
+     <td>
+      Мониторинг, деаутентификация, создание AP
+     </td>
+     <td>
+      Linux, Windows, macOS
+     </td>
+     <td>
+      Средняя
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Широкий набор инструментов, требует знания CLI, стандарт для пентестинга Wi-Fi
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       WiFi Pineapple
+      </strong>
+     </td>
+     <td>
+      Готовое решение для MitM-атак, множество модулей
+     </td>
+     <td>
+      Автономное устройство
+     </td>
+     <td>
+      Высокая
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Коммерческий продукт, web-интерфейс, обширная документация
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Wifiphisher
+      </strong>
+     </td>
+     <td>
+      Автоматизация атак Evil Twin, фишинговые сценарии
+     </td>
+     <td>
+      Linux
+     </td>
+     <td>
+      Высокая
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Встроенные фишинговые шаблоны, автоматизация всех этапов атаки
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Fluxion
+      </strong>
+     </td>
+     <td>
+      Автоматизация атаки с захватом реального handshake
+     </td>
+     <td>
+      Linux
+     </td>
+     <td>
+      Средняя
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Имитирует процесс авторизации оригинальной сети, включая проверку пароля
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       mdk4/mdk3
+      </strong>
+     </td>
+     <td>
+      Широкие возможности для деаутентификации
+     </td>
+     <td>
+      Linux
+     </td>
+     <td>
+      Низкая
+     </td>
+     <td>
+      Частично
+     </td>
+     <td>
+      Мощный инструмент для DoS-атак на Wi-Fi сети, включая массовую деаутентификацию
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Bettercap
+      </strong>
+     </td>
+     <td>
+      Многофункциональный фреймворк для MITM-атак
+     </td>
+     <td>
+      Linux, macOS
+     </td>
+     <td>
+      Средняя
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Расширенные возможности сниффинга и спуфинга, гибкая настройка
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Eaphammer
+      </strong>
+     </td>
+     <td>
+      Специализирован на атаках против корпоративных сетей
+     </td>
+     <td>
+      Linux
+     </td>
+     <td>
+      Средняя
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Поддержка атак на WPA-Enterprise, имитация 802.1X
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Hostapd-wpe
+      </strong>
+     </td>
+     <td>
+      Создание поддельных точек доступа с WPA Enterprise
+     </td>
+     <td>
+      Linux
+     </td>
+     <td>
+      Низкая
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Специализирован на атаках против WPA/WPA2-Enterprise с различными EAP-методами
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Evil Twin Framework (ETF)
+      </strong>
+     </td>
+     <td>
+      Автоматизированный фреймворк для Evil Twin
+     </td>
+     <td>
+      Linux
+     </td>
+     <td>
+      Высокая
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Интеграция с другими инструментами, удобный интерфейс
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <strong>
+       Wireshark
+      </strong>
+     </td>
+     <td>
+      Анализ захваченного трафика
+     </td>
+     <td>
+      Linux, Windows, macOS
+     </td>
+     <td>
+      Средняя
+     </td>
+     <td>
+      Да
+     </td>
+     <td>
+      Не для создания Evil Twin, но необходим для анализа перехваченного трафика
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </markdown-accessiblity-table>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм атаки Evil Twin
+  </h2>
+ </div>
+ <p dir="auto">
+  Подробный алгоритм проведения атаки Evil Twin включает следующие этапы:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Разведка и сбор информации
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Мониторинг беспроводных сетей
+    </strong>
+    : Запуск адаптера в режиме мониторинга для
+                сканирования доступных Wi-Fi сетей.
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>airmon-ng start wlan0
+    airodump-ng wlan0mon</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Сбор информации о целевой сети
+    </strong>
+    : Определение SSID, BSSID (MAC-адрес точки
+                доступа), канала, подключенных клиентов.
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>airodump-ng -c [канал] --bssid [MAC-адрес AP] -w [файл для сохранения] wlan0mon</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Деаутентификация клиентов (WiFi Deauth)
+  </h3>
+ </div>
+ <p dir="auto">
+  Деаутентификация — это процесс принудительного отключения клиентов от легитимной точки доступа с целью
+        заставить их переподключиться к поддельной сети:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Механизм работы
+   </strong>
+   : Злоумышленник отправляет специальные пакеты деаутентификации
+            (deauthentication frames), которые сообщают клиентам, что они должны отключиться от текущей точки доступа.
+            Эти пакеты могут быть направлены на конкретных клиентов или широковещательно на всех клиентов сети.
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426017941-ffd19408-b571-48fe-80ff-f8070d549e70.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTc5NDEtZmZkMTk0MDgtYjU3MS00OGZlLTgwZmYtZjgwNzBkNTQ5ZTcwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU0Y2JiYTRkNTVkZDU5MGQzZGVhOTBmZWM3NDIyZmQxMTQ5YzEyMTNjMGExN2NlZTg0NzU1MWMwMjAxN2U0YzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.SWjeCnQnq4-TGRXR1lySbv9F7vkBHz3lo3YuV5NJBj8" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426017941-ffd19408-b571-48fe-80ff-f8070d549e70.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMTc5NDEtZmZkMTk0MDgtYjU3MS00OGZlLTgwZmYtZjgwNzBkNTQ5ZTcwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU0Y2JiYTRkNTVkZDU5MGQzZGVhOTBmZWM3NDIyZmQxMTQ5YzEyMTNjMGExN2NlZTg0NzU1MWMwMjAxN2U0YzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.SWjeCnQnq4-TGRXR1lySbv9F7vkBHz3lo3YuV5NJBj8" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Команда для деаутентификации
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>aireplay-ng -0 0 -a [BSSID точки доступа] -c [MAC клиента] wlan0mon</pre>
+   </div>
+   <ul dir="auto">
+    <li>
+     <code>
+      -0
+     </code>
+     указывает на тип атаки (деаутентификация)
+    </li>
+    <li>
+     <code>
+      0
+     </code>
+     означает непрерывную отправку пакетов (можно указать конкретное число)
+    </li>
+    <li>
+     <code>
+      -a
+     </code>
+     указывает MAC-адрес точки доступа
+    </li>
+    <li>
+     <code>
+      -c
+     </code>
+     указывает MAC-адрес целевого клиента (если не указан, атака проводится на всех
+                    клиентов)
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Противодействие 802.11w
+    </strong>
+    : Стандарт 802.11w (Protected Management Frames)
+                защищает от таких атак, шифруя управляющие кадры, включая кадры деаутентификации. Однако многие
+                устройства и сети до сих пор не реализуют эту защиту.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. Создание поддельной точки доступа
+  </h3>
+ </div>
+ <p dir="auto">
+  После деаутентификации клиентов необходимо создать поддельную точку доступа с идентичными параметрами:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка hostapad
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c"><span class="pl-c">#</span> Пример конфигурационного файла hostapd</span>
+    interface=wlan1mon
+    driver=nl80211
+    ssid=[Имя целевой сети]
+    hw_mode=g
+    channel=[Канал целевой сети]
+    macaddr_acl=0
+    auth_algs=1
+    ignore_broadcast_ssid=0</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Запуск поддельной точки доступа
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>hostapd hostapd.conf</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. Настройка DHCP-сервера
+  </h3>
+ </div>
+ <p dir="auto">
+  Для предоставления IP-адресов клиентам, подключающимся к поддельной точке доступа, необходимо
+        настроить DHCP-сервер:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Поддельный DHCP-сервер
+    </strong>
+    : Атакующий настраивает DHCP-сервер, который будет
+                выдавать IP-адреса жертвам и указывать в качестве шлюза по умолчанию и DNS-сервера IP-адрес машины
+                атакующего.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка dnsmasq
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c"><span class="pl-c">#</span> Пример конфигурационного файла dnsmasq</span>
+    interface=wlan1mon
+    dhcp-range=192.168.1.2,192.168.1.30,255.255.255.0,12h
+    dhcp-option=3,192.168.1.1
+    dhcp-option=6,192.168.1.1
+    server=8.8.8.8
+    log-queries
+    log-dhcp
+    listen-address=127.0.0.1</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Запуск DHCP-сервера
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>dnsmasq -C dnsmasq.conf</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5. Настройка перенаправления трафика
+  </h3>
+ </div>
+ <p dir="auto">
+  Для обеспечения доступа в интернет через поддельную точку доступа (что делает атаку менее заметной) и
+        возможности перехвата трафика:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Включение IP-форвардинга
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c1">echo</span> 1 <span class="pl-k">&gt;</span> /proc/sys/net/ipv4/ip_forward</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка NAT с помощью iptables
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    iptables -A FORWARD -i wlan1mon -o eth0 -j ACCEPT</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   6. ARP-спуфинг
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426020904-a57fda89-429b-405a-9741-eb864e088a1f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMjA5MDQtYTU3ZmRhODktNDI5Yi00MDVhLTk3NDEtZWI4NjRlMDg4YTFmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBkMjY3NGY2NjhjYzdmMjRlZTU3NGIzNGUyNjdiYzg5NThhZGIwOTQ5MTc0MTNlZDIyMDUxM2U0Y2VkNjA3MWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.4TDO3Yax_tkYzPDuhbjuA6hiJTTT2xAxcrTSE2JOaIA" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426020904-a57fda89-429b-405a-9741-eb864e088a1f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMjA5MDQtYTU3ZmRhODktNDI5Yi00MDVhLTk3NDEtZWI4NjRlMDg4YTFmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBkMjY3NGY2NjhjYzdmMjRlZTU3NGIzNGUyNjdiYzg5NThhZGIwOTQ5MTc0MTNlZDIyMDUxM2U0Y2VkNjA3MWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.4TDO3Yax_tkYzPDuhbjuA6hiJTTT2xAxcrTSE2JOaIA" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  ARP-спуфинг (ARP Poisoning) — это метод атаки, при котором злоумышленник манипулирует ARP-таблицами
+        устройств в локальной сети:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Принцип работы
+    </strong>
+    : Злоумышленник отправляет поддельные ARP-сообщения, связывая
+                свой MAC-адрес с IP-адресом шлюза или других устройств в сети. В результате трафик, предназначенный для
+                этих устройств, перенаправляется на устройство атакующего.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Реализация с помощью Arpspoof
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>arpspoof -i wlan1mon -t [IP-адрес жертвы] [IP-адрес шлюза]</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Перенаправление трафика
+    </strong>
+    : После успешного ARP-спуфинга весь трафик жертвы
+                проходит через машину атакующего, что позволяет анализировать и модифицировать его.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   7. DNS-спуфинг
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/426020554-88c3266f-09bb-4983-80dc-1ed4bb0a8578.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMjA1NTQtODhjMzI2NmYtMDliYi00OTgzLTgwZGMtMWVkNGJiMGE4NTc4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWYyZDBmNGI5NDEzNDg4MTQ2Yjk4OGY2OTc2YjFhNTUwMTg0ZDUyMzdhMjYwZTJmOTY0Njc4MTI5ZTUwZDBhYTQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Zh1em2ytETPAXVwyNx6e2Fd107VUkxTIDDlHCu1Lsjc" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/426020554-88c3266f-09bb-4983-80dc-1ed4bb0a8578.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg3MzAsIm5iZiI6MTc0NTE0ODQzMCwicGF0aCI6Ii82NTQxOTUyMy80MjYwMjA1NTQtODhjMzI2NmYtMDliYi00OTgzLTgwZGMtMWVkNGJiMGE4NTc4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjcxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWYyZDBmNGI5NDEzNDg4MTQ2Yjk4OGY2OTc2YjFhNTUwMTg0ZDUyMzdhMjYwZTJmOTY0Njc4MTI5ZTUwZDBhYTQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Zh1em2ytETPAXVwyNx6e2Fd107VUkxTIDDlHCu1Lsjc" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  DNS-спуфинг — это атака, при которой злоумышленник манипулирует DNS-ответами, чтобы перенаправить
+        жертву на поддельные веб-сайты:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Принцип работы
+    </strong>
+    : Когда жертва запрашивает разрешение доменного имени в
+                IP-адрес, атакующий перехватывает этот запрос и отвечает поддельным DNS-ответом, содержащим IP-адрес
+                контролируемого злоумышленником сервера.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Настройка с помощью dnsmasq
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c"><span class="pl-c">#</span> Добавление в конфигурацию dnsmasq</span>
+    address=/facebook.com/192.168.1.1
+    address=/gmail.com/192.168.1.1</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Альтернативно с использованием dnsspoof
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>dnsspoof -i wlan1mon -f hosts.txt</pre>
+   </div>
+   <p dir="auto">
+    где hosts.txt содержит записи вида:
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>192.168.1.1 facebook.com
+    192.168.1.1 gmail.com
+    </code></pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   8. Перехват и анализ трафика
+  </h3>
+ </div>
+ <p dir="auto">
+  Для сбора данных, передаваемых через поддельную точку доступа:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование Wireshark или tcpdump
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>tcpdump -i wlan1mon -w capture.pcap</pre>
+   </div>
+   <p dir="auto">
+    или запуск Wireshark для более детального анализа:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>wireshark -i wlan1mon -k</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SSL Strip для обхода HTTPS
+    </strong>
+    : Инструмент downgrade-атак для перехвата
+                HTTPS-трафика путем его перенаправления на HTTP:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>sslstrip -l 8080
+    iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   9. Настройка фишинговых страниц (опционально)
+  </h3>
+ </div>
+ <p dir="auto">
+  Для сбора учетных данных можно настроить фишинговые страницы:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Создание captive portal
+   </strong>
+   с имитацией страницы авторизации Wi-Fi.
+  </li>
+  <li>
+   <strong>
+    Имитация популярных сайтов
+   </strong>
+   (социальные сети, корпоративные порталы, мессенджеры).
+  </li>
+  <li>
+   <strong>
+    Настройка перенаправления
+   </strong>
+   на фишинговые страницы через DNS-спуфинг.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы защиты от атак Evil Twin
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Для пользователей
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверка подлинности сети
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Не подключаться автоматически к сетям с общими именами (например, "Free WiFi").
+    </li>
+    <li>
+     Проверять MAC-адрес точки доступа, если это возможно.
+    </li>
+    <li>
+     При использовании общественного Wi-Fi, уточнять у персонала точное название сети.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование VPN
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Всегда использовать VPN при подключении к общедоступным Wi-Fi сетям.
+    </li>
+    <li>
+     Выбирать надежных VPN-провайдеров с шифрованием и без логирования.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверка шифрования
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Убедиться, что веб-сайты используют HTTPS (зеленый замок в адресной строке).
+    </li>
+    <li>
+     Использовать расширения браузера типа HTTPS Everywhere.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Двухфакторная аутентификация (2FA)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Активировать 2FA на всех критически важных аккаунтах.
+    </li>
+    <li>
+     Предпочитать 2FA на основе приложений, а не SMS.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Приложения для обнаружения Evil Twin
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     WiGLE WiFi Wardriving (для Android)
+    </li>
+    <li>
+     WiFi Inspector (Avast)
+    </li>
+    <li>
+     WiFi Guard
+    </li>
+    <li>
+     NetSpot (для macOS и Windows)
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Для организаций
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Внедрение систем обнаружения и предотвращения вторжений для беспроводных сетей
+                    (WIDS/WIPS)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Cisco Adaptive Wireless IPS
+    </li>
+    <li>
+     AirMagnet Enterprise
+    </li>
+    <li>
+     Kismet
+    </li>
+    <li>
+     Aruba RFProtect
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Корпоративная аутентификация
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Использование 802.1X/EAP для аутентификации сетей.
+    </li>
+    <li>
+     Внедрение взаимной аутентификации (mutual authentication).
+    </li>
+    <li>
+     Использование цифровых сертификатов для аутентификации.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Мониторинг беспроводных сетей
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Регулярное сканирование для обнаружения неавторизованных точек доступа.
+    </li>
+    <li>
+     Анализ радиочастотного спектра для обнаружения подозрительной активности.
+    </li>
+    <li>
+     Сравнение MAC-адресов точек доступа с авторизованным списком.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Обучение сотрудников
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Проведение тренингов по безопасности Wi-Fi.
+    </li>
+    <li>
+     Создание четких политик по использованию беспроводных сетей.
+    </li>
+    <li>
+     Регулярные обновления по новым угрозам и методам атак.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Аппаратные решения для защиты
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Специализированные шлюзы безопасности для Wi-Fi сетей.
+    </li>
+    <li>
+     Enterprise-решения для управления беспроводными сетями с интегрированной защитой.
+    </li>
+    <li>
+     Физические токены для аутентификации в корпоративных сетях.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Технические меры защиты
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование Protected Management Frames (802.11w)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Защищает от атак деаутентификации.
+    </li>
+    <li>
+     Является частью стандарта WPA3, но доступен и в некоторых реализациях WPA2.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Обновление до WPA3
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Обеспечивает защиту от атак перебором.
+    </li>
+    <li>
+     Предоставляет индивидуальное шифрование данных для каждого пользователя.
+    </li>
+    <li>
+     Защищает от некоторых видов атак MITM.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование Private Pre-Shared Key (PPSK)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Каждому пользователю выдается индивидуальный ключ.
+    </li>
+    <li>
+     Ограничение доступа по времени и дате.
+    </li>
+    <li>
+     Возможность отключения отдельных ключей без изменения общих настроек.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Мониторинг радиочастотного спектра
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Обнаружение неавторизованных точек доступа.
+    </li>
+    <li>
+     Идентификация атак деаутентификации.
+    </li>
+    <li>
+     Обнаружение подозрительной активности в эфире.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Атака Evil Twin остается одной из наиболее эффективных и потенциально опасных атак на пользователей
+        беспроводных сетей. Несмотря на развитие технологий защиты, социальная инженерия и технические аспекты этой
+        атаки продолжают делать ее актуальной угрозой.
+ </p>
+ <p dir="auto">
+  Для минимизации рисков необходим комплексный подход, включающий технические меры защиты, обучение
+        пользователей и постоянный мониторинг. Особенно важно повышение осведомленности пользователей о рисках
+        подключения к общедоступным Wi-Fi сетям и использование дополнительных мер защиты, таких как VPN.
+ </p>
+ <p dir="auto">
+  С точки зрения организаций, внедрение современных стандартов безопасности Wi-Fi, таких как WPA3 и
+        802.11w, а также использование систем обнаружения вторжений для беспроводных сетей, значительно повышает уровень
+        защиты от атак типа Evil Twin.
+ </p>
+</article>

@@ -1,0 +1,429 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Цифровые сертификаты в SSL/TLS
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   SSL и TLS – это протоколы, которые используются для
+            создания защищённого соединения в компьютерных сетях, чаще всего при работе с веб-сайтами или электронной
+            почтой.
+  </h4>
+ </div>
+ <p dir="auto">
+  TLS был разработан на базе SSL как более современная и безопасная версия после обнаружения уязвимостей
+        в SSLv3. Сегодня под термином SSL часто подразумевают именно TLS.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425834155-74114e7f-c4ae-44f4-9222-8c2c1bf027d0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM0MTU1LTc0MTE0ZTdmLWM0YWUtNDRmNC05MjIyLThjMmMxYmYwMjdkMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xZDVkNzUzODI2ZjZjYjdhOWFkNWExNmQ4MGVjODM4ODdlYWVkY2QzMjBmNDY5M2M1ODYxNDQwNzhlOWM2Yjg1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.1jh052_dYm5cY5Vl2qglgQu1RW0SeOlzhTNxIznnmjY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425834155-74114e7f-c4ae-44f4-9222-8c2c1bf027d0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM0MTU1LTc0MTE0ZTdmLWM0YWUtNDRmNC05MjIyLThjMmMxYmYwMjdkMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xZDVkNzUzODI2ZjZjYjdhOWFkNWExNmQ4MGVjODM4ODdlYWVkY2QzMjBmNDY5M2M1ODYxNDQwNzhlOWM2Yjg1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.1jh052_dYm5cY5Vl2qglgQu1RW0SeOlzhTNxIznnmjY" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Эти технологии обеспечивают три ключевых аспекта безопасности:
+  <strong>
+   шифрование данных, их
+            целостность и аутентификацию
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  Благодаря SSL/TLS вы можете быть уверены, что никто не сможет перехватить или изменить передаваемую
+        информацию, а также подтвердите личность того, с кем взаимодействуете.
+ </p>
+ <p dir="auto">
+  При передаче сообщения от одного человека к другому возникают две основные задачи:
+  <strong>
+   защитить
+            данные от чтения посторонними и от несанкционированных изменений
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  Решением становится использование шифрования и цифровой подписи. Шифрование превращает содержимое
+        сообщения в нечитаемый набор символов, а цифровая подпись гарантирует, что отправителем были именно вы и
+        сообщение не было изменено по пути.
+ </p>
+ <p dir="auto">
+  Оба этих процесса опираются на использование ключей.
+  <strong>
+   Ключ
+  </strong>
+  — это просто большое число,
+        которое с помощью специальных алгоритмов, таких как RSA, взаимодействует с содержимым сообщения для его
+        шифрования и/или подписания. Обычно применяются ключи длиной 128 бит или более.
+ </p>
+ <p dir="auto">
+  Кроме того, для функционирования SSL/TLS необходимы
+  <em>
+   цифровые сертификаты
+  </em>
+  . Они подтверждают
+        подлинность публичного ключа и помогают установить доверие между сторонами. Существует несколько типов
+        сертификатов, различающихся по назначению и уровню проверки, которые мы также рассмотрим далее.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Симметричные ключи. Публичные и приватные ключи.
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425834570-d1ab4809-c591-4e05-91d4-96165573906b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM0NTcwLWQxYWI0ODA5LWM1OTEtNGUwNS05MWQ0LTk2MTY1NTczOTA2Yi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMjg5MjhiNmVhNTM1NjdmNmY0ZDYxMDMwMzRjY2NkZGNmYzA3ZDY4NjFkNTU5ZWQ2MTI3NWVmMzVmYWQ0OTMwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jv-goosYTNntApJgY-AGbL8iiZX3CPDQ9lxvJlOW3Do" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425834570-d1ab4809-c591-4e05-91d4-96165573906b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM0NTcwLWQxYWI0ODA5LWM1OTEtNGUwNS05MWQ0LTk2MTY1NTczOTA2Yi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMjg5MjhiNmVhNTM1NjdmNmY0ZDYxMDMwMzRjY2NkZGNmYzA3ZDY4NjFkNTU5ZWQ2MTI3NWVmMzVmYWQ0OTMwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jv-goosYTNntApJgY-AGbL8iiZX3CPDQ9lxvJlOW3Do" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Большинство современных методов шифрования опираются на использование пары публичного и приватного
+        ключей, что делает их гораздо более безопасными по сравнению со старыми схемами, основанными на симметричных
+        ключах.
+ </p>
+ <p dir="auto">
+  При симметричном шифровании один и тот же ключ используется как для шифрования, так и для расшифровки
+        информации. Это можно сравнить с обычным ключом от двери или машины — потеряв его, вы даёте возможность любому
+        нашедшему получить доступ к защищённому пространству.
+ </p>
+ <p dir="auto">
+  В отличие от этого, пара публичного и приватного ключей представляет собой два математически связанных
+        между собой, но разных значения. Если сообщение зашифровано публичным ключом, расшифровать его можно только с
+        помощью приватного. Публичный ключ открыт и доступен для всех, но сам по себе не позволяет получить доступ к
+        данным. Если бы подобный подход применялся, например, к автомобилю, вы могли бы закрыть машину и оставить ключ
+        прямо в замке — ведь открыть машину этим же ключом всё равно было бы невозможно.
+ </p>
+ <p dir="auto">
+  Эта схема лежит в основе большинства современных криптографических систем и протоколов, включая
+        SSL/TLS. Публичный ключ шифрует данные и обеспечивает их подлинность, а приватный ключ расшифровывает или
+        подписывает сообщения.
+ </p>
+ <p dir="auto">
+  Однако сам по себе публичный ключ не гарантирует доверие. Например, если вам передали публичный ключ,
+        якобы принадлежащий вашему банку, откуда вы можете знать, что он действительно принадлежит банку, а не
+        злоумышленнику?
+ </p>
+ <p dir="auto">
+  Здесь и вступает в игру цифровой сертификат. Он играет роль удостоверения личности, как паспорт в
+        реальной жизни. Паспорт подтверждает, что фотография принадлежит конкретному человеку, и эта связь заверена
+        государственной структурой. Аналогично, цифровой сертификат подтверждает принадлежность публичного ключа
+        конкретному субъекту — будь то домен или организация. При этом подпись ставит доверенный центр сертификации,
+        гарантируя, что ключ можно использовать безопасно.
+ </p>
+ <p dir="auto">
+  Цифровые сертификаты упрощают распространение и проверку публичных ключей и являются неотъемлемой
+        частью инфраструктуры SSL/TLS.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как получить цифровой сертификат?
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425834856-c057caae-3c72-41fa-b35d-acbadc3e9f6b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM0ODU2LWMwNTdjYWFlLTNjNzItNDFmYS1iMzVkLWFjYmFkYzNlOWY2Yi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01OWE1YzVjODg3MjY0NzkzMTkzYmExNmY3ODc5YmVlYWE0NmQ2ZGExYmY3ZGY5YjVmMTBiYjY4ZDYwNDJhZjIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.0y4Ku0KuMwgJHZX2bcowyOOKECmcJKW-3of2BJqUtdY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425834856-c057caae-3c72-41fa-b35d-acbadc3e9f6b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM0ODU2LWMwNTdjYWFlLTNjNzItNDFmYS1iMzVkLWFjYmFkYzNlOWY2Yi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01OWE1YzVjODg3MjY0NzkzMTkzYmExNmY3ODc5YmVlYWE0NmQ2ZGExYmY3ZGY5YjVmMTBiYjY4ZDYwNDJhZjIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.0y4Ku0KuMwgJHZX2bcowyOOKECmcJKW-3of2BJqUtdY" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <em>
+   Цифровой сертификат можно получить у доверенного центра сертификации
+  </em>
+  — примерно так же, как
+        вы получаете паспорт в официальном учреждении. Сама процедура очень напоминает оформление документов в реальной
+        жизни. Вы предоставляете необходимые сведения, включая свой публичный ключ (по сути, просто большое число), и
+        отправляете всё это в центр сертификации в виде специального запроса, который называется запросом на сертификат.
+ </p>
+ <p dir="auto">
+  После этого центр сертификации проводит проверку — в зависимости от уровня сертификата это может быть
+        простая проверка владения доменом или более глубокая проверка юридической информации. По завершении проверки
+        центр возвращает вам ваш публичный ключ, "упакованный" в цифровой сертификат.
+ </p>
+ <p dir="auto">
+  Этот сертификат подписан самим центром сертификации, и именно его подпись служит гарантией
+        подлинности. Теперь, когда кто-то запросит ваш публичный ключ, вы можете передать ему сертификат. Получатель
+        проверит, действительно ли сертификат был подписан доверенным центром, и, если всё в порядке, сможет безопасно
+        использовать ваш ключ, зная, что он вам принадлежит.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример использования
+  </h3>
+ </div>
+ <p dir="auto">
+  Чтобы на практике понять, как работает SSL, рассмотрим типичный сценарий подключения браузера к
+        серверу через защищённое соединение HTTPS. Такой механизм ежедневно используется в Интернете — будь то отправка
+        писем через Gmail, онлайн-покупки или вход в онлайн-банк.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425835044-694cc741-9842-4f0e-a09e-02a3373d7947.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1MDQ0LTY5NGNjNzQxLTk4NDItNGYwZS1hMDllLTAyYTMzNzNkNzk0Ny5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04YTQxNDlhYjJiZWYxYjIxZjQxNGVkZTM5MmY0ZGJlMTk5OTFmZjYwZGVhNjE5MDk4NzM3N2VkM2VjZjYwOTY3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.wi6KAzbR16cyv7vZfllL5KMmqnMiAQ0KWsq-aLABqwQ" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425835044-694cc741-9842-4f0e-a09e-02a3373d7947.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1MDQ0LTY5NGNjNzQxLTk4NDItNGYwZS1hMDllLTAyYTMzNzNkNzk0Ny5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04YTQxNDlhYjJiZWYxYjIxZjQxNGVkZTM5MmY0ZGJlMTk5OTFmZjYwZGVhNjE5MDk4NzM3N2VkM2VjZjYwOTY3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.wi6KAzbR16cyv7vZfllL5KMmqnMiAQ0KWsq-aLABqwQ" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Когда браузер инициирует соединение с сервером по HTTPS, сервер в ответ отправляет цифровой
+        сертификат, в котором содержится его публичный ключ. Браузер принимает этот сертификат и проверяет его
+        подлинность, сверяя подпись центра сертификации с уже известными ему доверенными сертификатами, которые хранятся
+        в специальном хранилище браузера (о нём мы поговорим позже).
+ </p>
+ <p dir="auto">
+  После успешной проверки браузер с помощью публичного ключа сервера шифрует так называемый сессионный
+        ключ — временный симметричный ключ, который далее будет использоваться для шифрования данных между браузером и
+        сервером. Этот зашифрованный сессионный ключ отправляется обратно серверу.
+ </p>
+ <p dir="auto">
+  После обмена сессионным ключом обе стороны — и браузер, и сервер — начинают использовать его для
+        шифрования и дешифрования всех данных, передаваемых в рамках этого соединения. Именно благодаря этому соединение
+        становится надёжным и конфиденциальным
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Типы сертификатов
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425835364-d10cfe32-193a-4300-ad54-799fb0662ec5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1MzY0LWQxMGNmZTMyLTE5M2EtNDMwMC1hZDU0LTc5OWZiMDY2MmVjNS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hZTM3NzJhYzYzMmJhZjUwOTgyYjVjZGY0YjllZTU4ZjgwNDVhZTM1YTM0MTQ3Yjc4NWQxYTY1YWM4Y2NmZTViJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.fZQ2TXAjhO1gqOgVfnu-YGUc9mw8r024xKJPuAmIy88" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425835364-d10cfe32-193a-4300-ad54-799fb0662ec5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1MzY0LWQxMGNmZTMyLTE5M2EtNDMwMC1hZDU0LTc5OWZiMDY2MmVjNS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hZTM3NzJhYzYzMmJhZjUwOTgyYjVjZGY0YjllZTU4ZjgwNDVhZTM1YTM0MTQ3Yjc4NWQxYTY1YWM4Y2NmZTViJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.fZQ2TXAjhO1gqOgVfnu-YGUc9mw8r024xKJPuAmIy88" style="max-width: 100%;"/>
+  </a>
+  <a href="https://private-user-images.githubusercontent.com/114010875/425835393-9a715132-0cdd-4a48-bd22-cfcb213b666d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1MzkzLTlhNzE1MTMyLTBjZGQtNGE0OC1iZDIyLWNmY2IyMTNiNjY2ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kYmZkY2I5ZTIyNjQwZDRkMmU0YzFmM2Q2MjVmM2E3ZWJkYzcwOTdlZGI4MzczMDEyZTkwNjBhZGZlY2JkN2FmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.YGrkVO32pSCB99LqrJrRvrNfOBFTP6ym4N9Uj_xGp5Q" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425835393-9a715132-0cdd-4a48-bd22-cfcb213b666d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1MzkzLTlhNzE1MTMyLTBjZGQtNGE0OC1iZDIyLWNmY2IyMTNiNjY2ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kYmZkY2I5ZTIyNjQwZDRkMmU0YzFmM2Q2MjVmM2E3ZWJkYzcwOTdlZGI4MzczMDEyZTkwNjBhZGZlY2JkN2FmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.YGrkVO32pSCB99LqrJrRvrNfOBFTP6ym4N9Uj_xGp5Q" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  При выборе сертификата для веб-сайта или, например, для защиты трафика в системах вроде MQTT, чаще
+        всего приходится выбирать между двумя основными типами цифровых сертификатов:
+  <em>
+   сертификатом с проверкой
+            домена (DV)
+  </em>
+  и
+  <em>
+   сертификатом с расширенной проверкой (EV)
+  </em>
+  . Оба эти варианта обеспечивают
+        одинаковый уровень шифрования, но различаются степенью доверия и строгостью проверки при их выдаче.
+ </p>
+ <p dir="auto">
+  <strong>
+   Сертификат проверки домена (DV)
+  </strong>
+  представляет собой цифровой сертификат стандарта
+        X.509, который чаще всего используется в протоколе TLS. Его особенность заключается в том, что для его получения
+        достаточно подтвердить владение доменом. Обычно этот процесс полностью автоматизирован и не требует ручной
+        проверки, что делает такие сертификаты самыми доступными и дешёвыми на рынке. DV-сертификаты часто применяются
+        для сайтов, которые не обрабатывают чувствительные или критически важные данные.
+ </p>
+ <p dir="auto">
+  В отличие от них, сертификаты с
+  <strong>
+   расширенной проверкой (EV)
+  </strong>
+  выдаются только после
+        тщательной проверки юридического лица, которое запрашивает сертификат. Такой сертификат не только подтверждает
+        контроль над доменом, но и гарантирует, что сайт или программное обеспечение действительно принадлежит
+        зарегистрированной организации. Процесс получения EV-сертификата включает ручную проверку и требует больше
+        времени и ресурсов, поэтому такие сертификаты стоят заметно дороже. Их часто используют для сайтов банков,
+        крупных компаний и других сервисов, где критически важна высокая степень доверия со стороны пользователей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Ограничения по использованию сертификатов
+  </h3>
+ </div>
+ <p dir="auto">
+  Обычно цифровой сертификат привязан к одному конкретному полному доменному имени (FQDN). Это значит,
+        что сертификат, выданный для адреса
+  <a href="http://www.mysite.com" rel="nofollow">
+   www.mysite.com
+  </a>
+  , не сможет
+        защитить, к примеру, mail.mysite.com или сайт с другим доменом —
+  <a href="http://www.othersite.com" rel="nofollow">
+   www.othersite.com
+  </a>
+  .
+ </p>
+ <p dir="auto">
+  Если возникает необходимость защитить не только основной домен, но и его поддомены, чаще всего
+        используют Wildcard-сертификаты. Такой сертификат охватывает все поддомены указанного доменного имени. Например,
+        сертификат, выписанный для *. mysite.com, подойдёт для следующих поддоменов:
+ </p>
+ <p dir="auto">
+  • mail.mysite.com
+ </p>
+ <p dir="auto">
+  •
+  <a href="http://www.mysite.com" rel="nofollow">
+   www.mysite.com
+  </a>
+ </p>
+ <p dir="auto">
+  • ftp.mysite.com
+ </p>
+ <p dir="auto">
+  • api.mysite.com и других.
+ </p>
+ <p dir="auto">
+  Однако Wildcard-сертификат не позволит работать одновременно с доменами разных зон — например, для
+        mysite.com и myothersite.com его использовать уже нельзя.
+ </p>
+ <p dir="auto">
+  Чтобы защитить несколько независимых доменов в рамках одного сертификата, применяются сертификаты с
+        поддержкой SAN (Subject Alternative Name). Они дают возможность добавить к основному домену ещё несколько
+        альтернативных. Например, один SAN-сертификат может обеспечить защиту для таких адресов:
+ </p>
+ <p dir="auto">
+  •
+  <a href="http://www.mysite.com" rel="nofollow">
+   www.mysite.com
+  </a>
+ </p>
+ <p dir="auto">
+  •
+  <a href="http://www.mysite.org" rel="nofollow">
+   www.mysite.org
+  </a>
+ </p>
+ <p dir="auto">
+  •
+  <a href="http://www" rel="nofollow">
+   www
+  </a>
+  . mysite.net
+ </p>
+ <p dir="auto">
+  •
+  <a href="http://www" rel="nofollow">
+   www
+  </a>
+  . mysite.co
+ </p>
+ <p dir="auto">
+  Также стоит учитывать, что если вам потребуется изменить одно из доменных имён, указанных в
+        сертификате, его придётся перевыпустить с учётом новых данных.
+ </p>
+ <p dir="auto">
+  Можно легко создать свой собственный SSL-сертификат и ключи шифрования с помощью бесплатного
+        программного обеспечения. Такие ключи будут обеспечивать тот же уровень безопасности, что и коммерческие
+        сертификаты, и в некоторых случаях могут быть даже более безопасными.
+ </p>
+ <p dir="auto">
+  Однако коммерческие сертификаты нужны, когда вы хотите, чтобы ваш сертификат был признан и
+        поддерживался на широком уровне. Дело в том, что сертификаты, выданные основными коммерческими центрами
+        сертификации, уже включены в список доверенных источников большинства браузеров и операционных систем. Например,
+        если бы я установил самосгенерированный сертификат на свой сайт (например, на этот сайт), при его посещении вы
+        увидели бы предупреждение о том, что соединение небезопасно, и браузер предложил бы продолжить с риском. Это
+        происходит, потому что браузеры не доверяют сертификатам, которые не подписаны известным центром сертификации
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Кодировка сертификатов и расширения файлов
+  </h3>
+ </div>
+ <p dir="auto">
+  Сертификаты могут быть закодированы в различных форматах, например:
+ </p>
+ <p dir="auto">
+  • В бинарном формате (.DER)
+ </p>
+ <p dir="auto">
+  • В ASCII-формате base64 (.PEM)
+ </p>
+ <p dir="auto">
+  Кроме того, существуют несколько распространённых расширений файлов сертификатов:
+ </p>
+ <p dir="auto">
+  • .DER
+ </p>
+ <p dir="auto">
+  • .PEM (Privacy Enhanced Mail)
+ </p>
+ <p dir="auto">
+  • .CRT
+ </p>
+ <p dir="auto">
+  • .CERT
+ </p>
+ <p dir="auto">
+  Важно отметить, что расширение файла не всегда указывает на его кодировку. Это означает, что файл с
+        расширением .CRT может быть закодирован в формате .DER или .PEM.
+ </p>
+ <p dir="auto">
+  Если вам нужно узнать, в какой кодировке находится ваш файл — .DER или .PEM, вы можете использовать
+        утилиту OpenSSL. Она поможет определить формат файла или конвертировать его в нужный. Простой способ — открыть
+        файл в текстовом редакторе: если вы видите читаемый текст (ASCII), значит, это файл в формате .PEM. Если же
+        содержимое выглядит как набор непонятных символов, это бинарный формат, то есть .DER.
+ </p>
+ <p dir="auto">
+  ###Примеры сертификатов
+ </p>
+ <p dir="auto">
+  Поскольку сертификаты в формате .PEM являются ASCII-файлами, их содержимое можно просматривать с
+        помощью обычного текстового редактора.
+ </p>
+ <p dir="auto">
+  Важно помнить, что все сертификаты начинаются строкой -----BEGIN CERTIFICATE----- и заканчиваются
+        строкой -----END CERTIFICATE-----. Эти строки являются маркерами, указывающими на начало и конец сертификата.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425835717-b0da066e-c6d3-47ef-b26e-bb8c6f9f8267.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1NzE3LWIwZGEwNjZlLWM2ZDMtNDdlZi1iMjZlLWJiOGM2ZjlmODI2Ny5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kZjFiM2UyYjA4YmE2ZmM2NzI1YWQwMjRlMDQzNjcyYmIyMmVhMjQ0YWJlMjc3YzBlZmRjOTJiMGEzZjU1ZmM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.rh-IUJkUfbH3WC-thdXF93lWN3jlqfm97zB-I0EjqzA" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425835717-b0da066e-c6d3-47ef-b26e-bb8c6f9f8267.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1NzE3LWIwZGEwNjZlLWM2ZDMtNDdlZi1iMjZlLWJiOGM2ZjlmODI2Ny5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kZjFiM2UyYjA4YmE2ZmM2NzI1YWQwMjRlMDQzNjcyYmIyMmVhMjQ0YWJlMjc3YzBlZmRjOTJiMGEzZjU1ZmM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.rh-IUJkUfbH3WC-thdXF93lWN3jlqfm97zB-I0EjqzA" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Сертификаты могут храниться в отдельных файлах, но также могут быть объединены с другими сертификатами
+        в один файл, который называется пакетом (bundle). Такой пакет может содержать несколько сертификатов, например,
+        для цепочки доверия (ключевого сертификата, промежуточных и корневых сертификатов).
+ </p>
+ <p dir="auto">
+  Корневые сертификаты могут существовать как отдельные файлы, но также они часто объединяются в пакеты
+        для удобства. В Linux-системах на основе Debian такие корневые сертификаты обычно хранятся в директории
+        /etc/ssl/certs в файле, называемом ca-certificates.crt. Этот файл создаётся системой и обновляется с помощью
+        команды update-ca-certificates, которая добавляет новые сертификаты.
+ </p>
+ <p dir="auto">
+  Файл ca-certificates.crt содержит множество корневых сертификатов и выглядит примерно так:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425835803-60ff2397-1029-461a-b9fd-0bd987bb4734.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1ODAzLTYwZmYyMzk3LTEwMjktNDYxYS1iOWZkLTBiZDk4N2JiNDczNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iMTFlZmE1NTMzOGVjN2M5NmU5NTA5ODU5ODZiYzJmNGQyYWIwZDNlMmYxYzBjMTQyODdlYjQ0NzdlYzIxY2YyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.32NNKPy-qMRrvCF28EuGnmF9XYnmyLCZLdZtPQW_-Nc" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425835803-60ff2397-1029-461a-b9fd-0bd987bb4734.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1ODAzLTYwZmYyMzk3LTEwMjktNDYxYS1iOWZkLTBiZDk4N2JiNDczNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iMTFlZmE1NTMzOGVjN2M5NmU5NTA5ODU5ODZiYzJmNGQyYWIwZDNlMmYxYzBjMTQyODdlYjQ0NzdlYzIxY2YyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.32NNKPy-qMRrvCF28EuGnmF9XYnmyLCZLdZtPQW_-Nc" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  В этой же директории находятся индивидуальные сертификаты или символические ссылки на них, а также
+        файлы с хэшами сертификатов. Хэш-файлы создаются с помощью команды c_rehash и используются, когда вместо
+        указания пути к файлу используется путь к директории. Например, утилита mosquitto_pub может быть запущена таким
+        образом:
+ </p>
+ <p dir="auto">
+  <code>
+   mosquitto_pub --cafile /etc/ssl/certs/ca-certificates.crt
+  </code>
+  <code>
+   mosquitto_pub --capath /etc/ssl/certs/
+  </code>
+ </p>
+ <p dir="auto">
+  Центры сертификации (ЦС) могут создавать дочерние ЦС, которые также имеют право выдавать сертификаты
+        своим клиентам.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425835985-5516ea82-2486-4028-acce-27837323ca83.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1OTg1LTU1MTZlYTgyLTI0ODYtNDAyOC1hY2NlLTI3ODM3MzIzY2E4My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02OTc1MDBhNDA5YmI5ODMyNWEyNDM3ZmE4ZTExOTQ0ZDNhOWYxNzNmYTlkY2MyNDA0ODM5OGJkOWM5ZjU2MWM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PLwf7XcBV6_cli01IyjGU5-wyk4MN5WweCF5ZHdX89Y" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425835985-5516ea82-2486-4028-acce-27837323ca83.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM1OTg1LTU1MTZlYTgyLTI0ODYtNDAyOC1hY2NlLTI3ODM3MzIzY2E4My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02OTc1MDBhNDA5YmI5ODMyNWEyNDM3ZmE4ZTExOTQ0ZDNhOWYxNzNmYTlkY2MyNDA0ODM5OGJkOWM5ZjU2MWM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PLwf7XcBV6_cli01IyjGU5-wyk4MN5WweCF5ZHdX89Y" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Чтобы подтвердить подлинность сертификата, клиенту нужно проверить подписи сертификатов всех ЦС,
+        составляющих цепочку (chain) сертификации. Хотя у клиента может быть установлен корневой сертификат, скорее
+        всего, у него не будет сертификатов промежуточных ЦС.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425836021-270d9ec0-b8a4-4963-b7a9-b87420648d60.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM2MDIxLTI3MGQ5ZWMwLWI4YTQtNDk2My1iN2E5LWI4NzQyMDY0OGQ2MC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jOThkZGNkZDg5ZDVmYWZiNjMzNzY4YWYxMjc0NzU2OGRiNWE2ZjJjYzBjZjg3NWFlNWU2OGM0OWQzZmY1NGM4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Pz3K2r-Z3wkn4WJ7Yb0Tq3d_DvbtL_AUq-AbSC24pvg" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425836021-270d9ec0-b8a4-4963-b7a9-b87420648d60.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDksIm5iZiI6MTc0NTE0ODYwOSwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1ODM2MDIxLTI3MGQ5ZWMwLWI4YTQtNDk2My1iN2E5LWI4NzQyMDY0OGQ2MC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jOThkZGNkZDg5ZDVmYWZiNjMzNzY4YWYxMjc0NzU2OGRiNWE2ZjJjYzBjZjg3NWFlNWU2OGM0OWQzZmY1NGM4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Pz3K2r-Z3wkn4WJ7Yb0Tq3d_DvbtL_AUq-AbSC24pvg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  В связи с этим сертификаты часто поставляются в виде пакетов (bundle). Такой пакет включает в себя
+        сертификаты всех ЦС, которые находятся в цепочке доверия. Обычно этот файл называется CA-Bundle.crt.
+ </p>
+ <p dir="auto">
+  Если вам предоставили индивидуальные сертификаты, вы можете сами объединить их в пакет, чтобы
+        обеспечить правильную цепочку сертификации.
+ </p>
+</article>

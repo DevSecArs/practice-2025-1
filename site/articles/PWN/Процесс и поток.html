@@ -1,0 +1,211 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <p dir="auto">
+  Процессом обычно называют программу запущенную на системе. Когда исполняемый файл начинает исполняться
+        – он превращается в процесс. Здесь важно понять различие:
+ </p>
+ <p dir="auto">
+  Каждый запуск одной и той же программы порождает отдельный процесс. Каждый такой процесс соответствует
+        одному и тому же исполняемому файлу.
+ </p>
+ <p dir="auto">
+  Если файл физически находится на жёстком диске, то процесс – уже в оперативной памяти, а
+        следовательно, и инструкции программы также находятся в ней.
+        Программа представляет собой статический набор команд, а процесс — это набор ресурсов и данных, использующихся
+        при выполнении программы.
+ </p>
+ <p dir="auto">
+  Процесс в Windows состоит из следующих компонентов:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Структура данных, содержащая всю информацию о процессе, в том числе список открытых
+                дескрипторов различных системных ресурсов, уникальный идентификатор процесса, различную статистическую
+                информацию и т.д.;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Адресное пространство - диапазон адресов виртуальной памяти, которым может пользоваться
+                процесс;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Исполняемая программа и данные, проецируемые на виртуальное адресное пространство процесса.
+    <a href="https://private-user-images.githubusercontent.com/91123949/372879039-e8792e19-2fe9-44b9-ac90-f950fafed49e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTEsIm5iZiI6MTc0NTE0Nzg5MSwicGF0aCI6Ii85MTEyMzk0OS8zNzI4NzkwMzktZTg3OTJlMTktMmZlOS00NGI5LWFjOTAtZjk1MGZhZmVkNDllLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNkMmVjYWRjZDNmNWQ5MTc5ZDU2ZTdmNTQzNzQ5MWFlZDFlNGQ0ZmQzZDA0MzFjZTAyNmY3NTgzMmMyOTQ5MjAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.MqFopbZVMlzvT7Jx_fwBPKWe4ixVYLYMnn2AJuO08JU" rel="noopener noreferrer" target="_blank">
+     <img alt="Pasted image 20240102211344" src="https://private-user-images.githubusercontent.com/91123949/372879039-e8792e19-2fe9-44b9-ac90-f950fafed49e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTEsIm5iZiI6MTc0NTE0Nzg5MSwicGF0aCI6Ii85MTEyMzk0OS8zNzI4NzkwMzktZTg3OTJlMTktMmZlOS00NGI5LWFjOTAtZjk1MGZhZmVkNDllLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNkMmVjYWRjZDNmNWQ5MTc5ZDU2ZTdmNTQzNzQ5MWFlZDFlNGQ0ZmQzZDA0MzFjZTAyNmY3NTgzMmMyOTQ5MjAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.MqFopbZVMlzvT7Jx_fwBPKWe4ixVYLYMnn2AJuO08JU" style="max-width: 100%;"/>
+    </a>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Process ID: идентификатор каждого из процессов в ОС;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    State: текущее состояние процесса;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Privileges: разрешения доступа к системным ресурсам;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Pointer: указатель на родительский процесс;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Priority: приоритет процесса и другая информация, которая требуется для планирования процесса;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Program Counter: указатель на адрес следующей команды, которая должна быть выполнена;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    CPU registers: регистры процессора, необходимые для состояния исполнения;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Accounting Information: уровень нагрузки на процессор, статистика и другие данные;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    I/O Information: список ресурсов, использующих чтение и запись.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Процесс может находиться в нескольких состояниях:
+  <a href="https://private-user-images.githubusercontent.com/91123949/372879144-3a88765d-3ac7-436f-9068-9b926b56b09b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTEsIm5iZiI6MTc0NTE0Nzg5MSwicGF0aCI6Ii85MTEyMzk0OS8zNzI4NzkxNDQtM2E4ODc2NWQtM2FjNy00MzZmLTkwNjgtOWI5MjZiNTZiMDliLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTE0OThjNjU1OWM5NDgyYjljZjAxNWM4M2MyYTYzZjE5ZTA2MmE5MzNmMGZiNDQ5MzUyZDIzYTA1NDMzMzQxNmYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RZTtz0UvkEov7SmbI3OGidpnW2dKBgLUBdx-Q5oBPuM" rel="noopener noreferrer" target="_blank">
+   <img alt="Pasted image 20240102211534" src="https://private-user-images.githubusercontent.com/91123949/372879144-3a88765d-3ac7-436f-9068-9b926b56b09b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDgxOTEsIm5iZiI6MTc0NTE0Nzg5MSwicGF0aCI6Ii85MTEyMzk0OS8zNzI4NzkxNDQtM2E4ODc2NWQtM2FjNy00MzZmLTkwNjgtOWI5MjZiNTZiMDliLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMTgxMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTE0OThjNjU1OWM5NDgyYjljZjAxNWM4M2MyYTYzZjE5ZTA2MmE5MzNmMGZiNDQ5MzUyZDIzYTA1NDMzMzQxNmYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RZTtz0UvkEov7SmbI3OGidpnW2dKBgLUBdx-Q5oBPuM" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ul dir="auto">
+  <li>
+   Start: начальное состояние при создании процесса;
+  </li>
+  <li>
+   Ready: процесс ожидает исполнения на процессоре. В течение работы процессор может переключаться между
+            процессами, переводя одни в режим готовности, другие – в режим исполнения;
+  </li>
+  <li>
+   Running: выполнение инструкций;
+  </li>
+  <li>
+   Wait: процесс переходит в состояние ожидания. Например, ждёт ввода данных или получения доступа к файлу;
+  </li>
+  <li>
+   Terminated: как только процесс завершится, он перейдёт в это состояние и будет ожидать удаления.
+  </li>
+ </ul>
+ <p dir="auto">
+  Список процессов на вашем ПК можно посмотреть командой
+  <code>
+   tasklist
+  </code>
+  в cmd или в диспетчере
+        задач. Также существуют сторонние утилиты для Windows (например, Process Explorer или Process Hacker), которые
+        упрощают работу с процессами в ОС.
+ </p>
+ <p dir="auto">
+  Для каждого процесса операционная система создает один главный поток (Thread), который является
+        потоком выполняющихся по очереди команд центрального процессора. При необходимости главный поток может создавать
+        другие потоки, пользуясь для этого программным интерфейсом (API) операционной системы.
+ </p>
+ <p dir="auto">
+  Все потоки, созданные процессом, выполняются в адресном пространстве этого процесса и имеют доступ к
+        ресурсам процесса. Однако поток одного процесса не имеет никакого доступа к ресурсам потока другого процесса,
+        так как они работают в разных адресных пространствах. При необходимости организации взаимодействия между
+        процессами или потоками, принадлежащими разным процессам, следует пользоваться системными средствами, специально
+        предназначенными для этого.
+ </p>
+ <p dir="auto">
+  Как во всех ситуациях, и здесь есть исключения. Например, существует несколько способов внедрить код
+        одного процесса в другой с помощью хакерского ПО. Такое внедрение также называется термином "[[Process
+        Injection]]".
+ </p>
+ <p dir="auto">
+  Исполнение процесса в общих чертах выглядит следующим образом:
+ </p>
+ <ol dir="auto">
+  <li>
+   Операционная система проверяет является ли исполняемый файл исполняемым (происходит проверка структуры
+            заголовков и секций файла);
+  </li>
+  <li>
+   Операционная система проверяет можно ли вообще запускать процесс;
+  </li>
+  <li>
+   Исполняемый файл загружается с жёсткого диска в свободные участки оперативной памяти;
+  </li>
+  <li>
+   Инструкции программы начинают поочерёдно исполняться на процессоре;
+  </li>
+  <li>
+   В журнале аудита Windows появляется запись о том, что был создан новый процесс;
+  </li>
+  <li>
+   В процессе исполнения инструкций возможны следующие действия:
+   <ul dir="auto">
+    <li>
+     Чтение, запись и другие операции с файлами, в том числе и исполняемыми;
+    </li>
+    <li>
+     Преобразование данных, которые хранятся внутри самого процесса;
+    </li>
+    <li>
+     Выполнение внутренних вычислений;
+    </li>
+    <li>
+     Вывод изображения на экран;
+    </li>
+    <li>
+     Воспроизведение аудиодорожки;
+    </li>
+    <li>
+     Создание нового сетевого подключения;
+    </li>
+    <li>
+     Исполнение другого исполняемого файла;
+    </li>
+    <li>
+     Прерывания исполнения программы;
+    </li>
+    <li>
+     Временная выгрузка процесса из оперативной памяти в файл подкачки;
+    </li>
+    <li>
+     Загрузка динамически подключаемых библиотек;
+    </li>
+    <li>
+     Вообще что угодно, что было написано в инструкциях программы.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Завершение процесса:
+   <ul dir="auto">
+    <li>
+     Его удаление из оперативной памяти;
+    </li>
+    <li>
+     В журнале аудита появляется запись о том, что процесс был завершён.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Если для запуска процесса недостаточно памяти, он может быть помещён в pagefile (файл подкачки,
+        который располагается на жёстком диске). Эта память медленнее оперативной, но другого выхода нет
+ </p>
+</article>

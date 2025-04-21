@@ -1,0 +1,945 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <ul dir="auto">
+  <li>
+   <a href="#1-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">
+    1. Введение
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BF%D0%BE%D1%87%D0%B5%D0%BC%D1%83-kerberoasting-%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D1%8F%D0%B5%D1%82-%D1%83%D0%B3%D1%80%D0%BE%D0%B7%D1%83">
+      Почему
+                        Kerberoasting представляет угрозу?
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BA%D0%B0%D0%BA-%D0%B0%D1%82%D0%B0%D0%BA%D0%B0-%D0%BC%D0%BE%D0%B6%D0%B5%D1%82-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F-%D0%B2-%D1%80%D0%B5%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D0%B6%D0%B8%D0%B7%D0%BD%D0%B8">
+      Как
+                        атака может использоваться в реальной жизни?
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#2-%D0%BC%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%B7%D0%BC-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-kerberoasting">
+    2.
+                Механизм атаки Kerberoasting
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BA%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-kerberos-%D0%B2-active-directory">
+      Как
+                        работает Kerberos в Active Directory?
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BA%D0%B0%D0%BA-%D0%B0%D1%82%D0%B0%D0%BA%D1%83%D1%8E%D1%89%D0%B8%D0%B9-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D1%8F%D0%B5%D1%82-kerberoasting">
+      Как
+                        атакующий выполняет Kerberoasting?
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%88%D0%B0%D0%B3%D0%B8-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+        Шаги атаки
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#3-%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B-%D0%B4%D0%BB%D1%8F-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+    3.
+                Инструменты для атаки
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#31-impacket--%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-tgs-%D0%B1%D0%B8%D0%BB%D0%B5%D1%82%D0%BE%D0%B2">
+      3.1
+                        Impacket – Получение TGS-билетов
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-impacket-%D0%BD%D0%B0-kali-linux">
+        Установка
+                                Impacket на Kali Linux
+       </a>
+      </li>
+      <li>
+       <a href="#%D1%81%D0%BA%D0%B0%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%B0-%D0%BD%D0%B0-%D0%BD%D0%B0%D0%BB%D0%B8%D1%87%D0%B8%D0%B5-%D1%83%D1%87%D0%B5%D1%82%D0%BD%D1%8B%D1%85-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B5%D0%B9-%D1%81-spn">
+        Сканирование
+                                домена на наличие учетных записей с SPN
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81-%D0%B1%D0%B8%D0%BB%D0%B5%D1%82%D0%BE%D0%B2-tgs-%D0%B4%D0%BB%D1%8F-%D0%B0%D1%82%D0%B0%D0%BA%D1%83%D0%B5%D0%BC%D1%8B%D1%85-%D1%83%D1%87%D0%B5%D1%82%D0%BD%D1%8B%D1%85-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B5%D0%B9">
+        Запрос
+                                билетов TGS для атакуемых учетных записей
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#32-hashcat--%D0%B2%D0%B7%D0%BB%D0%BE%D0%BC-%D1%85%D1%8D%D1%88%D0%B5%D0%B9-%D0%B1%D0%B8%D0%BB%D0%B5%D1%82%D0%BE%D0%B2">
+      3.2
+                        Hashcat – Взлом хэшей билетов
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-hashcat">
+        Установка
+                                Hashcat
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0-%D1%82%D0%B8%D0%BF%D0%B0-%D1%85%D1%8D%D1%88%D0%B0">
+        Проверка
+                                типа хэша
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D1%82%D0%B0%D0%BA%D0%B0-%D0%BD%D0%B0-%D1%85%D1%8D%D1%88-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%B0">
+        Атака
+                                на хэш с помощью словарного метода
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B1%D1%80%D1%83%D1%82%D1%84%D0%BE%D1%80%D1%81-%D0%B0%D1%82%D0%B0%D0%BA%D0%B0">
+        Брутфорс
+                                атака
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#4-%D1%81%D0%BF%D0%BE%D1%81%D0%BE%D0%B1%D1%8B-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D1%8B-%D0%BE%D1%82-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-kerberoasting">
+    4.
+                Способы защиты от атаки Kerberoasting
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#41-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B0%D0%B4%D0%B5%D0%B6%D0%BD%D1%8B%D1%85-%D0%BF%D0%B0%D1%80%D0%BE%D0%BB%D0%B5%D0%B9">
+      4.1
+                        Использование надежных паролей
+     </a>
+    </li>
+    <li>
+     <a href="#42-%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BD%D1%8B%D1%85-%D1%83%D1%87%D0%B5%D1%82%D0%BD%D1%8B%D1%85-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B5%D0%B9">
+      4.2
+                        Ограничение прав сервисных учетных записей
+     </a>
+    </li>
+    <li>
+     <a href="#43-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3-%D0%BF%D0%BE%D0%B4%D0%BE%D0%B7%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D1%85-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2-kerberos">
+      4.3
+                        Мониторинг подозрительных запросов Kerberos
+     </a>
+    </li>
+    <li>
+     <a href="#44-%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%B6%D0%B8%D0%B7%D0%BD%D0%B8-%D0%B1%D0%B8%D0%BB%D0%B5%D1%82%D0%BE%D0%B2-kerberos">
+      4.4
+                        Ограничение времени жизни билетов Kerberos
+     </a>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   1. Введение
+  </h1>
+ </div>
+ <p dir="auto">
+  <strong>
+   Kerberoasting
+  </strong>
+  - это метод атаки на Active Directory, который позволяет злоумышленнику
+        получить хэши паролей сервисных учетных записей и попытаться взломать их в автономном режиме. Эта атака особенно
+        опасна, потому что она не требует высоких привилегий (например, прав администратора домена), а обнаружить ее
+        достаточно сложно.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Почему Kerberoasting представляет угрозу?
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Не требует эскалации привилегий
+   </strong>
+   - любой пользователь домена может выполнить атаку, если у
+            него есть базовый доступ к Active Directory.
+  </li>
+  <li>
+   <strong>
+    Использует штатный механизм Kerberos
+   </strong>
+   - злоумышленник не вызывает подозрительной активности,
+            так как делает легитимные запросы на выдачу билетов.
+  </li>
+  <li>
+   <strong>
+    Позволяет атакующему работать в офлайн-режиме
+   </strong>
+   - после получения хэша злоумышленник может
+            бесконечно долго пытаться подобрать пароль без риска быть заблокированным системой.
+  </li>
+  <li>
+   <strong>
+    Часто находит слабые пароли
+   </strong>
+   - многие сервисные учетные записи используют устаревшие или
+            слабые пароли, которые легко поддаются атаке методом перебора.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Как атака может использоваться в реальной жизни?
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Внутренний злоумышленник (Insider Attack)
+   </strong>
+   - сотрудник организации с минимальными
+            привилегиями может запросить TGS-билет для сервисного аккаунта и попытаться взломать его пароль.
+  </li>
+  <li>
+   <strong>
+    Пост-эксплуатация (Post-Exploitation)
+   </strong>
+   - если атакующий уже получил доступ к системе
+            (например, через фишинг или эксплойт), он может использовать Kerberoasting для дальнейшего развития атаки и
+            получения более привилегированных учетных записей.
+  </li>
+  <li>
+   <strong>
+    Автоматизация атак
+   </strong>
+   - инструменты, такие как Impacket и Kerbrute, позволяют злоумышленникам
+            массово запрашивать билеты, анализировать учетные записи и автоматически проверять уязвимости.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   2. Механизм атаки Kerberoasting
+  </h1>
+ </div>
+ <p dir="auto">
+  Атака Kerberoasting использует особенности работы протокола аутентификации
+  <strong>
+   Kerberos
+  </strong>
+  в
+        Windows-доменах Active Directory (AD). Основная цель злоумышленника - получить
+  <strong>
+   билет на сервисный
+            аккаунт (TGS - Ticket Granting Service)
+  </strong>
+  , в котором хранится хэш пароля учетной записи, а затем
+        расшифровать этот хэш в офлайн-режиме.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Как работает Kerberos в Active Directory?
+  </h2>
+ </div>
+ <p dir="auto">
+  Kerberos - это протокол аутентификации, используемый в Windows-доменах. Он обеспечивает безопасный
+        доступ пользователей к сервисам без передачи паролей в открытом виде. Аутентификация проходит в несколько
+        этапов:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="1" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Запрос TGT (Ticket Granting Ticket)
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Пользователь вводит учетные данные (логин и пароль).
+    </li>
+    <li>
+     Клиент шифрует пароль с использованием NTLM-хэша и отправляет запрос аутентификации в
+     <strong>
+      KDC
+                        (Key Distribution Center)
+     </strong>
+     - контроллер домена.
+    </li>
+    <li>
+     Если пароль верный, KDC возвращает
+     <strong>
+      TGT-билет
+     </strong>
+     , зашифрованный мастер-ключом KDC.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Запрос TGS (Ticket Granting Service)
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Когда пользователю нужно получить доступ к какому-либо сервису (например, MSSQL, Exchange, файловому
+                    серверу), он отправляет запрос в KDC с просьбой выдать
+     <strong>
+      TGS-билет
+     </strong>
+     для нужного
+                    сервиса.
+    </li>
+    <li>
+     KDC формирует билет, который
+     <strong>
+      зашифрован паролем сервисной учетной записи
+     </strong>
+     , и
+                    отправляет его пользователю.
+    </li>
+    <li>
+     Пользователь передает этот билет сервису, который расшифровывает его своим паролем и предоставляет
+                    доступ.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Как атакующий выполняет Kerberoasting?
+  </h2>
+ </div>
+ <p dir="auto">
+  Атака Kerberoasting использует тот факт, что билет
+  <strong>
+   TGS шифруется паролем сервисного
+            аккаунта
+  </strong>
+  . Если атакующий получит этот билет, он сможет расшифровать его, подобрав пароль.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Шаги атаки
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Сбор учетных записей, доступных для Kerberoasting
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Атакующий получает список сервисных учетных записей, у которых включен
+     <strong>
+      Service Principal
+                        Name (SPN)
+     </strong>
+     .
+    </li>
+    <li>
+     Это можно сделать с помощью стандартных команд Windows или инструментов для пентеста, таких как
+     <strong>
+      Impacket
+     </strong>
+     , которые позволяют перейти сразу к шагу 3.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Запрос TGS-билетов для сервисных учетных записей
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Используя свой обычный пользовательский аккаунт в домене, злоумышленник отправляет
+     <strong>
+      легитимные
+     </strong>
+     запросы на получение TGS для сервисных учетных записей.
+    </li>
+    <li>
+     Эти запросы не требуют высоких привилегий, поэтому могут выполняться любым пользователем, имеющим
+                    доступ к домену.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Извлечение хэшей из билетов
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Полученные билеты содержат хэш пароля сервисного аккаунта.
+    </li>
+    <li>
+     Атакующий сохраняет билеты и извлекает хэши с помощью инструментов, таких как
+     <strong>
+      Impacket
+                        (GetUserSPNs.py)
+     </strong>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Атака на хэши офлайн
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     После получения хэша злоумышленник использует
+     <strong>
+      Hashcat
+     </strong>
+     или
+     <strong>
+      John the
+                        Ripper
+     </strong>
+     для расшифровки пароля.
+    </li>
+    <li>
+     Если пароль слабый, его можно быстро подобрать с помощью
+     <strong>
+      брутфорса
+     </strong>
+     или
+     <strong>
+      атак
+                        по словарю
+     </strong>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Эскалация привилегий и дальнейшие атаки
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Если атакующий взломал сервисный аккаунт с высокими привилегиями (например, администратор базы
+                    данных или серверной службы), он может использовать его для дальнейшего распространения по сети.
+    </li>
+    <li>
+     В некоторых случаях такие учетные записи могут обладать правами администратора домена.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   3. Инструменты для атаки
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3.1 Impacket – Получение TGS-билетов
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   Impacket
+  </strong>
+  - это набор Python-скриптов для работы с сетевыми протоколами, включая SMB,
+        RPC и Kerberos. Он содержит утилиту
+  <strong>
+   GetUserSPNs.py
+  </strong>
+  , которая позволяет запрашивать TGS-билеты
+        для учетных записей с SPN (Service Principal Name).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Установка Impacket на Kali Linux
+  </h3>
+ </div>
+ <p dir="auto">
+  Перед началом работы необходимо установить Impacket:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>git clone https://github.com/fortra/impacket.git
+    <span class="pl-c1">cd</span> impacket
+    python3 -m pipx install <span class="pl-c1">.</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Сканирование домена на наличие учетных записей с SPN
+  </h3>
+ </div>
+ <p dir="auto">
+  Используем
+  <strong>
+   GetUserSPNs.py
+  </strong>
+  для поиска сервисных учетных записей:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>impacket-GetUserSPNs DOMAIN/USER:PASSWORD -dc-ip 192.168.1.10</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Где:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <code>
+    DOMAIN/USER:PASSWORD
+   </code>
+   - учетные данные любого пользователя домена.
+  </li>
+  <li>
+   <code>
+    -dc-ip 192.168.1.10
+   </code>
+   - IP-адрес контроллера домена.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Вывод:
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="2" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Теперь у нас есть учетные записи, для которых можно запросить билеты.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Запрос билетов TGS для атакуемых учетных записей
+  </h3>
+ </div>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>impacket-GetUserSPNs DOMAIN/USER:PASSWORD -request -dc-ip 192.168.1.10</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Вывод:
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="3" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Эта строка - хэш пароля учетной записи, зашифрованный с её паролем. Он готов для офлайн-взлома.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3.2 Hashcat – Взлом хэшей билетов
+  </h2>
+ </div>
+ <p dir="auto">
+  После получения Kerberos-хэшей с помощью Impacket, можно попытаться их расшифровать с помощью
+  <strong>
+   Hashcat
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Установка Hashcat
+  </h3>
+ </div>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>sudo apt install hashcat</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Проверка типа хэша
+  </h3>
+ </div>
+ <p dir="auto">
+  Kerberos-хэши имеют формат
+  <code>
+   $krb5tgs$
+  </code>
+  , который в Hashcat соответствует режиму
+  <strong>
+   13100
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Атака на хэш с помощью словарного метода
+  </h3>
+ </div>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>hashcat -m 13100 hashes.list rockyou.txt --force</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Где:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <code>
+    -m 13100
+   </code>
+   - режим Kerberos TGS для Hashcat.
+  </li>
+  <li>
+   <code>
+    hashes.list
+   </code>
+   - файл с хэшами.
+  </li>
+  <li>
+   <code>
+    rockyou.txt
+   </code>
+   - словарь паролей.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Вывод:
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="4" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="5" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="6" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Если пароль слабый (например,
+  <code>
+   password123
+  </code>
+  ), он будет найден в течение нескольких минут, а
+        то и секунд.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Брутфорс атака
+  </h3>
+ </div>
+ <p dir="auto">
+  Если словарь не сработал, можно попробовать брутфорс:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>hashcat -m 13100 hashes.list -a 3 <span class="pl-k">?</span>a<span class="pl-k">?</span>a<span class="pl-k">?</span>a<span class="pl-k">?</span>a<span class="pl-k">?</span>a<span class="pl-k">?</span>a<span class="pl-k">?</span>a</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Где:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <code>
+    -a 3
+   </code>
+   - метод перебора (маска).
+  </li>
+  <li>
+   <code>
+    ?a?a?a?a?a?a?a
+   </code>
+   - маска на 7 символов (маленькие, большие буквы, цифры, спецсимволы).
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   4. Способы защиты от атаки Kerberoasting
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.1 Использование надежных паролей
+  </h2>
+ </div>
+ <p dir="auto">
+  Основной уязвимостью является слабый пароль сервисной учетной записи. Если пароль короткий или легко
+        угадываемый, его можно взломать с помощью
+  <strong>
+   атаки по словарю
+  </strong>
+  или
+  <strong>
+   брутфорса
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  <strong>
+   Лучшие практики для паролей сервисных учетных записей:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Минимальная длина -
+    <strong>
+     25+ символов
+    </strong>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Использование
+    <strong>
+     букв (верхний и нижний регистр), цифр, спецсимволов
+    </strong>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Генерация паролей с помощью менеджеров паролей или скриптов:
+   </p>
+   <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-k">-join</span> ((<span class="pl-c1">33</span><span class="pl-k">..</span><span class="pl-c1">126</span>) <span class="pl-k">|</span> <span class="pl-c1">Get-Random</span> <span class="pl-k">-</span>Count <span class="pl-c1">30</span> <span class="pl-k">|</span> <span class="pl-c1">ForEach-Object</span> { [<span class="pl-k">char</span>]<span class="pl-c1">$_</span> })</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Запрет использования слабых паролей (включая
+    <code>
+     P@ssw0rd
+    </code>
+    ,
+    <code>
+     Admin123!
+    </code>
+    ,
+    <code>
+     Welcome2024
+    </code>
+    ).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Регулярная смена паролей (не реже
+    <strong>
+     раз в 90 дней
+    </strong>
+    ).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Запрет повторного использования старых паролей.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.2 Ограничение прав сервисных учетных записей
+  </h2>
+ </div>
+ <p dir="auto">
+  Многие сервисные учетные записи имеют избыточные привилегии, что делает их взлом особенно опасным.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как уменьшить риски:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Использовать
+    <strong>
+     обычные учетные записи
+    </strong>
+    вместо сервисных там, где это возможно.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Отключить
+    <strong>
+     делегирование учетных записей
+    </strong>
+    , если оно не требуется.
+   </p>
+   <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c1">Set-ADUser</span> <span class="pl-k">-</span>Identity SERVICEACCOUNT <span class="pl-k">-</span>TrustedForDelegation <span class="pl-c1">$false</span></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Не использовать сервисные учетные записи с правами
+    <strong>
+     Domain Admin
+    </strong>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Применить
+    <strong>
+     групповые управляемые учетные записи (gMSA)
+    </strong>
+    , которые автоматически
+                меняют пароли и исключают необходимость статических учетных записей.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.3 Мониторинг подозрительных запросов Kerberos
+  </h2>
+ </div>
+ <p dir="auto">
+  Хотя в целом Kerberoasting-атаку очень сложно отличить от легитимного запроса, её можно попробовать
+        обнаружить с помощью анализа количества запросов Kerberos билетов за короткий промежуток времени. Это можно
+        сделать с помощью
+  <strong>
+   SIEM-систем
+  </strong>
+  и журналов событий Windows.
+ </p>
+ <p dir="auto">
+  <strong>
+   Что отслеживать в логах Windows?
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   Событие 4769 (Event ID 4769) - Запрос билета TGS
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Необычно большое количество запросов TGS за короткий промежуток времени.
+  </li>
+  <li>
+   Запросы от учетных записей, которые обычно не взаимодействуют с конкретным сервисом.
+  </li>
+  <li>
+   Запросы, инициированные с нестандартных хостов (например, от рабочей станции обычного пользователя).
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   PowerShell-команда для поиска подозрительных запросов:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Get-WinEvent</span> <span class="pl-k">-</span>LogName Security <span class="pl-k">|</span> <span class="pl-c1">Where-Object</span> { <span class="pl-c1">$_<span class="pl-smi">.Id</span></span> <span class="pl-k">-eq</span> <span class="pl-c1">4769</span> } <span class="pl-k">|</span> <span class="pl-c1">Format-Table</span> TimeCreated<span class="pl-k">,</span> Message <span class="pl-k">-</span>AutoSize</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Настройка SIEM (Splunk, ELK, Microsoft Sentinel) для обнаружения атак
+  </strong>
+  <br/>
+  Пример запроса в Splunk:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>index=security EventCode=4769 
+    | stats count by Account_Name, Client_Address 
+    | where count &gt; 10
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.4 Ограничение времени жизни билетов Kerberos
+  </h2>
+ </div>
+ <p dir="auto">
+  Чем меньше времени атакующий имеет на взлом пароля, тем выше уровень защиты.
+ </p>
+ <p dir="auto">
+  <strong>
+   Настройка политики билетов Kerberos в Active Directory
+  </strong>
+ </p>
+ <p dir="auto">
+  В редакторе групповых политик (GPO)
+  <strong>
+   gpedit.msc
+  </strong>
+  →
+  <br/>
+  <strong>
+   Конфигурация компьютера → Настройки Windows → Параметры безопасности → Политики учетной записи →
+            Политика Kerberos
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/atricle_kerberoasting/7.png" rel="noopener noreferrer" target="_blank">
+   <img alt="7" src="https://github.com/ShAmRoWw/articles/raw/main/atricle_kerberoasting/7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Максимальный срок жизни билета службы (TGS)
+   </strong>
+   :
+   <strong>
+    4–8 часов
+   </strong>
+  </li>
+  <li>
+   <strong>
+    Максимальный срок жизни билета TGT
+   </strong>
+   :
+   <strong>
+    10 часов
+   </strong>
+  </li>
+  <li>
+   <strong>
+    Включить AES-шифрование для Kerberos-билетов
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  Также можно изменить настройки через PowerShell:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Set-KerberosTicketPolicy</span> <span class="pl-k">-</span>MaxServiceTicketLifetime 4h <span class="pl-k">-</span>MaxTicketLifetime 10h</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Автор: Дейникин Максим Юрьевич
+  </strong>
+ </p>
+</article>

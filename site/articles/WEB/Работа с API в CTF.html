@@ -1,0 +1,329 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Работа с API в CTF: безопасность и уязвимости
+  </h1>
+ </div>
+ <p dir="auto">
+  Capture The Flag (CTF) — это формат соревнований в области информационной безопасности, где участники
+        решают задачи, связанные с нахождением уязвимостей в системах и приложениях. Одной из ключевых тем, обсуждаемых
+        на CTF, является работа с API (Application Programming Interface).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основы работы с API
+  </h2>
+ </div>
+ <p dir="auto">
+  API представляет собой набор правил и протоколов, позволяющих различным программным приложениям
+        взаимодействовать друг с другом. В контексте CTF, работа с API может включать:
+ </p>
+ <p dir="auto">
+  • Аутентификацию: процесс проверки подлинности пользователя.
+ </p>
+ <p dir="auto">
+  • Авторизацию: процесс определения прав доступа пользователя к ресурсам.
+ </p>
+ <p dir="auto">
+  • Обмен данными: отправка и получение данных между клиентом и сервером.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Уязвимости API
+  </h2>
+ </div>
+ <p dir="auto">
+  Существует множество уязвимостей, которые могут быть использованы для атаки на API. Рассмотрим
+        несколько наиболее распространенных:
+ </p>
+ <ol dir="auto">
+  <li>
+   Небезопасные прямые ссылки на объекты (IDOR)
+  </li>
+ </ol>
+ <p dir="auto">
+  IDOR (Insecure Direct Object Reference) — это уязвимость, позволяющая злоумышленнику получить доступ к
+        объектам или данным, к которым он не должен иметь доступа. Например, если API позволяет запрашивать данные по
+        идентификатору пользователя, злоумышленник может изменить идентификатор в запросе и получить доступ к данным
+        другого пользователя.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf1.png" style="max-width: 100%;"/>
+  </a>
+  Злоумышленник может изменить 2 на 1 и получить данные другого пользователя.
+ </p>
+ <ol dir="auto" start="2">
+  <li>
+   Недостатки аутентификации пользователей
+  </li>
+ </ol>
+ <p dir="auto">
+  Многие API имеют недостатки в механизмах аутентификации. Это может включать использование
+        предсказуемых токенов или отсутствие проверки подлинности для определенных запросов. Злоумышленники могут
+        использовать эти недостатки для получения несанкционированного доступа к ресурсам.
+ </p>
+ <ol dir="auto" start="4">
+  <li>
+   Избыточная передача данных
+  </li>
+ </ol>
+ <p dir="auto">
+  Иногда API возвращает больше данных, чем необходимо. Это может привести к утечкам конфиденциальной
+        информации. Например, если запрос на получение данных о пользователе возвращает не только имя и email, но и
+        ответ на секретный вопрос.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы защиты API
+  </h2>
+ </div>
+ <p dir="auto">
+  Для защиты API от уязвимостей необходимо применять ряд методов:
+ </p>
+ <ol dir="auto">
+  <li>
+   Использование HTTPS
+  </li>
+ </ol>
+ <p dir="auto">
+  Все данные, передаваемые через API, должны шифроваться с помощью HTTPS. Это предотвращает перехват
+        токенов и других конфиденциальных данных во время передачи
+ </p>
+ <ol dir="auto" start="2">
+  <li>
+   Проверка прав доступа
+  </li>
+ </ol>
+ <p dir="auto">
+  Каждый запрос к API должен проверять права доступа пользователя. Это включает в себя проверку токенов
+        аутентификации и авторизации
+ </p>
+ <ol dir="auto" start="3">
+  <li>
+   Ограничение доступа по IP
+  </li>
+ </ol>
+ <p dir="auto">
+  Можно ограничить доступ к API только для определенных IP-адресов или диапазонов адресов. Это поможет
+        предотвратить атаки из внешних источников.
+ </p>
+ <ol dir="auto" start="5">
+  <li>
+   Логирование и мониторинг
+  </li>
+ </ol>
+ <p dir="auto">
+  Необходимо вести логи всех запросов к API и мониторить их на предмет подозрительной активности. Это
+        поможет выявить возможные атаки на ранней стадии
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Примеры задач CTF с использованием API
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Ваш друг разработал платформу для регистрации и создания приватных заметок. Всё работает через API.
+        Перед тем как приступить к разработке фронтенда, друг попросил вас проверить что всё безопасно.
+ </p>
+ <p dir="auto">
+  Решение:
+ </p>
+ <p dir="auto">
+  Переходим на страницу задания:
+ </p>
+ <p dir="auto">
+  <a href="http://challenge01.root-me.org:59088/" rel="nofollow">
+   http://challenge01.root-me.org:59088/
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  И мы сразу видим интерфейс Swagger.
+ </p>
+ <p dir="auto">
+  Swagger позволяет:
+ </p>
+ <p dir="auto">
+  • интерактивно просматривать спецификацию и отправлять запросы;
+ </p>
+ <p dir="auto">
+  • генерировать документацию на основе существующего кода на основе Java Annotation;
+ </p>
+ <p dir="auto">
+  • создавать клиентов для неё.
+ </p>
+ <p dir="auto">
+  В визуальном веб-GUI Swagger можно:
+ </p>
+ <p dir="auto">
+  • просмотреть типы поддерживаемых HTTP-методов и описание схемы используемых данных;
+ </p>
+ <p dir="auto">
+  • протестировать их.
+ </p>
+ <p dir="auto">
+  Имеем четыре функции API:
+ </p>
+ <p dir="auto">
+  • /api/signup — регистрация пользователя
+ </p>
+ <p dir="auto">
+  • /api/login — вход в приложение
+ </p>
+ <p dir="auto">
+  • /api/user — получение информации о пользователе
+ </p>
+ <p dir="auto">
+  • /api/note — редактирование заметки
+ </p>
+ <p dir="auto">
+  Регистрируем нового пользователя, здесь же в GUI.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Пользователь зарегистрирован.
+ </p>
+ <p dir="auto">
+  Мы видим путь, куда отправляется POST запрос и результат выполнения.
+  <br/>
+  Попробуем отредактировать свою заметку. Судя по описанию, нам нужно просто отправить значение note.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf7.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Прочитаем данные о своём пользователе.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf8.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf8.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  /api/user имеет параметр user_id
+ </p>
+ <p dir="auto">
+  {
+ </p>
+ <p dir="auto">
+  "note": "Привет из internet-lab.ru!",
+ </p>
+ <p dir="auto">
+  "userid": 5,
+ </p>
+ <p dir="auto">
+  "username": "internet"
+ </p>
+ <p dir="auto">
+  }
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf9.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf9.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Получаем нашу заметку, имя и идентификатор пользователя.
+ </p>
+ <p dir="auto">
+  Этот параметр имеет приписку (path). Т.е. он используется в пути.
+ </p>
+ <p dir="auto">
+  <a href="http://challenge01.root-me.org:59088/api/user/5" rel="nofollow">
+   http://challenge01.root-me.org:59088/api/user/5
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf10.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf10.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  И получаем тот же JSON. А в URL-то у нас идентификатор пользователя, подставим единицу:
+ </p>
+ <p dir="auto">
+  <a href="http://challenge01.root-me.org:59088/api/user/1" rel="nofollow">
+   http://challenge01.root-me.org:59088/api/user/1
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/gayechka/png/ctf11.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/gayechka/png/ctf11.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Работа с API в контексте CTF представляет собой важный аспект изучения безопасности информационных
+        систем. Понимание основных уязвимостей и методов защиты помогает не только в соревнованиях, но и в реальной
+        практике разработки безопасных приложений. Участие в CTF-соревнованиях позволяет практиковаться в нахождении
+        уязвимостей и разработке эффективных методов защиты, что является важным навыком для специалистов в области
+        информационной безопасности.
+ </p>
+ <p dir="auto">
+  Рекомендации по дальнейшему изучению
+ </p>
+ <p dir="auto">
+  • Изучите OWASP Top Ten — список наиболее распространенных уязвимостей веб-приложений.
+ </p>
+ <p dir="auto">
+  • Практикуйтесь на платформах CTF, таких как Hack The Box или TryHackMe.
+ </p>
+ <p dir="auto">
+  • Ознакомьтесь с инструментами для тестирования безопасности API, такими как Postman или Burp Suite.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Используемые источники:
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="http://challenge01.root-me.org:59088/" rel="nofollow">
+   http://challenge01.root-me.org:59088/
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://dzen.ru/a/Zi7BVxkUjnghD1oE" rel="nofollow">
+   https://dzen.ru/a/Zi7BVxkUjnghD1oE
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://internet-lab.ru/ctf_api_broken_access" rel="nofollow">
+   https://internet-lab.ru/ctf_api_broken_access
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://lins05.gitbooks.io/seafile-docs/content/develop/web_api.html" rel="nofollow">
+   https://lins05.gitbooks.io/seafile-docs/content/develop/web_api.html
+  </a>
+ </p>
+</article>

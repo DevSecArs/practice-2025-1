@@ -1,0 +1,409 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Что такое SSRF-уязвимость, как ее находить и к чему она
+            может привести?
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   1. Введение в SSRF
+  </h2>
+ </div>
+ <p dir="auto">
+  SSRF (Server-Side Request Forgery) — это уязвимость веб-приложений, при которой злоумышленник может
+        заставить сервер выполнять запросы к произвольным ресурсам, включая внутренние системы, доступ к которым извне
+        обычно запрещен.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2. Как работает SSRF?
+  </h2>
+ </div>
+ <p dir="auto">
+  SSRF-атака происходит следующим образом:
+ </p>
+ <ol dir="auto">
+  <li>
+   Злоумышленник отправляет специально сформированный запрос к веб-приложению.
+  </li>
+  <li>
+   Сервер, доверяя этому запросу, выполняет его от своего имени.
+  </li>
+  <li>
+   Вредоносный запрос позволяет атакующему:
+   <ul dir="auto">
+    <li>
+     Получить доступ к внутренним API и службам компании.
+    </li>
+    <li>
+     Обходить механизмы аутентификации.
+    </li>
+    <li>
+     Сканировать внутреннюю сеть организации.
+    </li>
+    <li>
+     Извлекать конфиденциальную информацию, включая учетные данные.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример SSRF-атаки через загрузку изображений
+  </h3>
+ </div>
+ <p dir="auto">
+  Допустим, в веб-приложении есть функционал предварительного просмотра изображений, который загружает
+        картинку по указанному URL:
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">import</span> <span class="pl-s1">requests</span>
+    
+    <span class="pl-k">def</span> <span class="pl-en">fetch_image</span>(<span class="pl-s1">url</span>):
+        <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-s1">requests</span>.<span class="pl-c1">get</span>(<span class="pl-s1">url</span>)
+        <span class="pl-k">return</span> <span class="pl-s1">response</span>.<span class="pl-c1">content</span></pre>
+ </div>
+ <p dir="auto">
+  Атакующий может отправить запрос на
+  <code>
+   http://localhost:8080/admin
+  </code>
+  и получить данные,
+        предназначенные только для администраторов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример SSRF-атаки через облачные метаданные
+  </h3>
+ </div>
+ <p dir="auto">
+  В AWS и других облачных платформах метаданные сервера доступны по IP
+  <code>
+   169.254.169.254
+  </code>
+  .
+        Если приложение позволяет делать запросы к произвольным URL, можно попробовать извлечь учетные данные:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>curl <span class="pl-s"><span class="pl-pds">"</span>http://169.254.169.254/latest/meta-data/iam/security-credentials/<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  Ответ будет содержать временные учетные данные, которые могут быть использованы для доступа к облачным
+        ресурсам.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3. Как находить SSRF-уязвимости?
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.1. Анализ входных данных
+  </h3>
+ </div>
+ <p dir="auto">
+  Необходимо проверять, принимает ли сервер внешние URL-адреса в параметрах запроса (например,
+  <code>
+   ?url=http://example.com
+  </code>
+  ). Если приложение выполняет запрос к переданному адресу, оно потенциально
+        уязвимо.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.2. Использование Burp Suite
+  </h3>
+ </div>
+ <p dir="auto">
+  Burp Suite позволяет изменять передаваемые параметры и проверять, может ли сервер отправлять запросы
+        на локальные или внутренние адреса, такие как:
+ </p>
+ <ul dir="auto">
+  <li>
+   <code>
+    http://localhost
+   </code>
+  </li>
+  <li>
+   <code>
+    http://127.0.0.1
+   </code>
+  </li>
+  <li>
+   <code>
+    http://169.254.169.254
+   </code>
+   (метаданные облачных серверов)
+  </li>
+  <li>
+   <code>
+    http://internal-service
+   </code>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.3. Тестирование различных протоколов
+  </h3>
+ </div>
+ <p dir="auto">
+  Некоторые серверы поддерживают не только HTTP, но и другие протоколы:
+ </p>
+ <ul dir="auto">
+  <li>
+   <code>
+    file://
+   </code>
+   — доступ к локальной файловой системе.
+  </li>
+  <li>
+   <code>
+    gopher://
+   </code>
+   — старый протокол, позволяющий обойти ограничения и сформировать произвольный
+            HTTP-запрос.
+  </li>
+  <li>
+   <code>
+    dict://
+   </code>
+   — потенциально может использоваться для туннелирования данных.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4. Последствия SSRF-атак
+  </h2>
+ </div>
+ <p dir="auto">
+  SSRF может привести к серьезным последствиям:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Доступ к внутренним системам
+   </strong>
+   — злоумышленник может взаимодействовать с сервисами, доступ к
+            которым возможен только из внутренней сети.
+  </li>
+  <li>
+   <strong>
+    Кража конфиденциальных данных
+   </strong>
+   — возможность запросов к метаданным облачных серверов
+            (например, AWS, GCP, Azure) может привести к компрометации учетных данных.
+  </li>
+  <li>
+   <strong>
+    Обход аутентификации
+   </strong>
+   — если внутренняя инфраструктура предполагает доверие к локальным
+            запросам, атакующий может получить несанкционированный доступ.
+  </li>
+  <li>
+   <strong>
+    Использование сервера для атак на другие системы
+   </strong>
+   — сервер можно использовать в качестве
+            прокси для атак на сторонние ресурсы.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5. Как защититься от SSRF?
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.1. Ограничение списка разрешенных адресов (Allowlist)
+  </h3>
+ </div>
+ <p dir="auto">
+  Сервер должен разрешать запросы только к доверенным доменам и блокировать доступ к IP-адресам
+        локальной сети.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.2. Проверка и фильтрация входных данных
+  </h3>
+ </div>
+ <p dir="auto">
+  Принимаемые URL-адреса должны проходить строгую валидацию, исключая доступ к локальным адресам
+        (
+  <code>
+   127.0.0.1
+  </code>
+  ,
+  <code>
+   localhost
+  </code>
+  ,
+  <code>
+   169.254.169.254
+  </code>
+  и т. д.).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.3. Использование прокси-сервера
+  </h3>
+ </div>
+ <p dir="auto">
+  Перенаправление всех исходящих запросов через контролируемый прокси-сервер позволит блокировать
+        вредоносные запросы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.4. Ограничение используемых протоколов
+  </h3>
+ </div>
+ <p dir="auto">
+  Разрешать только HTTP и HTTPS, исключая возможность использования
+  <code>
+   file://
+  </code>
+  ,
+  <code>
+   gopher://
+  </code>
+  и других нестандартных протоколов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   6. Обход защиты от SSRF
+  </h2>
+ </div>
+ <p dir="auto">
+  Некоторые обходные техники, используемые злоумышленниками:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Обход фильтров через альтернативные представления IP-адресов
+   </strong>
+   (например,
+   <code>
+    2130706433
+   </code>
+   вместо
+   <code>
+    127.0.0.1
+   </code>
+   ).
+  </li>
+  <li>
+   <strong>
+    Использование поддоменов
+   </strong>
+   (если фильтр блокирует IP, но позволяет доменные имена, можно
+            использовать
+   <code>
+    internal.example.com
+   </code>
+   ).
+  </li>
+  <li>
+   <strong>
+    DNS Rebinding
+   </strong>
+   — злоумышленник регистрирует домен, который разрешается во внешний IP, а
+            затем перенаправляет его на внутренний адрес.
+  </li>
+  <li>
+   <strong>
+    Использование Open Redirect
+   </strong>
+   — если в системе есть редиректы, можно перенаправить запрос на
+            внутренний ресурс.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример обхода через DNS Rebinding
+  </h3>
+ </div>
+ <div class="highlight highlight-text-html-basic notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-kos">&lt;</span><span class="pl-ent">script</span><span class="pl-kos">&gt;</span>
+        <span class="pl-k">var</span> <span class="pl-s1">img</span> <span class="pl-c1">=</span> <span class="pl-k">new</span> <span class="pl-v">Image</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+        <span class="pl-s1">img</span><span class="pl-kos">.</span><span class="pl-c1">src</span> <span class="pl-c1">=</span> <span class="pl-s">"http://malicious.example.com/rebind?target=169.254.169.254"</span><span class="pl-kos">;</span>
+    <span class="pl-kos">&lt;/</span><span class="pl-ent">script</span><span class="pl-kos">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Этот код может обойти защиту и получить доступ к закрытым ресурсам.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример обхода через редирект
+  </h3>
+ </div>
+ <p dir="auto">
+  Если приложение выполняет редиректы без проверки целевого URL, можно использовать такую атаку:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>http://vulnerable-site.com/fetch?url=http://redirect.com/?url=http://internal-server
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Если
+  <code>
+   redirect.com
+  </code>
+  перенаправляет на
+  <code>
+   internal-server
+  </code>
+  , можно заставить сервер
+        сделать внутренний запрос.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   7. Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  SSRF — опасная уязвимость, позволяющая атакующим использовать сервер в качестве посредника для доступа
+        к внутренним ресурсам. Чтобы защититься от подобных атак, необходимо ограничивать список разрешенных адресов,
+        проверять входные данные и использовать прокси-серверы для контроля исходящих запросов. Регулярное тестирование
+        безопасности поможет выявить и устранить потенциальные уязвимости.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   8. Где можно потренироваться?
+  </h2>
+ </div>
+ <p dir="auto">
+  Вы можете попрактиковаться в нахождении и эксплуатации SSRF-уязвимостей на платформе
+  <strong>
+   PortSwigger Web Security Academy
+  </strong>
+  , где представлены различные сценарии атак и защиты.(
+  <a href="https://portswigger.net/web-security/ssrf#what-is-ssrf" rel="nofollow">
+   https://portswigger.net/web-security/ssrf#what-is-ssrf
+  </a>
+  )
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   9. Полезные источники
+  </h2>
+ </div>
+ <p dir="auto">
+  Хабр "Атака с большим будущим: за что SSRF поместили в ТОП-10 киберугроз":
+  <a href="https://habr.com/ru/companies/solarsecurity/articles/590673/" rel="nofollow">
+   https://habr.com/ru/companies/solarsecurity/articles/590673/
+  </a>
+ </p>
+ <p dir="auto">
+  SQR "SSRF (подделка запроса на стороне сервера)":
+  <a href="https://cqr.company/ru/web-vulnerabilities/ssrf/" rel="nofollow">
+   https://cqr.company/ru/web-vulnerabilities/ssrf/
+  </a>
+ </p>
+ <p dir="auto">
+  Хабр "Где и как искать этот ваш SSRF: первые шаги в багхантинге":
+  <a href="https://habr.com/ru/companies/pt/articles/842598/" rel="nofollow">
+   https://habr.com/ru/companies/pt/articles/842598/
+  </a>
+ </p>
+</article>
