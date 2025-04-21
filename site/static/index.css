@@ -53,6 +53,23 @@ article a:hover {
     color: blue;
 }
 
+article.news div {
+    display: inline-block;
+    width: 30%;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-radius: 20px;
+    vertical-align: top;
+}
+
+article.resources a {font-weight: bold; color: cornflowerblue;}
+article.resources a:hover {
+    color: blue;
+}
+
+ul {padding: 0;}
+ul li {list-style-type: none;}
+
 footer {
     text-align: center;
     border-top: 5px solid black;
@@ -68,6 +85,8 @@ footer table td {
     width: 30%;
 }
 
+.arrow {font-size: 35px; margin: 0 10px;}
+
 @media screen and (max-width: 400px) {
     body {
         font-size: 13px;
@@ -76,4 +95,8 @@ footer table td {
     footer table {
         font-size: 10px;
     }
+
+    header h1 {width: 100%;}
+
+    article.news div {width: 90%;}
 }
