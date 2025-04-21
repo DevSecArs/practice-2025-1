@@ -1,0 +1,486 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Использование особенностей NTFS для сокрытия данных в
+            Forensics-задачах
+  </h1>
+ </div>
+ <p dir="auto">
+  NTFS (New Technology File System) – это стандартная файловая система Windows, которая обладает
+        множеством продвинутых функций, предназначенных для оптимизации работы системы и безопасности данных. Однако эти
+        же функции можно использовать для сокрытия информации, что делает NTFS интересной мишенью в цифровой
+        криминалистике (Forensics) и CTF-задачах.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418497303-48bf922c-7b29-449e-a864-95ca83666b99.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk3MzAzLTQ4YmY5MjJjLTdiMjktNDQ5ZS1hODY0LTk1Y2E4MzY2NmI5OS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMzYyZjhiMGIzNzNiOTdmNmYxZTkxODg1MWIzODZjMTQ2NTRhNzE0OWIwZTM0OGNjYmM3ZDlkNTkzNTdlNzE4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Q_DRnQ6MwR1Vvxw6l8MhKrT8r92l2SJWzrPICLzfgTY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418497303-48bf922c-7b29-449e-a864-95ca83666b99.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk3MzAzLTQ4YmY5MjJjLTdiMjktNDQ5ZS1hODY0LTk1Y2E4MzY2NmI5OS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMzYyZjhiMGIzNzNiOTdmNmYxZTkxODg1MWIzODZjMTQ2NTRhNzE0OWIwZTM0OGNjYmM3ZDlkNTkzNTdlNzE4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Q_DRnQ6MwR1Vvxw6l8MhKrT8r92l2SJWzrPICLzfgTY" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  В Forensics-челленджах злоумышленник может спрятать файлы так, что они не будут видны стандартными
+        средствами. Для поиска таких данных участникам приходится разбираться в особенностях NTFS и применять
+        специализированные инструменты.
+ </p>
+ <p dir="auto">
+  В этой статье мы разберем несколько техник сокрытия данных:
+ </p>
+ <p dir="auto">
+  • альтернативные потоки данных (ADS),
+ </p>
+ <p dir="auto">
+  • манипуляции с метаданными файлов,
+ </p>
+ <p dir="auto">
+  • использование скрытых NTFS-записей.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Альтернативные потоки данных (NTFS Alternate Data Streams,
+            ADS)
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Что такое ADS?
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   ADS
+  </strong>
+  – это особенность файловой системы NTFS, позволяющая хранить в одном файле
+        несколько потоков данных. Основной поток данных хранится как обычно, а дополнительные — привязываются к файлу и
+        не отображаются в стандартных командах и инструментах Windows.
+ </p>
+ <p dir="auto">
+  <em>
+   Пример
+  </em>
+  :
+        Создадим обычный текстовый файл и спрячем в нем дополнительную информацию:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418498276-fbf00718-a2cf-4ddf-8a16-4d0e79af8cdd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4Mjc2LWZiZjAwNzE4LWEyY2YtNGRkZi04YTE2LTRkMGU3OWFmOGNkZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kMmRlM2I2ZmViMDNiZjU3ODdjNzg0MGFiYmU2NzlmY2FiNDIyOWE3OWRiMWQzMTZmN2UyODA0ZjcyY2JlMzlkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.No9uJivR9B1YK0KbZUhM6MX-GcyedBRwAo1NFKYAsig" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418498276-fbf00718-a2cf-4ddf-8a16-4d0e79af8cdd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4Mjc2LWZiZjAwNzE4LWEyY2YtNGRkZi04YTE2LTRkMGU3OWFmOGNkZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kMmRlM2I2ZmViMDNiZjU3ODdjNzg0MGFiYmU2NzlmY2FiNDIyOWE3OWRiMWQzMTZmN2UyODA0ZjcyY2JlMzlkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.No9uJivR9B1YK0KbZUhM6MX-GcyedBRwAo1NFKYAsig" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Теперь, если посмотреть на secret.txt в Проводнике или командной строке (dir), его размер останется
+        неизменным. Однако скрытый поток данных hidden никуда не пропал.
+ </p>
+ <p dir="auto">
+  Тип потока по умолчанию — $DATA, который отвечает за хранение данных. Обычно его можно опустить.
+        NTFS позволяет файлам и каталогам иметь неограниченное количество потоков данных, но операционные системы
+        Windows в стандартных утилитах (например, проводник или команда dir) показывают только основной поток.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как обнаружить и извлечь ADS?
+  </h3>
+ </div>
+ <p dir="auto">
+  Чтобы проверить, есть ли у файла скрытые потоки, используем встроенную утилиту dir с ключом /r :
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418498571-6c982c86-37cc-4eda-a53b-bbd7d80ccf4d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4NTcxLTZjOTgyYzg2LTM3Y2MtNGVkYS1hNTNiLWJiZDdkODBjY2Y0ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mN2ZlMjJhYmFhNDU3ZTg5NWMwNDMyZTcwZTVlYjM5ZjRiMWQ4NTc2MjZlOGViYjc1YzVlNmJiMGQ1ZTk3MThjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.uheF2RuQ3ZIRPPxjwSe6TuR2PKiDChE64lUqr5fYuW4" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418498571-6c982c86-37cc-4eda-a53b-bbd7d80ccf4d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4NTcxLTZjOTgyYzg2LTM3Y2MtNGVkYS1hNTNiLWJiZDdkODBjY2Y0ZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mN2ZlMjJhYmFhNDU3ZTg5NWMwNDMyZTcwZTVlYjM5ZjRiMWQ4NTc2MjZlOGViYjc1YzVlNmJiMGQ1ZTk3MThjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.uheF2RuQ3ZIRPPxjwSe6TuR2PKiDChE64lUqr5fYuW4" style="max-width: 100%;"/>
+  </a>
+  <a href="https://private-user-images.githubusercontent.com/114010875/418498706-3123e4d2-38fa-4221-8d8d-0463d15258d3.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4NzA2LTMxMjNlNGQyLTM4ZmEtNDIyMS04ZDhkLTA0NjNkMTUyNThkMy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xYTZlMDk1NGYzMTI2MWMxNjhlYzYyM2E3ZTNlN2E0NGU2MzE3ZDgwMjc1NmQxMDhmNDZlYTA3MGVmYTBiYmQwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Zu25SPtQKc21cctQAe_OMcTI9DJgyCo_HTOz1EmUkzw" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418498706-3123e4d2-38fa-4221-8d8d-0463d15258d3.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4NzA2LTMxMjNlNGQyLTM4ZmEtNDIyMS04ZDhkLTA0NjNkMTUyNThkMy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xYTZlMDk1NGYzMTI2MWMxNjhlYzYyM2E3ZTNlN2E0NGU2MzE3ZDgwMjc1NmQxMDhmNDZlYTA3MGVmYTBiYmQwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Zu25SPtQKc21cctQAe_OMcTI9DJgyCo_HTOz1EmUkzw" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Dir - отображает список файлов и подкаталогов каталога. При использовании без параметров эта команда
+        отображает метку тома диска и серийный номер, а затем список каталогов и файлов на диске (включая их имена и
+        дату и время последнего изменения). Для файлов эта команда отображает расширение имени и размер в байтах. Эта
+        команда также отображает общее количество файлов и каталогов, их совокупный размер и свободное пространство (в
+        байтах), оставшееся на диске.
+ </p>
+ <p dir="auto">
+  Ключ /r показывает альтернативные потоки данных (ADS) у файлов.
+ </p>
+ <p dir="auto">
+  Для их извлечения можно использовать команду PowerShell:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418498776-c80dc1eb-c605-4794-81ff-dcf89cefbbfb.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4Nzc2LWM4MGRjMWViLWM2MDUtNDc5NC04MWZmLWRjZjg5Y2VmYmJmYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lYjMxYjU0MDM0YmI2NDQ1YzYxZmYxMDJmNmRmYmQ5NTA5ZjBiN2U1NmM4NzJmYTQ1YjU0ZjQ5OTFmYmY3ZjViJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.E7_fDD_4sRhAqAi6eXAjG4llxRyJRTjDWplxo4fAKns" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418498776-c80dc1eb-c605-4794-81ff-dcf89cefbbfb.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk4Nzc2LWM4MGRjMWViLWM2MDUtNDc5NC04MWZmLWRjZjg5Y2VmYmJmYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lYjMxYjU0MDM0YmI2NDQ1YzYxZmYxMDJmNmRmYmQ5NTA5ZjBiN2U1NmM4NzJmYTQ1YjU0ZjQ5OTFmYmY3ZjViJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.E7_fDD_4sRhAqAi6eXAjG4llxRyJRTjDWplxo4fAKns" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Эта команда читает содержимое альтернативного потока данных (ADS) с именем hidden внутри файла
+        secret.txt.
+ </p>
+ <p dir="auto">
+  -Path secret.txt — указывает основной файл.
+ </p>
+ <p dir="auto">
+  -Stream hidden — указывает имя ADS, который нужно открыть.
+ </p>
+ <p dir="auto">
+  Get-Content — выводит данные из указанного потока на экран (в PowerShell).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Применение ADS в CTF-задачах
+  </h4>
+ </div>
+ <p dir="auto">
+  В CTF скрытые потоки часто используют для сокрытия флага. Например, организаторы могут спрятать
+        flag.txt внутри README.md:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418499099-1388c0d8-5a5e-41da-9ec8-cd085112e7b8.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk5MDk5LTEzODhjMGQ4LTVhNWUtNDFkYS05ZWM4LWNkMDg1MTEyZTdiOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05NzYzZjM5YWIwYzBhNjRkNGQ0NWY5YWRjMTA0ZGZmYjBmODM0ZDQxYTMwNjczYzIyYTdhYWRiMDhiNzFiOTZiJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.WTMd8ehFSRvk_zUrICodijf4OLmxEx_a87z1WU3h4dU" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418499099-1388c0d8-5a5e-41da-9ec8-cd085112e7b8.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk5MDk5LTEzODhjMGQ4LTVhNWUtNDFkYS05ZWM4LWNkMDg1MTEyZTdiOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05NzYzZjM5YWIwYzBhNjRkNGQ0NWY5YWRjMTA0ZGZmYjBmODM0ZDQxYTMwNjczYzIyYTdhYWRiMDhiNzFiOTZiJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.WTMd8ehFSRvk_zUrICodijf4OLmxEx_a87z1WU3h4dU" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Чтобы найти флаг, участнику придется проверить ADS в файлах, которые кажутся бесполезными.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Манипуляции с метаданными и скрытые файлы
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Атрибуты файлов (Hidden, System, Read-Only)
+  </h4>
+ </div>
+ <p dir="auto">
+  В Windows файлы можно скрыть простыми атрибутами:
+ </p>
+ <p dir="auto">
+  • Hidden (H) — скрытый файл, не отображается в Проводнике по умолчанию.
+ </p>
+ <p dir="auto">
+  • System (S) — системный файл, также скрыт.
+ </p>
+ <p dir="auto">
+  • Read-Only (R) — файл доступен только для чтения, но не влияет на видимость.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418499372-a8b67f12-c311-4b6e-85f6-54827177c0c0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk5MzcyLWE4YjY3ZjEyLWMzMTEtNGI2ZS04NWY2LTU0ODI3MTc3YzBjMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZjEyMGE2MTM0ODJlOGMwZDhlNTY3NDM5MmQ3NDc2MDAzZWJiZmNjZTg3OWU0NjY4NDBiYTBkMDg1MzEyZjAwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.zW8QZeaoskOeuwqOX4JFerccFAFv3aUJnkZOP3vqsYQ" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418499372-a8b67f12-c311-4b6e-85f6-54827177c0c0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk5MzcyLWE4YjY3ZjEyLWMzMTEtNGI2ZS04NWY2LTU0ODI3MTc3YzBjMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZjEyMGE2MTM0ODJlOGMwZDhlNTY3NDM5MmQ3NDc2MDAzZWJiZmNjZTg3OWU0NjY4NDBiYTBkMDg1MzEyZjAwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.zW8QZeaoskOeuwqOX4JFerccFAFv3aUJnkZOP3vqsYQ" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Такой файл не отобразится в Проводнике, если не включена опция "Показывать скрытые файлы и системные
+        файлы". Однако в CTF-задачах такие трюки легко обходятся через
+ </p>
+ <p dir="auto">
+  <code>
+   attrib -s -h secret.txt.
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Скрытие данных в Master File Table (MFT) – Resident Files
+  </h4>
+ </div>
+ <p dir="auto">
+  NTFS хранит информацию обо всех файлах и каталогах в специальной структуре —
+  <strong>
+   Master File Table
+            (MFT)
+  </strong>
+  . Каждый файл имеет собственную запись в MFT, содержащую метаданные: имя, атрибуты, размеры и
+        ссылки на физические кластеры диска.
+ </p>
+ <p dir="auto">
+  Resident и Non-Resident данные:
+ </p>
+ <p dir="auto">
+  • Resident File — если файл очень маленький (обычно до ~700 байт), его содержимое может полностью
+        храниться прямо в записи MFT.
+ </p>
+ <p dir="auto">
+  • Non-Resident File — стандартное хранение: данные лежат в отдельных кластерах на диске, а MFT лишь
+        ссылается на них.
+ </p>
+ <p dir="auto">
+  Такие Resident файлы не обязательно "существуют" как отдельные видимые файлы на диске — их данные
+        полностью прячутся внутри структуры MFT, что усложняет обнаружение стандартными методами (dir, Проводник и
+        т.д.).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   Как проверить?
+  </h5>
+ </div>
+ <p dir="auto">
+  Используем:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418499931-21edc79c-1940-47fc-bd78-974930c70aa0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk5OTMxLTIxZWRjNzljLTE5NDAtNDdmYy1iZDc4LTk3NDkzMGM3MGFhMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jYTgzZDY2NmI5MWM4OWMwOTZlZDI5NGQ5MTVhY2JmNWI1NzJlMGYwMDBlNTBjNTA5ZTJhYmM3NzVjZDAxOTIwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.RzAixsxGsVpV3qdio438NBR0V7rmr2lmg0YrJ5PYbrU" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418499931-21edc79c-1940-47fc-bd78-974930c70aa0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NDk5OTMxLTIxZWRjNzljLTE5NDAtNDdmYy1iZDc4LTk3NDkzMGM3MGFhMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jYTgzZDY2NmI5MWM4OWMwOTZlZDI5NGQ5MTVhY2JmNWI1NzJlMGYwMDBlNTBjNTA5ZTJhYmM3NzVjZDAxOTIwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.RzAixsxGsVpV3qdio438NBR0V7rmr2lmg0YrJ5PYbrU" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Если файл "невидим", его можно вытащить с помощью утилит вроде $MFT parser.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   NTFS-записи и техники маскировки
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Slack Space – остаточное пространство в кластерах
+  </h4>
+ </div>
+ <p dir="auto">
+  NTFS выделяет файлам кластеры фиксированного размера. Если файл занимает меньше места, чем кластер, в
+        оставшемся пространстве могут оставаться данные от старых удаленных файлов. Это можно использовать для сокрытия
+        данных.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h5 class="heading-element" dir="auto" tabindex="-1">
+   Как найти Slack Space?
+  </h5>
+ </div>
+ <p dir="auto">
+  Используются криминалистические утилиты, такие как
+  <em>
+   Autopsy
+  </em>
+  или
+  <em>
+   FTK Imager
+  </em>
+  .
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418501002-9abdde69-4330-4e89-b23e-6dd6091212af.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAxMDAyLTlhYmRkZTY5LTQzMzAtNGU4OS1iMjNlLTZkZDYwOTEyMTJhZi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01YjRmYzA4MjA4OTBkZjAxY2QzYTZhY2E4ZDhhZTU3MjJmNGVjODE5Y2I3NGQzZGM4Yzg5YzU0MGRhZTAwYTE3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.dXkCn_kLOp4Xa4oOrT-dF4jpfT-rQhafxhsj4SRLSnI" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418501002-9abdde69-4330-4e89-b23e-6dd6091212af.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAxMDAyLTlhYmRkZTY5LTQzMzAtNGU4OS1iMjNlLTZkZDYwOTEyMTJhZi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01YjRmYzA4MjA4OTBkZjAxY2QzYTZhY2E4ZDhhZTU3MjJmNGVjODE5Y2I3NGQzZGM4Yzg5YzU0MGRhZTAwYTE3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.dXkCn_kLOp4Xa4oOrT-dF4jpfT-rQhafxhsj4SRLSnI" style="max-width: 100%;"/>
+  </a>
+  <a href="https://private-user-images.githubusercontent.com/114010875/418500914-155efb95-73df-4d0a-9443-988c4920f0d4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAwOTE0LTE1NWVmYjk1LTczZGYtNGQwYS05NDQzLTk4OGM0OTIwZjBkNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kYWQ0YTRhMDAwZmYyNWU5MTM5OTAxMTMzZGM1ZmNlMjhiNGU0NTJjODFmN2I5MzZjZDVkM2RkMDg0OTA0NTgzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.h4r6KnpM9SC0Iqs2RGdKdOY0-ejun9EE-WdN9cGT6kg" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418500914-155efb95-73df-4d0a-9443-988c4920f0d4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAwOTE0LTE1NWVmYjk1LTczZGYtNGQwYS05NDQzLTk4OGM0OTIwZjBkNC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kYWQ0YTRhMDAwZmYyNWU5MTM5OTAxMTMzZGM1ZmNlMjhiNGU0NTJjODFmN2I5MzZjZDVkM2RkMDg0OTA0NTgzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.h4r6KnpM9SC0Iqs2RGdKdOY0-ejun9EE-WdN9cGT6kg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <em>
+   Autopsy
+  </em>
+  — это бесплатная и мощная платформа для цифровой криминалистики (digital forensics).
+        Она используется для анализа жестких дисков, образов дисков и других источников данных при расследованиях.
+ </p>
+ <p dir="auto">
+  По сути — это графический интерфейс (GUI) над популярным forensic-фреймворком Sleuth Kit (TSK),
+        который упрощает работу с данными.
+ </p>
+ <p dir="auto">
+  Что умеет Autopsy?
+ </p>
+ <p dir="auto">
+  Анализ MFT и NTFS:
+ </p>
+ <p dir="auto">
+  • Autopsy может читать и интерпретировать Master File Table ($MFT).
+ </p>
+ <p dir="auto">
+  • Показывает resident/non-resident данные, скрытые файлы, удалённые файлы и их фрагменты.
+ </p>
+ <p dir="auto">
+  Работа с удалёнными файлами:
+ </p>
+ <p dir="auto">
+  • Восстанавливает удалённые файлы из дисков или образов дисков (даже если их нет в файловой системе).
+ </p>
+ <p dir="auto">
+  Поиск артефактов:
+ </p>
+ <p dir="auto">
+  • Парсит лог-файлы Windows, браузерные данные, историю скачиваний, кэш браузеров и куки.
+ </p>
+ <p dir="auto">
+  • Находит email, изображения, документы, следы мессенджеров и другие цифровые "следы".
+ </p>
+ <p dir="auto">
+  Keyword Search:
+ </p>
+ <p dir="auto">
+  • Можно задать поисковые слова (например, flag{, CTF{, password= и т.д.), и Autopsy будет искать их по
+        всей файловой системе и нераспределённым секторам.
+ </p>
+ <p dir="auto">
+  Carving:
+ </p>
+ <p dir="auto">
+  • Инструмент может делать data carving — извлекать файлы из "сырых" байтов без опоры на файловую
+        систему (например, вытянуть JPG или ZIP прямо из незанятых секторов).
+ </p>
+ <p dir="auto">
+  Поддержка образов:
+ </p>
+ <p dir="auto">
+  • Работает с образами дисков: .E01, .dd, .img, .raw, а также с физическими накопителями.
+ </p>
+ <p dir="auto">
+  Плагины:
+ </p>
+ <p dir="auto">
+  • Поддерживает сторонние модули для работы с сетевыми логами, артефактами мобильных устройств и др.
+ </p>
+ <p dir="auto">
+  Autopsy часто применяют на forensic-задачах, чтобы искать флаги в скрытых файлах, извлекать данные из
+        MFT, находить улики в slack space, делать carving "невидимых" картинок, архивов или текста.
+ </p>
+ <p dir="auto">
+  FTK Imager — это бесплатный инструмент для быстрого создания и анализа судебных копий (образов)
+        носителей информации. Он разработан компанией AccessData и часто используется в цифровой криминалистике и
+        пентестах для получения данных с жёстких дисков, флешек, образов дисков и даже с оперативной памяти.
+ </p>
+ <p dir="auto">
+  Основные возможности FTK Imager:
+ </p>
+ <p dir="auto">
+  • Создание судебных образов (forensic image):
+ </p>
+ <p dir="auto">
+  • Поддерживает форматы .E01, .AFF, .RAW (dd).
+ </p>
+ <p dir="auto">
+  • Можно создать точную копию диска с сохранением всех данных и метаданных.
+ </p>
+ <p dir="auto">
+  Просмотр дисков и образов:
+ </p>
+ <p dir="auto">
+  • Позволяет открыть и исследовать как физические диски, так и уже существующие образы.
+ </p>
+ <p dir="auto">
+  • Можно просматривать структуру файловой системы (NTFS, FAT, exFAT и другие).
+ </p>
+ <p dir="auto">
+  Доступ к системным и скрытым файлам:
+ </p>
+ <p dir="auto">
+  • Видит скрытые файлы, удалённые файлы, MFT, $LogFile, $Recycle.Bin, Volume Shadow Copy, ADS и т.п.
+ </p>
+ <p dir="auto">
+  Поиск удалённых данных:
+ </p>
+ <p dir="auto">
+  • Находит файлы, которые были удалены, но ещё остались в таблицах файловой системы.
+ </p>
+ <p dir="auto">
+  • Показывает данные в unallocated space (нераспределённых секторах).
+ </p>
+ <p dir="auto">
+  Просмотр и экспорт данных:
+ </p>
+ <p dir="auto">
+  • Есть встроенный hex viewer.
+ </p>
+ <p dir="auto">
+  • Можно извлечь любой файл или фрагмент данных без создания образа.
+ </p>
+ <p dir="auto">
+  Снимок RAM:
+ </p>
+ <p dir="auto">
+  • FTK Imager умеет создавать дампы оперативной памяти для анализа (memory acquisition).
+ </p>
+ <p dir="auto">
+  Autopsy — мощный комбайн для комплексного анализа образов с автоматизацией (поиск удалённых файлов,
+        артефактов ОС, веб-историй и т.д.).
+ </p>
+ <p dir="auto">
+  FTK Imager — лёгкий и быстрый инструмент для съёма образов и ручного исследования данных (особенно
+        полезен для "быстрого вскрытия" диска и поиска скрытых данных вроде ADS).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Жесткие ссылки (Hard Links) и Junction Points
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Жёсткая ссылка
+  </strong>
+  — это механизм файловой системы NTFS, позволяющий создать несколько
+        ссылок (имён) на один и тот же физический файл.
+ </p>
+ <p dir="auto">
+  Особенности:
+ </p>
+ <p dir="auto">
+  • Ссылки указывают на одни и те же данные (один и тот же MFT-запись).
+ </p>
+ <p dir="auto">
+  • Удаление одной ссылки не удаляет содержимое файла, пока существует хотя бы одна ссылка.
+ </p>
+ <p dir="auto">
+  • Все жёсткие ссылки равнозначны — нет "основного" или "вторичного" файла.
+ </p>
+ <p dir="auto">
+  В Windows можно создать жесткую ссылку, чтобы файл существовал в нескольких местах одновременно:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418501252-5b6813f2-b276-4a7a-a643-67b75b009785.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAxMjUyLTViNjgxM2YyLWIyNzYtNGE3YS1hNjQzLTY3Yjc1YjAwOTc4NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lOGE0NzYwOGI4YTVmY2UyYTExMDZjNTIyN2U0ZjRjODc4NTY3MjljNTA1MDBmZDQzOGVkYjZjZTM3NmVlZjllJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.8VHwGQbURxmOiedbjzu77knBQWTJtdlyL1ctGe-0UVQ" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418501252-5b6813f2-b276-4a7a-a643-67b75b009785.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAxMjUyLTViNjgxM2YyLWIyNzYtNGE3YS1hNjQzLTY3Yjc1YjAwOTc4NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lOGE0NzYwOGI4YTVmY2UyYTExMDZjNTIyN2U0ZjRjODc4NTY3MjljNTA1MDBmZDQzOGVkYjZjZTM3NmVlZjllJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.8VHwGQbURxmOiedbjzu77knBQWTJtdlyL1ctGe-0UVQ" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Файл new_file.txt и secret.txt указывают на одно и то же содержимое. Удаление одного файла не затронет
+        второй. Это часто применяется для маскировки файлов.
+ </p>
+ <p dir="auto">
+  <strong>
+   Junction Point (точка соединения)
+  </strong>
+  — это разновидность symbolic link в NTFS, но только
+        для директорий.
+ </p>
+ <p dir="auto">
+  Особенности:
+ </p>
+ <p dir="auto">
+  • Перенаправляет доступ с одного каталога на другой.
+ </p>
+ <p dir="auto">
+  • Работает только для папок.
+ </p>
+ <p dir="auto">
+  • Видится системой как "обычная" папка, но на самом деле это ссылка на другой путь.
+ </p>
+ <p dir="auto">
+  Например, можно сделать скрытую ссылку на папку с важными файлами:
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/418501468-f950d069-717b-4e2a-a6a5-b793245d6411.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAxNDY4LWY5NTBkMDY5LTcxN2ItNGUyYS1hNmE1LWI3OTMyNDVkNjQxMS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jYjA3MDFlMzI2YjlhZmY5NTNlNTE3ZTZhZjE0Y2ZkZDM2ZmM1OTczNWZjOWFjNGNkOTI1ZTRkNWMwMDRhZTMyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.iJWr1-flo2VwWnfmEOV648J1uhbq7mCEQpASduG4jNs" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/418501468-f950d069-717b-4e2a-a6a5-b793245d6411.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjIsIm5iZiI6MTc0NTE1MTAyMiwicGF0aCI6Ii8xMTQwMTA4NzUvNDE4NTAxNDY4LWY5NTBkMDY5LTcxN2ItNGUyYS1hNmE1LWI3OTMyNDVkNjQxMS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jYjA3MDFlMzI2YjlhZmY5NTNlNTE3ZTZhZjE0Y2ZkZDM2ZmM1OTczNWZjOWFjNGNkOTI1ZTRkNWMwMDRhZTMyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.iJWr1-flo2VwWnfmEOV648J1uhbq7mCEQpASduG4jNs" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Обычные проверки dir или Проводник могут не показывать такие ссылки.
+ </p>
+ <p dir="auto">
+  <strong>
+   Важно
+  </strong>
+  :
+ </p>
+ <p dir="auto">
+  Жёсткие ссылки работают только в пределах одного тома.
+ </p>
+ <p dir="auto">
+  Junction Points можно создавать как внутри одного диска, так и к другим разделам.
+ </p>
+ <p dir="auto">
+  Обычный Проводник или базовые команды часто не различают настоящую папку и junction.
+ </p>
+ <hr/>
+ <p dir="auto">
+  NTFS предоставляет мощные инструменты для хранения и организации данных, но они же могут быть
+        использованы для скрытия информации.
+        Альтернативные потоки, скрытые файлы, манипуляции с MFT и Hard Links – важные техники, которые часто встречаются
+        в CTF-задачах.
+        В реальной цифровой криминалистике их знание помогает расследовать инциденты, находить скрытые данные и бороться
+        с киберпреступностью.
+ </p>
+</article>

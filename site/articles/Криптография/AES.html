@@ -1,0 +1,1480 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <ul dir="auto">
+  <li>
+   <a href="#%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">
+    Введение
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D0%BA%D1%80%D0%B0%D1%82%D0%BA%D0%BE%D0%B5-%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5-aes-%D0%BA%D0%B0%D0%BA-%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%D0%B0-%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F">
+      Краткое
+                        описание AES как стандарта шифрования
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%B7%D0%BD%D0%B0%D1%87%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C-aes-%D0%B2-%D1%81%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D0%BE%D0%B9-%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D0%B8">
+      Значимость
+                        AES в современной криптографии
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%86%D0%B5%D0%BB%D1%8C-%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8">
+      Цель статьи
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D1%8B-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-aes-advanced-encryption-standard">
+    Основы
+                работы AES (Advanced Encryption Standard)
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0-%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-aes">
+      Структура
+                        шифрования AES
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#1-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D1%80%D0%B0%D1%83%D0%BD%D0%B4%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE-%D0%BA%D0%BB%D1%8E%D1%87%D0%B0-addroundkey">
+        1.
+                                Добавление раундового ключа (AddRoundKey)
+       </a>
+      </li>
+      <li>
+       <a href="#2-%D0%B7%D0%B0%D0%BC%D0%B5%D0%BD%D0%B0-%D0%B1%D0%B0%D0%B9%D1%82%D0%BE%D0%B2-subbytes">
+        2.
+                                Замена байтов (SubBytes)
+       </a>
+      </li>
+      <li>
+       <a href="#3-%D1%81%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D1%82%D1%80%D0%BE%D0%BA-shiftrows">
+        3.
+                                Смещение строк (ShiftRows)
+       </a>
+      </li>
+      <li>
+       <a href="#4-%D1%81%D0%BC%D0%B5%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D1%82%D0%BE%D0%BB%D0%B1%D1%86%D0%BE%D0%B2-mixcolumns">
+        4.
+                                Смешивание столбцов (MixColumns)
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#endbmatrix">
+    \end{bmatrix}
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#5-%D1%84%D0%B8%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%80%D0%B0%D1%83%D0%BD%D0%B4">
+      5.
+                        Финальный раунд
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D0%BB%D1%8E%D1%87%D0%B0-key-expansion">
+      Расширение
+                        ключа (Key Expansion)
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-aes">
+      Расшифровка
+                        AES
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D1%8B-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-aes">
+      Режимы
+                        работы AES
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#1-ecb-electronic-codebook">
+        1. ECB (Electronic Codebook)
+       </a>
+      </li>
+      <li>
+       <a href="#2-cbc-cipher-block-chaining">
+        2. CBC (Cipher Block Chaining)
+       </a>
+      </li>
+      <li>
+       <a href="#3-cfb-cipher-feedback-mode">
+        3. CFB (Cipher Feedback Mode)
+       </a>
+      </li>
+      <li>
+       <a href="#4-ofb-output-feedback-mode">
+        4. OFB (Output Feedback Mode)
+       </a>
+      </li>
+      <li>
+       <a href="#5-ctr-counter-mode">
+        5. CTR (Counter Mode)
+       </a>
+      </li>
+      <li>
+       <a href="#6-gcm-galoiscounter-mode">
+        6. GCM (Galois/Counter Mode)
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#%D0%BF%D1%80%D0%B5%D0%B8%D0%BC%D1%83%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B0-aes">
+      Преимущества
+                        AES
+     </a>
+    </li>
+    <li>
+     <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-aes-%D0%B2-%D1%80%D0%B5%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D1%85-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%D1%85">
+      Примеры
+                        использования AES в реальных системах
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#1-%D0%BC%D0%B5%D1%81%D1%81%D0%B5%D0%BD%D0%B4%D0%B6%D0%B5%D1%80%D1%8B">
+        1.
+        <strong>
+         Мессенджеры
+        </strong>
+        :
+       </a>
+      </li>
+      <li>
+       <a href="#2-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F-%D0%BA%D0%BE%D0%BC%D0%BC%D0%B5%D1%80%D1%86%D0%B8%D1%8F">
+        2.
+        <strong>
+         Электронная коммерция
+        </strong>
+        :
+       </a>
+      </li>
+      <li>
+       <a href="#3-%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85">
+        3.
+        <strong>
+         Хранение данных
+        </strong>
+        :
+       </a>
+      </li>
+      <li>
+       <a href="#4-vpn-%D0%B8-%D0%B1%D0%B5%D1%81%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D1%81%D0%B5%D1%82%D0%B8">
+        4.
+        <strong>
+         VPN и беспроводные сети
+        </strong>
+        :
+       </a>
+      </li>
+      <li>
+       <a href="#5-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0-%D0%B2-%D0%BE%D0%B1%D0%BB%D0%B0%D0%BA%D0%B5">
+        5.
+        <strong>
+         Защита в облаке
+        </strong>
+        :
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%B0%D1%82%D0%B0%D0%BA-%D0%BD%D0%B0-aes">
+    Классификация
+                атак на AES
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#1-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-%D0%BD%D0%B0-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%B5-%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0-%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-timing-attacks">
+      1.
+                        Атаки на основе анализа времени выполнения (Timing Attacks)
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF">
+        Принцип
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC">
+        Алгоритм
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F">
+        Меры
+                                противодействия
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#2-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8-%D0%BD%D0%B0-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%B5-%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BC%D0%B0%D0%B3%D0%BD%D0%B8%D1%82%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D0%B7%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-side-channel-attacks">
+      2.
+                        Атаки на основе анализа электромагнитного излучения (Side-Channel Attacks)
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF-1">
+        Принцип
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC-1">
+        Алгоритм
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F-1">
+        Меры
+                                противодействия
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#3-%D0%B4%D0%B8%D1%84%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7">
+      3.
+                        Дифференциальный криптоанализ
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF-2">
+        Принцип
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC-2">
+        Алгоритм
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F-2">
+        Меры
+                                противодействия
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#4-%D0%BB%D0%B8%D0%BD%D0%B5%D0%B9%D0%BD%D1%8B%D0%B9-%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7">
+      4.
+                        Линейный криптоанализ
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF-3">
+        Принцип
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC-3">
+        Алгоритм
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F-3">
+        Меры
+                                противодействия
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#5-%D0%B1%D1%80%D1%83%D1%82%D1%84%D0%BE%D1%80%D1%81-brute-force">
+      5. Брутфорс (Brute
+                        Force)
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF-4">
+        Принцип
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC-4">
+        Алгоритм
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F-4">
+        Меры
+                                противодействия
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#6-%D0%BA%D0%B2%D0%B0%D0%BD%D1%82%D0%BE%D0%B2%D1%8B%D0%B5-%D0%B0%D1%82%D0%B0%D0%BA%D0%B8">
+      6.
+                        Квантовые атаки
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF-5">
+        Принцип
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC-5">
+        Алгоритм
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D0%B4%D0%B5%D0%B9%D1%81%D1%82%D0%B2%D0%B8%D1%8F-5">
+        Меры
+                                противодействия
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%B2%D1%81%D0%BA%D1%80%D1%8B%D1%82%D0%B8%D1%8F-aes-%D0%B2-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D0%B5-ecb">
+    Пример
+                вскрытия AES в режиме ECB
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-%D1%81%D1%83%D1%84%D1%84%D0%B8%D0%BA%D1%81-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B3%D0%BE-%D1%82%D0%B5%D0%BA%D1%81%D1%82%D0%B0">
+      Расшифровать
+                        суффикс (данные после открытого текста)
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">
+    Заключение
+   </a>
+  </li>
+  <li>
+   <a href="#%D0%BF%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B-%D0%B8-%D0%B8%D1%81%D1%82%D0%BE%D1%87%D0%BD%D0%B8%D0%BA%D0%B8">
+    Полезные
+                материалы и источники
+   </a>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Краткое описание AES как стандарта шифрования
+  </h2>
+ </div>
+ <p dir="auto">
+  Advanced Encryption Standard (AES) — это симметричный алгоритм блочного шифрования, который был принят
+        в качестве стандарта шифрования данных правительством США в 2001 году. Он был разработан для замены устаревшего
+        алгоритма DES (Data Encryption Standard), который уже не отвечал современным требованиям безопасности. AES
+        отличается высокой производительностью и надежностью, что сделало его основным выбором для защиты данных во
+        множестве приложений.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Значимость AES в современной криптографии
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Повсеместное применение
+   </strong>
+   : AES используется в различных сферах, таких как онлайн-банкинг,
+            мессенджеры, системы хранения данных и виртуальные частные сети (VPN).
+  </li>
+  <li>
+   <strong>
+    Высокая устойчивость
+   </strong>
+   : Алгоритм зарекомендовал себя как один из самых безопасных на
+            сегодняшний день, так как он устойчив к большинству известных видов атак.
+  </li>
+  <li>
+   <strong>
+    Международное признание
+   </strong>
+   : AES принят как международный стандарт и используется во всем мире,
+            обеспечивая надежную защиту данных.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Цель статьи
+  </h2>
+ </div>
+ <p dir="auto">
+  Целью данной статьи является исследование и анализ методов атак на криптосистемы, основанные на
+        использовании AES. В статье будут рассмотрены основные типы атак, их эффективность, а также меры
+        противодействия, которые могут повысить устойчивость системы к взлому. Это поможет лучше понять текущие угрозы и
+        способы их предотвращения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Основы работы AES (Advanced Encryption Standard)
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Структура шифрования AES
+  </h2>
+ </div>
+ <p dir="auto">
+  AES — симметричный алгоритм блочного шифрования, который преобразует данные фиксированными блоками по
+        128 бит, используя секретный ключ длиной 128, 192 или 256 бит. Основная цель — обеспечить конфиденциальность и
+        целостность данных, что достигается через серию нелинейных и линейных преобразований.
+ </p>
+ <p dir="auto">
+  Процесс шифрования в AES состоит из нескольких раундов, где каждый раунд выполняет последовательность
+        операций. Количество раундов зависит от длины ключа:
+ </p>
+ <ul dir="auto">
+  <li>
+   128 бит — 10 раундов.
+  </li>
+  <li>
+   192 бит — 12 раундов.
+  </li>
+  <li>
+   256 бит — 14 раундов.
+  </li>
+ </ul>
+ <p dir="auto">
+  Каждый раунд состоит из четырёх ключевых этапов:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. Добавление раундового ключа (AddRoundKey)
+  </h3>
+ </div>
+ <p dir="auto">
+  На этом этапе каждый байт данных подвергается операции XOR с соответствующим байтом раундового ключа.
+        Это обеспечивает начальное смешение данных с ключом, что делает данные неразличимыми без знания ключа.
+ </p>
+ <p dir="auto">
+  Формула:
+  <br/>
+  $$ C = P \oplus K $$
+  <br/>
+  где (C) — зашифрованный блок, (P) — исходный блок, (K) — раундовый ключ.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. Замена байтов (SubBytes)
+  </h3>
+ </div>
+ <p dir="auto">
+  Каждый байт входного блока заменяется значением из заранее определённого S-бокса (таблицы
+        подстановок). S-бокс обеспечивает нелинейность, что препятствует криптоанализу.
+ </p>
+ <p dir="auto">
+  Пример преобразования:
+  <br/>
+  Входной байт 0x53 заменяется на значение 0xED из S-бокса.
+ </p>
+ <p dir="auto">
+  Основные свойства:
+ </p>
+ <ul dir="auto">
+  <li>
+   S-бокс основан на обратных элементах поля Галуа ( GF(2^8) ).
+  </li>
+  <li>
+   Он устраняет линейные зависимости в данных.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. Смещение строк (ShiftRows)
+  </h3>
+ </div>
+ <p dir="auto">
+  Байты в строках матрицы данных циклически сдвигаются влево на определённое количество позиций:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Первая строка:
+   </strong>
+   остаётся без изменений.
+  </li>
+  <li>
+   <strong>
+    Вторая строка:
+   </strong>
+   сдвиг на 1 байт влево.
+  </li>
+  <li>
+   <strong>
+    Третья строка:
+   </strong>
+   сдвиг на 2 байта влево.
+  </li>
+  <li>
+   <strong>
+    Четвёртая строка:
+   </strong>
+   сдвиг на 3 байта влево.
+  </li>
+ </ul>
+ <p dir="auto">
+  Пример:
+  <br/>
+  Если строка была ( [A, B, C, D] ), после сдвига станет ( [B, C, D, A] ).
+ </p>
+ <p dir="auto">
+  Цель: улучшение диффузии данных, чтобы один байт влияния распространялся на весь блок.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. Смешивание столбцов (MixColumns)
+  </h3>
+ </div>
+ <p dir="auto">
+  Каждый столбец блока данных подвергается линейному преобразованию с использованием матричной операции.
+        Формула:
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   $$
+            {
+            \begin{bmatrix}
+            \mathtt{a_0} \
+            \mathtt{a_1} \
+            \mathtt{a_2} \
+            \mathtt{a_3} \
+            \end{bmatrix}
+            \cdot
+            \begin{bmatrix}
+            \mathtt{02} &amp; \mathtt{03} &amp; \mathtt{01} &amp; \mathtt{01} \
+            \mathtt{01} &amp; \mathtt{02} &amp; \mathtt{03} &amp; \mathtt{01} \
+            \mathtt{01} &amp; \mathtt{01} &amp; \mathtt{02} &amp; \mathtt{03} \
+            \mathtt{03} &amp; \mathtt{01} &amp; \mathtt{01} &amp; \mathtt{02} \
+            \end{bmatrix}
+  </h1>
+ </div>
+ <p dir="auto">
+  \begin{bmatrix}
+        \mathtt{b_0} \
+        \mathtt{b_1} \
+        \mathtt{b_2} \
+        \mathtt{b_3} \
+        \end{bmatrix}}
+        $$
+ </p>
+ <p dir="auto">
+  Где (a_0, a_1, a_2, a_3) — исходные байты столбца, а (b_0, b_1, b_2, b_3) — новые байты столбца. Эта
+        операция увеличивает смешивание данных внутри столбца.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5. Финальный раунд
+  </h3>
+ </div>
+ <p dir="auto">
+  Финальный раунд включает только три этапа:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    AddRoundKey
+   </strong>
+  </li>
+  <li>
+   <strong>
+    SubBytes
+   </strong>
+  </li>
+  <li>
+   <strong>
+    ShiftRows
+   </strong>
+  </li>
+ </ul>
+ <p dir="auto">
+  Операция
+  <strong>
+   MixColumns
+  </strong>
+  в последнем раунде не выполняется.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Расширение ключа (Key Expansion)
+  </h3>
+ </div>
+ <p dir="auto">
+  Процедура Key Expansion генерирует набор раундовых ключей из исходного ключа. Основные этапы:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    RotWord:
+   </strong>
+   циклический сдвиг байтов.
+  </li>
+  <li>
+   <strong>
+    SubWord:
+   </strong>
+   применение S-бокса к каждому байту.
+  </li>
+  <li>
+   <strong>
+    Добавление константы Rcon:
+   </strong>
+   для повышения уникальности ключей.
+  </li>
+ </ol>
+ <p dir="auto">
+  Генерируемые ключи уникальны для каждого раунда шифрования.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Расшифровка AES
+  </h3>
+ </div>
+ <p dir="auto">
+  Процесс расшифровки является обратным шифрованию:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Обратное смешивание столбцов (Inverse MixColumns).
+   </strong>
+  </li>
+  <li>
+   <strong>
+    Обратное смещение строк (Inverse ShiftRows).
+   </strong>
+  </li>
+  <li>
+   <strong>
+    Обратная подстановка байтов (Inverse SubBytes).
+   </strong>
+  </li>
+  <li>
+   <strong>
+    Добавление раундового ключа (AddRoundKey).
+   </strong>
+  </li>
+ </ol>
+ <p dir="auto">
+  Эти операции позволяют восстановить исходный текст, если известен секретный ключ.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Режимы работы AES
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1. ECB (Electronic Codebook)
+  </h3>
+ </div>
+ <p dir="auto">
+  Каждый блок данных шифруется независимо с использованием одного и того же ключа.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2. CBC (Cipher Block Chaining)
+  </h3>
+ </div>
+ <p dir="auto">
+  Каждый блок открытого текста XOR'ится с предыдущим зашифрованным блоком. Первый блок использует вектор
+        инициализации (IV).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3. CFB (Cipher Feedback Mode)
+  </h3>
+ </div>
+ <p dir="auto">
+  Использует зашифрованный результат предыдущего блока для XOR'инга с текущим открытым текстом.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4. OFB (Output Feedback Mode)
+  </h3>
+ </div>
+ <p dir="auto">
+  Генерирует поток ключей, который XOR'ится с открытым текстом. Поток основан на шифровании предыдущего
+        значения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5. CTR (Counter Mode)
+  </h3>
+ </div>
+ <p dir="auto">
+  Использует инкрементируемый счётчик, шифруемый для каждого блока данных. Результат XOR'ится с открытым
+        текстом.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   6. GCM (Galois/Counter Mode)
+  </h3>
+ </div>
+ <p dir="auto">
+  Основан на CTR с добавлением аутентификации данных с использованием поля Галуа.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Преимущества AES
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Высокая производительность
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     AES эффективен как на программном, так и на аппаратном уровне. Например, современные процессоры
+                    имеют встроенные инструкции для ускорения операций AES (Intel AES-NI).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Гибкость
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Алгоритм поддерживает разные длины ключей (128, 192, 256 бит), позволяя выбирать уровень
+                    безопасности в зависимости от потребностей.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Устойчивость к атакам
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     AES был спроектирован с учетом защиты от таких видов атак, как дифференциальный криптоанализ,
+                    линейный криптоанализ и криптографические атаки по сторонним каналам.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Широкая стандартизация
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Алгоритм используется в международных протоколах, включая TLS (для защищённого интернета), IPsec
+                    (для VPN) и WPA2 (для беспроводных сетей).
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Примеры использования AES в реальных системах
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   1.
+   <strong>
+    Мессенджеры
+   </strong>
+   :
+  </h3>
+ </div>
+ <p dir="auto">
+  AES применяется в популярных приложениях, таких как:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    WhatsApp
+   </strong>
+   : использует AES-256 для защиты данных в режиме GCM (Galois/Counter Mode).
+  </li>
+  <li>
+   <strong>
+    Signal
+   </strong>
+   : применяет AES в комбинации с протоколом Double Ratchet для обеспечения сквозного
+            шифрования сообщений.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   2.
+   <strong>
+    Электронная коммерция
+   </strong>
+   :
+  </h3>
+ </div>
+ <p dir="auto">
+  AES служит основным компонентом в шифровании HTTPS (SSL/TLS). Он используется для защиты передачи
+        данных, таких как информация о кредитных картах, пароли и личные данные.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.
+   <strong>
+    Хранение данных
+   </strong>
+   :
+  </h3>
+ </div>
+ <p dir="auto">
+  Многие операционные системы и приложения используют AES для шифрования файлов и дисков:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    BitLocker (Windows)
+   </strong>
+   : применяет AES-128 или AES-256 для полного шифрования дисков.
+  </li>
+  <li>
+   <strong>
+    VeraCrypt
+   </strong>
+   : предоставляет пользователям возможность выбора между различными длинами ключей
+            AES для шифрования контейнеров данных.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   4.
+   <strong>
+    VPN и беспроводные сети
+   </strong>
+   :
+  </h3>
+ </div>
+ <p dir="auto">
+  AES интегрирован в протоколы:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    IPsec
+   </strong>
+   для безопасного соединения через VPN.
+  </li>
+  <li>
+   <strong>
+    WPA2/WPA3
+   </strong>
+   для защиты беспроводных сетей Wi-Fi.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.
+   <strong>
+    Защита в облаке
+   </strong>
+   :
+  </h3>
+ </div>
+ <p dir="auto">
+  Облачные сервисы, такие как Amazon Web Services (AWS), Microsoft Azure и Google Cloud, используют AES
+        для обеспечения безопасности шифрования данных на серверах.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Классификация атак на AES
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   1. Атаки на основе анализа времени выполнения (Timing
+            Attacks)
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип
+  </h3>
+ </div>
+ <p dir="auto">
+  Атака основана на измерении времени, затраченного на выполнение операций шифрования или расшифровки.
+        Различия во времени выполнения могут быть связаны с особенностями реализации алгоритма, ключа или данных.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Атакующий отправляет множество запросов на шифрование/расшифровку.
+  </li>
+  <li>
+   Замеряет время выполнения операций для каждого запроса.
+  </li>
+  <li>
+   Анализирует закономерности во времени выполнения, чтобы восстановить часть или весь ключ.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Меры противодействия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование алгоритмов с фиксированным временем выполнения (Constant-Time
+                    Algorithms)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Все операции шифрования и расшифровки выполняются за одинаковое время, независимо от входных данных
+                    и ключей.
+    </li>
+    <li>
+     Реализация таких алгоритмов минимизирует временные утечки.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Аппаратное ускорение
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Использование технологий, таких как Intel AES-NI, которые выполняют ключевые операции шифрования
+                    аппаратно, устраняя зависимость от времени выполнения на уровне программы.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Защита от анализа таймингов
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Добавление небольших случайных задержек в процесс выполнения шифрования, чтобы замаскировать время
+                    выполнения операций.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2. Атаки на основе анализа электромагнитного излучения
+            (Side-Channel Attacks)
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип
+  </h3>
+ </div>
+ <p dir="auto">
+  Атака использует побочные сигналы, такие как электромагнитное излучение, потребление энергии или
+        тепловые сигнатуры, возникающие при выполнении операций AES.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Устройство, выполняющее AES, подвергается мониторингу (например, с помощью осциллографа).
+  </li>
+  <li>
+   Снимаются побочные данные, такие как потребление энергии или излучение.
+  </li>
+  <li>
+   Анализируются закономерности сигналов для восстановления промежуточных данных и ключа.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Меры противодействия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Экранирование устройств
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Устройства, работающие с AES, защищаются материалами, блокирующими утечку электромагнитных сигналов
+                    (например, Faraday cages).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Уменьшение побочных излучений
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Использование аппаратных решений, которые минимизируют электромагнитное излучение во время
+                    вычислений.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Внесение случайностей (Randomization)
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Генерация случайных данных на промежуточных этапах шифрования для усложнения анализа побочных
+                    сигналов.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3. Дифференциальный криптоанализ
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип
+  </h3>
+ </div>
+ <p dir="auto">
+  Атака анализирует различия между парами открытого текста и соответствующего зашифрованного текста,
+        чтобы выявить закономерности в работе алгоритма.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Генерируются пары входных данных с известными различиями.
+  </li>
+  <li>
+   Выполняется шифрование этих данных.
+  </li>
+  <li>
+   Изучаются различия на выходе и выявляются зависимости между открытым текстом, зашифрованным текстом и
+            ключом.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Меры противодействия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Увеличение количества раундов шифрования
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Использование 12 или 14 раундов (как в случае AES-192 и AES-256) повышает сложность
+                    дифференциального анализа.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Улучшение дизайна алгоритма
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     S-бокс AES обеспечивает нелинейность, что предотвращает зависимость выходных данных от входных.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Регулярный аудит
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Периодическая проверка реализации AES на возможные уязвимости.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4. Линейный криптоанализ
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип
+  </h3>
+ </div>
+ <p dir="auto">
+  Метод основан на поиске линейных зависимостей между открытым текстом, зашифрованным текстом и ключом.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Собираются большие объёмы пар данных: открытый текст и соответствующий зашифрованный текст.
+  </li>
+  <li>
+   Строятся линейные уравнения, связывающие входные и выходные данные.
+  </li>
+  <li>
+   Уравнения решаются для получения информации о ключе.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Меры противодействия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Применение сложных нелинейных преобразований
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Структуры SubBytes, ShiftRows и MixColumns добавляют высокую степень диффузии, исключая линейные
+                    зависимости.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Обновление криптографических библиотек
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Использование актуальных версий библиотек шифрования, которые включают улучшения против линейного
+                    криптоанализа.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5. Брутфорс (Brute Force)
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип
+  </h3>
+ </div>
+ <p dir="auto">
+  Перебор всех возможных комбинаций ключей до нахождения правильного.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Генерируется последовательность всех возможных ключей.
+  </li>
+  <li>
+   Для каждого ключа выполняется расшифровка зашифрованного текста.
+  </li>
+  <li>
+   Проверяется, соответствует ли расшифрованный текст ожидаемому результату.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Меры противодействия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование длинных ключей
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Применение ключей длиной 192 или 256 бит вместо 128 существенно повышает стойкость к перебору.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Регулярная ротация ключей
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Частая смена ключей шифрования делает брутофорс-атаку неэффективной.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Применение надёжных генераторов ключей
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Обеспечение высокой энтропии при генерации ключей исключает возможность предсказуемости.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   6. Квантовые атаки
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Принцип
+  </h3>
+ </div>
+ <p dir="auto">
+  Используется алгоритм Гровера на квантовых компьютерах для ускорения поиска ключей. Он уменьшает
+        сложность перебора с (2^n) до (2^{n/2}), где (n) — длина ключа.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Создаётся суперпозиция всех возможных ключей.
+  </li>
+  <li>
+   Применяется алгоритм Гровера для поиска ключа с минимальным числом шагов.
+  </li>
+  <li>
+   После (2^{n/2}) итераций с высокой вероятностью находится правильный ключ.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Меры противодействия
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Переход на AES-256
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Увеличенная длина ключа (256 бит) обеспечивает защиту даже в случае использования квантовых
+                    алгоритмов, таких как алгоритм Гровера.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Разработка постквантовых алгоритмов
+    </strong>
+    :
+   </p>
+   <ul dir="auto">
+    <li>
+     Исследования в области криптографии, ориентированной на устойчивость к квантовым компьютерам,
+                    являются перспективным направлением.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Пример вскрытия AES в режиме ECB
+  </h1>
+ </div>
+ <p dir="auto">
+  При использовании AES в режиме ECB все данные открытого текста разбиваются на блоки по 16 байт, а
+        затем шифруются по отдельности. Это означает, что если два блока по 16 байт совпадают в открытом тексте, мы
+        увидим два одинаковых блока зашифрованного текста. Это основная проблема режима ECB, которая позволяет проводить
+        различные атаки
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Расшифровать суффикс (данные после открытого текста)
+  </h2>
+ </div>
+ <p dir="auto">
+  Иногда секретные данные добавляются после открытого текста перед шифрованием. В идеальном мире вы не
+        сможете извлечь эти данные, просматривая зашифрованный зашифрованный текст, не зная ключа. Однако с AES ECB это
+        возможно.
+ </p>
+ <p dir="auto">
+  Единственное, что вам нужно, — это функция, которая принимает обычный текст, добавляет секретные
+        данные, шифрует всё это и возвращает зашифрованный текст.
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">def</span> <span class="pl-en">oracle</span>(<span class="pl-s1">plaintext</span>):
+        <span class="pl-k">return</span> <span class="pl-en">encrypt</span>(<span class="pl-s1">plaintext</span> <span class="pl-c1">+</span> <span class="pl-s">"secret"</span>)</pre>
+ </div>
+ <p dir="auto">
+  Не зная ключа, мы можем проделать трюк, при котором вставим суффикс в последний байт нашего открытого
+        текста. Затем, после того как мы сможем перебрать каждый символ, который мог находиться в этой позиции, пока мы
+        не обнаружим, что этот конкретный зашифрованный блок соответствует нашему исходному слоту.
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c"># Initial ("AAAABBBBCCCCDDD")</span>
+    <span class="pl-v">AAAABBBBCCCCDDDs</span> <span class="pl-s1">ecret</span>
+    <span class="pl-c"># Brute-force ("AAAABBBBCCCCDDD?")</span>
+    <span class="pl-v">AAAABBBBCCCCDDDa</span> <span class="pl-s1">secret</span>
+    <span class="pl-v">AAAABBBBCCCCDDDb</span> <span class="pl-s1">secret</span>
+    <span class="pl-v">AAAABBBBCCCCDDDc</span> <span class="pl-s1">secret</span>
+    ...
+    <span class="pl-v">AAAABBBBCCCCDDDs</span> <span class="pl-s1">secret</span>  <span class="pl-c"># Match</span></pre>
+ </div>
+ <p dir="auto">
+  Тогда мы знаем, что первый символ - s, и мы можем повторить то же самое снова, просто выделив больше
+        места в нашем открытом тексте, чтобы второй символ секрета был вставлен в наш блок. Затем во время перебора мы
+        уже знаем первый символ, и нам нужно только снова перебрать второй символ.
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c"># Initial ("AAAABBBBCCCCDD")</span>
+    <span class="pl-v">AAAABBBBCCCCDDse</span> <span class="pl-s1">cret</span>
+    <span class="pl-c"># Brute-force ("AAAABBBBCCCCDDs?")</span>
+    <span class="pl-v">AAAABBBBCCCCDDsa</span> <span class="pl-s1">secret</span>
+    <span class="pl-v">AAAABBBBCCCCDDsb</span> <span class="pl-s1">secret</span>
+    <span class="pl-v">AAAABBBBCCCCDDsc</span> <span class="pl-s1">secret</span>
+    ...
+    <span class="pl-v">AAAABBBBCCCCDDse</span> <span class="pl-s1">secret</span>  <span class="pl-c"># Match</span></pre>
+ </div>
+ <p dir="auto">
+  Последнее, что нужно отметить в реализации, — это когда вы слили первые 16 байт и, похоже, у нас
+        больше нет места для вставки нашего суффикса. В этом случае мы можем просто начать с самого начала, введя 15
+        символов, а затем посмотреть на второй блок. Мы уже знаем весь открытый текст до этого момента, так что, по
+        сути, это то же самое, что и раньше.
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c"># Initial ("AAAABBBBCCCCDDD")</span>
+    <span class="pl-v">AAAABBBBCCCCDDDa</span> <span class="pl-s1">muchlongersecret</span> <span class="pl-s1">thanbefore</span>
+    <span class="pl-c"># Brute-force ("AAAABBBBCCCCDDDamuchlongersecre?")</span>
+    <span class="pl-v">AAAABBBBCCCCDDDa</span> <span class="pl-s1">muchlongersecrea</span> <span class="pl-s1">amuchlongersecre</span> <span class="pl-s1">tthanbefore</span>
+    <span class="pl-v">AAAABBBBCCCCDDDa</span> <span class="pl-s1">muchlongersecreb</span> <span class="pl-s1">amuchlongersecre</span> <span class="pl-s1">tthanbefore</span>
+    <span class="pl-v">AAAABBBBCCCCDDDa</span> <span class="pl-s1">muchlongersecrec</span> <span class="pl-s1">amuchlongersecre</span> <span class="pl-s1">tthanbefore</span>
+    ...
+    <span class="pl-v">AAAABBBBCCCCDDDa</span> <span class="pl-s1">muchlongersecret</span> <span class="pl-s1">amuchlongersecre</span> <span class="pl-s1">tthanbefore</span>  <span class="pl-c"># Match in 2nd block</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h1>
+ </div>
+ <p dir="auto">
+  Алгоритм AES представляет собой один из самых надёжных и широко используемых стандартов шифрования
+        благодаря своей высокой безопасности, эффективности и гибкости. Благодаря различным режимам работы AES может
+        адаптироваться к потребностям различных приложений: от защиты файлов и баз данных до обеспечения безопасности в
+        потоковых соединениях. Однако, как показывают примеры успешных атак, реализация AES требует тщательного
+        соблюдения мер защиты, таких как использование правильных режимов шифрования, соблюдение требований к ключам и
+        вектору инициализации, а также предотвращение утечек по сторонним каналам.
+ </p>
+ <p dir="auto">
+  Развитие технологий, включая квантовые вычисления, создаёт новые вызовы, требующие дальнейших
+        исследований и улучшений криптографических систем. Несмотря на это, AES остаётся эталоном безопасности, который
+        задаёт стандарт для современных и будущих систем защиты данных.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Полезные материалы и источники
+  </h1>
+ </div>
+ <p dir="auto">
+  Для более глубокого изучения AES и его применения вы можете ознакомиться с следующими ресурсами:
+ </p>
+ <ol dir="auto">
+  <li>
+   <a href="https://docstech.ru/aes/" rel="nofollow">
+    Шифрование AES: Что такое, как работает и почему это
+                лучший выбор для безопасности данных
+   </a>
+  </li>
+  <li>
+   <a href="https://ru.safetydetectives.com/blog/%d1%87%d1%82%d0%be-%d1%82%d0%b0%d0%ba%d0%be%d0%b5-aes-%d1%88%d0%b8%d1%84%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5/" rel="nofollow">
+    Что такое AES шифрование и лучшее ли оно в 2025 году?
+   </a>
+  </li>
+  <li>
+   <a href="https://ru.wikipedia.org/wiki/AES_%28%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82_%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%29" rel="nofollow">
+    AES (стандарт шифрования) — Википедия
+   </a>
+  </li>
+ </ol>
+ <p dir="auto">
+  Эти материалы помогут вам лучше понять теоретические основы AES, его реализацию и современные вызовы в
+        области криптографии.
+ </p>
+</article>

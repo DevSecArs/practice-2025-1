@@ -1,0 +1,1372 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <ul dir="auto">
+  <li>
+   <a href="#1-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">
+    <strong>
+     1. Введение
+    </strong>
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-winrm">
+      <strong>
+       Что такое
+                            WinRM?
+      </strong>
+     </a>
+    </li>
+    <li>
+     <a href="#%D1%80%D0%BE%D0%BB%D1%8C-winrm-%D0%B2-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8-%D0%BD%D0%B0-%D0%BF%D1%80%D0%BE%D0%BD%D0%B8%D0%BA%D0%BD%D0%BE%D0%B2%D0%B5%D0%BD%D0%B8%D0%B5">
+      <strong>
+       Роль
+                            WinRM в тестировании на проникновение
+      </strong>
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#2-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D1%85%D0%B0%D1%80%D0%B0%D0%BA%D1%82%D0%B5%D1%80%D0%B8%D1%81%D1%82%D0%B8%D0%BA%D0%B8-%D0%B8-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8-winrm">
+    <strong>
+     2.
+                    Основные характеристики и особенности WinRM
+    </strong>
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#21-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%D1%8B%D0%B5-%D0%BF%D0%BE%D1%80%D1%82%D1%8B-%D0%B8-%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D0%BA%D0%BE%D0%BB%D1%8B">
+      <strong>
+       2.1
+                            Используемые порты и протоколы
+      </strong>
+     </a>
+    </li>
+    <li>
+     <a href="#22-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D0%BC%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%B7%D0%BC%D1%8B-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D0%B8">
+      <strong>
+       2.2
+                            Аутентификация и механизмы безопасности
+      </strong>
+     </a>
+    </li>
+    <li>
+     <a href="#23-%D1%81%D0%B2%D1%8F%D0%B7%D1%8C-%D1%81-powershell-remoting">
+      <strong>
+       2.3 Связь с
+                            PowerShell Remoting
+      </strong>
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#3-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B-%D0%B2%D1%8B%D1%8F%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-winrm-%D0%B2-%D1%81%D0%B5%D1%82%D0%B8">
+    <strong>
+     3.
+                    Методы выявления WinRM в сети
+    </strong>
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#31-%D1%81%D0%BA%D0%B0%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%B5%D1%82%D0%B8-%D0%BD%D0%B0-%D0%BD%D0%B0%D0%BB%D0%B8%D1%87%D0%B8%D0%B5-winrm">
+      <strong>
+       3.1
+                            Сканирование сети на наличие WinRM
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%81%D0%BA%D0%B0%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE%D1%80%D1%82%D0%BE%D0%B2-winrm-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-nmap">
+        <strong>
+         Сканирование
+                                    портов WinRM с помощью Nmap
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B3%D0%BB%D1%83%D0%B1%D0%BE%D0%BA%D0%BE%D0%B5-%D1%81%D0%BA%D0%B0%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-winrm-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-nse-%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2">
+        <strong>
+         Глубокое
+                                    сканирование WinRM с использованием NSE-скриптов
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#32-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D0%BE%D1%81%D1%82%D0%B8-winrm-%D0%BD%D0%B0-%D1%86%D0%B5%D0%BB%D0%B5%D0%B2%D0%BE%D0%BC-%D1%85%D0%BE%D1%81%D1%82%D0%B5">
+      <strong>
+       3.2
+                            Проверка доступности WinRM на целевом хосте
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0-%D1%81%D0%BE%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-%D1%81-winrm-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-powershell">
+        <strong>
+         Проверка
+                                    соединения с WinRM с помощью PowerShell
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7-%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%B8-winrm-%D0%BD%D0%B0-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D0%BC%D0%B0%D1%88%D0%B8%D0%BD%D0%B5">
+        <strong>
+         Анализ
+                                    конфигурации WinRM на локальной машине
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#4-%D1%8D%D0%BA%D1%81%D0%BF%D0%BB%D1%83%D0%B0%D1%82%D0%B0%D1%86%D0%B8%D1%8F-winrm-%D0%BF%D1%80%D0%B8-%D0%BF%D0%B5%D0%BD%D1%82%D0%B5%D1%81%D1%82%D0%B5">
+    <strong>
+     4.
+                    Эксплуатация WinRM при пентесте
+    </strong>
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#41-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F-%D0%B8-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%BD%D0%BE%D0%B5-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-winrm">
+      <strong>
+       4.1
+                            Аутентификация и удаленное выполнение команд через WinRM
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-evil-winrm">
+        <strong>
+         Использование
+                                    Evil-WinRM
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%BD%D0%BE%D0%B9-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B5-%D1%81-%D0%B8%D0%B7%D0%B2%D0%B5%D1%81%D1%82%D0%BD%D1%8B%D0%BC%D0%B8-%D1%83%D1%87%D0%B5%D1%82%D0%BD%D1%8B%D0%BC%D0%B8-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8">
+        <strong>
+         Подключение
+                                    к удаленной системе с известными учетными данными
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5-%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F">
+        <strong>
+         Выполнение
+                                    команд после подключения
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#42-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-pass-the-hash-pth-%D0%B8-pass-the-ticket-ptt">
+      <strong>
+       4.2
+                            Использование Pass-the-Hash (PtH) и Pass-the-Ticket (PtT)
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B0%D1%82%D0%B0%D0%BA%D0%B0-pass-the-hash-pth-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-netexec">
+        <strong>
+         Атака
+                                    Pass-the-Hash (PtH) через NetExec
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B0%D1%82%D0%B0%D0%BA%D0%B0-pass-the-ticket-ptt-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-mimikatz">
+        <strong>
+         Атака
+                                    Pass-the-Ticket (PtT) через Mimikatz
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#5-%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B0-%D0%BE%D1%82-%D0%B0%D1%82%D0%B0%D0%BA-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-winrm">
+    <strong>
+     5.
+                    Защита от атак через WinRM
+    </strong>
+   </a>
+   <ul dir="auto">
+    <li>
+     <a href="#51-%D0%BE%D1%82%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B5%D0%BD%D1%83%D0%B6%D0%BD%D1%8B%D1%85-%D1%81%D0%BB%D1%83%D0%B6%D0%B1-%D0%B8-%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0-%D0%BA-winrm">
+      <strong>
+       5.1
+                            Отключение ненужных служб и ограничение доступа к WinRM
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BE%D1%82%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-winrm-%D0%BD%D0%B0-%D1%85%D0%BE%D1%81%D1%82%D0%B0%D1%85">
+        <strong>
+         Отключение
+                                    WinRM на хостах
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0-%D0%BA-winrm-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-%D0%B1%D1%80%D0%B0%D0%BD%D0%B4%D0%BC%D0%B0%D1%83%D1%8D%D1%80%D0%B0">
+        <strong>
+         Ограничение
+                                    доступа к WinRM с помощью брандмауэра
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#52-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D1%8B%D1%85-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%BE%D0%B2-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8">
+      <strong>
+       5.2
+                            Использование безопасных методов аутентификации
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-kerberos-%D0%B4%D0%BB%D1%8F-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8">
+        <strong>
+         Использование
+                                    Kerberos для аутентификации
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BE%D1%82%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-ntlm-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8">
+        <strong>
+         Отключение
+                                    NTLM-аутентификации
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D0%B8-%D1%81-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%82%D0%B0%D0%BC%D0%B8-certificate-authentication">
+        <strong>
+         Использование
+                                    аутентификации с сертификатами (Certificate Authentication)
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#53-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D1%87%D0%B5%D1%80%D0%B5%D0%B7-https">
+      <strong>
+       5.3
+                            Использование шифрования через HTTPS
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-winrm-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-%D1%81-https">
+        <strong>
+         Настройка
+                                    WinRM для работы с HTTPS
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#54-%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-%D0%B3%D1%80%D1%83%D0%BF%D0%BF-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D0%B5%D0%B9">
+      <strong>
+       5.4
+                            Ограничение доступа с помощью групп пользователей
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B3%D1%80%D1%83%D0%BF%D0%BF-%D0%B4%D0%BB%D1%8F-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D1%8F-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0">
+        <strong>
+         Использование
+                                    групп для контроля доступа
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%B8%D0%BD%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%BF%D1%80%D0%B0%D0%B2-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0">
+        <strong>
+         Минимизация
+                                    прав доступа
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <a href="#55-%D1%80%D0%B5%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D1%8B%D0%B5-%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B8-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3">
+      <strong>
+       5.5
+                            Регулярные обновления и мониторинг
+      </strong>
+     </a>
+     <ul dir="auto">
+      <li>
+       <a href="#%D1%80%D0%B5%D0%B3%D1%83%D0%BB%D1%8F%D1%80%D0%BD%D0%BE%D0%B5-%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B">
+        <strong>
+         Регулярное
+                                    обновление системы
+        </strong>
+       </a>
+      </li>
+      <li>
+       <a href="#%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3-%D0%B0%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%BE%D1%81%D1%82%D0%B8-winrm">
+        <strong>
+         Мониторинг
+                                    активности WinRM
+        </strong>
+       </a>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    1. Введение
+   </strong>
+  </h1>
+ </div>
+ <p dir="auto">
+  В современном мире информационной безопасности удаленное управление системами играет ключевую роль в
+        администрировании корпоративных сетей. Одним из таких механизмов в Windows является
+  <strong>
+   WinRM (Windows
+            Remote Management)
+  </strong>
+  - встроенный инструмент для удаленного взаимодействия с операционной системой,
+        который предоставляет возможности удаленного выполнения команд, управления процессами и получения информации о
+        системе.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Что такое WinRM?
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="1" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  WinRM - это реализация Microsoft стандарта
+  <strong>
+   WS-Management (Web Services for
+            Management)
+  </strong>
+  , который основан на SOAP (Simple Object Access Protocol) и позволяет удаленно управлять
+        Windows-хостами через HTTP(S). Он используется как административными инструментами (например, PowerShell
+        Remoting), так и сторонними программами для автоматизации задач.
+ </p>
+ <p dir="auto">
+  Основные возможности WinRM:
+ </p>
+ <ul dir="auto">
+  <li>
+   Удаленное выполнение команд на Windows-системах.
+  </li>
+  <li>
+   Управление сервисами, пользователями и файлами.
+  </li>
+  <li>
+   Доступ к журналам событий (Event Logs).
+  </li>
+  <li>
+   Мониторинг состояния системы и сбор диагностической информации.
+  </li>
+  <li>
+   Поддержка безопасной аутентификации через Kerberos, а также NTLM и CredSSP.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Роль WinRM в тестировании на проникновение
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Для специалистов по информационной безопасности протокол WinRM чрезвычайно полезен, поскольку он:
+ </p>
+ <ul dir="auto">
+  <li>
+   Открывает возможность удаленного управления системой без физического доступа.
+  </li>
+  <li>
+   Может использоваться для перемещения по сети (
+   <strong>
+    Lateral Movement
+   </strong>
+   ).
+  </li>
+  <li>
+   Позволяет выполнять команды на удаленных хостах, аналогично SSH в Linux.
+  </li>
+  <li>
+   В сочетании с уязвимыми настройками аутентификации может быть точкой входа в инфраструктуру.
+  </li>
+ </ul>
+ <p dir="auto">
+  Пентестеры и Red Team-специалисты активно применяют WinRM при оценке защищенности корпоративных сетей.
+        В зависимости от конфигурации системы, можно получить доступ к удаленному хосту с легитимными учетными данными
+        или эксплуатировать слабые настройки аутентификации для атак
+  <strong>
+   Pass-the-Hash (PtH)
+  </strong>
+  и
+  <strong>
+   Pass-the-Ticket (PtT)
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    2. Основные характеристики и особенности
+                WinRM
+   </strong>
+  </h1>
+ </div>
+ <p dir="auto">
+  Разберем ключевые технические характеристики WinRM, его архитектуру, механизмы аутентификации и связь
+        с PowerShell Remoting.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    2.1 Используемые порты и протоколы
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  WinRM работает поверх
+  <strong>
+   HTTP
+  </strong>
+  и
+  <strong>
+   HTTPS
+  </strong>
+  , что делает его довольно удобным
+        для удаленного взаимодействия. По умолчанию задействованы следующие порты:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    TCP 5985
+   </strong>
+   - стандартный порт для подключения через HTTP.
+  </li>
+  <li>
+   <strong>
+    TCP 5986
+   </strong>
+   - порт для подключения через HTTPS (шифрованное соединение с TLS).
+  </li>
+ </ul>
+ <p dir="auto">
+  Хотя WinRM можно настроить для работы через любые доступные порты, стандартные 5985 и 5986 чаще всего
+        используются по умолчанию.
+ </p>
+ <blockquote>
+  <p dir="auto">
+   <strong>
+    Важно:
+   </strong>
+   WinRM через HTTP не использует шифрование, но передача учетных данных
+            (например, с помощью Kerberos или NTLM) может быть защищена на уровне аутентификации. Однако, для
+            обеспечения безопасности рекомендуется использовать WinRM через HTTPS.
+  </p>
+ </blockquote>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    2.2 Аутентификация и механизмы
+                безопасности
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  WinRM поддерживает несколько методов аутентификации:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Kerberos
+    </strong>
+    (по умолчанию)
+   </p>
+   <ul dir="auto">
+    <li>
+     Использует механизм взаимного доверия в домене.
+    </li>
+    <li>
+     Безопасный метод, так как не передает пароли в открытом виде.
+    </li>
+    <li>
+     Требует, чтобы клиент и сервер были частью одной Active Directory.
+     <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/2.png" rel="noopener noreferrer" target="_blank">
+      <img alt="2" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/2.png" style="max-width: 100%;"/>
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     NTLM
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Используется, если Kerberos недоступен.
+    </li>
+    <li>
+     Менее безопасен, так как позволяет проводить атаки типа
+     <strong>
+      Pass-the-Hash (PtH)
+     </strong>
+     .
+    </li>
+    <li>
+     Не требует доменной аутентификации.
+     <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/3.png" rel="noopener noreferrer" target="_blank">
+      <img alt="3" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/3.png" style="max-width: 100%;"/>
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     CredSSP (Credential Security Support Provider)
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Позволяет передавать учетные данные на удаленный сервер.
+    </li>
+    <li>
+     Может быть полезен при каскадном подключении (например, когда один сервер управляет другим).
+    </li>
+    <li>
+     Несет риски, так как учетные данные могут быть перехвачены, если защита настроена неправильно.
+     <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/4.png" rel="noopener noreferrer" target="_blank">
+      <img alt="4" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/4.png" style="max-width: 100%;"/>
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Basic Authentication
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Отправляет учетные данные в виде
+     <strong>
+      base64
+     </strong>
+     (нешифрованного пароля).
+    </li>
+    <li>
+     Используется в старых системах или в случаях, когда другие методы недоступны.
+    </li>
+    <li>
+     Требует обязательного использования HTTPS для защиты пароля.
+     <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/5.png" rel="noopener noreferrer" target="_blank">
+      <img alt="5" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/5.png" style="max-width: 100%;"/>
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Certificate Authentication
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Использует цифровые сертификаты для проверки подлинности.
+    </li>
+    <li>
+     Позволяет избежать передачи паролей.
+    </li>
+    <li>
+     Сложен в настройке и редко применяется в корпоративных средах.
+     <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/6.png" rel="noopener noreferrer" target="_blank">
+      <img alt="6" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/6.png" style="max-width: 100%;"/>
+     </a>
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <blockquote>
+  <p dir="auto">
+   <strong>
+    Вывод:
+   </strong>
+   Для безопасного использования WinRM рекомендуется включить
+   <strong>
+    Kerberos
+   </strong>
+   (если в домене) или
+   <strong>
+    Certificate Authentication
+   </strong>
+   . NTLM и CredSSP
+            представляют угрозу и должны использоваться с осторожностью.
+  </p>
+ </blockquote>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    2.3 Связь с PowerShell Remoting
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  WinRM является основой для
+  <strong>
+   PowerShell Remoting
+  </strong>
+  , который позволяет запускать команды
+        PowerShell на удаленных машинах. Это один из самых распространенных способов удаленного администрирования
+        Windows-систем.
+ </p>
+ <p dir="auto">
+  Основные команды PowerShell для работы с WinRM:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверка состояния WinRM
+    </strong>
+   </p>
+   <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+    <pre>winrm quickconfig</pre>
+   </div>
+   <p dir="auto">
+    Эта команда показывает, включен ли WinRM и какие настройки применены.
+   </p>
+   <p dir="auto">
+    <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/7.png" rel="noopener noreferrer" target="_blank">
+     <img alt="7" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/7.png" style="max-width: 100%;"/>
+    </a>
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Запуск удаленной сессии PowerShell
+    </strong>
+   </p>
+   <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c1">Enter-PSSession</span> <span class="pl-k">-</span>ComputerName target_machine <span class="pl-k">-</span>Credential user</pre>
+   </div>
+   <p dir="auto">
+    Позволяет подключиться к удаленной системе и выполнять команды.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Запуск команд на нескольких системах
+    </strong>
+   </p>
+   <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c1">Invoke-Command</span> <span class="pl-k">-</span>ComputerName target1<span class="pl-k">,</span> target2 <span class="pl-k">-</span>ScriptBlock { <span class="pl-c1">Get-Process</span> }</pre>
+   </div>
+   <p dir="auto">
+    Позволяет отправлять команды сразу на несколько хостов.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Просмотр текущей конфигурации WinRM
+    </strong>
+   </p>
+   <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+    <pre>winrm get winrm<span class="pl-k">/</span>config</pre>
+   </div>
+  </li>
+ </ul>
+ <blockquote>
+  <p dir="auto">
+   <strong>
+    Примечание:
+   </strong>
+   Для работы PowerShell Remoting необходимо, чтобы
+   <strong>
+    WinRM был
+                включен
+   </strong>
+   на целевой системе, а учетная запись имела соответствующие привилегии (например,
+            находиться в группе Remote Management Users).
+  </p>
+ </blockquote>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    3. Методы выявления WinRM в сети
+   </strong>
+  </h1>
+ </div>
+ <p dir="auto">
+  При тестировании на проникновение важно определить, какие хосты в сети используют WinRM и какие
+        уязвимости можно эксплуатировать.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    3.1 Сканирование сети на наличие WinRM
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Первым шагом является поиск машин, на которых активен
+  <strong>
+   WinRM
+  </strong>
+  . Поскольку он работает на
+        стандартных портах
+  <strong>
+   5985 (HTTP)
+  </strong>
+  и
+  <strong>
+   5986 (HTTPS)
+  </strong>
+  , мы можем использовать
+  <strong>
+   nmap
+  </strong>
+  и другие инструменты для их обнаружения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Сканирование портов WinRM с помощью Nmap
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Один из самых простых способов проверить доступность WinRM - это сканирование портов:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>nmap -p 5985,5986 --open -sV -Pn 192.168.1.0/24</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Разбор команды:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <code>
+    -p 5985,5986
+   </code>
+   - указываем порты WinRM.
+  </li>
+  <li>
+   <code>
+    --open
+   </code>
+   - показывает только хосты с открытыми портами.
+  </li>
+  <li>
+   <code>
+    -sV
+   </code>
+   - определяет версию службы.
+  </li>
+  <li>
+   <code>
+    -Pn
+   </code>
+   - отключает ping перед сканированием (актуально, если ICMP заблокирован).
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/8.png" rel="noopener noreferrer" target="_blank">
+   <img alt="8" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/8.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Глубокое сканирование WinRM с использованием
+                NSE-скриптов
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Nmap поддерживает
+  <strong>
+   NSE-скрипты
+  </strong>
+  , которые помогают извлекать больше информации:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>nmap -p 5985,5986 --script=http-ntlm-info -sV 192.168.1.100</pre>
+ </div>
+ <p dir="auto">
+  Этот скрипт покажет, поддерживается ли
+  <strong>
+   Kerberos/NTLM
+  </strong>
+  , а также детали конфигурации
+        WinRM.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/9.png" rel="noopener noreferrer" target="_blank">
+   <img alt="9" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/9.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    3.2 Проверка доступности WinRM на целевом
+                хосте
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  После обнаружения хостов с открытыми портами WinRM, следующим шагом будет проверка их доступности и
+        конфигурации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Проверка соединения с WinRM с помощью
+                PowerShell
+   </strong>
+  </h3>
+ </div>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Test-WsMan</span> <span class="pl-k">-</span>ComputerName <span class="pl-c1">192.168</span>.<span class="pl-c1">1.100</span></pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Результат:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Если WinRM включен и отвечает, вы увидите информацию о версии протокола.
+  </li>
+  <li>
+   Если служба отключена или порт закрыт, появится сообщение об ошибке.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Анализ конфигурации WinRM на локальной
+                машине
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Если у вас есть доступ к хосту, можно проверить текущие настройки WinRM:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>winrm get winrm<span class="pl-k">/</span>config</pre>
+ </div>
+ <p dir="auto">
+  Этот запрос покажет:
+ </p>
+ <ul dir="auto">
+  <li>
+   Включен ли WinRM.
+  </li>
+  <li>
+   Методы аутентификации (Kerberos, NTLM, Basic, CredSSP).
+  </li>
+  <li>
+   Разрешенные IP-адреса и список доверенных хостов.
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/10.png" rel="noopener noreferrer" target="_blank">
+   <img alt="10" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/10.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    4. Эксплуатация WinRM при пентесте
+   </strong>
+  </h1>
+ </div>
+ <p dir="auto">
+  После обнаружения активных WinRM-служб и проверки доступности целевых хостов следующим этапом является
+        эксплуатация WinRM.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    4.1 Аутентификация и удаленное выполнение команд
+                через WinRM
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Если у нас есть учетные данные (логин и пароль или NTLM-хэш), мы можем войти на сервер через WinRM.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Использование Evil-WinRM
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/Hackplayers/evil-winrm">
+   Evil-WinRM
+  </a>
+  - один из самых популярных
+        инструментов для взаимодействия с WinRM при пентесте. Он позволяет:
+ </p>
+ <ul dir="auto">
+  <li>
+   Выполнять команды удаленно.
+  </li>
+  <li>
+   Загружать файлы на целевую систему.
+  </li>
+  <li>
+   Обходить некоторые ограничения безопасности Windows.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Подключение к удаленной системе с известными
+                учетными данными
+   </strong>
+  </h3>
+ </div>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>evil-winrm -i 192.168.1.100 -u administrator -p <span class="pl-s"><span class="pl-pds">"</span>SuperSecurePassword!<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  Если пароль правильный, мы получаем интерактивную сессию на целевой системе.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/11.png" rel="noopener noreferrer" target="_blank">
+   <img alt="11" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/11.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Выполнение команд после подключения
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  После успешного входа мы можем запускать PowerShell-команды. Например:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>whoami <span class="pl-k">/</span>priv      <span class="pl-c"><span class="pl-c">#</span> Проверяем права пользователя  </span>
+    ipconfig <span class="pl-k">/</span>all     <span class="pl-c"><span class="pl-c">#</span> Просматриваем сетевые интерфейсы  </span>
+    net user <span class="pl-k">/</span>domain  <span class="pl-c"><span class="pl-c">#</span> Список пользователей в домене  </span></pre>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/12.png" rel="noopener noreferrer" target="_blank">
+   <img alt="12" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/12.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    4.2 Использование Pass-the-Hash (PtH) и
+                Pass-the-Ticket (PtT)
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Когда у атакующего нет пароля, но есть хэш NTLM или билет Kerberos, можно использовать атаки
+  <strong>
+   PtH
+  </strong>
+  и
+  <strong>
+   PtT
+  </strong>
+  для аутентификации через WinRM.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Атака Pass-the-Hash (PtH) через NetExec
+   </strong>
+  </h3>
+ </div>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>netexec winrm 192.168.1.100 -u administrator -H 31d6cfe0d16ae931b73c59d7e0c089c0</pre>
+ </div>
+ <p dir="auto">
+  Если учетная запись поддерживает NTLM-аутентификацию, атакующий получит доступ.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/ShAmRoWw/articles/blob/main/article_winrm/13.png" rel="noopener noreferrer" target="_blank">
+   <img alt="13" src="https://github.com/ShAmRoWw/articles/raw/main/article_winrm/13.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Атака Pass-the-Ticket (PtT) через Mimikatz
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Если атакующий обнаружил билет Kerberos, он может использовать его для подключения через WinRM:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">mimikatz.exe</span> <span class="pl-s"><span class="pl-pds">"</span>kerberos::ptt /path/to/ticket.kirbi<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>exit<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  После этого можно подключиться к системе, используя обычный вход:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Enter-PSSession</span> <span class="pl-k">-</span>ComputerName <span class="pl-c1">192.168</span>.<span class="pl-c1">1.100</span> <span class="pl-k">-</span>Credential administrator</pre>
+ </div>
+ <p dir="auto">
+  Это сработает, если у нас действительный билет для целевого хоста.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    5. Защита от атак через WinRM
+   </strong>
+  </h1>
+ </div>
+ <p dir="auto">
+  Существуют несколько методов защиты и усиления безопасности при использовании WinRM.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    5.1 Отключение ненужных служб и ограничение доступа
+                к WinRM
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Если WinRM не используется в сети или на отдельных хостах, его следует
+  <strong>
+   отключить
+  </strong>
+  для
+        минимизации возможных уязвимостей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Отключение WinRM на хостах
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Если WinRM не требуется на конкретной системе, его можно полностью отключить с помощью PowerShell:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Set-Service</span> WinRM <span class="pl-k">-</span>StartupType Disabled
+    <span class="pl-c1">Stop-Service</span> WinRM</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Ограничение доступа к WinRM с помощью
+                брандмауэра
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Если WinRM требуется только для определенных пользователей или серверов, можно ограничить доступ через
+        брандмауэр. Например, можно разрешить доступ только с определенных IP-адресов:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">New-NetFirewallRule</span> <span class="pl-k">-</span>DisplayName <span class="pl-s"><span class="pl-pds">"</span>Allow WinRM<span class="pl-pds">"</span></span> <span class="pl-k">-</span>Direction Inbound <span class="pl-k">-</span>Protocol TCP <span class="pl-k">-</span>LocalPort <span class="pl-c1">5985</span><span class="pl-k">,</span><span class="pl-c1">5986</span> <span class="pl-k">-</span>RemoteAddress <span class="pl-c1">192.168</span>.<span class="pl-c1">1.100</span> <span class="pl-k">-</span>Action Allow</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    5.2 Использование безопасных методов
+                аутентификации
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Одним из самых эффективных способов защиты является
+  <strong>
+   правильная настройка
+            аутентификации
+  </strong>
+  . Аутентификация играет ключевую роль в безопасности WinRM.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Использование Kerberos для аутентификации
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Kerberos - это безопасный и рекомендуемый метод аутентификации для корпоративных сетей. Для его
+        использования все компьютеры должны быть частью домена Active Directory. Важно обеспечить, чтобы Kerberos был
+        настроен везде, где это возможно, поскольку он защищает передаваемые данные с помощью шифрования.
+ </p>
+ <p dir="auto">
+  Устанавливаем WinRM на использование Kerberos:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>winrm set winrm<span class="pl-k">/</span>config<span class="pl-k">/</span>service<span class="pl-k">/</span>auth <span class="pl-s"><span class="pl-pds">'</span>@{Kerberos="true"}<span class="pl-pds">'</span></span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Отключение NTLM-аутентификации
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  NTLM является устаревшим и менее безопасным методом аутентификации, который уязвим для различных атак,
+        таких как
+  <strong>
+   Pass-the-Hash
+  </strong>
+  . Для повышения безопасности следует отключить NTLM и использовать
+        только Kerberos.
+ </p>
+ <p dir="auto">
+  Для отключения NTLM выполним следующие шаги:
+ </p>
+ <ol dir="auto">
+  <li>
+   Отключим аутентификацию NTLM в группе политик безопасности:
+  </li>
+ </ol>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>secpol.msc</pre>
+ </div>
+ <ol dir="auto" start="2">
+  <li>
+   Отключим NTLM для WinRM:
+  </li>
+ </ol>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>winrm set winrm<span class="pl-k">/</span>config<span class="pl-k">/</span>service<span class="pl-k">/</span>auth <span class="pl-s"><span class="pl-pds">'</span>@{NTLM="false"}<span class="pl-pds">'</span></span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Использование аутентификации с сертификатами
+                (Certificate Authentication)
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Для дополнительной безопасности можно настроить
+  <strong>
+   сертификаты
+  </strong>
+  для аутентификации вместо
+        паролей и хэшей. Это особенно полезно для организаций, которые используют привилегированные аккаунты для
+        администрирования серверов.
+ </p>
+ <p dir="auto">
+  Чтобы включить аутентификацию с сертификатами, можно использовать команду:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>winrm set winrm<span class="pl-k">/</span>config<span class="pl-k">/</span>service<span class="pl-k">/</span>auth <span class="pl-s"><span class="pl-pds">'</span>@{Certificate="true"}<span class="pl-pds">'</span></span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    5.3 Использование шифрования через HTTPS
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Для защиты данных, передаваемых через WinRM, следует всегда использовать
+  <strong>
+   шифрование
+  </strong>
+  .
+        Это важно для предотвращения атак типа
+  <strong>
+   Man-in-the-Middle (MITM)
+  </strong>
+  , когда злоумышленники могут
+        перехватывать незащищенный трафик, передаваемый через HTTP.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Настройка WinRM для работы с HTTPS
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Для включения шифрования через HTTPS необходимо установить
+  <strong>
+   SSL-сертификат
+  </strong>
+  на сервер и
+        настроить WinRM. Примерный процесс выглядит следующим образом:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Создаём или получаем сертификат для шифрования (например, через внутренний CA).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Связываем WinRM с этим сертификатом:
+   </p>
+  </li>
+ </ol>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre>winrm create winrm<span class="pl-k">/</span>config<span class="pl-k">/</span>Listener?Address<span class="pl-k">=*+</span>Transport<span class="pl-k">=</span>HTTPS <span class="pl-k">@</span>{<span class="pl-smi">Hostname</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>YourHost<span class="pl-pds">"</span></span>;<span class="pl-smi">CertificateThumbprint</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>YOUR_CERT_THUMBPRINT<span class="pl-pds">"</span></span>}</pre>
+ </div>
+ <ol dir="auto" start="3">
+  <li>
+   Убеждаемся, что порты 5986 (HTTPS) открыты в брандмауэре:
+  </li>
+ </ol>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">New-NetFirewallRule</span> <span class="pl-k">-</span>DisplayName <span class="pl-s"><span class="pl-pds">"</span>Allow WinRM HTTPS<span class="pl-pds">"</span></span> <span class="pl-k">-</span>Direction Inbound <span class="pl-k">-</span>Protocol TCP <span class="pl-k">-</span>LocalPort <span class="pl-c1">5986</span> <span class="pl-k">-</span>Action Allow</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    5.4 Ограничение доступа с помощью групп
+                пользователей
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Еще одной важной мерой безопасности является
+  <strong>
+   ограничение доступа
+  </strong>
+  к WinRM для
+        определенных групп пользователей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Использование групп для контроля доступа
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  На Windows-серверах существует группа
+  <strong>
+   Remote Management Users
+  </strong>
+  , члены которой могут
+        использовать WinRM.
+ </p>
+ <p dir="auto">
+  Для добавления пользователя в группу
+  <strong>
+   Remote Management Users
+  </strong>
+  выполним:
+ </p>
+ <div class="highlight highlight-source-powershell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">Add-LocalGroupMember</span> <span class="pl-k">-</span>Group <span class="pl-s"><span class="pl-pds">"</span>Remote Management Users<span class="pl-pds">"</span></span> <span class="pl-k">-</span>Member <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Минимизация прав доступа
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Система должна работать по принципу
+  <strong>
+   наименьших привилегий
+  </strong>
+  : необходимо давать
+        пользователям только те права, которые им действительно необходимы. Например, для мониторинга системы или
+        выполнения простых команд можно использовать ограниченные учетные записи с минимальными правами.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    5.5 Регулярные обновления и мониторинг
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Наконец, важно следить за актуальностью системы и проводить
+  <strong>
+   регулярные обновления
+  </strong>
+  для
+        защиты от уязвимостей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Регулярное обновление системы
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Необходимо постоянно проверять, чтобы все системы получали актуальные обновления безопасности. Это
+        включает в себя обновления операционных систем и установленных приложений.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Мониторинг активности WinRM
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Также необходимо следить за активностью, связанной с WinRM, с помощью журналов событий и инструментов
+        мониторинга, таких как
+  <strong>
+   SIEM-систем
+  </strong>
+  . Например, в журнале
+  <strong>
+   Microsoft-Windows-WinRM/Operational
+  </strong>
+  можно отслеживать попытки подключения и выполнения команд.
+ </p>
+ <p dir="auto">
+  <strong>
+   Автор: Дейникин Максим Юрьевич
+  </strong>
+ </p>
+</article>

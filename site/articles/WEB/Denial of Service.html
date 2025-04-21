@@ -1,0 +1,400 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Отказ в обслуживании (Denial of Service SC10:2025) в
+            смарт-контрактах
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h2>
+ </div>
+ <p dir="auto">
+  Смарт-контракты – это самовыполняющиеся программы, предназначенные для автоматического исполнения
+        соглашений без участия посредников. Однако их неизменяемость делает уязвимости безопасности особенно сложными
+        для исправления. Одной из потенциальных угроз является атака типа "отказ в обслуживании" (DoS), которая
+        направлена на эксплуатацию логики контракта с целью нарушения работы протокола или блокировки его
+        функциональности для пользователей. Такие атаки могут привести к финансовым потерям и дестабилизации работы
+        смарт-контракта.
+ </p>
+ <p dir="auto">
+  В традиционной сетевой безопасности DoS-атака заключается в перегрузке системы или сетевого ресурса
+        чрезмерным количеством запросов, что делает его недоступным для обычных пользователей. Аналогично, злоумышленник
+        может искусственно загружать функции смарт-контракта, чтобы блокировать доступ для других пользователей.
+ </p>
+ <p dir="auto">
+  Простая аналогия: представьте себе группу хулиганов, постоянно звонящих в пиццерию, чтобы делать
+        ложные заказы. В результате телефонная линия занята, и настоящие клиенты не могут оформить заказ. Аналогичным
+        образом работают DoS-атаки на смарт-контракты.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   DoS-атаки в Web3
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/146094679/428426008-7696764d-b2b9-445d-b0ae-7cc437dee553.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDgsIm5iZiI6MTc0NTE0ODYwOCwicGF0aCI6Ii8xNDYwOTQ2NzkvNDI4NDI2MDA4LTc2OTY3NjRkLWIyYjktNDQ1ZC1iMGFlLTdjYzQzN2RlZTU1My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzgxMTY1YTg3MjU4MzU3MjM3YTU0Y2NjM2RmN2FkYjE4ZmQ2Nzc3ZmU3ZTJlZDYxMjJkZmY5NmYxY2U1MmQyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.TIbZivmv94XeYPrihDcLKR1-HwiqIalBPLo4i3usgSc" rel="noopener noreferrer" target="_blank">
+   <img alt="articles-denial-of-service" src="https://private-user-images.githubusercontent.com/146094679/428426008-7696764d-b2b9-445d-b0ae-7cc437dee553.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MDgsIm5iZiI6MTc0NTE0ODYwOCwicGF0aCI6Ii8xNDYwOTQ2NzkvNDI4NDI2MDA4LTc2OTY3NjRkLWIyYjktNDQ1ZC1iMGFlLTdjYzQzN2RlZTU1My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMDhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNzgxMTY1YTg3MjU4MzU3MjM3YTU0Y2NjM2RmN2FkYjE4ZmQ2Nzc3ZmU3ZTJlZDYxMjJkZmY5NmYxY2U1MmQyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.TIbZivmv94XeYPrihDcLKR1-HwiqIalBPLo4i3usgSc" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  В сфере Web3 атака типа "отказ в обслуживании" может заблокировать выполнение отдельных функций или
+        целого смарт-контракта. Это может привести к тому, что пользователи потеряют доступ к контракту либо временно,
+        либо навсегда.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример атаки на децентрализованную биржу (DEX)
+  </h3>
+ </div>
+ <p dir="auto">
+  Допустим, в децентрализованной бирже (DEX) существует функция
+  <code>
+   placeOrder
+  </code>
+  , которая
+        позволяет размещать только 10 ордеров одновременно для всей биржи. Злоумышленник может воспользоваться этим,
+        размещая по 10 ордеров с минимальными суммами (например, по 0.10$), что сделает невозможным выполнение ордеров
+        другими пользователями.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основные типы DoS-атак в смарт-контрактах
+  </h2>
+ </div>
+ <p dir="auto">
+  DoS-атаки могут проявляться разными способами, а их устранение зачастую не является тривиальной
+        задачей. Чаще всего возможности для DoS-атак создаются из-за:
+ </p>
+ <ul dir="auto">
+  <li>
+   Логических ошибок в структуре контракта;
+  </li>
+  <li>
+   Неправильных предположений о состоянии контракта в момент выполнения операций;
+  </li>
+  <li>
+   Особых граничных случаев, которые разработчики могли упустить.
+  </li>
+ </ul>
+ <p dir="auto">
+  Рассмотрим конкретные примеры.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример DoS из OWASP TOP10
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Пример (Уязвимый контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.24</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_DOS</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> king;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> balance;
+    
+        <span class="pl-k">function<span class="pl-en"> claimThrone</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> balance, <span class="pl-s">"<span class="pl-s">Need to pay more to become the king</span>"</span>);
+    
+            <span class="pl-c">//If the current king has a malicious fallback function that reverts, it will prevent the new king from claiming the throne, causing a Denial of Service.</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">sent</span>,) <span class="pl-k">=</span> king.<span class="pl-c1">call</span>{value: balance}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(sent, <span class="pl-s">"<span class="pl-s">Failed to send Ether</span>"</span>);
+    
+            balance <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+            king <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  <strong>
+   Воздействие
+  </strong>
+ </p>
+ <p dir="auto">
+  -Успешная атака типа «отказ в обслуживании» (DoS) может сделать смарт-контракт неработоспособным, не
+        позволяя пользователям взаимодействовать с ним должным образом. Это может нарушить работу критически важных
+        операций и сервисов, зависящих от данного контракта.
+ </p>
+ <p dir="auto">
+  -Атаки DoS могут привести к финансовым потерям, особенно в децентрализованных приложениях (dApps), где
+        смарт-контракты управляют средствами или активами.
+ </p>
+ <p dir="auto">
+  -DoS-атака может подорвать репутацию смарт-контракта и связанной с ним платформы. Пользователи могут
+        потерять доверие к безопасности и надёжности платформы, что приведёт к оттоку пользователей и потере
+        бизнес-возможностей.
+ </p>
+ <p dir="auto">
+  <strong>
+   Рекомендации по устранению:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте функцию call вместо функций send и transfer;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Ограничьте количество действий, которые могут быть выполнены в рамках одной транзакции;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Внедрите механизм pull-платежей для возврата или вывода активов, который разделяет процесс
+                начисления и вывода средств на две отдельные транзакции.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример (Исправленный контракт):
+  </strong>
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.24</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_DOS</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> king;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> balance;
+    
+        <span class="pl-c">// Use a safer approach to transfer funds, like transfer, which has a fixed gas stipend.</span>
+        <span class="pl-c">// This avoids using call and prevents issues with malicious fallback functions.</span>
+        <span class="pl-k">function<span class="pl-en"> claimThrone</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> balance, <span class="pl-s">"<span class="pl-s">Need to pay more to become the king</span>"</span>);
+    
+            <span class="pl-c1">address</span> previousKing <span class="pl-k">=</span> king;
+            <span class="pl-c1">uint256</span> previousBalance <span class="pl-k">=</span> balance;
+    
+            <span class="pl-c">// Update the state before transferring Ether to prevent reentrancy issues.</span>
+            king <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+            balance <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+    
+            <span class="pl-c">// Use transfer instead of call to ensure the transaction doesn't fail due to a malicious fallback.</span>
+            <span class="pl-c1">payable</span>(previousKing).<span class="pl-en">transfer</span>(previousBalance);
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   DoS через зловредный контракт-получатель
+  </h3>
+ </div>
+ <p dir="auto">
+  Представим аукционный контракт для продажи редкого предмета. Пользователи отправляют средства в
+        контракт, чтобы сделать ставку. Контракт автоматически отслеживает текущего лидера торгов и возвращает средства
+        предыдущему победителю. В конце аукциона победитель получает предмет.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">SimpleAuction</span> {
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> highestBidder;
+        <span class="pl-c1">uint</span> <span class="pl-k">public</span> highestBid;
+    
+        <span class="pl-k">function<span class="pl-en"> bid</span></span>() <span class="pl-k">public</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> highestBid, <span class="pl-s">"<span class="pl-s">Ставка слишком мала</span>"</span>);
+    
+            <span class="pl-k">if</span> (highestBidder <span class="pl-k">!=</span> <span class="pl-c1">address</span>(<span class="pl-c1">0</span>)) {
+                (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> highestBidder.<span class="pl-c1">call</span>{value: highestBid}(<span class="pl-s">""</span>);
+                <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Ошибка при возврате средств</span>"</span>);
+            }
+    
+            highestBidder <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+            highestBid <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  На первый взгляд этот код кажется исправным, однако злоумышленник может создать вредоносный контракт,
+        который заблокирует возврат средств:
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">DOSAuction</span> {
+        SimpleAuction <span class="pl-k">public</span> victim;
+    
+        <span class="pl-k">constructor</span>(<span class="pl-c1">address</span> <span class="pl-v">_auctionAddress</span>) {
+            victim <span class="pl-k">=</span> <span class="pl-en">SimpleAuction</span>(_auctionAddress);
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> attack</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            victim.<span class="pl-en">bid</span>{value: <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>}();
+        }
+    
+        <span class="pl-k">receive</span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">revert</span>(<span class="pl-s">"<span class="pl-s">Не принимаю возврат!</span>"</span>);
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  Когда новый пользователь попытается сделать ставку выше, транзакция провалится, так как возврат
+        средств на
+  <code>
+   DOSAuction
+  </code>
+  невозможен.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Как исправить
+  </h3>
+ </div>
+ <p dir="auto">
+  Один из способов защиты – изменение логики возврата средств, используя паттерн "pull payments":
+ </p>
+ <ul dir="auto">
+  <li>
+   Вместо автоматического возврата, сохранять сумму возврата и позволить пользователям самостоятельно её
+            запрашивать.
+  </li>
+  <li>
+   Внедрение отдельной функции вывода средств для прошлых участников.
+  </li>
+ </ul>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint</span>) pendingReturns;
+    
+    <span class="pl-k">function<span class="pl-en"> withdraw</span></span>() <span class="pl-k">public</span> {
+        <span class="pl-c1">uint</span> amount <span class="pl-k">=</span> pendingReturns[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+        <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Нет средств для вывода</span>"</span>);
+    
+        pendingReturns[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+        <span class="pl-c1">payable</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>).<span class="pl-en">transfer</span>(amount);
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   DoS через неограниченные циклы
+  </h2>
+ </div>
+ <p dir="auto">
+  Циклы без заданного предела могут стать причиной DoS-атак, приводя к исчерпанию газа и блокировке
+        функций контракта. Например:
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">for</span>(i; i<span class="pl-k">&lt;</span> <span class="pl-k">???</span>; i<span class="pl-k">++</span>) { <span class="pl-c">// Опасно!!! }</span>
+    <span class="pl-k">while</span>(<span class="pl-c1">true</span>) { <span class="pl-c">// Опасно!!! }</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример: распределение наград
+  </h3>
+ </div>
+ <p dir="auto">
+  Контракт должен раздать призы победителям, но использует два неэффективных цикла:
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> distributeRewards</span></span>(<span class="pl-c1">address</span>[] <span class="pl-k">memory</span> <span class="pl-v">winners</span>, <span class="pl-c1">uint256</span>[] <span class="pl-k">memory</span> <span class="pl-v">amounts</span>) <span class="pl-k">internal</span> {
+        <span class="pl-k">for</span> (<span class="pl-c1">uint256</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> winners.<span class="pl-mi">length</span>; i<span class="pl-k">++</span>) {
+            token.<span class="pl-en">transfer</span>(winners[i], amounts[i]);
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  Если
+  <code>
+   winners
+  </code>
+  содержит слишком много элементов, функция выйдет за пределы лимита газа, и
+        процесс распределения будет невозможен.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Решение
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Оптимизировать циклы, объединяя вычисления;
+  </li>
+  <li>
+   Использовать pull-подход, позволяя победителям самим запрашивать награды;
+  </li>
+  <li>
+   Ограничить максимальное количество пользователей в транзакции.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Атаки типа "отказ в обслуживании" представляют серьёзную угрозу для смарт-контрактов и
+        блокчейн-протоколов. Они могут сделать контракт недоступным, нарушить ключевые операции и привести к финансовым
+        потерям.
+ </p>
+ <p dir="auto">
+  Для защиты следует:
+ </p>
+ <ul dir="auto">
+  <li>
+   Проверять код на логические уязвимости;
+  </li>
+  <li>
+   Избегать автоматического возврата средств;
+  </li>
+  <li>
+   Оптимизировать циклы и распределение газа;
+  </li>
+  <li>
+   Регулярно проводить аудит кода и тестирование на устойчивость к DoS-атакам.
+  </li>
+ </ul>
+ <p dir="auto">
+  Разработчики должны учитывать все возможные сценарии атак и проектировать смарт-контракты с
+        устойчивостью к DoS, чтобы гарантировать их безопасность и стабильность в долгосрочной перспективе.
+ </p>
+ <p dir="auto">
+  В контексте смарт-контрактов такие атаки происходят, когда злоумышленник вызывает сбой в работе
+        контракта и таким образом делает невозможным его нормальное использование. Также отказ в обслуживании в
+        смарт-контрактах может происходить из-за ошибок в исходном коде или недостатков в логике работы контракта.
+        Злоумышленник может этим воспользоваться, нарушить штатное функционирование контракта и нанести репутационный
+        или финансовый ущерб.
+ </p>
+ <p dir="auto">
+  Если в смарт-контракте есть функции, требующие больших вычислительных мощностей (например, циклы для
+        подсчета количества ваших лайков в телеграм-канале, злоумышленник может вызвать их, чтобы израсходовать весь газ
+        и заблокировать контракт.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Ресурсы
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   Owasp Top 10 Smart-Contracts Vulnerabilitys:
+   <a href="https://owasp.org/www-project-smart-contract-top-10/" rel="nofollow">
+    https://owasp.org/www-project-smart-contract-top-10/
+   </a>
+   2.Common Vulnerabilities in Solidity: Denial of Service (DOS):
+   <a href="https://www.slowmist.com/articles/solidity-security/Common-Vulnerabilities-in-Solidity-Denial-of-Service-DOS.html" rel="nofollow">
+    https://www.slowmist.com/articles/solidity-security/Common-Vulnerabilities-in-Solidity-Denial-of-Service-DOS.html
+   </a>
+  </li>
+  <li>
+   Denial of Service (DoS) Attacks in Smart Contracts:
+   <a href="https://www.nethermind.io/blog/denial-of-service-dos-attacks-in-smart-contracts" rel="nofollow">
+    https://www.nethermind.io/blog/denial-of-service-dos-attacks-in-smart-contracts
+   </a>
+  </li>
+  <li>
+   Solidity Smart Contract Unbounded Loops DOS Attack Vulnerability Explained with REAL Example:
+   <a href="https://medium.com/@JohnnyTime/solidity-smart-contract-unbounded-loops-dos-attack-vulnerability-explained-with-real-example-f4b4aca27c08" rel="nofollow">
+    https://medium.com/@JohnnyTime/solidity-smart-contract-unbounded-loops-dos-attack-vulnerability-explained-with-real-example-f4b4aca27c08
+   </a>
+  </li>
+ </ol>
+</article>

@@ -1,0 +1,378 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Что такое CSRF-уязвимость, как ее находить и к чему она
+            может привести?
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   1. Введение в CSRF
+  </h2>
+ </div>
+ <p dir="auto">
+  CSRF (Cross-Site Request Forgery) — это уязвимость веб-приложений, при которой злоумышленник может
+        заставить жертву выполнить нежелательные действия на доверенном сайте, на котором она уже авторизована. Это
+        достигается путем отправки специально сформированных запросов от имени пользователя без его ведома.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2. Как работает CSRF?
+  </h2>
+ </div>
+ <p dir="auto">
+  CSRF-атака обычно проходит по следующему сценарию:
+ </p>
+ <ol dir="auto">
+  <li>
+   Пользователь авторизуется на сайте и его сессия сохраняется (например, с помощью cookies).
+  </li>
+  <li>
+   Злоумышленник подготавливает вредоносную ссылку или форму, отправляющую запрос к целевому сайту.
+  </li>
+  <li>
+   Жертва переходит по ссылке или открывает вредоносную страницу, которая автоматически отправляет запрос от ее
+            имени.
+  </li>
+  <li>
+   Сервер принимает запрос, так как он исходит от авторизованного пользователя, и выполняет нежелательное
+            действие (например, перевод денег, изменение пароля, удаление данных и т. д.).
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3. Как находить CSRF-уязвимости?
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.1. Поиск небезопасных методов
+  </h3>
+ </div>
+ <p dir="auto">
+  CSRF-уязвимости чаще всего возникают в HTTP-запросах методов
+  <code>
+   GET
+  </code>
+  и
+  <code>
+   POST
+  </code>
+  ,
+        если на сервере нет механизма защиты (например, CSRF-токенов).
+ </p>
+ <p dir="auto">
+  Пример потенциально уязвимого запроса:
+ </p>
+ <div class="highlight highlight-source-httpspec notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">GET</span><span class="pl-c1"> /change_email?new_email=attacker@example.com HTTP/1.1</span>
+    <span class="pl-s"><span class="pl-v">Host:</span> vulnerable.com</span>
+    <span class="pl-s"><span class="pl-v">Cookie:</span> sessionid=abcdef12345</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.2. Использование прокси-инструментов
+  </h3>
+ </div>
+ <p dir="auto">
+  Инструменты, такие как
+  <strong>
+   Burp Suite
+  </strong>
+  ,
+  <strong>
+   OWASP ZAP
+  </strong>
+  ,
+  <strong>
+   Postman
+  </strong>
+  и
+  <strong>
+   Mitmproxy
+  </strong>
+  , позволяют перехватывать и анализировать запросы. Можно
+        проверить, выполняется ли действие без необходимости указывать CSRF-токен.
+ </p>
+ <p dir="auto">
+  Пример перехваченного запроса в Burp Suite:
+ </p>
+ <div class="highlight highlight-source-httpspec notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">POST</span><span class="pl-c1"> /transfer HTTP/1.1</span>
+    <span class="pl-s"><span class="pl-v">Host:</span> bank.com</span>
+    <span class="pl-s"><span class="pl-v">Cookie:</span> sessionid=abcdef12345</span>
+    <span class="pl-s"><span class="pl-v">Content-Type:</span> application/x-www-form-urlencoded</span>
+    <span class="pl-s"><span class="pl-v">Content-Length:</span> 50</span>
+    
+    <span class="pl-ii">amount=1000&amp;recipient=attacker&amp;submit=Send</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.3. Проверка заголовков и токенов
+  </h3>
+ </div>
+ <p dir="auto">
+  При анализе запросов стоит обратить внимание на наличие
+  <code>
+   Origin
+  </code>
+  ,
+  <code>
+   Referer
+  </code>
+  , а
+        также проверять, требует ли сервер уникальный CSRF-токен в теле запроса.
+ </p>
+ <p dir="auto">
+  Пример безопасного запроса с CSRF-токеном:
+ </p>
+ <div class="highlight highlight-source-httpspec notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">POST</span><span class="pl-c1"> /transfer HTTP/1.1</span>
+    <span class="pl-s"><span class="pl-v">Host:</span> bank.com</span>
+    <span class="pl-s"><span class="pl-v">Cookie:</span> sessionid=abcdef12345</span>
+    <span class="pl-s"><span class="pl-v">Content-Type:</span> application/x-www-form-urlencoded</span>
+    <span class="pl-s"><span class="pl-v">X-CSRF-Token:</span> a1b2c3d4e5</span>
+    
+    <span class="pl-ii">amount=1000&amp;recipient=attacker&amp;submit=Send</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.4. Тестирование через HTML-формы
+  </h3>
+ </div>
+ <p dir="auto">
+  Можно создать тестовую форму, которая отправляет запрос к целевому сайту, и проверить, выполняется ли
+        действие без дополнительных проверок.
+ </p>
+ <div class="highlight highlight-text-html-basic notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-kos">&lt;</span><span class="pl-ent">form</span> <span class="pl-c1">action</span>="<span class="pl-s">https://bank.com/transfer</span>" <span class="pl-c1">method</span>="<span class="pl-s">POST</span>"<span class="pl-kos">&gt;</span>
+        <span class="pl-kos">&lt;</span><span class="pl-ent">input</span> <span class="pl-c1">type</span>="<span class="pl-s">hidden</span>" <span class="pl-c1">name</span>="<span class="pl-s">amount</span>" <span class="pl-c1">value</span>="<span class="pl-s">1000</span>"<span class="pl-kos">&gt;</span>
+        <span class="pl-kos">&lt;</span><span class="pl-ent">input</span> <span class="pl-c1">type</span>="<span class="pl-s">hidden</span>" <span class="pl-c1">name</span>="<span class="pl-s">recipient</span>" <span class="pl-c1">value</span>="<span class="pl-s">attacker</span>"<span class="pl-kos">&gt;</span>
+        <span class="pl-kos">&lt;</span><span class="pl-ent">input</span> <span class="pl-c1">type</span>="<span class="pl-s">submit</span>" <span class="pl-c1">value</span>="<span class="pl-s">Send</span>"<span class="pl-kos">&gt;</span>
+    <span class="pl-kos">&lt;/</span><span class="pl-ent">form</span><span class="pl-kos">&gt;</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   3.5. Анализ JavaScript-кода
+  </h3>
+ </div>
+ <p dir="auto">
+  Некоторые сайты используют JavaScript для защиты от CSRF. Можно проверить, не используются ли
+        предсказуемые токены или слабые механизмы проверки запросов.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4. Последствия CSRF-атаки
+  </h2>
+ </div>
+ <p dir="auto">
+  CSRF может привести к следующим последствиям:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Кража средств
+   </strong>
+   — атака на банковские системы, переводы денег без ведома пользователя.
+  </li>
+  <li>
+   <strong>
+    Изменение учетных данных
+   </strong>
+   — смена пароля, e-mail или других важных данных учетной записи.
+  </li>
+  <li>
+   <strong>
+    Изменение настроек аккаунта
+   </strong>
+   — включение вредоносных функций, например, переадресация почты.
+  </li>
+  <li>
+   <strong>
+    Удаление данных
+   </strong>
+   — злоумышленник может удалять файлы, учетные записи или важные записи в
+            базе данных.
+  </li>
+  <li>
+   <strong>
+    Подмена контактов и сообщений
+   </strong>
+   — изменение настроек мессенджеров и соцсетей.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5. Как защититься от CSRF?
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.1. CSRF-токены
+  </h3>
+ </div>
+ <p dir="auto">
+  Добавление CSRF-токенов в запросы делает атаку сложнее, так как злоумышленник не сможет предсказать
+        или получить этот токен.
+        Пример CSRF-токена в форме:
+ </p>
+ <div class="highlight highlight-text-html-basic notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-kos">&lt;</span><span class="pl-ent">input</span> <span class="pl-c1">type</span>="<span class="pl-s">hidden</span>" <span class="pl-c1">name</span>="<span class="pl-s">csrf_token</span>" <span class="pl-c1">value</span>="<span class="pl-s">a1b2c3d4e5</span>"<span class="pl-kos">&gt;</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.2. Проверка Origin и Referer
+  </h3>
+ </div>
+ <p dir="auto">
+  Сервер должен проверять заголовки
+  <code>
+   Origin
+  </code>
+  и
+  <code>
+   Referer
+  </code>
+  , чтобы убедиться, что
+        запрос действительно исходит от доверенного источника.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.3. Ограничение сессий по IP-адресу
+  </h3>
+ </div>
+ <p dir="auto">
+  Связывание сессий с IP-адресом пользователя помогает предотвратить атаки с других устройств.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.4. Использование SameSite атрибута для cookies
+  </h3>
+ </div>
+ <p dir="auto">
+  Настройка cookies с
+  <code>
+   SameSite=Strict
+  </code>
+  или
+  <code>
+   SameSite=Lax
+  </code>
+  предотвращает их
+        отправку в межсайтовых запросах.
+ </p>
+ <div class="highlight highlight-source-httpspec notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-s"><span class="pl-v">Set-Cookie:</span> sessionid=xyz; Secure; HttpOnly; SameSite=Strict</span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   5.5. Использование CAPTCHA
+  </h3>
+ </div>
+ <p dir="auto">
+  Добавление CAPTCHA перед критически важными действиями помогает предотвратить автоматизированные
+        CSRF-атаки.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   6. Обход CSRF-защиты
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   6.1. Обход CSRF-токенов
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Перехват токена через XSS
+   </strong>
+   — внедрение вредоносного JavaScript-кода для кражи токена.
+  </li>
+  <li>
+   <strong>
+    Использование предсказуемых токенов
+   </strong>
+   — генерация токенов по простым алгоритмам.
+  </li>
+  <li>
+   <strong>
+    Реиспользование старых токенов
+   </strong>
+   — повторное использование ранее скомпрометированных токенов.
+  </li>
+  <li>
+   <strong>
+    Атака через CORS
+   </strong>
+   — использование неправильно настроенного CORS для кражи CSRF-токена.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   6.2. Обход ограничений по IP
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Использование прокси и VPN
+   </strong>
+   — скрытие реального IP-адреса.
+  </li>
+  <li>
+   <strong>
+    Эксплуатация NAT и CDN
+   </strong>
+   — маскировка под пользователей за NAT/CDN.
+  </li>
+  <li>
+   <strong>
+    Фальсификация заголовков X-Forwarded-For
+   </strong>
+   — обман механизмов, доверяющих этому заголовку.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   7. Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  CSRF — опасная уязвимость, которая позволяет злоумышленникам выполнять действия от имени
+        пользователей. Регулярное тестирование безопасности помогает выявить потенциальные уязвимости и защитить
+        пользователей от атак.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   8. Где можно потренироваться?
+  </h2>
+ </div>
+ <p dir="auto">
+  Вы можете попрактиковаться в нахождении и эксплуатации CSRF-уязвимостей на платформе
+  <strong>
+   PortSwigger Web Security Academy
+  </strong>
+  , где представлены различные сценарии атак и защиты.(
+  <a href="https://portswigger.net/web-security/csrf" rel="nofollow">
+   https://portswigger.net/web-security/csrf
+  </a>
+  )
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   9. Полезные источники
+  </h2>
+ </div>
+ <p dir="auto">
+  Skillfactory "CSRF":
+  <a href="https://blog.skillfactory.ru/glossary/csrf/" rel="nofollow">
+   https://blog.skillfactory.ru/glossary/csrf/
+  </a>
+  Хабр "Безопасность в деталях: исследование cистемы защиты от CSRF":
+  <a href="https://habr.com/ru/companies/banki/articles/759058/" rel="nofollow">
+   https://habr.com/ru/companies/banki/articles/759058/
+  </a>
+ </p>
+</article>

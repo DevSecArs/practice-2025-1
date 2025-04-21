@@ -1,0 +1,291 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Введение в Web-категорию CTF
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Оглавление
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="#%D0%BE%D0%B1%D1%89%D0%B0%D1%8F-%D0%B8%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D1%8F">
+    Общая
+                информация
+   </a>
+  </li>
+  <li>
+   <a href="#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%B5%D0%B9%D1%88%D0%B8%D0%B9-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80">
+    Простейший
+                пример
+   </a>
+  </li>
+  <li>
+   <a href="#%D1%81-%D0%BA%D0%B0%D0%BA%D0%B8%D1%85-%D1%82%D0%B5%D0%BC-%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE-%D0%BD%D0%B0%D1%87%D0%B0%D1%82%D1%8C">
+    С
+                каких тем можно начать?
+   </a>
+  </li>
+  <li>
+   <a href="#%D0%BF%D0%BE%D0%BB%D0%B5%D0%B7%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B">
+    Полезные
+                материалы
+   </a>
+  </li>
+  <li>
+   <a href="#%D1%81%D0%B0%D0%B9%D1%82%D1%8B-%D0%B4%D0%BB%D1%8F-%D1%82%D1%80%D0%B5%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%BE%D0%BA">
+    Сайты
+                для тренировок
+   </a>
+  </li>
+  <li>
+   <a href="#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B">
+    Использованные
+                материалы
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Общая информация
+  </h2>
+ </div>
+ <p dir="auto">
+  Web - это одна из категорий тасков CTF, которая включает в себя:
+ </p>
+ <ul dir="auto">
+  <li>
+   Анализ получаемых и передаваемых веб-приложению данных
+  </li>
+  <li>
+   Поиск и эксплуатация уязвимостей различных веб-приложений
+  </li>
+  <li>
+   Защита от уязвимостей
+  </li>
+  <li>
+   Разнообразные методы взлома
+  </li>
+  <li>
+   Веб-подмену информации
+  </li>
+  <li>
+   Использование ошибок в настройке сервера
+  </li>
+ </ul>
+ <p dir="auto">
+  Примеры техник и атак:
+ </p>
+ <ul dir="auto">
+  <li>
+   SQL-инъекции
+  </li>
+  <li>
+   XSS-инъекции
+  </li>
+  <li>
+   PHP-инъекции
+  </li>
+  <li>
+   "Man-in-the-middle"
+  </li>
+  <li>
+   "Meet-in-the-middle_attack"
+  </li>
+  <li>
+   "Man-in-the-Browser"
+  </li>
+ </ul>
+ <p dir="auto">
+  Web - довольно обширная категория, охватывающая различные аспекты сетевой безопасности и
+        взаимодействия через веб-интерфейс.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Простейший пример
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   DCTF 2021: Simple web (100 Points)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Задание:
+  </strong>
+  Time to warm up!
+  <a href="http://dctf1-chall-simple-web.westeurope.azurecontainer.io:8080" rel="nofollow">
+   http://dctf1-chall-simple-web.westeurope.azurecontainer.io:8080
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   Решение
+  </strong>
+  (от cieran / {The NaN Squad},
+  <a href="https://ctftime.org/writeup/28517" rel="nofollow">
+   источник
+  </a>
+  ):
+ </p>
+ <ol dir="auto">
+  <li>
+   На странице показан чекбокс с надписью "Я хочу флаг!" и кнопка "Отправить".
+  </li>
+  <li>
+   Установка флажка и отправка возвращает "Not Authorized".
+  </li>
+  <li>
+   Анализ HTML кода:
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://camo.githubusercontent.com/a323dbe3c0d13be93438d9262ae1a4102a59888b85edcb76a6dc76aad77258d2/68747470733a2f2f74656c656772612e70682f66696c652f6362613037656466653531366433333838386239372e706e67" rel="noopener noreferrer nofollow" target="_blank">
+   <img alt="HTML код страницы" data-canonical-src="https://telegra.ph/file/cba07edfe516d33888b97.png" src="https://camo.githubusercontent.com/a323dbe3c0d13be93438d9262ae1a4102a59888b85edcb76a6dc76aad77258d2/68747470733a2f2f74656c656772612e70682f66696c652f6362613037656466653531366433333838386239372e706e67" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto" start="4">
+  <li>
+   В коде видно скрытое поле ввода с именем "auth" и значением 0.
+  </li>
+  <li>
+   Изменяем значения "auth" и "flag" на 1 и отправляем форму снова:
+  </li>
+ </ol>
+ <p dir="auto">
+  <a href="https://camo.githubusercontent.com/ae92644b737b9afbf667ace5633688465b4ccc7a222afab6534e6977d92e1e67/68747470733a2f2f74656c656772612e70682f66696c652f3438633133653836353836383766383730376538332e706e67" rel="noopener noreferrer nofollow" target="_blank">
+   <img alt="Измененные значения полей" data-canonical-src="https://telegra.ph/file/48c13e8658687f8707e83.png" src="https://camo.githubusercontent.com/ae92644b737b9afbf667ace5633688465b4ccc7a222afab6534e6977d92e1e67/68747470733a2f2f74656c656772612e70682f66696c652f3438633133653836353836383766383730376538332e706e67" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  После этого получаем флаг.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   С каких тем можно начать?
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://camo.githubusercontent.com/da7f925aa4979d67b6252e9f7b75a1a47df65c231316c3b361a397673017c02a/68747470733a2f2f74656c656772612e70682f66696c652f6238373062306135353332346537303864666637352e6a7067" rel="noopener noreferrer nofollow" target="_blank">
+   <img alt="Дерево знаний от SPbCTF" data-canonical-src="https://telegra.ph/file/b870b0a55324e708dff75.jpg" src="https://camo.githubusercontent.com/da7f925aa4979d67b6252e9f7b75a1a47df65c231316c3b361a397673017c02a/68747470733a2f2f74656c656772612e70682f66696c652f6238373062306135353332346537303864666637352e6a7067" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Полезные материалы
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="https://rdot.org/forum/showthread.php?t=124" rel="nofollow">
+    SQL injection полный FAQ
+   </a>
+  </li>
+  <li>
+   <a href="https://telegra.ph/CHto-takoe-Top-10-OWASP-i-kakie-uyazvimosti-veb-prilozhenij-naibolee-opasny-10-04" rel="nofollow">
+    Что такое Топ-10 OWASP
+   </a>
+  </li>
+  <li>
+   <a href="https://kmb.cybber.ru/web/burp/main.html" rel="nofollow">
+    Burp Suite
+   </a>
+  </li>
+  <li>
+   <a href="https://kmb.cybber.ru/web/cookie/main.html" rel="nofollow">
+    Cookie
+   </a>
+  </li>
+  <li>
+   <a href="https://internet-lab.ru/ctf_http_verb_tampering" rel="nofollow">
+    root-me.org "HTTP - Verb tampering"
+                решение
+   </a>
+  </li>
+  <li>
+   <a href="https://wiki.cyberschool.msu.ru/wiki/%D0%92%D0%B5%D0%B1-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/%D0%9A%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D1%81%D0%BA%D0%B0%D1%8F_%D1%81%D1%82%D0%BE%D1%80%D0%BE%D0%BD%D0%B0_JavaScript" rel="nofollow">
+    Клиентская сторона JavaScript
+   </a>
+  </li>
+  <li>
+   <a href="https://wiki.cyberschool.msu.ru/wiki/%D0%92%D0%B5%D0%B1-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/%D0%A3%D1%8F%D0%B7%D0%B2%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B8_XSS" rel="nofollow">
+    Уязвимости XSS
+   </a>
+  </li>
+  <li>
+   <a href="https://wiki.cyberschool.msu.ru/wiki/%D0%92%D0%B5%D0%B1-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B_XML_XXE" rel="nofollow">
+    Основы XML XXE
+   </a>
+  </li>
+  <li>
+   <a href="https://wiki.cyberschool.msu.ru/wiki/%D0%92%D0%B5%D0%B1-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/%D0%90%D1%82%D0%B0%D0%BA%D0%B8_SSRF" rel="nofollow">
+    Атаки SSRF
+   </a>
+  </li>
+  <li>
+   <a href="https://youtube.com/playlist?list=PLLguubeCGWoaGFEDzduGmBhEgZ62p-Jqv" rel="nofollow">
+    Сезон веба от
+                SpbCTF (YouTube плейлист)
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Сайты для тренировок
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="https://www.alexbers.com/sql/" rel="nofollow">
+    SQL Injection для новичков
+   </a>
+   — челлендж от
+            Александра Берсенёва
+  </li>
+  <li>
+   <a href="https://web-kids20.forkbomb.ru/tasks" rel="nofollow">
+    Курс web от SPbCTF
+   </a>
+  </li>
+  <li>
+   <a href="https://xss-game.appspot.com/" rel="nofollow">
+    XSS Game
+   </a>
+   — игра от Google по поиску
+            XSS-уязвимостей
+  </li>
+  <li>
+   <a href="http://hax.tor.hu/welcome/" rel="nofollow">
+    Hax.Tor.Hu
+   </a>
+  </li>
+  <li>
+   В любом CTF присутствует категория Web
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Использованные материалы
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <a href="https://kmb.cybber.ru/web/main.html" rel="nofollow">
+    KMB Cybber: Web
+   </a>
+  </li>
+  <li>
+   <a href="https://vk.com/album-168686655_255109657" rel="nofollow">
+    VK Album: CTF категории
+   </a>
+  </li>
+  <li>
+   <a href="https://ctftime.org/writeup/28517" rel="nofollow">
+    CTFtime Writeup
+   </a>
+  </li>
+ </ul>
+</article>

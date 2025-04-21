@@ -1,0 +1,741 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Оглавление
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="##%D0%9E%D0%B1%D1%89%D0%B0%D1%8F-%D0%B8%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D1%8F">
+    Общая
+                информация
+   </a>
+  </li>
+  <li>
+   <a href="##GeoINT-%D0%B2-CTF">
+    GeoINT в CTF
+   </a>
+  </li>
+  <li>
+   <a href="##%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B">
+    Примеры
+   </a>
+  </li>
+  <li>
+   <a href="##%D0%9C%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B5-%D0%BC%D0%BE%D0%B3%D1%83%D1%82-%D0%BF%D1%80%D0%B8%D0%B3%D0%BE%D0%B4%D0%B8%D1%82%D1%81%D1%8F-%D0%BF%D1%80%D0%B8-%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B8-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87">
+    Материалы
+                для решения задач
+   </a>
+  </li>
+  <li>
+   <a href="#%D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8-%D0%BD%D0%B0-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B">
+    Ссылки
+                на использованные материалы
+   </a>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Общая информация
+  </h2>
+ </div>
+ <p dir="auto">
+  Геопространственная разведка (GeoINT) представляет собой одну из ключевых дсциплин в области разведки,
+        которая сосредоточена на сборе, анализе и интерпретации информации, связанной с географическим расположением
+        объектов, событий и явлений. GeoINT активно используется в военных, гражданских и коммерческих целях,
+        предоставляя данные для принятия решений, планирования операций и оценки рисков.
+ </p>
+ <p dir="auto">
+  GeoINT (Geospatial Intelligence) объединяет данные о местоположении с аналитическими методами для
+        создания информативных карт, моделей и отчетов. Основой GeoINT являются географические информационные системы
+        (ГИС), спутниковые снимки, аэрофотосъемка и данные с беспилотных летательных аппаратов. Эти инструменты
+        позволяют визуализировать сложные данные в контексте местоположения.
+ </p>
+ <p dir="auto">
+  GeoINT включает несколько ключевых компонентов:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Географические данные
+   </strong>
+   : Координаты, карты, топография.
+  </li>
+  <li>
+   <strong>
+    Изображения
+   </strong>
+   : Спутниковые снимки, фотографии с дронов.
+  </li>
+  <li>
+   <strong>
+    Аналитика
+   </strong>
+   : Обработка данных для выявления закономерностей и трендов.
+  </li>
+ </ul>
+ <p dir="auto">
+  Геопространственная разведка имеет широкий спектр применения:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Военные операции
+   </strong>
+   : Используется для планирования миссий, наблюдения за передвижением войск и
+            анализа потенциальных угроз.
+  </li>
+  <li>
+   <strong>
+    Управление чрезвычайными ситуациями
+   </strong>
+   : Помогает оценивать ущерб от природных катастроф
+            (землетрясений, наводнений) и координировать спасательные операции.
+  </li>
+  <li>
+   <strong>
+    Коммерческая разведка
+   </strong>
+   : Компании используют GeoINT для анализа рынка, выбора местоположения
+            для бизнеса и мониторинга конкурентной среды.
+  </li>
+  <li>
+   <strong>
+    Экологический мониторинг
+   </strong>
+   : GeoINT помогает отслеживать изменения окружающей среды, такие как
+            вырубка лесов или таяние ледников.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   GeoINT в CTF
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Основные задачи GEOINT в CTF
+   </strong>
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Определение координат по изображениям:
+   <ul dir="auto">
+    <li>
+     Анализ фотографий для определения их геолокации с точностью до нескольких метров. Например,
+                    определить место съемки по видимым ориентирам, архитектуре, дорожным знакам или природным объектам.
+    </li>
+    <li>
+     Использование EXIF-данных изображений, если они доступны (например, через инструменты вроде
+                    geoimgr.com).
+    </li>
+   </ul>
+  </li>
+  <li>
+   Анализ картографических данных:
+   <ul dir="auto">
+    <li>
+     Сравнение объектов на фото с картами (Google Maps, OpenStreetMap, 2GIS) для нахождения соответствий.
+    </li>
+    <li>
+     Использование спутниковых снимков или панорамных видов (например, Google Street View) для уточнения
+                    местоположения.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Работа с маршрутами:
+   <ul dir="auto">
+    <li>
+     Определение маршрутов транспорта или людей по номерам автобусов, названиям остановок или другим
+                    признакам.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Интернет-картография:
+   <ul dir="auto">
+    <li>
+     Использование инструментов для анализа интернет-картографии (например, Shodan или специализированных
+                    поисковых запросов).
+    </li>
+   </ul>
+  </li>
+  <li>
+   Распознавание деталей на фото:
+   <ul dir="auto">
+    <li>
+     Идентификация мелких деталей: вывески, номера домов, специфические элементы инфраструктуры.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Примеры
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   Пример №1: Снимок со спутника со множеством растительности:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <a href="https://github.com/user-attachments/assets/69848b46-bcfe-4414-a443-b69601757e89" rel="noopener noreferrer" target="_blank">
+    <img alt="image" src="https://github.com/user-attachments/assets/69848b46-bcfe-4414-a443-b69601757e89" style="max-width: 100%;"/>
+   </a>
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   Казалось бы, ничего подозрительного, растительность как растительность. Но стоит использовать инфракрасный
+            спектр для этого участка земли и присмотреться, отчетливо увидим, что газон стадиона выделяется на общем
+            фоне здоровой растительности.
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   <a href="https://github.com/user-attachments/assets/49b71b13-e284-43b9-95af-de81436ca7f3" rel="noopener noreferrer" target="_blank">
+    <img alt="image" src="https://github.com/user-attachments/assets/49b71b13-e284-43b9-95af-de81436ca7f3" style="max-width: 100%;"/>
+   </a>
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   <em>
+    Красным цветом обозначена здоровая растительность
+   </em>
+  </li>
+  <li>
+   Владельцы стадиона попытались закамуфлировать какой-то объект среди здоровой растительности.
+            Таким образом можно определить объекты чувствительной инфраструктуры, которые владельцы наверное, не хотели
+            чтобы они были определены.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример №2: Работа с ночными снимками
+  </strong>
+  :
+ </p>
+ <ul dir="auto">
+  <li>
+   <a href="https://github.com/user-attachments/assets/3656f694-e7c7-4208-a383-a118e4899ed8" rel="noopener noreferrer" target="_blank">
+    <img alt="image" src="https://github.com/user-attachments/assets/3656f694-e7c7-4208-a383-a118e4899ed8" style="max-width: 100%;"/>
+   </a>
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   На них отчетливо видны освещенные периметры безопасности объектов. Обычно это индикатор чувствительности
+            такого объекта, т.е. что такое важное находится за этим забором, что владельцы считают важным следить за
+            безопасностью объекта 24/7?
+  </li>
+ </ul>
+ <p dir="auto">
+  Такие индикаторы могут помочь определить объекты чувствительности или военной инфраструктуры.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример №3: с тепловой картой изображения:
+  </strong>
+  При помощи анализа спутникового изображения можно определить участки более или менее высокой температуры
+        поверхности.
+ </p>
+ <ul dir="auto">
+  <li>
+   <a href="https://github.com/user-attachments/assets/eca92150-047b-4fbb-9e8f-33310e6319da" rel="noopener noreferrer" target="_blank">
+    <img alt="image" src="https://github.com/user-attachments/assets/eca92150-047b-4fbb-9e8f-33310e6319da" style="max-width: 100%;"/>
+   </a>
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   На изображении выше исследователи CSIS (Центр стратегических и международных исследований) оценили
+            операционный статус различных объектов в Северокорейском ядерном комплексе в Ёнгбьёне. Мы видим очевидные
+            красные зоны в радио-химической лаборатории и центре по обогащению, которые послужили своего рода красным
+            флагом, и возможностью сказать, что на этом объекте ведется какая-то работа.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример №4: Вызов ракетного удара по террористам пользователями 4ch:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <a href="https://private-user-images.githubusercontent.com/113972342/413610344-54d8516e-a577-4e4c-a170-ebc9b57a6760.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ5MTM5OTgsIm5iZiI6MTc0NDkxMzY5OCwicGF0aCI6Ii8xMTM5NzIzNDIvNDEzNjEwMzQ0LTU0ZDg1MTZlLWE1NzctNGU0Yy1hMTcwLWViYzliNTdhNjc2MC5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDE3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQxN1QxODE0NThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xNTE0ZjI5NjEwNzEzZTI1MDY5ZWQ0NDBiMGE2ZjE2MjZlNjA1ZDE2NjhkOGZkNGZiNzVlNmYyNWU5NjA2ZGE4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.U8rF1WQZghGPM_sG3z_rMX-BxZ2DfIUmHy5mUiW3NCc" rel="noopener noreferrer" target="_blank">
+    <img alt="1464671091726" src="https://private-user-images.githubusercontent.com/113972342/413610344-54d8516e-a577-4e4c-a170-ebc9b57a6760.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ5MTM5OTgsIm5iZiI6MTc0NDkxMzY5OCwicGF0aCI6Ii8xMTM5NzIzNDIvNDEzNjEwMzQ0LTU0ZDg1MTZlLWE1NzctNGU0Yy1hMTcwLWViYzliNTdhNjc2MC5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDE3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQxN1QxODE0NThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xNTE0ZjI5NjEwNzEzZTI1MDY5ZWQ0NDBiMGE2ZjE2MjZlNjA1ZDE2NjhkOGZkNGZiNzVlNmYyNWU5NjA2ZGE4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.U8rF1WQZghGPM_sG3z_rMX-BxZ2DfIUmHy5mUiW3NCc" style="max-width: 100%;"/>
+   </a>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример №5: Игра GeoGuessr:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   GeoGuessr — игра, в которой нужно угадать местоположение локации на гугл-карте. Игра выдаёт случайную
+            локацию, присутствующую в Google Street View, а игрок должен отметить на карте место, где он находится.
+            Количество очков зависит от того, насколько близко окажется отмеченная точка к реальному местоположению.
+  </li>
+  <li>
+   Чтобы узнать местность, можно шагать вперёд-назад (иногда ещё вбок), используя стелки на клавиатуре или
+            кликая мышкой в направлении, куда хочется переместиться. Ещё можно приближать/удалять вид, вращая колёсиком
+            мыши или соответствующим жестом тачпада. Мини-карту можно аналогично приближать/удалять, а также
+            перемещаться по ней.
+  </li>
+  <li>
+   Есть разные режимы игр: случайно выбранные места или выбранные пользователями места, объединённые какой-то
+            тематикой (например, достопримечательности, только города или, наоборот, лесные дороги).
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   <a href="https://private-user-images.githubusercontent.com/113972342/413610496-a8869c9a-f817-4b23-8c73-0f8aaf0e5763.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ5MTM5OTgsIm5iZiI6MTc0NDkxMzY5OCwicGF0aCI6Ii8xMTM5NzIzNDIvNDEzNjEwNDk2LWE4ODY5YzlhLWY4MTctNGIyMy04YzczLTBmOGFhZjBlNTc2My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDE3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQxN1QxODE0NThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MmNhZDUxMWJkZTQ3MmYwYmU4OTNhNzYyMWMxNWU1NzQ0NWMxYzI2NTAyZTJhOGM3ZjNiZjdkYzIxYTg0ZDg4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.U9VZjm3t1tW03zst-WwiI4tkRAGJPtFZxI77HtVnInU" rel="noopener noreferrer" target="_blank">
+    <img alt="image" src="https://private-user-images.githubusercontent.com/113972342/413610496-a8869c9a-f817-4b23-8c73-0f8aaf0e5763.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ5MTM5OTgsIm5iZiI6MTc0NDkxMzY5OCwicGF0aCI6Ii8xMTM5NzIzNDIvNDEzNjEwNDk2LWE4ODY5YzlhLWY4MTctNGIyMy04YzczLTBmOGFhZjBlNTc2My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDE3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQxN1QxODE0NThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MmNhZDUxMWJkZTQ3MmYwYmU4OTNhNzYyMWMxNWU1NzQ0NWMxYzI2NTAyZTJhOGM3ZjNiZjdkYzIxYTg0ZDg4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.U9VZjm3t1tW03zst-WwiI4tkRAGJPtFZxI77HtVnInU" style="max-width: 100%;"/>
+   </a>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Материалы, которые могут пригодится при решении задач
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <a href="https://geospy.web.app/" rel="nofollow">
+    GeoSpy
+   </a>
+   - Определение местоположения фотографии с
+            использованием искусственного интеллекта
+  </li>
+  <li>
+   <a href="https://start.me/p/W1kDAj/geoint" rel="nofollow">
+    GEOINT
+   </a>
+   - все инструменты, необходимые для
+            сбора географических данных
+  </li>
+  <li>
+   <a href="https://www.geonames.org/" rel="nofollow">
+    GeoNames
+   </a>
+   - Географическая база данных GeoNames
+            охватывает все страны и содержит более 11 миллионов названий мест, доступных для бесплатного скачивания.
+  </li>
+  <li>
+   <a href="https://www.geoseer.net/" rel="nofollow">
+    Geoseer.net
+   </a>
+   - Поиск среди более 3,5 миллионов
+            уникальных пространственных GIS WMS, WCS, WMTS наборов данных, размещенных на более чем 40 тысячах активных
+            сервисов по всему миру.
+  </li>
+  <li>
+   <a href="https://cse.google.com/cse?cx=015328649639895072395:sbv3zyxzmji#gsc.tab=0" rel="nofollow">
+    GeoINT
+                Search
+   </a>
+   - пользовательский поиск Google для запросов, связанных с географией.
+  </li>
+  <li>
+   <a href="https://shadowcrypt.net/tools/geoip" rel="nofollow">
+    GeoIP Tracker tool
+   </a>
+   - У вас есть
+            злоумышленник в сети? Хотите узнать, откуда он? Используйте этот инструмент. Geo IP tracker использует
+            технологии определения географического местоположения и публичные записи для отслеживания местоположения
+            IP-адреса. Это может быть не точно, но даст представление о местонахождении IP-адреса.
+  </li>
+  <li>
+   <a href="https://developers.google.com/earth-engine/datasets/" rel="nofollow">
+    Earth Engine Dataset
+   </a>
+   -
+            Публичный архив данных Earth Engine включает более сорока лет исторических изображений и научных наборов
+            данных, которые ежедневно обновляются и расширяются.
+  </li>
+  <li>
+   <a href="https://www.geoplatform.gov/" rel="nofollow">
+    GeoPlatform Portal
+   </a>
+   - Геопространственная платформа
+            — это межведомственное совместное усилие и общий сервис, воплощающий принципы и дух открытого правительства,
+            акцентируя внимание на взаимодействии правительства с гражданами, подотчетности и прозрачности.
+  </li>
+  <li>
+   <a href="https://data.apps.fao.org/map/catalog/srv/eng/catalog.search#/home" rel="nofollow">
+    FAO Map
+                Catalog
+   </a>
+  </li>
+  <li>
+   <a href="http://www.geocreepy.com/" rel="nofollow">
+    geocreepy
+   </a>
+   - Инструмент OSINT для геолокации.
+            Предоставляет сбор информации о геолокации через платформы социальных сетей.
+  </li>
+  <li>
+   <a href="https://acleddata.com/special-projects/us-crisis-monitor/" rel="nofollow">
+    US Crisis Monitor
+   </a>
+   -
+            Монитор кризисов в США предоставляет углубленное освещение демонстраций и тенденций политического насилия по
+            всей стране.
+  </li>
+  <li>
+   <a href="https://apps.esri.ca/torontolive/" rel="nofollow">
+    Toronto Live
+   </a>
+   - Toronto Live: общественные
+            школы, трафик, прокат велосипедов, транспортная система TTC.
+  </li>
+  <li>
+   <a href="https://www.arcgis.com/apps/dashboards/4d1289ab105145a1b1f80c1ad3cf19fb" rel="nofollow">
+    Residential
+                Fire Fatalities in Indiana
+   </a>
+   - Жертвы пожаров в жилых домах Индианы.
+  </li>
+  <li>
+   <a href="https://rapidapi.com/gisfromscratch/api/geoprotests/" rel="nofollow">
+    geoprotests API
+   </a>
+   - Запрос
+            протестов по всему миру и их визуализация с использованием пространственных агрегатов.
+  </li>
+  <li>
+   <a href="https://github.com/gisfromscratch/geoint-py">
+    geoint-py
+   </a>
+   - Набор рабочих процессов
+            геопространственной разведки, реализованных с использованием Python
+  </li>
+ </ul>
+ <ul dir="auto">
+  <li>
+   <a href="https://app.skylens.io/" rel="nofollow">
+    Apps.skylens.io
+   </a>
+   Посты с геотегами из пяти социальных
+            сетей сразу на одной карте (Twitter, YouTube, Instagram, Flickr, ВКонтакте)
+  </li>
+  <li>
+   <a href="http://photo-map.ru/" rel="nofollow">
+    photo-map.ru
+   </a>
+   Поиск фотографий с геотегами из VK.com
+  </li>
+  <li>
+   <a href="https://map.snapchat.com/" rel="nofollow">
+    Snapchat map
+   </a>
+  </li>
+  <li>
+   <a href="https://mattw.io/youtube-geofind/" rel="nofollow">
+    YouTube Geofind
+   </a>
+   Просмотр видео с геотегами на
+            карте из YouTube
+  </li>
+  <li>
+   <a href="https://www.flickr.com/map" rel="nofollow">
+    Flickr Photo Map
+   </a>
+  </li>
+  <li>
+   <a href="http://www.whatsthatpicture.com/flickr/commons-map.php" rel="nofollow">
+    Flickr Common Map
+   </a>
+   Отображает только фотографии Flickr, распространяемые по лицензии Creative Commons (250 последних для
+            каждого местоположения)
+  </li>
+  <li>
+   <a href="https://iknowwhereyourcatlives.com/cat/99638e1fe0" rel="nofollow">
+    I know where your cat lives
+   </a>
+   Фото с геотегами из Instagram с хэштегом #cat
+  </li>
+  <li>
+   <a href="https://www.trendsmap.com/map" rel="nofollow">
+    Trendsmap.com
+   </a>
+   Изучайте самые популярные тренды,
+            хэштеги и пользователей Twitter на мировой карте
+  </li>
+  <li>
+   <a href="https://pastvu.com/" rel="nofollow">
+    Pastvu.com
+   </a>
+   Просмотр исторических фотографий, сделанных в
+            определенном месте на карте.
+  </li>
+  <li>
+   <a href="https://birdhunt.co/" rel="nofollow">
+    BirdHunt
+   </a>
+   Очень простой инструмент, позволяющий выбрать
+            геолокацию/радиус и получить список недавних твитов, сделанных в этом месте.
+  </li>
+  <li>
+   <a href="https://wikishootme.toolforge.org/" rel="nofollow">
+    WikiShootMe
+   </a>
+   Мировая карта изображений
+            Creative Commons из Википедии с геотегами. Для отображения дополнительной информации войдите в свою учетную
+            запись Media Wiki.
+  </li>
+  <li>
+   <a href="https://hicsuntleones.nl/paintedplanet/" rel="nofollow">
+    The Painted Planet
+   </a>
+   Нажмите на точку на
+            карте, чтобы получить список пейзажей известных художников, изображающих эту область.
+  </li>
+  <li>
+   <a href="https://copernix.io/" rel="nofollow">
+    COPERNIX
+   </a>
+   Мировая карта геолокализованных статей Википедии.
+            Можно ввести название населенного пункта, чтобы увидеть статьи о местных улицах или достопримечательностях.
+  </li>
+  <li>
+   <a href="https://wikinearby.toolforge.org/?lang=en&amp;q=55.333056%2C+27.248889" rel="nofollow">
+    WikiNearby
+   </a>
+   Введите географические координаты, язык и получите список статей Википедии
+            о улицах, городах, станциях и других примечательных местах поблизости.
+  </li>
+  <li>
+   <a href="https://www.huntintel.io/" rel="nofollow">
+    Huntel.io
+   </a>
+   Получите список ссылок на локации
+            Facebook/Instagram, связанные с географическими координатами.
+  </li>
+  <li>
+   <a href="https://ngmdb.usgs.gov/mapview/?center=-97,39.6&amp;zoom=4" rel="nofollow">
+    Map View NGMDB
+   </a>
+   Карта
+            для изучения геологических карт и статей из Национальной базы геологических карт (NGMDB).
+  </li>
+  <li>
+   <a href="http://waqi.info" rel="nofollow">
+    WAQI
+   </a>
+   Загрязнение воздуха в мире: карта индекса качества
+            воздуха в реальном времени.
+  </li>
+  <li>
+   <a href="https://globalfishingwatch.org/map/" rel="nofollow">
+    GlobalFishingMap
+   </a>
+   Нажмите на точку на карте,
+            чтобы получить данные о текущей рыболовной активности в этом месте.
+  </li>
+  <li>
+   <a href="https://www.ncei.noaa.gov/maps/hazards/" rel="nofollow">
+    ncei.noaa.gov
+   </a>
+   Просмотр природных
+            опасностей (по всему миру).
+  </li>
+  <li>
+   <a href="https://www.lightningmaps.org/" rel="nofollow">
+    Lightingmaps
+   </a>
+   Молнии в реальном времени, а также
+            данные о грозах, которые закончились месяцами или годами ранее.
+  </li>
+  <li>
+   <a href="https://www.lightpollutionmap.info/" rel="nofollow">
+    Light Pollution World Map
+   </a>
+   Отображение
+            уровня светового загрязнения в разных странах. Можно просматривать данные с течением времени (с 2013 года).
+  </li>
+  <li>
+   <a href="https://www2.cifor.org/global-wetlands/" rel="nofollow">
+    Global Wetlands Map
+   </a>
+   Интерактивная карта
+            водоемов, мангров, болот, пойм и других влажных территорий (к сожалению, охватывает не все страны мира).
+  </li>
+  <li>
+   <a href="https://firms.modaps.eosdis.nasa.gov/map/" rel="nofollow">
+    Fire MAP NASA
+   </a>
+   Онлайн-карта очагов
+            пожаров по всему миру (данные спутников VIIRS и MODIS за последние 24 часа).
+  </li>
+  <li>
+   <a href="https://www.ocearch.org/tracker/" rel="nofollow">
+    Ocearch Shark Tracker
+   </a>
+   Нажмите на акулу на
+            карте мира, чтобы узнать ее имя, размер и маршрут передвижений.
+  </li>
+  <li>
+   <a href="https://ss2.climatecentral.org/#12/40.7298/-74.0070?show=satellite&amp;projections=0-K14_RCP85-SLR&amp;level=5&amp;unit=feet&amp;pois=hide" rel="nofollow">
+    Surging Seas: Risk Zone Map
+   </a>
+   Карта зон риска значительного повышения уровня моря в
+            случае таяния ледников.
+  </li>
+  <li>
+   <a href="https://usa.fishermap.org/depth-map/" rel="nofollow">
+    USA Fishermap
+   </a>
+   При нажатии на пресноводный
+            водоем открывается подробная карта с указанием глубины в разных точках.
+  </li>
+  <li>
+   <a href="https://www.mindat.org/countrylist.php" rel="nofollow">
+    Mindat.org
+   </a>
+   Карты минералов для разных
+            стран.
+  </li>
+  <li>
+   <a href="https://www.ventusky.com/" rel="nofollow">
+    Ventusky.com
+   </a>
+   Коллекция погодных карт (ветер, дождь,
+            температура, давление, влажность, волны и т.д.).
+  </li>
+  <li>
+   <a href="https://www.wunderground.com/history" rel="nofollow">
+    Wunderground
+   </a>
+   Исторические данные о погоде.
+  </li>
+  <li>
+   <a href="http://rain-alarm.com" rel="nofollow">
+    Rain Alarm
+   </a>
+   Показывает, где идет дождь на карте. Можно
+            включить уведомления о приближающемся дожде (в браузере и мобильном приложении).
+  </li>
+  <li>
+   <a href="https://cyclocane.com" rel="nofollow">
+    Cyclocane
+   </a>
+   Нажмите на ураган на карте, чтобы получить
+            подробную информацию о нем.
+  </li>
+  <li>
+   <a href="https://www.meteoblue.com/" rel="nofollow">
+    MeteoBlue
+   </a>
+   Статистика погоды.
+  </li>
+  <li>
+   <a href="https://zoom.earth/" rel="nofollow">
+    Zoom.earth
+   </a>
+   Мировая карта дождей, штормов, пожаров, жары,
+            ветров и других природных явлений.
+  </li>
+  <li>
+   <a href="https://maps.ngdc.noaa.gov/viewers/bathymetry/" rel="nofollow">
+    NGDC Bathymetry map
+   </a>
+   Детализированная интерактивная карта батиметрии по всему миру.
+  </li>
+  <li>
+   <a href="https://soar.earth/" rel="nofollow">
+    Soar.earth
+   </a>
+   Большая коллекция спутниковых, дроновых и
+            экологических карт.
+  </li>
+  <li>
+   <a href="https://academo.org/demos/geodesics/" rel="nofollow">
+    Geodesics on the Earth
+   </a>
+   Поиск кратчайшего
+            пути между двумя точками.
+  </li>
+  <li>
+   <a href="https://www.google.com/earth/" rel="nofollow">
+    Google Earth
+   </a>
+   3D-представление Земли на основе
+            спутниковых снимков.
+  </li>
+  <li>
+   <a href="http://everymountainintheworld.com/" rel="nofollow">
+    Everymountainintheworld
+   </a>
+   Карта мира с
+            отображением гор (абсолютная и относительная высота) и ссылками на Peakbagger, Listsofjohn и Caltopo.
+  </li>
+  <li>
+   <a href="https://rivermap.org/map/#sprache=en" rel="nofollow">
+    Rivermap
+   </a>
+   Онлайн-карта с самой детальной
+            информацией о реках Европы: направление и скорость течения, температура воды, глубина, угол наклона и т.д.
+            (в основном центральная Европа; данные обновляются).
+  </li>
+  <li>
+   <a href="https://www.gbif.org/occurrence/map?q=cobra" rel="nofollow">
+    Global Biodiversity Information
+                Facility
+   </a>
+   Введите название животного, птицы или растения, чтобы увидеть карту мест их обнаружения.
+  </li>
+  <li>
+   <a href="https://www.fmglobal.com/research-and-resources/nathaz-toolkit/flood-map" rel="nofollow">
+    Natural
+                Hazards Map (worldwide)
+   </a>
+   Введите местоположение и оцените риск затоплений, землетрясений и града в
+            этом месте на карте.
+  </li>
+  <li>
+   <a href="https://river-runner-global.samlearner.com/" rel="nofollow">
+    River Runner Global
+   </a>
+   Нажмите на
+            любую точку карты и проследите путь капли дождевой воды от текущего местоположения до мирового океана.
+  </li>
+  <li>
+   <a href="https://macrostrat.org/" rel="nofollow">
+    Macrostrat's geologic map system integrates over 290
+                bedrock geologic maps from around the world into a single, multiscale database (c).
+   </a>
+   Геологическая
+            карта Macrostrat объединяет более 290 карт коренных пород со всего мира в единую многомасштабную базу
+            данных.
+  </li>
+  <li>
+   <a href="http://global-flood-database.cloudtostreet.ai/" rel="nofollow">
+    Global Flood Database (and
+                interactive map)
+   </a>
+   Подробная статистика по наводнениям за последние 15 лет (по всему миру): уровень
+            осадков, площадь затопления, число пострадавших людей, даты, продолжительность в днях и т.д.
+  </li>
+  <li>
+   <a href="https://www.gaisma.com/en/" rel="nofollow">
+    Gaisma
+   </a>
+   Сайт для тех, кто проверяет местоположение
+            фотографии по положению солнца. Намного уступает
+   <a href="http://timeanddate.com" rel="nofollow">
+    http://timeanddate.com
+   </a>
+   по функциональности, но интерфейс гораздо проще.
+  </li>
+ </ul>
+</article>

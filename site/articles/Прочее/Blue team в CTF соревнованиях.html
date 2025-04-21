@@ -1,0 +1,351 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Blue team в CTF соревнованиях: стратегии, инструменты и
+            компетенции
+  </h1>
+ </div>
+ <p dir="auto">
+  В современном мире кибербезопасности CTF (Capture The Flag) соревнования стали неотъемлемой частью
+        профессионального развития специалистов. За последние годы особую популярность приобрели соревнования для команд
+        защиты — Blue team CTF. Эти соревнования моделируют реальные киберинциденты и требуют от участников глубоких
+        знаний и практических навыков в области защиты информационных систем, мониторинга и реагирования на инциденты.
+        Blue team CTF позволяют участникам развивать оборонительные навыки, крайне востребованные на современном рынке
+        труда.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Роль и функции Blue team в кибербезопасности
+  </h2>
+ </div>
+ <p dir="auto">
+  Blue team представляет собой специализированную команду защиты информационной безопасности. В
+        корпоративной среде эти специалисты чаще всего работают как аналитики и инженеры в составе центра обеспечения
+        безопасности (SOC) компании или как внешние эксперты на аутсорсе. Основная миссия Blue team заключается в
+        обеспечении защиты информационной инфраструктуры и предотвращении возможных кибератак.
+ </p>
+ <p dir="auto">
+  В повседневной работе (вне CTF) Blue team выполняет широкий спектр задач по обеспечению информационной
+        безопасности. Специалисты команды занимаются выстраиванием защитных систем и процессов, непрерывным мониторингом
+        подозрительной активности, выявлением и реагированием на инциденты безопасности. Они также отвечают за
+        документирование обнаруженных инцидентов и проведение тщательного анализа для предотвращения повторных атак в
+        будущем. В контексте CTF соревнований Blue team применяет эти профессиональные компетенции для решения
+        смоделированных задач, которые имитируют реальные киберугрозы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Принципиальные отличия Blue team от Red team
+  </h2>
+ </div>
+ <p dir="auto">
+  Для полного понимания специфики Blue team важно разграничить их деятельность с функциями Red team. Эти
+        два подразделения выполняют противоположные, но взаимодополняющие роли в обеспечении кибербезопасности
+        организации.
+ </p>
+ <p dir="auto">
+  Red team выступает в роли имитатора действий злоумышленников, проводя контролируемые атаки на системы
+        компании с целью выявления уязвимостей. Специалисты Red team используют те же техники, тактики и процедуры, что
+        и реальные хакеры, чтобы проверить эффективность существующих мер защиты. Их основная задача – найти слабые
+        места в системе безопасности до того, как их обнаружат настоящие киберпреступники.
+ </p>
+ <p dir="auto">
+  Blue team, как уже было сказано выше, фокусируется на защите информационных систем и сетей от любых
+        атак. Специалисты Blue team занимаются обнаружением и предотвращением атак, управлением инцидентами
+        безопасности, защитой данных и постоянным совершенствованием защитных механизмов. В рамках CTF соревнований Blue
+        team либо активно противодействует атакам Red team, либо работает над анализом и устранением последствий уже
+        произошедшей компрометации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Типовые задачи Blue team в CTF соревнованиях
+  </h2>
+ </div>
+ <p dir="auto">
+  В Blue team CTF участникам предлагается решить различные типы задач, которые имитируют реальные
+        сценарии работы специалистов по кибербезопасности. Понимание этих типов задач критически важно для успешного
+        участия в соревнованиях.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Реагирование на инцидент (Incident Response)
+  </h3>
+ </div>
+ <p dir="auto">
+  Этот тип задач связан с обнаружением, анализом и реагированием на кибератаки. Участникам необходимо
+        определить характер инцидента, выяснить, каким образом злоумышленники получили доступ к системе, а также какие
+        действия они предприняли и какие меры требуются для нейтрализации угрозы. Например, в соревновании Blue Team
+        Village CTF на DEF CON 31 участники расследовали атаки против вымышленной компании Magnus Tempus Financial,
+        анализируя различные источники данных, включая журналы событий и сетевой трафик.
+ </p>
+ <p dir="auto">
+  Для решения такого типа задач используются различные инструменты. Рассмотрим некоторые из них:
+ </p>
+ <ol dir="auto">
+  <li>
+   Splunk представляет собой мощную платформу для анализа и визуализации данных, которая позволяет обрабатывать
+            большие объемы логов и выявлять аномалии. Компания Splunk регулярно проводит соревнования Boss of the SOC,
+            специально разработанные для тренировки навыков SOC-аналитиков.
+  </li>
+  <li>
+   TheHive является открытой платформой для управления инцидентами безопасности, которая обеспечивает
+            коллаборативную работу команды над расследованием.
+  </li>
+  <li>
+   ELK Stack (Elasticsearch, Logstash, Kibana) представляет собой комплексное решение для сбора, анализа и
+            визуализации логов.
+  </li>
+  <li>
+   Wazuh работает как открытая платформа для обнаружения угроз, мониторинга безопасности и реагирования на
+            инциденты.
+  </li>
+  <li>
+   OSSEC функционирует как система обнаружения вторжений на хосте, помогая выявлять подозрительную активность.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Цифровая форензика (Digital Forensics)
+  </h3>
+ </div>
+ <p dir="auto">
+  Задачи по цифровой форензике требуют от участников тщательного анализа цифровых артефактов, таких как
+        логи, дампы памяти, образы дисков и другие данные, для восстановления хронологии событий и поиска доказательств
+        компрометации системы. В Blue Team Village CTF участники работали с данными, собранными с помощью инструмента
+        Velociraptor, который позволяет проводить масштабные форензические исследования.
+ </p>
+ <p dir="auto">
+  Для цифровой форензики специалисты Blue team используют разнообразный инструментарий:
+ </p>
+ <ol dir="auto">
+  <li>
+   Volatility представляет собой фреймворк для анализа дампов оперативной памяти, позволяющий извлекать из них
+            информацию о процессах, сетевых соединениях, открытых файлах и многом другом.
+  </li>
+  <li>
+   Autopsy работает как графический интерфейс для The Sleuth Kit, облегчая анализ дисков и восстановление
+            данных.
+  </li>
+  <li>
+   FTK Imager используется для создания судебных образов дисков и предварительного анализа.
+  </li>
+  <li>
+   Redline помогает в поиске признаков компрометации в памяти и на диске системы.
+  </li>
+  <li>
+   KAPE (Kroll Artifact Parser and Extractor) обеспечивает быстрый сбор и обработку артефактов для
+            форензического анализа.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ вредоносного ПО (Malware Analysis)
+  </h3>
+ </div>
+ <p dir="auto">
+  Этот класс задач связан с исследованием подозрительных файлов и программ для определения их
+        функциональности, механизмов распространения и конечных целей. Участники CTF должны уметь анализировать
+        вредоносное ПО как в статическом, так и в динамическом режиме, выявлять индикаторы компрометации и разрабатывать
+        стратегии защиты.
+ </p>
+ <p dir="auto">
+  Примеры используемых инструментов:
+ </p>
+ <ol dir="auto">
+  <li>
+   Ghidra функционирует как мощный фреймворк для реверс-инжиниринга, разработанный Агентством национальной
+            безопасности США.
+  </li>
+  <li>
+   IDA Pro/Free работает как интерактивный дизассемблер, позволяющий анализировать бинарные файлы на низком
+            уровне.
+  </li>
+  <li>
+   Cuckoo Sandbox представляет собой автоматизированную систему для динамического анализа подозрительных файлов
+            в изолированной среде.
+  </li>
+  <li>
+   YARA используется для создания правил, которые помогают идентифицировать и классифицировать образцы
+            вредоносного ПО.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ сетевого трафика (Network Traffic Analysis)
+  </h3>
+ </div>
+ <p dir="auto">
+  Задачи по анализу сетевого трафика предполагают изучение перехваченных сетевых пакетов (PCAP-файлов)
+        для выявления аномалий, признаков вторжения или утечки данных. В Blue Team Village CTF участники работали с
+        огромными объемами сетевого трафика (более 64 ГБ PCAP-файлов), используя Arkime для поиска подозрительной
+        активности.
+ </p>
+ <p dir="auto">
+  Для анализа сетевого трафика применяются такие инструменты, как:
+ </p>
+ <ol dir="auto">
+  <li>
+   Wireshark - является самым известным анализатором сетевых протоколов с графическим интерфейсом, позволяющим
+            детально изучать содержимое пакетов.
+  </li>
+  <li>
+   Zeek (ранее Bro) - представляет собой систему мониторинга сетевой безопасности и глубокого анализа сетевого
+            трафика.
+  </li>
+  <li>
+   Suricata - функционирует как движок обнаружения угроз с открытым исходным кодом, который может работать как
+            система обнаружения и предотвращения вторжений.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Охота за угрозами (Threat Hunting)
+  </h3>
+ </div>
+ <p dir="auto">
+  Threat Hunting представляет собой проактивный поиск признаков компрометации в системах и сетях, часто
+        требующий сопоставления данных из различных источников. Вместо реагирования на уже произошедшие инциденты,
+        специалисты формулируют гипотезы о возможном присутствии злоумышленников и целенаправленно ищут доказательства
+        их активности.
+ </p>
+ <p dir="auto">
+  Примеры используемых инструментов:
+ </p>
+ <ol dir="auto">
+  <li>
+   Sysmon работает как компонент системного мониторинга Windows, который отслеживает и регистрирует широкий
+            спектр системной активности.
+  </li>
+  <li>
+   Osquery представляет собой инструмент с открытым исходным кодом, который позволяет выполнять SQL-подобные
+            запросы к операционной системе для сбора информации о процессах, соединениях, файлах и других объектах.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Популярные Blue team CTF соревнования и платформы для
+            тренировок
+  </h2>
+ </div>
+ <p dir="auto">
+  В последние годы появилось множество соревнований и онлайн-платформ, специально разработанных для
+        развития навыков Blue team. Эти ресурсы предоставляют возможность практиковаться в решении задач
+        кибербезопасности в безопасной и контролируемой среде.
+ </p>
+ <p dir="auto">
+  К примеру, на CyberDefenders имеется множество интересных практических задач для тренировки навыков
+        Blue team.
+  <br/>
+  LetsDefend также работает как онлайн-платформа для развития навыков SOC-аналитика, предлагая интерактивные
+        сценарии и симуляции реальных инцидентов безопасности.
+  <br/>
+  А на BlueTeamOnline и HackTheBox Academy имеется возможность пройти специализированные курсы и лабораторные
+        работы для команд защиты, помогая структурированно изучать различные аспекты работы Blue team.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Пример задания с CyberDefenders
+  </h2>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/74550408/423473094-b3875782-13a0-467a-bc28-c02c1175e308.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwOTQtYjM4NzU3ODItMTNhMC00NjdhLWJjMjgtYzAyYzExNzVlMzA4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRhY2FmNmJlYzM0OGI0NmE3MzljMmIwOGEyZDZmNTZlNWY0Y2Y3MTYwODc3ZWY2NmU5MmRhNjY4ZGZiMmEyODEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.pmzl9G8D-nmEabrPmpNjP1IOpPWgzbZ9Ba23B9UVsGI" rel="noopener noreferrer" target="_blank">
+   <img alt="16_0" src="https://private-user-images.githubusercontent.com/74550408/423473094-b3875782-13a0-467a-bc28-c02c1175e308.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwOTQtYjM4NzU3ODItMTNhMC00NjdhLWJjMjgtYzAyYzExNzVlMzA4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRhY2FmNmJlYzM0OGI0NmE3MzljMmIwOGEyZDZmNTZlNWY0Y2Y3MTYwODc3ZWY2NmU5MmRhNjY4ZGZiMmEyODEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.pmzl9G8D-nmEabrPmpNjP1IOpPWgzbZ9Ba23B9UVsGI" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  В скачанном архиве находится хэш вредоносного приложения, информацию о котором мы должны собрать с
+        помощью Threat Intel платформ (Virustotal, Hybrid Analysis и пр.)
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472851-daa55ee2-f970-41ec-94e9-a168fd517c9a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI4NTEtZGFhNTVlZTItZjk3MC00MWVjLTk0ZTktYTE2OGZkNTE3YzlhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ1ZWJmN2JmMjU4NTllYzc4ZjFkNzgyMTliYzEzNGUwMjhiMmQ3YmIxMjk4MjI1MzM2NWUwMjcwZTBmYmYxNTMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TBCgVlkUUtOavFrd61-Pa_tTb_VbfnnbCFo9Ix4rW6Y" rel="noopener noreferrer" target="_blank">
+   <img alt="16_1" src="https://private-user-images.githubusercontent.com/74550408/423472851-daa55ee2-f970-41ec-94e9-a168fd517c9a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI4NTEtZGFhNTVlZTItZjk3MC00MWVjLTk0ZTktYTE2OGZkNTE3YzlhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ1ZWJmN2JmMjU4NTllYzc4ZjFkNzgyMTliYzEzNGUwMjhiMmQ3YmIxMjk4MjI1MzM2NWUwMjcwZTBmYmYxNTMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TBCgVlkUUtOavFrd61-Pa_tTb_VbfnnbCFo9Ix4rW6Y" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Все вопросы из задания:
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472868-1f140f70-b0d8-4b95-b304-a55e277a5911.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI4NjgtMWYxNDBmNzAtYjBkOC00Yjk1LWIzMDQtYTU1ZTI3N2E1OTExLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk2NzM5OWM2YTA4MzM5YTc4ZWZkMTE3NmNmNDE5NjJhMjI4N2NiMWNmZWQ5ZWVhMDM5YjkzNmFmNjFlMjJhNGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.mIPWIhZDxd1gqkhQgyze1r1-KKPcyzAnovxKqResa9Y" rel="noopener noreferrer" target="_blank">
+   <img alt="16_2" src="https://private-user-images.githubusercontent.com/74550408/423472868-1f140f70-b0d8-4b95-b304-a55e277a5911.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI4NjgtMWYxNDBmNzAtYjBkOC00Yjk1LWIzMDQtYTU1ZTI3N2E1OTExLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk2NzM5OWM2YTA4MzM5YTc4ZWZkMTE3NmNmNDE5NjJhMjI4N2NiMWNmZWQ5ZWVhMDM5YjkzNmFmNjFlMjJhNGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.mIPWIhZDxd1gqkhQgyze1r1-KKPcyzAnovxKqResa9Y" style="max-width: 100%;"/>
+  </a>
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472972-cc89920c-a7c0-49f1-a268-ba9f152ef9b1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5NzItY2M4OTkyMGMtYTdjMC00OWYxLWEyNjgtYmE5ZjE1MmVmOWIxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWY3ZjZlMDlkNTk1MjZmZDVhMTgzM2M1MGZhZmU4NzE5YjhkYjhmMjA3NDZkZjU0ZDJhYzM2NzM5Y2QxMGU3OWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.LqBM_SzkNd0sQTeLhQ2aG-qB7bvV_RrhyTMYCWaWktI" rel="noopener noreferrer" target="_blank">
+   <img alt="16_6" src="https://private-user-images.githubusercontent.com/74550408/423472972-cc89920c-a7c0-49f1-a268-ba9f152ef9b1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5NzItY2M4OTkyMGMtYTdjMC00OWYxLWEyNjgtYmE5ZjE1MmVmOWIxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWY3ZjZlMDlkNTk1MjZmZDVhMTgzM2M1MGZhZmU4NzE5YjhkYjhmMjA3NDZkZjU0ZDJhYzM2NzM5Y2QxMGU3OWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.LqBM_SzkNd0sQTeLhQ2aG-qB7bvV_RrhyTMYCWaWktI" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Преимущественно в этой работе мною будет использован Virustotal.
+        Q1: во вкладке Details, раздел Names видим разные имена этого приложения. Последнее из них является ответом на
+        вопрос
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472883-993cd9f7-a2a5-4327-9930-7fd45fef733d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI4ODMtOTkzY2Q5ZjctYTJhNS00MzI3LTk5MzAtN2ZkNDVmZWY3MzNkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM3MGU1YjZiYzJiZWQ5ODgxYTU2NjhiY2NhMDY4MzA3N2ZlYjc3MzAxYWJlMDYxMmU5YmNiMjdmZGZmYzFjMWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9GP8vmetXKvWn8pURi91o28B4iQBuMOHoqUNBhKsdhE" rel="noopener noreferrer" target="_blank">
+   <img alt="16_3" src="https://private-user-images.githubusercontent.com/74550408/423472883-993cd9f7-a2a5-4327-9930-7fd45fef733d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI4ODMtOTkzY2Q5ZjctYTJhNS00MzI3LTk5MzAtN2ZkNDVmZWY3MzNkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM3MGU1YjZiYzJiZWQ5ODgxYTU2NjhiY2NhMDY4MzA3N2ZlYjc3MzAxYWJlMDYxMmU5YmNiMjdmZGZmYzFjMWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9GP8vmetXKvWn8pURi91o28B4iQBuMOHoqUNBhKsdhE" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Q2 и Q3: вкладка Relations, раздел ContactedURLs видим запросы к файлу 3003.gif, который на самом деле
+        является DLL. Он и является ответом на вопрос Q2. Всего доменов, откуда приложение пыталось скачать файл, 5 -
+        ответ на Q3.
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472909-e595c92e-297d-4cea-85bd-f1767688790a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5MDktZTU5NWM5MmUtMjk3ZC00Y2VhLTg1YmQtZjE3Njc2ODg3OTBhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk5Yjg5N2Y1OGE3MTk4MzA1MzUyYmI4NmI5OThjYWEwMzQwYzlkODc4ZGIyZGU3NDY1ZDZmMzQ4OTlmMThmNzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.7_od-Fh4GHtZKWsO077s7j_wfXl66WU6AwHSA_40FzM" rel="noopener noreferrer" target="_blank">
+   <img alt="16_4" src="https://private-user-images.githubusercontent.com/74550408/423472909-e595c92e-297d-4cea-85bd-f1767688790a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5MDktZTU5NWM5MmUtMjk3ZC00Y2VhLTg1YmQtZjE3Njc2ODg3OTBhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk5Yjg5N2Y1OGE3MTk4MzA1MzUyYmI4NmI5OThjYWEwMzQwYzlkODc4ZGIyZGU3NDY1ZDZmMzQ4OTlmMThmNzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.7_od-Fh4GHtZKWsO077s7j_wfXl66WU6AwHSA_40FzM" style="max-width: 100%;"/>
+  </a>
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472941-49333480-f0a9-4243-91cc-912e6bb86798.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5NDEtNDkzMzM0ODAtZjBhOS00MjQzLTkxY2MtOTEyZTZiYjg2Nzk4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM4Yjg4NTgxM2JhMmFlYzcyYzg4M2MyMWYxN2NlNjExYzFhYzczYTQ2YWZiODMyOWUzY2JmZTJiYWNmMThmZDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.eq-AZ2EHSTy-1fkKu_ecLBKAfRB9QZ3ZqI7tyVtiHgE" rel="noopener noreferrer" target="_blank">
+   <img alt="16_5" src="https://private-user-images.githubusercontent.com/74550408/423472941-49333480-f0a9-4243-91cc-912e6bb86798.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5NDEtNDkzMzM0ODAtZjBhOS00MjQzLTkxY2MtOTEyZTZiYjg2Nzk4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM4Yjg4NTgxM2JhMmFlYzcyYzg4M2MyMWYxN2NlNjExYzFhYzczYTQ2YWZiODMyOWUzY2JmZTJiYWNmMThmZDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.eq-AZ2EHSTy-1fkKu_ecLBKAfRB9QZ3ZqI7tyVtiHgE" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Q4: та же вкладка, раздел Contacted Domains видим 3 наиболее задействованных домена с известными
+        регистраторами. Верным является NameCheap.
+  <a href="https://private-user-images.githubusercontent.com/74550408/423472993-510e9192-9f7f-473a-b1dd-13008497076b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5OTMtNTEwZTkxOTItOWY3Zi00NzNhLWIxZGQtMTMwMDg0OTcwNzZiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTI5NTRiYTZhYThhMTU0Y2JhYjNhZDVjM2NjMjhmZTZiNjYxZjQwNWFmZWRjMzc4ZGNhNDNhYmVmN2M4Y2QxMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.xWsrubtdTshw1xNimjYvYr0h0t4AIUyrprepxK9EjZM" rel="noopener noreferrer" target="_blank">
+   <img alt="16_7" src="https://private-user-images.githubusercontent.com/74550408/423472993-510e9192-9f7f-473a-b1dd-13008497076b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzI5OTMtNTEwZTkxOTItOWY3Zi00NzNhLWIxZGQtMTMwMDg0OTcwNzZiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTI5NTRiYTZhYThhMTU0Y2JhYjNhZDVjM2NjMjhmZTZiNjYxZjQwNWFmZWRjMzc4ZGNhNDNhYmVmN2M4Y2QxMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.xWsrubtdTshw1xNimjYvYr0h0t4AIUyrprepxK9EjZM" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Q5: на сайте Mitre Att&amp;ck переходим CTI -&gt; Software и ищем IcedID, видим какие группы
+        используют это ПО. Просмотрим первую.
+  <a href="https://private-user-images.githubusercontent.com/74550408/423473015-9d1609cb-e384-4640-bb80-c660f3f1211e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwMTUtOWQxNjA5Y2ItZTM4NC00NjQwLWJiODAtYzY2MGYzZjEyMTFlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWUxMzY0ZWIyOGU0ZjcyMDY4ZmUxZjIyOTgzY2U2NWRmMDVkM2I4ZGE5ZTA1MTNmNGNlMjJiM2QzNTQ4MTYwN2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.wQIxYyNal_6nM1J8bP2qzSmNip4aGNW_IyXDPrOjEjw" rel="noopener noreferrer" target="_blank">
+   <img alt="16_8" src="https://private-user-images.githubusercontent.com/74550408/423473015-9d1609cb-e384-4640-bb80-c660f3f1211e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwMTUtOWQxNjA5Y2ItZTM4NC00NjQwLWJiODAtYzY2MGYzZjEyMTFlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWUxMzY0ZWIyOGU0ZjcyMDY4ZmUxZjIyOTgzY2U2NWRmMDVkM2I4ZGE5ZTA1MTNmNGNlMjJiM2QzNTQ4MTYwN2QmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.wQIxYyNal_6nM1J8bP2qzSmNip4aGNW_IyXDPrOjEjw" style="max-width: 100%;"/>
+  </a>
+  Видим названия ассоциированных групп, верное - GOLD CABIN
+  <a href="https://private-user-images.githubusercontent.com/74550408/423473048-92f5aecd-21e1-4035-bd88-fa7c22d4c0e9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwNDgtOTJmNWFlY2QtMjFlMS00MDM1LWJkODgtZmE3YzIyZDRjMGU5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRjODNkY2M1NzQ5YzFkYmZkMDhiYmFkMzBlODI2NDY0MWIxYTQ4NDcwYmZmZDM2ODVkYjE3YjZlZjg4MWM2YzMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ZkqiJ85V1kyYTe5gBCjm3Uem0PTrPoRR9fXf0Kqftk4" rel="noopener noreferrer" target="_blank">
+   <img alt="16_9" src="https://private-user-images.githubusercontent.com/74550408/423473048-92f5aecd-21e1-4035-bd88-fa7c22d4c0e9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwNDgtOTJmNWFlY2QtMjFlMS00MDM1LWJkODgtZmE3YzIyZDRjMGU5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRjODNkY2M1NzQ5YzFkYmZkMDhiYmFkMzBlODI2NDY0MWIxYTQ4NDcwYmZmZDM2ODVkYjE3YjZlZjg4MWM2YzMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ZkqiJ85V1kyYTe5gBCjm3Uem0PTrPoRR9fXf0Kqftk4" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Q6: заходим на Recorded Future Triage и ищем отчёт по нашему хэшу (ссылка на него -
+  <a href="https://tria.ge/210330-gbdr6k9jxx" rel="nofollow">
+   https://tria.ge/210330-gbdr6k9jxx
+  </a>
+  ) (для
+        перехода необходим VPN). Там видим вызовы функции "URLDownloadToFileA", её название и является ответом на вопрос
+  <a href="https://private-user-images.githubusercontent.com/74550408/423473063-da15bcff-2852-447f-aba7-8255fef45b50.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwNjMtZGExNWJjZmYtMjg1Mi00NDdmLWFiYTctODI1NWZlZjQ1YjUwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTZiYWNiNTI3ZWU3NTMxNmVhYmM0NzMwOTYyY2M2Y2VkNTJlMzRmNWZlMWM5NWY1YTMzNGNjYjY5YTgwOTdmN2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.bW1HK-DRK3GaqxBN1CQt1EvUwmKSeKyW9T7jggpgr3Y" rel="noopener noreferrer" target="_blank">
+   <img alt="16_10" src="https://private-user-images.githubusercontent.com/74550408/423473063-da15bcff-2852-447f-aba7-8255fef45b50.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4ODksIm5iZiI6MTc0NTE0OTU4OSwicGF0aCI6Ii83NDU1MDQwOC80MjM0NzMwNjMtZGExNWJjZmYtMjg1Mi00NDdmLWFiYTctODI1NWZlZjQ1YjUwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYyOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTZiYWNiNTI3ZWU3NTMxNmVhYmM0NzMwOTYyY2M2Y2VkNTJlMzRmNWZlMWM5NWY1YTMzNGNjYjY5YTgwOTdmN2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.bW1HK-DRK3GaqxBN1CQt1EvUwmKSeKyW9T7jggpgr3Y" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Подготовка к участию в Blue team CTF соревнованиях
+  </h2>
+ </div>
+ <p dir="auto">
+  Для успешного участия в Blue team CTF необходима систематическая и многогранная подготовка. Прежде
+        всего, важно освоить базовые инструменты для каждого типа задач, включая SIEM-системы, инструменты форензики,
+        анализа сетевого трафика и вредоносного ПО.
+ </p>
+ <p dir="auto">
+  Регулярная практика на доступных платформах, таких как CyberDefenders, LetsDefend и прочих, помогает
+        совершенствовать навыки и знакомиться с различными типами задач. Изучение реальных инцидентов через анализ
+        отчетов об известных атаках и методах их обнаружения дает представление о тактиках, техниках и процедурах
+        реальных злоумышленников. Также важно участие в командных соревнованиях, что позволяет обменяться опытом и
+        знаниями с другими специалистами.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Blue team CTF соревнования представляют собой уникальную возможность для специалистов по
+        кибербезопасности развивать навыки защиты, мониторинга и реагирования на инциденты в контролируемой среде.
+ </p>
+ <p dir="auto">
+  Владение разнообразными инструментами и методиками Blue team не только помогает успешно выступать в
+        соревнованиях, но и формирует ценные навыки для реальной работы в сфере защиты информации. В условиях постоянно
+        растущего числа и сложности кибератак, специалисты Blue team играют критически важную роль в обеспечении
+        безопасности организаций. Участие в CTF соревнованиях позволяет им постоянно совершенствовать свои навыки и быть
+        готовыми к противостоянию реальным угрозам информационной безопасности.
+ </p>
+</article>

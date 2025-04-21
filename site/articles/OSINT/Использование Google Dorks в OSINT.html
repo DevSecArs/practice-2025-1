@@ -1,0 +1,364 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+ </div>
+ <p dir="auto">
+  <strong>
+   Введение
+  </strong>
+ </p>
+ <p dir="auto">
+  Google Dorks — это мощный инструмент, который позволяет находить скрытую или труднодоступную информацию
+    в интернете с помощью специальных поисковых операторов.
+ </p>
+ <p dir="auto">
+  В контексте OSINT (разведки на основе открытых данных) и CTF задач, Google Dorks часто становятся
+    ключевым методом для поиска флагов, конфиденциальных данных или уязвимостей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Что такое Google Dorks?
+  </h2>
+ </div>
+ <p dir="auto">
+  Google Dorks — это техника использования специальных поисковых операторов Google, которые позволяют
+    уточнять запросы и находить информацию, недоступную через обычный поиск.
+ </p>
+ <p dir="auto">
+  С их помощью можно:
+ </p>
+ <p dir="auto">
+  • Искать файлы определенного типа (PDF, DOC, TXT и т.д.).
+ </p>
+ <p dir="auto">
+  • Находить страницы с определенными словами в URL или заголовке.
+ </p>
+ <p dir="auto">
+  • Выявлять открытые директории, конфиденциальные данные или уязвимости.
+ </p>
+ <p dir="auto">
+  Google Dorks активно используются в OSINT для анализа веб-ресурсов, поиска утечек данных и других задач,
+    связанных с разведкой.
+ </p>
+ <p dir="auto">
+  Эта техника особенно популярна среди специалистов по кибербезопасности, исследователей и участников
+    CTF-соревнований.
+ </p>
+ <p dir="auto">
+  В CTF задачи часто требуют поиска информации, которая скрыта от обычного пользователя.
+ </p>
+ <p dir="auto">
+  Например:
+ </p>
+ <p dir="auto">
+  • Найти файл с подсказкой или флагом на сайте.
+ </p>
+ <p dir="auto">
+  • Обнаружить скрытую страницу или директорию.
+ </p>
+ <p dir="auto">
+  • Выявить утечку данных или конфиденциальную информацию.
+ </p>
+ <p dir="auto">
+  Google Dorks позволяют участникам быстро и эффективно находить такие данные, используя точные запросы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Общие правила использования Google Dorks
+  </h2>
+ </div>
+ <p dir="auto">
+  — регистр не имеет значения. Не важно в каком регистре, верхнем или нижнем, вы пишете запрос, для гугла
+    это одно и тоже.;
+ </p>
+ <p dir="auto">
+  — пробел между словами. Для гугла это логическое «И». Т.е. он будет искать не только фразу целиком, но и
+    каждое слово по отдельности, что, соответственно сильно увеличивает количество найденных результатов;
+ </p>
+ <p dir="auto">
+  — Google умеет склонять слова. Соответственно нет никакого смысла делать это вручную, кроме случаев,
+    когда нужно найти точное совпадение;
+ </p>
+ <p dir="auto">
+  — Google ищет на том языке, на котором сделан запрос. Потому наиболее правильный подход использовать в
+    запросе тот язык, на котором нам нужен результат;
+ </p>
+ <p dir="auto">
+  — на результат влияет история предыдущих запросов. Потому, самый простой вариант — это использовать
+    «режим инкогнито». А ещё лучше завести под осинтерские цели отдельный браузер. Например Brave, а в нём включить
+    блокировку трэкеров, цифровых отпечатков и автоматическое удаление куков и данных сайтов при закрытии окна. Входить
+    в аккаунты гугла тоже не нужно, потому что в такой ситуации, даже при включенной блокировке, гугл будет помнить
+    историю запросов;
+ </p>
+ <p dir="auto">
+  — комбинирование дорков. Дорки можно и нужно комбинировать. Потому как сочетание правильных дорков
+    многократно уменьшает количество не нужных результатов и сильно ускоряет нахождение результатов нужных.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основные операторы Google Dorks
+  </h2>
+ </div>
+ <p dir="auto">
+  Вот список наиболее полезных операторов, которые часто применяются:
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    site:
+   </strong>
+  </li>
+ </ol>
+ <p dir="auto">
+  Ограничивает поиск определенным доменом.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/1.png" rel="noopener noreferrer" target="_blank">
+   <img height="450" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/1.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Найдет все страницы на сайте mospolytech.ru.
+ </p>
+ <p dir="auto">
+  <strong>
+   2. filetype:
+  </strong>
+ </p>
+ <p dir="auto">
+  Ищет файлы определенного типа.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/2.png" rel="noopener noreferrer" target="_blank">
+   <img height="300" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/2.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Найдет все PDF-файлы на сайте mospolytech.ru.
+ </p>
+ <p dir="auto">
+  <strong>
+   3. intitle:
+  </strong>
+ </p>
+ <p dir="auto">
+  Ищет страницы с определенными словами в заголовке.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/3.png" rel="noopener noreferrer" target="_blank">
+   <img height="450" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/3.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Найдет страницы с заголовком "index of", которые часто указывают на открытые директории.
+ </p>
+ <p dir="auto">
+  <strong>
+   4. inurl:
+  </strong>
+ </p>
+ <p dir="auto">
+  Ищет страницы с определенными словами в URL.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/4.png" rel="noopener noreferrer" target="_blank">
+   <img height="450" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/4.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Найдет страницы с "admin" в URL.
+ </p>
+ <p dir="auto">
+  <strong>
+   5. "..." (кавычки)
+  </strong>
+ </p>
+ <p dir="auto">
+  Ищет точное совпадение фразы.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/5.png" rel="noopener noreferrer" target="_blank">
+   <img height="450" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/5.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Найдет страницы, где встречается точная фраза "confidential data".
+ </p>
+ <p dir="auto">
+  <strong>
+   6. "-" (минус)
+  </strong>
+ </p>
+ <p dir="auto">
+  Исключает определенные слова из поиска.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/6.png" rel="noopener noreferrer" target="_blank">
+   <img height="300" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/6.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Найдет всё про пдф, кроме PDF-файлов.
+ </p>
+ <p dir="auto">
+  <strong>
+   7. cache:
+  </strong>
+ </p>
+ <p dir="auto">
+  Показывает кэшированную версию страницы.
+ </p>
+ <p dir="auto">
+  Пример:
+ </p>
+ <p dir="auto">
+  cache:example.com
+ </p>
+ <p dir="auto">
+  Этот дорк показывает версию сайта, сохранённую в кеше Гугла. Полезно, если сайт не работает, или
+    информация была удалена.
+ </p>
+ <p dir="auto">
+  Эти операторы позволяют значительно сузить область поиска и находить именно ту информацию, которая нужна
+    для решения задачи.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты для автоматизации Google Dorks
+  </h2>
+ </div>
+ <p dir="auto">
+  Хотя Google Dorks можно использовать вручную, существуют инструменты, которые помогают автоматизировать
+    процесс:
+ </p>
+ <p dir="auto">
+  • GHDB (Google Hacking Database): База данных готовых запросов для поиска уязвимостей.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/7.png" rel="noopener noreferrer" target="_blank">
+   <img height="350" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/7.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <p dir="auto">
+  • Dorking-скрипты:
+ </p>
+ <p dir="auto">
+  Использование Python для автоматизации
+ </p>
+ <p dir="auto">
+  Библиотеки для веб-скрейпинга:
+ </p>
+ <p dir="auto">
+  o Requests: позволяет отправлять HTTP-запросы и получать ответы.
+ </p>
+ <p dir="auto">
+  o BeautifulSoup: используется для парсинга HTML и извлечения нужной информации из веб-страниц.
+ </p>
+ <p dir="auto">
+  o Scrapy: фреймворк для веб-скрейпинга, который позволяет собирать данные из нескольких источников
+    одновременно.
+ </p>
+ <p dir="auto">
+  Простой пример скрипта:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>import requests
+    
+    from bs4 import BeautifulSoup
+    
+    query = 'site:example.com filetype:pdf'
+    
+    url = f'https://www.google.com/search?q={query}'
+    
+    # Отправка запроса
+    
+    response = requests.get(url)
+    
+    # Парсинг результатов
+    
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    results = soup.find_all('h3')
+    
+    for result in results:
+    
+        print(result.text)
+    </code></pre>
+ </div>
+ <p dir="auto">
+  • Recon-ng: Фреймворк для OSINT, который поддерживает Google Dorks.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-03-03/8.png" rel="noopener noreferrer" target="_blank">
+   <img height="450" src="https://github.com/linafillippova/articles/raw/main/screens25-03-03/8.png" style="max-width: 100%;" width="700"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Этические аспекты использования Google Dorks
+  </h2>
+ </div>
+ <p dir="auto">
+  Важно помнить, что использование Google Dorks должно быть этичным и законным.
+ </p>
+ <p dir="auto">
+  • Не пытайтесь использовать найденные данные для несанкционированного доступа.
+ </p>
+ <p dir="auto">
+  • Используйте Google Dorks только в рамках CTF или с разрешения владельцев сайтов.
+ </p>
+ <p dir="auto">
+  • Помните, что найденная информация уже является общедоступной, но это не дает права на её использование
+    в незаконных целях.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Полезные ссылки:
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://www.file-extensions.org/filetype/extension/name/document-files" rel="nofollow">
+   https://www.file-extensions.org/filetype/extension/name/document-files
+  </a>
+  — Справочник по всем
+    существующим расширениям файлов
+ </p>
+ <p dir="auto">
+  <a href="https://learn.microsoft.com/ru-ru/office/compatibility/office-file-format-reference" rel="nofollow">
+   https://learn.microsoft.com/ru-ru/office/compatibility/office-file-format-reference
+  </a>
+  —
+    Справочник по форматам файлов для Word, Excel и PowerPoint
+ </p>
+ <p dir="auto">
+  <a href="https://developers.google.com/search/docs/crawling-indexing/indexable-file-types?hl=ru" rel="nofollow">
+   https://developers.google.com/search/docs/crawling-indexing/indexable-file-types?hl=ru
+  </a>
+  — Список
+    наиболее распространённых расширений индексируемых Google
+ </p>
+ <p dir="auto">
+  <a href="https://dorksearch.com" rel="nofollow">
+   https://dorksearch.com
+  </a>
+  – конструктор дорков (можно
+    создавать свои комбинации Google Dorks, либо есть уже готовые заготовки на все случаи жизни).
+ </p>
+</article>

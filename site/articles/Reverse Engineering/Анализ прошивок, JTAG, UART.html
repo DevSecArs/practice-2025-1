@@ -1,0 +1,318 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <p dir="auto">
+  <strong>
+   Реверс-инжиниринг аппаратных устройств в CTF: анализ прошивок, JTAG, UART
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   Введение
+  </strong>
+ </p>
+ <p dir="auto">
+  Реверс-инжиниринг аппаратных устройств — важный навык в CTF-соревнованиях, особенно в категориях
+        Hardware и IoT. В таких задачах участники часто сталкиваются с анализом прошивок, поиском отладочных интерфейсов
+        (JTAG, UART) и восстановлением скрытых данных, алгоритмов, уязвимостей. В этой статье рассмотрим основные методы
+        и инструменты для работы с такими задачами, а также приведем практические примеры.
+ </p>
+ <p dir="auto">
+  <strong>
+   Анализ прошивок
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   Извлечение прошивки
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/423228258-1a0cc82b-20e0-4710-b476-433ddf37da6b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMjgyNTgtMWEwY2M4MmItMjBlMC00NzEwLWI0NzYtNDMzZGRmMzdkYTZiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWVjMGUyZTkxNmRhMDI2MDBhZTkzN2MxMzhjZDZhMmQ1M2MyMjRmNjRiNDNjYWY0MmU3MGRhNjUzOWE0MWZhYzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.f131pgRkX6pDkSxzO6fEev27esYyYRIn7ZGlsnehgOs" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423228258-1a0cc82b-20e0-4710-b476-433ddf37da6b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMjgyNTgtMWEwY2M4MmItMjBlMC00NzEwLWI0NzYtNDMzZGRmMzdkYTZiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWVjMGUyZTkxNmRhMDI2MDBhZTkzN2MxMzhjZDZhMmQ1M2MyMjRmNjRiNDNjYWY0MmU3MGRhNjUzOWE0MWZhYzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.f131pgRkX6pDkSxzO6fEev27esYyYRIn7ZGlsnehgOs" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Перед анализом необходимо получить бинарный файл прошивки. Это можно сделать несколькими способами:
+ </p>
+ <ul dir="auto">
+  <li>
+   Считывание через JTAG или SPI Flash
+  </li>
+  <li>
+   Извлечение из обновлений производителя
+  </li>
+  <li>
+   Дамп памяти микроконтроллера
+  </li>
+  <li>
+   Разбор файловых систем устройств
+  </li>
+  <li>
+   Перехват трафика при обновлении прошивки по сети
+  </li>
+  <li>
+   Использование программных уязвимостей для получения доступа к файловой системе
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Инструменты для анализа прошивок
+  </strong>
+  <a href="https://private-user-images.githubusercontent.com/65419523/423228332-648e30f8-5622-45e3-ac50-735ac2b99ee7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMjgzMzItNjQ4ZTMwZjgtNTYyMi00NWUzLWFjNTAtNzM1YWMyYjk5ZWU3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTM1Y2FmMDNlMTg4ZmE4MWUzOGQ1YTFmMzUyYTkzNGZmNDRiMTM5ZTRhOWQ5MDk5ZGJiNmExZWZjZWZkMTk2YzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.C1qOeVsdpBRTKDx30rojsvPAEJGZ3xsspu203m-CWoA" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423228332-648e30f8-5622-45e3-ac50-735ac2b99ee7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMjgzMzItNjQ4ZTMwZjgtNTYyMi00NWUzLWFjNTAtNzM1YWMyYjk5ZWU3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTM1Y2FmMDNlMTg4ZmE4MWUzOGQ1YTFmMzUyYTkzNGZmNDRiMTM5ZTRhOWQ5MDk5ZGJiNmExZWZjZWZkMTk2YzQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.C1qOeVsdpBRTKDx30rojsvPAEJGZ3xsspu203m-CWoA" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/423230870-39062996-e649-4fce-a548-6b446fcbd7cd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzA4NzAtMzkwNjI5OTYtZTY0OS00ZmNlLWE1NDgtNmI0NDZmY2JkN2NkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQyNTlkMjY3MGViZTQwYTVkNWQ5M2FjNWFjNDg5ODAyOWJiYjA3OTYyNjI4MDFhMTdhZWQ1YTU4OTM1M2U3OGQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TyEaWiMBZGyxoCjSfXrFyO2VI2ZK4HC3_3XwMo-D6H0" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423230870-39062996-e649-4fce-a548-6b446fcbd7cd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzA4NzAtMzkwNjI5OTYtZTY0OS00ZmNlLWE1NDgtNmI0NDZmY2JkN2NkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQyNTlkMjY3MGViZTQwYTVkNWQ5M2FjNWFjNDg5ODAyOWJiYjA3OTYyNjI4MDFhMTdhZWQ1YTU4OTM1M2U3OGQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TyEaWiMBZGyxoCjSfXrFyO2VI2ZK4HC3_3XwMo-D6H0" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  После получения бинарного файла можно использовать следующие инструменты:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    binwalk
+   </strong>
+   – анализ структуры прошивки, поиск файловых систем и сжатых данных
+  </li>
+  <li>
+   <strong>
+    firmware-mod-kit
+   </strong>
+   – разбор и модификация прошивок
+  </li>
+  <li>
+   <strong>
+    Ghidra, IDA Pro
+   </strong>
+   – статический анализ кода
+  </li>
+  <li>
+   <strong>
+    strings, hexdump, grep
+   </strong>
+   – поиск полезной информации в бинарнике
+  </li>
+  <li>
+   <strong>
+    QEMU, Unicorn Engine
+   </strong>
+   – эмуляция прошивки
+  </li>
+  <li>
+   <strong>
+    radare2
+   </strong>
+   – альтернативный инструмент для реверс-инжиниринга
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Поиск уязвимостей
+  </strong>
+ </p>
+ <p dir="auto">
+  При анализе прошивки стоит обращать внимание на:
+ </p>
+ <ul dir="auto">
+  <li>
+   Жестко закодированные чувствительные данные
+  </li>
+  <li>
+   Используемые протоколы связи (например, MQTT, HTTP, Socket)
+  </li>
+  <li>
+   Уязвимые криптографические алгоритмы
+  </li>
+  <li>
+   Потенциальные переполнения буфера
+  </li>
+  <li>
+   Форматы хранения данных (JSON, XML)
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Отладочные интерфейсы: JTAG и UART
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   UART
+  </strong>
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/423230268-8d67dc05-df11-410b-b2db-346db5602e6c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzAyNjgtOGQ2N2RjMDUtZGYxMS00MTBiLWIyZGItMzQ2ZGI1NjAyZTZjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPThiNTg1NGUyYmQ1NmMwZTQ3Mjk2MTgyODkyMzYyY2NjMGU4ZjhiOGY4MmVkYTg4NTA5M2IzMDRiMDQwZTkwM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.th1WGh0tTg9DAKv3RdSL05MgErgHh8L3gHdyZ7mNNlg" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423230268-8d67dc05-df11-410b-b2db-346db5602e6c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzAyNjgtOGQ2N2RjMDUtZGYxMS00MTBiLWIyZGItMzQ2ZGI1NjAyZTZjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPThiNTg1NGUyYmQ1NmMwZTQ3Mjk2MTgyODkyMzYyY2NjMGU4ZjhiOGY4MmVkYTg4NTA5M2IzMDRiMDQwZTkwM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.th1WGh0tTg9DAKv3RdSL05MgErgHh8L3gHdyZ7mNNlg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  UART – это последовательный интерфейс, который часто используется для отладки устройств. В CTF можно
+        найти UART-порты на печатной плате (обычно 3 или 4 контакта) и подключиться к ним с помощью USB-to-TTL адаптера
+        (например, CP2102 или CH340).
+  <a href="https://private-user-images.githubusercontent.com/65419523/423230361-8e6b1be0-6e78-4dfc-ac03-288c9d6e2248.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzAzNjEtOGU2YjFiZTAtNmU3OC00ZGZjLWFjMDMtMjg4YzlkNmUyMjQ4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUyNDUyOWMxZTMwOTMwMjdlOTg0NjBlZjdhNmIwMGFlMTU2OTZlNWEwODkzN2M4ODZkYWRmODUwZmY0YWMyOTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.3V4ArAYWf2tSKT36ze-Co1JTfbaHlVKSqih-VCMAV8Y" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423230361-8e6b1be0-6e78-4dfc-ac03-288c9d6e2248.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzAzNjEtOGU2YjFiZTAtNmU3OC00ZGZjLWFjMDMtMjg4YzlkNmUyMjQ4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUyNDUyOWMxZTMwOTMwMjdlOTg0NjBlZjdhNmIwMGFlMTU2OTZlNWEwODkzN2M4ODZkYWRmODUwZmY0YWMyOTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.3V4ArAYWf2tSKT36ze-Co1JTfbaHlVKSqih-VCMAV8Y" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   Как найти и подключиться к UART:
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   Идентифицировать порты с помощью мультиметра или осциллографа.
+  </li>
+  <li>
+   Подключиться через адаптер (скорость обычно 115200 бод, но может быть другой).
+  </li>
+  <li>
+   Использовать minicom, screen или picocom для взаимодействия с устройством.
+  </li>
+  <li>
+   Проверить наличие отладочного меню или консоли на устройстве.
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   JTAG
+  </strong>
+ </p>
+ <p dir="auto">
+  JTAG – интерфейс для отладки микроконтроллеров, который позволяет считывать и модифицировать память
+        устройства.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/65419523/423230383-2201d51f-60ca-437d-94bc-3ece738986aa.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzAzODMtMjIwMWQ1MWYtNjBjYS00MzdkLTk0YmMtM2VjZTczODk4NmFhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFmMDIyZTA3MDQ1OTlkMjA2MmNiZjEyM2FhZTIxYThkMzllM2E4Mzg1M2ViYTQwYTAwNDhhY2IyODAyY2Y0YWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.dpID8XST_imIEI9toQ-3Kbw64k2uLL3X9EwWMEtpOJk" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423230383-2201d51f-60ca-437d-94bc-3ece738986aa.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzAzODMtMjIwMWQ1MWYtNjBjYS00MzdkLTk0YmMtM2VjZTczODk4NmFhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFmMDIyZTA3MDQ1OTlkMjA2MmNiZjEyM2FhZTIxYThkMzllM2E4Mzg1M2ViYTQwYTAwNDhhY2IyODAyY2Y0YWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.dpID8XST_imIEI9toQ-3Kbw64k2uLL3X9EwWMEtpOJk" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   Инструменты для работы с JTAG:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    OpenOCD
+   </strong>
+   – взаимодействие с микроконтроллерами
+  </li>
+  <li>
+   <strong>
+    UrJTAG
+   </strong>
+   – анализ JTAG-интерфейсов
+  </li>
+  <li>
+   <strong>
+    Bus Pirate, J-Link, FT2232H
+   </strong>
+   – аппаратные адаптеры для подключения
+  </li>
+  <li>
+   <strong>
+    JTAGulator
+   </strong>
+   – автоматический поиск пинов
+  </li>
+  <li>
+   <strong>
+    XJTAG, Segger J-Flash
+   </strong>
+   – продвинутые инструменты для работы с JTAG
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Поиск JTAG
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   Использование JTAGulator для автоматического поиска пинов.
+  </li>
+  <li>
+   Поиск по даташиту микросхемы.
+  </li>
+  <li>
+   Анализ дорожек на плате с помощью мультиметра.
+  </li>
+  <li>
+   Проверка тест-падов на плате, которые могут служить контактами JTAG.
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Практические примеры
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример 1: Дамп прошивки через UART
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   Подключение к UART.
+  </li>
+  <li>
+   Поиск отладочного меню.
+  </li>
+  <li>
+   Использование команд прошивки для дампа памяти.
+  </li>
+  <li>
+   Декодирование извлеченных данных и поиск полезной информации.
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Пример 2: Извлечение чувствительных данных из прошивки
+  </strong>
+  <a href="https://private-user-images.githubusercontent.com/65419523/423230628-c9d70cb4-c7f0-4f34-a980-d8b9851714aa.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzA2MjgtYzlkNzBjYjQtYzdmMC00ZjM0LWE5ODAtZDhiOTg1MTcxNGFhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVlMzBkYzk1NGJkMjI0OTM1ZDE0OTRkMDQ0YTYyODZmNzM2MDI2ZmViNzhjZDhlOTkxNzIxOGZiNTM4N2NlNDMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.58lJar-gawZePyCx1LV-kswhvUHNRJFZmiRwBGtxFWI" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/65419523/423230628-c9d70cb4-c7f0-4f34-a980-d8b9851714aa.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg4NDYsIm5iZiI6MTc0NTE0ODU0NiwicGF0aCI6Ii82NTQxOTUyMy80MjMyMzA2MjgtYzlkNzBjYjQtYzdmMC00ZjM0LWE5ODAtZDhiOTg1MTcxNGFhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExMjkwNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVlMzBkYzk1NGJkMjI0OTM1ZDE0OTRkMDQ0YTYyODZmNzM2MDI2ZmViNzhjZDhlOTkxNzIxOGZiNTM4N2NlNDMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.58lJar-gawZePyCx1LV-kswhvUHNRJFZmiRwBGtxFWI" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto">
+  <li>
+   Запуск stirngs firmware.bin.
+  </li>
+  <li>
+   Анализ найденных строк и поиск учётных данных или другой полезной информации.
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Пример 3: Подключение к JTAG и считывание памяти
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   Подключение адаптера JTAG к устройству.
+  </li>
+  <li>
+   Поиск распиновки и конфигурации JTAG.
+  </li>
+  <li>
+   Использование OpenOCD для считывания дампа памяти.
+  </li>
+  <li>
+   Анализ содержимого памяти на наличие полезных данных.
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Заключение
+  </strong>
+ </p>
+ <p dir="auto">
+  Реверс-инжиниринг аппаратных устройств в CTF требует знаний в области электроники, бинарного анализа и
+        работы с интерфейсами JTAG/UART. Систематический подход и использование правильных инструментов помогут
+        эффективно решать такие задачи и находить скрытые уязвимости. Важно не только уметь анализировать прошивки, но и
+        взаимодействовать с устройствами напрямую, используя их отладочные интерфейсы и перехватывая данные на шине
+        связи. Чем больше практики, тем выше шанс быстро найти уязвимость в задании!
+ </p>
+</article>

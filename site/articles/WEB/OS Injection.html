@@ -1,0 +1,142 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Суть уязвимости
+  </h3>
+ </div>
+ <p dir="auto">
+  Эта уязвимость позволяет злоумышленникам выполнять произвольные команды на сервере. Возникает когда,
+        приложение использует входные данные и использует их в системных командах.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Примеры
+  </h3>
+ </div>
+ <p dir="auto">
+  Пусть приложение будет проверять доступность какого либо хоста. И это будет делать с помощью команды
+        ping:
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">import</span> <span class="pl-s1">os</span>
+    <span class="pl-s1">hostname</span> <span class="pl-c1">=</span> <span class="pl-en">input</span>(<span class="pl-s">"Enter hostname"</span>)
+    <span class="pl-s1">os</span>.<span class="pl-c1">system</span>(<span class="pl-s">f"ping <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">hostname</span><span class="pl-kos">}</span></span>"</span>)</pre>
+ </div>
+ <p dir="auto">
+  Если в поле
+  <em>
+   hostname
+  </em>
+  передать ; whoami;, то сервер вернет результат выполнения команды whoami
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Последствия
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Полный контроль над системой
+  </li>
+  <li>
+   Утечка данных
+  </li>
+  <li>
+   Атака на другие системы
+  </li>
+  <li>
+   DoS (Denial of Service)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Виды
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Basic Command Injection
+            Простое добавление операторов
+   <em>
+    ' ; '
+   </em>
+   <em>
+    ' ?? '
+   </em>
+   или
+   <em>
+    ' || '
+   </em>
+   , для связи нескольких
+            команд
+  </li>
+  <li>
+   Blind Command Injection
+            Результат не отображается, но его можно определить косвенно (задержки, ошибки и тп)
+  </li>
+  <li>
+   Out-of-Band Command Injection
+            Использование других каналов для отправки команд.
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Методы борьбы
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   Использование безопасных API
+  </li>
+ </ol>
+ <ul dir="auto">
+  <li>
+   Вместо выполнения команд через shell используйте API, которые предоставляют безопасные способы выполнения
+            действий. Например, для Python используйте subprocess.run() с параметром shell=False
+  </li>
+ </ul>
+ <ol dir="auto" start="2">
+  <li>
+   Экранирование и валидация данных
+  </li>
+  <li>
+   Использование списка разрешённых данных
+  </li>
+ </ol>
+ <ul dir="auto">
+  <li>
+   Если возможно, используйте белые списки значений, которые можно вводить, и разрешайте только проверенные и
+            допустимые команды.
+  </li>
+ </ul>
+ <ol dir="auto" start="4">
+  <li>
+   Минимизация прав доступа
+  </li>
+  <li>
+   Журналирование и мониторинг
+  </li>
+  <li>
+   Изоляция и контейнеризация
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Материалы
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <a href="https://portswigger.net/web-security/os-command-injection" rel="nofollow">
+    https://portswigger.net/web-security/os-command-injection
+   </a>
+   - треннировачные лабы
+  </li>
+  <li>
+   <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md">
+    https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md
+   </a>
+   - payloads
+  </li>
+ </ol>
+</article>

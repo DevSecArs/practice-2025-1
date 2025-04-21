@@ -1,0 +1,453 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   СТЕГАНОГРАФИЯ В ЗВУКОВЫХ ФАЙЛАХ
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Определение стеганографии
+  </h2>
+ </div>
+ <p dir="auto">
+  Стеганография — это метод сокрытия информации внутри других данных, так чтобы ее существование
+        оставалось незаметным. В отличие от криптографии, которая скрывает сам смысл передаваемых данных, стеганография
+        позволяет спрятать сам факт передачи информации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Зачем прятать данные в аудиофайлах
+  </h2>
+ </div>
+ <p dir="auto">
+  Звуковые файлы являются удобной средой для стеганографии благодаря своей сложности и вариативности.
+        Прятать информацию в аудиофайлах можно для:
+ </p>
+ <ul dir="auto">
+  <li>
+   Защиты авторских прав (внедрение скрытых водяных знаков)
+  </li>
+  <li>
+   Безопасной передачи данных в ограниченной среде
+  </li>
+  <li>
+   Обхода цензуры и слежки
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Актуальность
+  </h2>
+ </div>
+ <p dir="auto">
+  С развитием технологий обнаружение скрытых данных становится все более сложной задачей. Современные
+        методы стеганографии позволяют внедрять информацию в аудиофайлы без заметных искажений, что делает этот метод
+        привлекательным как для легальных, так и для нелегальных целей. В связи с этим возрастает необходимость в
+        изучении как самих методов сокрытия, так и способов их обнаружения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Принципы стеганографии в звуке
+  </h2>
+ </div>
+ <p dir="auto">
+  Стеганография в аудиофайлах основана на изменении звуковых данных таким образом, чтобы эти изменения
+        не воспринимались на слух. Основные методы включают:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Изменение амплитуды звуковой волны
+   </strong>
+   (незначительные изменения, которые незаметны на слух)
+  </li>
+  <li>
+   <strong>
+    Манипуляция частотным спектром
+   </strong>
+   (встраивание информации в определённые частоты)
+  </li>
+  <li>
+   <strong>
+    Изменение фазовых характеристик звукового сигнала
+   </strong>
+  </li>
+  <li>
+   <strong>
+    Добавление скрытых метаданных
+   </strong>
+   (например, скрытые ID3-теги в MP3-файлах)
+  </li>
+ </ul>
+ <p dir="auto">
+  В отличие от криптографии, которая изменяет данные так, что их можно расшифровать только при наличии
+        ключа, стеганография делает так, чтобы изменения были незаметны даже при наличии доступа к файлу.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Методы стеганографии в звуковых файлах
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   LSB (Least Significant Bit) – Замена наименее значащих бит
+  </h3>
+ </div>
+ <p dir="auto">
+  Суть метода заключается в следующем: Допустим, имеется 8-битное изображение в градациях серого. 00h
+        (00000000b) обозначает чёрный цвет, FFh (11111111b) — белый. Всего имеется 256 градаций (2^8). Также
+        предположим, что сообщение состоит из 1 байта — например, 01101011b. При использовании 2 младших бит в описаниях
+        пикселей, нам потребуется 4 пикселя. Допустим, они чёрного цвета. Тогда пиксели, содержащие скрытое сообщение,
+        будут выглядеть следующим образом: 00000001 00000010 00000010 00000011. Тогда цвет пикселей изменится: первого —
+        на 1/255, второго и третьего — на 2/255 и четвёртого — на 3/255. Такие градации, мало того, что незаметны для
+        человека, могут вообще не отобразиться при использовании низкокачественных устройств вывода.
+ </p>
+ <p dir="auto">
+  Формально этот метод можно описать так:
+        [
+        X' = (X &amp; 0b11111110) | M
+        ]
+        где:
+ </p>
+ <ul dir="auto">
+  <li>
+   (X) – оригинальный байт аудиоданных,
+  </li>
+  <li>
+   (M) – бит сообщения (0 или 1),
+  </li>
+  <li>
+   (X') – изменённый байт.
+  </li>
+ </ul>
+ <p dir="auto">
+  Пример кода для встраивания данных в WAV-файл:
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-s1">scipy</span>.<span class="pl-s1">io</span> <span class="pl-k">import</span> <span class="pl-s1">wavfile</span>
+    <span class="pl-k">import</span> <span class="pl-s1">numpy</span> <span class="pl-k">as</span> <span class="pl-s1">np</span>
+    
+    <span class="pl-k">def</span> <span class="pl-en">encode_lsb</span>(<span class="pl-s1">wav_in</span>, <span class="pl-s1">message</span>, <span class="pl-s1">wav_out</span>):
+        <span class="pl-s1">rate</span>, <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">wavfile</span>.<span class="pl-c1">read</span>(<span class="pl-s1">wav_in</span>)
+        <span class="pl-s1">message</span> <span class="pl-c1">+=</span> <span class="pl-s">'<span class="pl-cce">\0</span>'</span>  <span class="pl-c"># Конец сообщения</span>
+        <span class="pl-s1">bits</span> <span class="pl-c1">=</span> <span class="pl-s">''</span>.<span class="pl-c1">join</span>(<span class="pl-en">format</span>(<span class="pl-en">ord</span>(<span class="pl-s1">c</span>), <span class="pl-s">'08b'</span>) <span class="pl-k">for</span> <span class="pl-s1">c</span> <span class="pl-c1">in</span> <span class="pl-s1">message</span>)
+        <span class="pl-s1">data_flat</span> <span class="pl-c1">=</span> <span class="pl-s1">data</span>.<span class="pl-c1">flatten</span>()
+        <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-en">len</span>(<span class="pl-s1">bits</span>)):
+            <span class="pl-s1">data_flat</span>[<span class="pl-s1">i</span>] <span class="pl-c1">=</span> (<span class="pl-s1">data_flat</span>[<span class="pl-s1">i</span>] <span class="pl-c1">&amp;</span> <span class="pl-c1">~</span><span class="pl-c1">1</span>) <span class="pl-c1">|</span> <span class="pl-en">int</span>(<span class="pl-s1">bits</span>[<span class="pl-s1">i</span>])
+        <span class="pl-s1">data</span> <span class="pl-c1">=</span> <span class="pl-s1">data_flat</span>.<span class="pl-c1">reshape</span>(<span class="pl-s1">data</span>.<span class="pl-c1">shape</span>)
+        <span class="pl-s1">wavfile</span>.<span class="pl-c1">write</span>(<span class="pl-s1">wav_out</span>, <span class="pl-s1">rate</span>, <span class="pl-s1">data</span>)</pre>
+ </div>
+ <p dir="auto">
+  Этот метод особенно эффективен для несжатых аудиоформатов (например, WAV), но плохо переносит сжатие
+        (MP3), так как сжатие разрушает внедрённые данные.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Echo Hiding – Использование эхо-сигнала
+  </h3>
+ </div>
+ <p dir="auto">
+  Метод Echo Hiding использует особенности восприятия эхо человеческим слухом. Малые задержки эхо
+        незаметны для уха, но могут быть использованы для кодирования информации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Замедление и разворот
+  </h4>
+ </div>
+ <p dir="auto">
+  Иногда, для получения скрытого сообщения из аудиофайла, достаточно послушать файл задом наперед или
+        замедлить его. Для примера взята задача
+  <a href="https://www.root-me.org/ru/Zadachi-i-problemy/Steganografiya/Some-noise" rel="nofollow">
+   WAV - Noise
+            analysis
+  </a>
+  .
+ </p>
+ <blockquote>
+  <p dir="auto">
+   <strong>
+    WAV (Waveform Audio File Format)
+   </strong>
+   — это формат файла-контейнера для хранения
+            оцифрованного аудиопотока, основанный на RIFF. Обычно используется для хранения несжатого звука в
+            импульсно-кодовой модуляции (PCM), но также поддерживает различные алгоритмы кодирования. WAV-файлы могут
+            содержать метаданные и редактироваться в большинстве аудиоредакторов.
+  </p>
+ </blockquote>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Для работы с файлом .wav можно использовать программу для работы со звуком
+  <a href="https://www.goldwave.com/release.php" rel="nofollow">
+   goldwave
+  </a>
+  .
+ </p>
+ <p dir="auto">
+  Звуковая дорожка файла из вызова выглядит так:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  При прослушивании данного аудиофайла слышен высокий голос, что может указывать на его ускорение. Т.к.
+        после этого файл остается непонятен, его следует попробовать перевернуть, неразборчивый голос может стать
+        понятным после этого изменения. В итоге получаем голос, диктующий цифры и буквы на английском.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Поствавляем полученную последовательность и задача решена!
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Phase Coding – Изменение фазового спектра
+  </h3>
+ </div>
+ <p dir="auto">
+  Фазовая стеганография изменяет фазу аудиосигнала, заменяя её на определённые значения, соответствующие
+        закодированным данным.
+ </p>
+ <p dir="auto">
+  Процесс кодирования:
+ </p>
+ <ol dir="auto">
+  <li>
+   Применение дискретного преобразования Фурье (DFT) для извлечения фазовой информации.
+  </li>
+  <li>
+   Внедрение скрытого сообщения путём изменения фазовых значений.
+  </li>
+  <li>
+   Обратное преобразование Фурье (IDFT) для восстановления аудиосигнала.
+  </li>
+ </ol>
+ <blockquote>
+  <p dir="auto">
+   <strong>
+    Спектральная аналитика аудиофайла
+   </strong>
+   — это процесс анализа частотного содержания
+            звукового сигнала, позволяющий выявить амплитуды различных частот в аудиозаписи. Этот метод помогает
+            определить, какие частоты присутствуют в звуке и в каких пропорциях, что важно для дальнейшей обработки и
+            улучшения качества аудио. Спектральный анализ визуализируется графически, показывая изменения амплитуд
+            частот во времени.
+  </p>
+ </blockquote>
+ <p dir="auto">
+  Для примера взята задача
+  <a href="https://www.root-me.org/ru/Zadachi-i-problemy/Steganografiya/Audio-stegano" rel="nofollow">
+   WAV -
+            Spectral analysis
+  </a>
+  .
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.5.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Для спектрального анализа можно использовать различные инструменты, например инструмент
+  <a href="https://www.sonicvisualiser.org/download.html" rel="nofollow">
+   Sonic visualizer
+  </a>
+  или сайт для
+        декодирования
+  <a href="https://www.dcode.fr/spectral-analysis" rel="nofollow">
+   dcode
+  </a>
+  . В решении примера буду
+        использовать 2 вариант.
+ </p>
+ <p dir="auto">
+  Загружаем файл и получаем изображение с флагом:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.6.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Задача решена.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/AnaktaCTF/CTFReports/blob/main/e1409/pictures/22.7.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/AnaktaCTF/CTFReports/raw/main/e1409/pictures/22.7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Spread Spectrum – Рассеивание сигнала
+  </h3>
+ </div>
+ <p dir="auto">
+  Этот метод распределяет скрытые данные по всему спектру аудиофайла, что делает их менее заметными для
+        анализа. Используется метод прямой последовательности:
+        [
+        Y(n) = X(n) + kM(n)S(n)
+        ]
+        где:
+ </p>
+ <ul dir="auto">
+  <li>
+   (X(n)) – исходный сигнал,
+  </li>
+  <li>
+   (M(n)) – скрытая информация,
+  </li>
+  <li>
+   (S(n)) – псевдослучайная последовательность,
+  </li>
+  <li>
+   (k) – коэффициент усиления.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   MP3 стеганография – Встраивание данных в сжатый формат
+  </h3>
+ </div>
+ <p dir="auto">
+  MP3Stego использует особенности сжатия MP3 для внедрения информации. Основной принцип основан на
+        изменении коэффициентов дискретного косинусного преобразования (DCT) перед квантованием.
+ </p>
+ <p dir="auto">
+  Формула модификации DCT-коэффициентов:
+        [
+        C' = C + M \cdot \Delta
+        ]
+        где:
+ </p>
+ <ul dir="auto">
+  <li>
+   (C) – исходный коэффициент DCT,
+  </li>
+  <li>
+   (C') – изменённый коэффициент,
+  </li>
+  <li>
+   (M) – бит скрытого сообщения,
+  </li>
+  <li>
+   (\Delta) – квантовый шаг.
+  </li>
+ </ul>
+ <p dir="auto">
+  Этот метод позволяет передавать скрытые сообщения даже в сжатых MP3-файлах, сохраняя при этом высокое
+        качество звука.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Программные инструменты для стеганографии
+  </h2>
+ </div>
+ <p dir="auto">
+  Существует несколько популярных инструментов для аудиостеганографии:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    OpenPuff
+   </strong>
+   – поддерживает стеганографию в WAV-файлах
+  </li>
+  <li>
+   <strong>
+    DeepSound
+   </strong>
+   – позволяет скрывать файлы в аудиофайлах и извлекать их
+  </li>
+  <li>
+   <strong>
+    Steghide
+   </strong>
+   – поддерживает работу с аудиоформатами, но лучше подходит для изображений
+  </li>
+  <li>
+   <strong>
+    MATLAB и Python
+   </strong>
+   – используются для создания собственных алгоритмов
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Обнаружение скрытых данных
+  </h2>
+ </div>
+ <p dir="auto">
+  Для выявления скрытой информации в звуковых файлах используются методы стегоанализа:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Анализ спектрограмм
+   </strong>
+   (можно использовать Audacity или MATLAB)
+  </li>
+  <li>
+   <strong>
+    Использование статистического анализа
+   </strong>
+   (например, анализ распределения фазовых
+            характеристик)
+  </li>
+  <li>
+   <strong>
+    Программы для детекции стеганографии
+   </strong>
+   (например, StegExpose)
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Применение стеганографии в аудио
+  </h2>
+ </div>
+ <p dir="auto">
+  Стеганография в звуковых файлах может использоваться в различных сферах:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Защита авторских прав
+   </strong>
+   – внедрение скрытых водяных знаков в аудиозаписи
+  </li>
+  <li>
+   <strong>
+    Передача скрытых сообщений
+   </strong>
+   – использование аудиофайлов как контейнеров
+  </li>
+  <li>
+   <strong>
+    Киберпреступность
+   </strong>
+   – скрытая передача информации в преступных целях
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Аудиостеганография остаётся мощным инструментом для сокрытия информации.
+ </p>
+</article>

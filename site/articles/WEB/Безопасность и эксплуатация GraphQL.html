@@ -1,0 +1,498 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Безопасность и эксплуатация GraphQL
+  </h1>
+ </div>
+ <p dir="auto">
+  <strong>
+   GraphQL
+  </strong>
+  – это язык запросов API, который позволяет клиентам гибко запрашивать только
+        нужные данные. В отличие от
+  <strong>
+   REST API
+  </strong>
+  ,
+  <strong>
+   GraphQL
+  </strong>
+  позволяет объединять несколько
+        запросов в один, что делает его мощным инструментом. Однако его гибкость и универсальность создают серьезные
+        проблемы безопасности, если API не настроен должным образом. В этой статье разобраны основные векторы атак на
+  <strong>
+   GraphQL
+  </strong>
+  , методы защиты и инструменты тестирования безопасности.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Архитектура GraphQL и отличие от REST
+  </h3>
+ </div>
+ <p dir="auto">
+  GraphQL и REST – два подхода к построению API, но они отличаются принципами работы.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/GraphQL/REST.jpg" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/GraphQL/REST.jpg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   REST
+  </strong>
+  (Representational State Transfer) строится на основе множества эндпоинтов,
+        каждый из которых отвечает за определенный ресурс (например,
+  <code>
+   /players
+  </code>
+  ,
+  <code>
+   /teams
+  </code>
+  ,
+  <code>
+   /matches
+  </code>
+  ). Клиент делает несколько запросов к разным эндпоинтам, чтобы получить нужные данные. Это
+        может привести к:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    избыточной передаче данных (
+    <code>
+     over-fetching
+    </code>
+    ), когда клиент получает больше
+                информации, чем необходимо;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    недостаточной передаче данных (
+    <code>
+     under-fetching
+    </code>
+    ), когда клиенту приходится делать
+                несколько запросов, чтобы собрать всю необходимую информацию.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   GraphQL
+  </strong>
+  использует единый эндпоинт (
+  <code>
+   /graphql
+  </code>
+  ), который принимает запросы
+        на получение только необходимых данных. Клиент может запрашивать конкретные поля, избегая проблем
+  <code>
+   over-fetching
+  </code>
+  и
+  <code>
+   under-fetching
+  </code>
+  . Однако такой подход создает новые риски:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    возможность утечки скрытых данных, если схема API не настроена должным образом;
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    уязвимость к сложным рекурсивным запросам, которые могут перегрузить сервер.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Основные концепции GraphQL
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Схема
+  </strong>
+  : определяет типы данных, доступные в API, и отношения между ними. Схема служит
+        контрактом между клиентом и сервером, описывая, какие запросы можно выполнять и какие данные можно получать.
+ </p>
+ <p dir="auto">
+  <strong>
+   Типы
+  </strong>
+  : основные строительные блоки схемы. Включают скалярные типы (например,
+  <code>
+   Int
+  </code>
+  ,
+  <code>
+   String
+  </code>
+  ,
+  <code>
+   Boolean
+  </code>
+  ) и объектные типы, которые могут содержать несколько
+        полей различных типов.​
+ </p>
+ <p dir="auto">
+  <strong>
+   Запросы
+  </strong>
+  : используются для чтения данных. Клиент определяет структуру запроса, и
+        сервер возвращает данные в точно таком же формате.
+ </p>
+ <p dir="auto">
+  <strong>
+   Мутации
+  </strong>
+  : используются для изменения данных (создание, обновление, удаление).
+ </p>
+ <p dir="auto">
+  <strong>
+   Подписки
+  </strong>
+  : позволяют клиенту получать обновления в реальном времени при изменении
+        данных на сервере.
+ </p>
+ <p dir="auto">
+  Пример схемы GraphQL:
+ </p>
+ <div class="highlight highlight-source-graphql notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">type</span> <span class="pl-c1">Author</span> {
+     <span class="pl-v">id</span>: <span class="pl-c1">ID</span><span class="pl-k">!</span>
+     <span class="pl-v">name</span>: <span class="pl-c1">String</span><span class="pl-k">!</span>
+     <span class="pl-v">books</span>: [<span class="pl-c1">Book</span>]
+    }
+    
+    <span class="pl-k">type</span> <span class="pl-c1">Book</span> {
+     <span class="pl-v">id</span>: <span class="pl-c1">ID</span><span class="pl-k">!</span>
+     <span class="pl-v">title</span>: <span class="pl-c1">String</span><span class="pl-k">!</span>
+     <span class="pl-v">author</span>: <span class="pl-c1">Author</span>
+    }
+    
+    <span class="pl-k">type</span> <span class="pl-c1">Query</span> {
+     <span class="pl-v">authors</span>: [<span class="pl-c1">Author</span>]
+     <span class="pl-v">books</span>: [<span class="pl-c1">Book</span>]
+     <span class="pl-v">book</span>(<span class="pl-v">id</span>: <span class="pl-c1">ID</span><span class="pl-k">!</span>): <span class="pl-c1">Book</span>
+    }
+    
+    <span class="pl-k">type</span> <span class="pl-c1">Mutation</span> {
+     <span class="pl-v">addBook</span>(<span class="pl-v">title</span>: <span class="pl-c1">String</span><span class="pl-k">!</span>, <span class="pl-v">authorId</span>: <span class="pl-c1">ID</span><span class="pl-k">!</span>): <span class="pl-c1">Book</span>
+    }</pre>
+ </div>
+ <p dir="auto">
+  В данном примере определяются типы
+  <code>
+   Author
+  </code>
+  и
+  <code>
+   Book
+  </code>
+  , а также запросы для
+        получения списка авторов, списка книг и конкретной книги по ID. Мутация
+  <code>
+   addBook
+  </code>
+  позволяет добавить
+        новую книгу с указанным названием и идентификатором автора.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Основные уязвимости в GraphQL
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Инспекция схемы (Introspection Attack)
+   </p>
+   <p dir="auto">
+    GraphQL поддерживает встроенную возможность
+    <strong>
+     introspection
+    </strong>
+    (самоанализ),
+                которая позволяет клиенту запрашивать структуру API, включая все доступные типы, запросы и мутации. Хоть
+                это и удобно, но может стать уязвимостью, если не отключено в продакшене. Злоумышленник, получивший
+                доступ к схеме, может использовать её для поиска скрытых API и уязвимых эндпоинтов.
+   </p>
+   <p dir="auto">
+    Запрос introspection в GraphQL Playground:
+   </p>
+   <div class="highlight highlight-source-graphql notranslate position-relative overflow-auto" dir="auto">
+    <pre>{
+      <span class="pl-v">__schema</span> {
+        <span class="pl-v">types</span> {
+          <span class="pl-v">name</span>
+          <span class="pl-v">fields</span> {
+            <span class="pl-v">name</span>
+          }
+        }
+      }
+    }</pre>
+   </div>
+   <p dir="auto">
+    Если introspection включен, сервер вернет структуру API, позволяя атакующему анализировать
+                потенциальные цели.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Инъекции в GraphQL (GraphQL Injection)
+   </p>
+   <p dir="auto">
+    <strong>
+     GraphQL-инъекции
+    </strong>
+    похожи на традиционные SQL-инъекции. Они происходят, когда
+                входные данные пользователя обрабатываются без проверки и используются для выполнения внутренних
+                запросов.
+   </p>
+   <p dir="auto">
+    Пример GraphQL-инъекции:
+   </p>
+   <div class="highlight highlight-source-graphql notranslate position-relative overflow-auto" dir="auto">
+    <pre>{
+      <span class="pl-v">user</span>(<span class="pl-v">id</span>: <span class="pl-s"><span class="pl-pds">"</span>1 OR 1=1<span class="pl-pds">"</span></span>) {
+        <span class="pl-v">username</span>
+      }
+    }</pre>
+   </div>
+   <p dir="auto">
+    Если API уязвимо, оно может вернуть список всех пользователей вместо одного. Что может
+                привести к утечке конфиденциальной информации.
+   </p>
+   <p dir="auto">
+    Другой вариант атаки – внедрение в мутации:
+   </p>
+   <div class="highlight highlight-source-graphql notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-k">mutation</span> {
+      <span class="pl-v">updateUser</span>(<span class="pl-v">id</span>: <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>, <span class="pl-v">username</span>: <span class="pl-s"><span class="pl-pds">"</span>hacker<span class="pl-pds">"</span></span>) {
+        <span class="pl-v">username</span>
+      }
+    }</pre>
+   </div>
+   <p dir="auto">
+    Если сервер не проверяет права доступа, атакующий может изменить данные других пользователей.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    DDoS-атаки через сложные запросы
+   </p>
+   <p dir="auto">
+    GraphQL позволяет создавать вложенные запросы, что может быть использовано злоумышленниками
+                для перегрузки сервера. Если сервер не ограничивает глубину рекурсивных запросов, злоумышленник может
+                создать бесконечную рекурсию и вызвать отказ в обслуживании.
+   </p>
+   <p dir="auto">
+    Пример атаки:
+   </p>
+   <div class="highlight highlight-source-graphql notranslate position-relative overflow-auto" dir="auto">
+    <pre>{
+      <span class="pl-v">user</span> {
+        <span class="pl-v">friends</span> {
+          <span class="pl-v">friends</span> {
+            <span class="pl-v">friends</span> {
+              <span class="pl-v">username</span>
+            }
+          }
+        }
+      }
+    }</pre>
+   </div>
+   <p dir="auto">
+    Если сервер не настроен на ограничение глубины вложенных запросов, он будет обрабатывать их до
+                полного исчерпания ресурсов.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Методы и способы защиты GraphQL API
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Ограничение доступа к запросам интроспекции
+    </strong>
+    : интроспекция позволяет клиентам
+                получать информацию о схеме API. В производственной среде рекомендуется отключать интроспекцию, чтобы
+                злоумышленники не могли получить информацию о структуре API.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Валидация входных данных
+    </strong>
+    : необходимо проверять и ограничивать входные данные,
+                чтобы предотвратить инъекции и другие атаки. Например, можно использовать директивы для валидации данных
+                на уровне схемы.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Ограничение глубины и сложности запросов
+    </strong>
+    : чтобы предотвратить атаки типа
+                "отказ в обслуживании" (DoS) с помощью глубоких или сложных рекурсивных запросов, следует устанавливать
+                ограничения на максимальную глубину и сложность запросов.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Ограничение частоты запросов
+    </strong>
+    (Rate Limiting): для предотвращения перебора
+                уязвимых мутаций или брутфорс-атак рекомендуется ограничивать количество запросов от одного клиента за
+                определенный период времени. Это можно реализовать с помощью специальных плагинов или middleware.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование безопасного транспортного протокола
+    </strong>
+    : при использовании HTTP для
+                запросов и мутаций необходимо применять HTTPS для шифрования данных и защиты их от перехвата.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Аутентификация и авторизация
+    </strong>
+    : необходимо внедрять надежные механизмы
+                аутентификации и авторизации, чтобы гарантировать, что только авторизованные пользователи могут
+                выполнять определенные операции или получать доступ к определенным данным.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Пример реализации ограничения глубины запросов на Node.js с использованием
+  <code>
+   graphql-depth-limit
+  </code>
+  :
+ </p>
+ <div class="highlight highlight-source-js notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">const</span> <span class="pl-s1">express</span> <span class="pl-c1">=</span> <span class="pl-en">require</span><span class="pl-kos">(</span><span class="pl-s">'express'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    <span class="pl-k">const</span> <span class="pl-kos">{</span> graphqlHTTP <span class="pl-kos">}</span> <span class="pl-c1">=</span> <span class="pl-en">require</span><span class="pl-kos">(</span><span class="pl-s">'express-graphql'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    <span class="pl-k">const</span> <span class="pl-kos">{</span> makeExecutableSchema <span class="pl-kos">}</span> <span class="pl-c1">=</span> <span class="pl-en">require</span><span class="pl-kos">(</span><span class="pl-s">'@graphql-tools/schema'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    <span class="pl-k">const</span> <span class="pl-s1">depthLimit</span> <span class="pl-c1">=</span> <span class="pl-en">require</span><span class="pl-kos">(</span><span class="pl-s">'graphql-depth-limit'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    
+    <span class="pl-k">const</span> <span class="pl-s1">typeDefs</span> <span class="pl-c1">=</span> <span class="pl-s">`</span>
+    <span class="pl-s"> type Query {</span>
+    <span class="pl-s">   hello: String</span>
+    <span class="pl-s"> }</span>
+    <span class="pl-s">`</span><span class="pl-kos">;</span>
+    
+    <span class="pl-k">const</span> <span class="pl-s1">resolvers</span> <span class="pl-c1">=</span> <span class="pl-kos">{</span>
+     <span class="pl-c1">Query</span>: <span class="pl-kos">{</span>
+       <span class="pl-en">hello</span>: <span class="pl-kos">(</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-s">'Hello world!'</span><span class="pl-kos">,</span>
+     <span class="pl-kos">}</span><span class="pl-kos">,</span>
+    <span class="pl-kos">}</span><span class="pl-kos">;</span>
+    
+    <span class="pl-k">const</span> <span class="pl-s1">schema</span> <span class="pl-c1">=</span> <span class="pl-en">makeExecutableSchema</span><span class="pl-kos">(</span><span class="pl-kos">{</span> typeDefs<span class="pl-kos">,</span> resolvers <span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    
+    <span class="pl-k">const</span> <span class="pl-s1">app</span> <span class="pl-c1">=</span> <span class="pl-s1">express</span><span class="pl-kos">(</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    
+    <span class="pl-s1">app</span><span class="pl-kos">.</span><span class="pl-en">use</span><span class="pl-kos">(</span>
+     <span class="pl-s">'/graphql'</span><span class="pl-kos">,</span>
+     <span class="pl-en">graphqlHTTP</span><span class="pl-kos">(</span><span class="pl-kos">{</span>
+       <span class="pl-c1">schema</span>: <span class="pl-s1">schema</span><span class="pl-kos">,</span>
+       <span class="pl-c1">validationRules</span>: <span class="pl-kos">[</span><span class="pl-s1">depthLimit</span><span class="pl-kos">(</span><span class="pl-c1">5</span><span class="pl-kos">)</span><span class="pl-kos">]</span><span class="pl-kos">,</span> <span class="pl-c">// Ограничение глубины запросов до 5</span>
+     <span class="pl-kos">}</span><span class="pl-kos">)</span>
+    <span class="pl-kos">)</span><span class="pl-kos">;</span>
+    
+    <span class="pl-s1">app</span><span class="pl-kos">.</span><span class="pl-en">listen</span><span class="pl-kos">(</span><span class="pl-c1">4000</span><span class="pl-kos">,</span> <span class="pl-kos">(</span><span class="pl-kos">)</span> <span class="pl-c1">=&gt;</span> <span class="pl-kos">{</span>
+     <span class="pl-smi">console</span><span class="pl-kos">.</span><span class="pl-en">log</span><span class="pl-kos">(</span><span class="pl-s">'Server is running on http://localhost:4000/graphql'</span><span class="pl-kos">)</span><span class="pl-kos">;</span>
+    <span class="pl-kos">}</span><span class="pl-kos">)</span><span class="pl-kos">;</span></pre>
+ </div>
+ <p dir="auto">
+  В данном примере используется
+  <strong>
+   middleware
+  </strong>
+  <code>
+   graphql-depth-limit
+  </code>
+  для
+        ограничения глубины запросов до 5 уровней, что помогает предотвратить атаки с использованием чрезмерно глубоких
+        запросов.​
+ </p>
+ <p dir="auto">
+  Реализация перечисленных мер безопасности позволит защитить GraphQL API от распространенных
+        уязвимостей и обеспечить стабильную и безопасную работу сервиса.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты для тестирования безопасности GraphQL
+  </h3>
+ </div>
+ <p dir="auto">
+  <a href="https://github.com/swisskyrepo/GraphQLmap">
+   GraphQLmap
+  </a>
+  – автоматизированный инструмент для
+        тестирования GraphQL API на уязвимости.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/GraphQL/1.jpg" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/GraphQL/1.jpg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://graphql-kit.com/graphql-voyager/" rel="nofollow">
+   GraphQL Voyager
+  </a>
+  – инструмент для
+        визуализации схем API и поиска потенциальных уязвимостей.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/GraphQL/2.jpg" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/GraphQL/2.jpg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://portswigger.net/bappstore/296e9a0730384be4b2fffef7b4e19b1f" rel="nofollow">
+   InQL
+  </a>
+  (Burp Suite Plugin) – расширение Burp Suite для анализа GraphQL API и обнаружения скрытых эндпоинтов.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/GraphQL/3.jpg" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/GraphQL/3.jpg" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   GraphQL
+  </strong>
+  – мощный инструмент для построения API, обеспечивающий гибкость в запросах
+        данных. Однако его особенности могут привести к различным уязвимостям, таким как утечки данных, инъекции и
+        перегрузка сервера сложными запросами. Настройка ограничений на доступ к данным, глубину вложенности запросов и
+        контроль аутентификации помогают минимизировать риски. Понимание возможных атак и использование инструментов
+        тестирования безопасности позволяют выявлять и устранять уязвимости, обеспечивая стабильность и защиту API.
+ </p>
+</article>

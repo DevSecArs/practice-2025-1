@@ -1,0 +1,1037 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Введение в криптографию для начинающих в CTF
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Что такое криптография в CTF?
+  </h2>
+ </div>
+ <p dir="auto">
+  Криптография — это наука о методах защиты информации путем преобразования ее в форму, непонятную без
+        специального ключа или знания. В контексте CTF (Capture the Flag) соревнований, криптографические задания
+        требуют от участников применения знаний и навыков для расшифровки или анализа зашифрованных данных с целью
+        получения флага.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Основные концепции
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Шифрование и дешифрование
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Шифрование
+   </strong>
+   — процесс преобразования открытого текста в зашифрованный с использованием
+            алгоритма и ключа.
+  </li>
+  <li>
+   <strong>
+    Дешифрование
+   </strong>
+   — обратный процесс, преобразование зашифрованного текста обратно в открытый
+            текст с помощью ключа.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример:
+  </strong>
+ </p>
+ <p dir="auto">
+  Используя шифр Цезаря со сдвигом на 3, слово
+  <strong>
+   "HELLO"
+  </strong>
+  преобразуется в
+  <strong>
+   "KHOOR"
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Симметричные и асимметричные алгоритмы
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <strong>
+    Симметричные алгоритмы
+   </strong>
+   используют один и тот же ключ для шифрования и дешифрования.
+  </li>
+  <li>
+   <strong>
+    Асимметричные алгоритмы
+   </strong>
+   используют пару ключей: открытый для шифрования и закрытый для
+            дешифрования.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Типы задач в криптографии CTF
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Классические шифры
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Шифр Цезаря
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Простой шифр, в котором каждая буква заменяется на букву, находящуюся на фиксированном количестве
+        позиций дальше по алфавиту.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как решить:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Попробовать все 25 возможных сдвигов.
+  </li>
+  <li>
+   Использовать инструменты для автоматизации перебора.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример использования в терминале:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>KHOOR<span class="pl-pds">'</span></span> <span class="pl-k">|</span> caesar -d</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Шифр Виженера
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Использует ключевое слово для шифрования текста посредством серии сдвигов.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как решить:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Определить длину ключа методом каскадного анализа.
+  </li>
+  <li>
+   Использовать инструменты для автоматизации дешифрования.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример использования в терминале:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>RIJVSUYVJN<span class="pl-pds">'</span></span> <span class="pl-k">|</span> vigenere -d -k <span class="pl-s"><span class="pl-pds">'</span>KEY<span class="pl-pds">'</span></span></pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Математическая криптография
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   RSA
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  RSA — асимметричный алгоритм шифрования, основанный на математических концепциях теории чисел, таких
+        как простые числа и модульная арифметика. Безопасность RSA базируется на сложности факторизации больших чисел.
+ </p>
+ <p dir="auto">
+  <strong>
+   Принципы работы:
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Генерация ключей:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Выбираются два больших простых числа ( p ) и ( q ).
+    </li>
+    <li>
+     Вычисляется ( n = p \times q ).
+    </li>
+    <li>
+     Вычисляется функция Эйлера: ( \phi(n) = (p - 1)(q - 1) ).
+    </li>
+    <li>
+     Выбирается открытый экспонент ( e ), взаимно простое с ( \phi(n) ).
+    </li>
+    <li>
+     Вычисляется закрытый экспонент ( d ), такое что ( d \times e \mod \phi(n) = 1 ).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Шифрование:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Зашифрованное сообщение вычисляется как ( c = m^e \mod n ), где ( m ) — исходное сообщение.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Дешифрование:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Открытое сообщение восстанавливается как ( m = c^d \mod n ).
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Пример задачи:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Дано:
+   <ul dir="auto">
+    <li>
+     ( n = 3233 )
+    </li>
+    <li>
+     ( e = 17 )
+    </li>
+    <li>
+     Зашифрованное сообщение ( c = 855 )
+    </li>
+   </ul>
+  </li>
+  <li>
+   Требуется: Расшифровать сообщение.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Решение:
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Факторизуем ( n ):
+   </p>
+   <ul dir="auto">
+    <li>
+     ( n = 61 \times 53 ), где ( p = 61 ), ( q = 53 ).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Вычисляем ( \phi(n) ):
+   </p>
+   <ul dir="auto">
+    <li>
+     ( \phi(n) = (61 - 1)(53 - 1) = 3120 ).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Находим ( d ):
+   </p>
+   <ul dir="auto">
+    <li>
+     ( d \times 17 \mod 3120 = 1 ).
+    </li>
+    <li>
+     Решая уравнение, находим ( d = 2753 ).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Дешифруем сообщение:
+   </p>
+   <ul dir="auto">
+    <li>
+     ( m = 855^{2753} \mod 3233 ).
+    </li>
+    <li>
+     Вычисляем ( m = 123 ).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    Преобразуем число в символ:
+   </p>
+   <ul dir="auto">
+    <li>
+     Если используется кодировка ASCII, то 123 соответствует символу
+     <code>
+      {
+     </code>
+     .
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Как решить в CTF:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Использовать инструменты для факторизации ( n ), такие как
+   <code>
+    Yafu
+   </code>
+   ,
+   <code>
+    Msieve
+   </code>
+   или
+            онлайн-сервисы.
+  </li>
+  <li>
+   Использовать скрипты на Python с библиотекой
+   <code>
+    Crypto
+   </code>
+   или
+   <code>
+    Cryptodome
+   </code>
+   .
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример использования в Python:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-v">Crypto</span>.<span class="pl-v">Util</span>.<span class="pl-s1">number</span> <span class="pl-k">import</span> <span class="pl-s1">inverse</span>, <span class="pl-s1">long_to_bytes</span>
+    
+    <span class="pl-s1">n</span> <span class="pl-c1">=</span> <span class="pl-c1">3233</span>
+    <span class="pl-s1">e</span> <span class="pl-c1">=</span> <span class="pl-c1">17</span>
+    <span class="pl-s1">c</span> <span class="pl-c1">=</span> <span class="pl-c1">855</span>
+    
+    <span class="pl-c"># Факторизация n</span>
+    <span class="pl-s1">p</span> <span class="pl-c1">=</span> <span class="pl-c1">61</span>
+    <span class="pl-s1">q</span> <span class="pl-c1">=</span> <span class="pl-c1">53</span>
+    
+    <span class="pl-s1">phi</span> <span class="pl-c1">=</span> (<span class="pl-s1">p</span> <span class="pl-c1">-</span> <span class="pl-c1">1</span>) <span class="pl-c1">*</span> (<span class="pl-s1">q</span> <span class="pl-c1">-</span> <span class="pl-c1">1</span>)
+    
+    <span class="pl-c"># Вычисление d</span>
+    <span class="pl-s1">d</span> <span class="pl-c1">=</span> <span class="pl-en">inverse</span>(<span class="pl-s1">e</span>, <span class="pl-s1">phi</span>)
+    
+    <span class="pl-c"># Дешифрование</span>
+    <span class="pl-s1">m</span> <span class="pl-c1">=</span> <span class="pl-en">pow</span>(<span class="pl-s1">c</span>, <span class="pl-s1">d</span>, <span class="pl-s1">n</span>)
+    <span class="pl-en">print</span>(<span class="pl-en">long_to_bytes</span>(<span class="pl-s1">m</span>))</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Дискретное логарифмирование и Diffie-Hellman
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  В криптографии на основе дискретного логарифма безопасность алгоритмов основана на сложности
+        вычисления дискретного логарифма в конечных полях.
+ </p>
+ <p dir="auto">
+  <strong>
+   Принципы работы Diffie-Hellman:
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Общие параметры:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Простое число ( p ) и генератор ( g ).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Обмен ключами:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Пользователь A выбирает секретное число ( a ) и вычисляет ( A = g^a \mod p ).
+    </li>
+    <li>
+     Пользователь B выбирает секретное число ( b ) и вычисляет ( B = g^b \mod p ).
+    </li>
+    <li>
+     A и B обмениваются значениями ( A ) и ( B ).
+    </li>
+    <li>
+     A вычисляет общий секрет ( s = B^a \mod p ).
+    </li>
+    <li>
+     B вычисляет общий секрет ( s = A^b \mod p ).
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Как решить в CTF:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Если используются малые параметры ( p ) или ( g ), можно вычислить секретные ключи ( a ) или ( b ) через
+            дискретный логарифм.
+  </li>
+  <li>
+   Использовать алгоритмы для вычисления дискретного логарифма, такие как алгоритм «Ро Полларда».
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример использования в Python:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-s1">sympy</span>.<span class="pl-s1">ntheory</span> <span class="pl-k">import</span> <span class="pl-s1">discrete_log</span>
+    
+    <span class="pl-s1">p</span> <span class="pl-c1">=</span> <span class="pl-c1">23</span>
+    <span class="pl-s1">g</span> <span class="pl-c1">=</span> <span class="pl-c1">5</span>
+    <span class="pl-c1">A</span> <span class="pl-c1">=</span> <span class="pl-c1">8</span>
+    
+    <span class="pl-c"># Вычисление секретного числа a</span>
+    <span class="pl-s1">a</span> <span class="pl-c1">=</span> <span class="pl-en">discrete_log</span>(<span class="pl-s1">p</span>, <span class="pl-c1">A</span>, <span class="pl-s1">g</span>)
+    <span class="pl-en">print</span>(<span class="pl-s">f"Секретное число a: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">a</span><span class="pl-kos">}</span></span>"</span>)</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Стеганография
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   LSB-стеганография
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Метод стеганографии, при котором данные скрываются в наименее значащих битах (LSB) пикселей
+        изображения.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как решить:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Использовать инструменты для извлечения LSB-данных.
+  </li>
+  <li>
+   Проверить каждый цветовой канал (RGB) на наличие скрытой информации.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример использования инструментов:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     stegsolve.jar
+    </strong>
+    — графический инструмент для анализа изображений.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     zsteg
+    </strong>
+    — для анализа PNG и BMP файлов:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>zsteg -a image.png</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     bitplane
+    </strong>
+    — для визуализации битовых плоскостей изображения.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Криптоанализ
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Анализ частот
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Метод взлома моноалфавитных шифров путем сравнения частоты символов в зашифрованном тексте с известной
+        частотой символов в языке.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как решить:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Подсчитать частоту каждого символа в шифротексте.
+  </li>
+  <li>
+   Сопоставить наиболее часто встречающиеся символы с наиболее частыми буквами в языке (например, E, T, A в
+            английском).
+  </li>
+  <li>
+   Постепенно заменять символы и проверять осмысленность получаемого текста.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример использования в Python:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-s1">collections</span> <span class="pl-k">import</span> <span class="pl-v">Counter</span>
+    
+    <span class="pl-s1">ciphertext</span> <span class="pl-c1">=</span> <span class="pl-s">'ZHOFRPH WR FUBSWRJUDSKB'</span>
+    <span class="pl-s1">frequency</span> <span class="pl-c1">=</span> <span class="pl-en">Counter</span>(<span class="pl-s1">ciphertext</span>.<span class="pl-c1">replace</span>(<span class="pl-s">' '</span>, <span class="pl-s">''</span>))
+    <span class="pl-en">print</span>(<span class="pl-s1">frequency</span>)</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Атаки на одноразовый блокнот с повторным использованием
+            ключа
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Одноразовый блокнот (One-Time Pad) является абсолютно стойким шифром, если ключ используется только
+        один раз. Однако, если один и тот же ключ используется для шифрования нескольких сообщений, это приводит к
+        уязвимости.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как решить:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Если два сообщения зашифрованы одним ключом, их XOR дает XOR открытых текстов.
+  </li>
+  <li>
+   Можно использовать статистические методы и известные шаблоны для восстановления исходных сообщений.
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Пример задачи:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Даны два шифротекста ( C1 ) и ( C2 ), зашифрованные одним ключом.
+  </li>
+  <li>
+   Требуется: найти открытые тексты ( M1 ) и ( M2 ).
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Решение:
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   Вычислить ( C1 \oplus C2 = M1 \oplus M2 ).
+  </li>
+  <li>
+   Проанализировать полученный результат на предмет известных слов или фраз.
+  </li>
+  <li>
+   Использовать методы криптоанализа для восстановления ( M1 ) и ( M2 ).
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Инструменты и ресурсы
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Онлайн-инструменты
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     <a href="https://gchq.github.io/CyberChef/" rel="nofollow">
+      CyberChef
+     </a>
+    </strong>
+   </p>
+   <p dir="auto">
+    Универсальный инструмент для различных преобразований данных.
+   </p>
+   <p dir="auto">
+    <strong>
+     Пример использования:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     <p dir="auto">
+      Расшифровать Base64:
+     </p>
+     <ol dir="auto">
+      <li>
+       Вставить зашифрованный текст в поле ввода.
+      </li>
+      <li>
+       Добавить операцию
+       <strong>
+        "From Base64"
+       </strong>
+       в рецепт.
+      </li>
+     </ol>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     <a href="https://www.dcode.fr/" rel="nofollow">
+      dCode
+     </a>
+    </strong>
+   </p>
+   <p dir="auto">
+    Сайт с множеством инструментов для криптоанализа и стеганографии.
+   </p>
+   <p dir="auto">
+    <strong>
+     Пример использования:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     <p dir="auto">
+      Решить шифр Виженера, не зная ключ:
+     </p>
+     <ol dir="auto">
+      <li>
+       Перейти на страницу шифра Виженера.
+      </li>
+      <li>
+       Вставить зашифрованный текст.
+      </li>
+      <li>
+       Выбрать опцию автоматического взлома.
+      </li>
+     </ol>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Программные инструменты
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Hashcat
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Мощный инструмент для взлома хешей с использованием GPU.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Взломать MD5-хеш с помощью словаря
+    <strong>
+     rockyou.txt
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>hashcat -m 0 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Взломать хеш SHA-1:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>hashcat -m 100 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   John the Ripper
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Инструмент для взлома паролей и хешей.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Взломать хеши с помощью
+    <strong>
+     rockyou.txt
+    </strong>
+    :
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Steghide
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Инструмент для скрытия и извлечения данных из изображений и аудио файлов.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Извлечь скрытый файл:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>steghide extract -sf image.jpg -p <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span></pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Ghidra
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Описание:
+  </strong>
+ </p>
+ <p dir="auto">
+  Инструмент для обратной разработки, полезен для анализа бинарных файлов и понимания собственных
+        алгоритмов шифрования.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пример использования:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   Открыть бинарный файл, проанализировать функции, найти алгоритм шифрования.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   RockYou.txt
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Предыстория RockYou.txt
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   RockYou.txt
+  </strong>
+  — это набор скомпрометированных паролей от компании RockYou . В декабре
+        2009 года компания столкнулась с утечкой данных, в результате чего было раскрыто более 32 миллионов учетных
+        записей пользователей. Это случилось главным образом из-за политики компании, связанной с хранением паролей в
+        незашифрованном виде. это один из самых популярных словарей паролей, используемых для перебора паролей.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Пример использования RockYou.txt
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Использование с Hashcat:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Взломать MD5-хеш с использованием RockYou.txt:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>hashcat -m 0 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</pre>
+   </div>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Использование с John the Ripper:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Взломать хеши с помощью RockYou.txt:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt</pre>
+   </div>
+  </li>
+ </ul>
+ <p dir="auto">
+  <strong>
+   Поиск паролей в RockYou.txt:
+  </strong>
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Проверить, есть ли определенный пароль в словаре:
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>grep <span class="pl-s"><span class="pl-pds">'</span>password123<span class="pl-pds">'</span></span> /usr/share/wordlists/rockyou.txt</pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    Создать персонализированный словарь на основе RockYou.txt, фильтруя по определенным условиям
+                (например, пароли длиной от 8 до 12 символов):
+   </p>
+   <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+    <pre>awk <span class="pl-s"><span class="pl-pds">'</span>length($0) &gt;= 8 &amp;&amp; length($0) &lt;= 12<span class="pl-pds">'</span></span> /usr/share/wordlists/rockyou.txt <span class="pl-k">&gt;</span> filtered.txt</pre>
+   </div>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Подходы к решению криптографических задач
+  </h2>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Анализ задания
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Внимательно прочитайте условие и выявите ключевые моменты.
+    </li>
+    <li>
+     Обратите внимание на форматы файлов и возможные подсказки.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование подходящих инструментов
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Выберите инструменты, наиболее подходящие для задачи.
+    </li>
+    <li>
+     Ознакомьтесь с их документацией и примерами использования.
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Автоматизация процессов
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Если задача требует повторяющихся действий, напишите скрипт.
+    </li>
+    <li>
+     Используйте языки программирования, такие как Python.
+    </li>
+   </ul>
+   <p dir="auto">
+    <strong>
+     Пример:
+    </strong>
+   </p>
+   <p dir="auto">
+    Написать скрипт для перебора паролей из словаря с помощью
+    <code>
+     steghide
+    </code>
+    :
+   </p>
+   <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+    <pre><span class="pl-k">import</span> <span class="pl-s1">subprocess</span>
+    
+    <span class="pl-s1">wordlist</span> <span class="pl-c1">=</span> <span class="pl-s">'/usr/share/wordlists/rockyou.txt'</span>
+    <span class="pl-s1">image</span> <span class="pl-c1">=</span> <span class="pl-s">'image.jpg'</span>
+    
+    <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">wordlist</span>, <span class="pl-s">'r'</span>, <span class="pl-s1">encoding</span><span class="pl-c1">=</span><span class="pl-s">'utf-8'</span>, <span class="pl-s1">errors</span><span class="pl-c1">=</span><span class="pl-s">'ignore'</span>) <span class="pl-k">as</span> <span class="pl-s1">f</span>:
+        <span class="pl-k">for</span> <span class="pl-s1">line</span> <span class="pl-c1">in</span> <span class="pl-s1">f</span>:
+            <span class="pl-s1">password</span> <span class="pl-c1">=</span> <span class="pl-s1">line</span>.<span class="pl-c1">strip</span>()
+            <span class="pl-k">try</span>:
+                <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">subprocess</span>.<span class="pl-c1">run</span>([<span class="pl-s">'steghide'</span>, <span class="pl-s">'extract'</span>, <span class="pl-s">'-sf'</span>, <span class="pl-s1">image</span>, <span class="pl-s">'-p'</span>, <span class="pl-s1">password</span>], <span class="pl-s1">capture_output</span><span class="pl-c1">=</span><span class="pl-c1">True</span>, <span class="pl-s1">text</span><span class="pl-c1">=</span><span class="pl-c1">True</span>)
+                <span class="pl-k">if</span> <span class="pl-s">'wrote extracted data'</span> <span class="pl-c1">in</span> <span class="pl-s1">result</span>.<span class="pl-c1">stdout</span>:
+                    <span class="pl-en">print</span>(<span class="pl-s">f'Password found: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">password</span><span class="pl-kos">}</span></span>'</span>)
+                    <span class="pl-k">break</span>
+            <span class="pl-k">except</span> <span class="pl-v">Exception</span> <span class="pl-k">as</span> <span class="pl-s1">e</span>:
+                <span class="pl-k">pass</span></pre>
+   </div>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Обратная разработка и анализ файлов
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     Используйте
+     <code>
+      binwalk
+     </code>
+     ,
+     <code>
+      strings
+     </code>
+     ,
+     <code>
+      exiftool
+     </code>
+     для анализа файлов.
+    </li>
+    <li>
+     Проверьте наличие скрытых данных или нестандартных заголовков.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <hr/>
+</article>

@@ -1,0 +1,893 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Атаки на криптосистемы, основанные на эллиптических кривых
+            (ECC)
+  </h1>
+ </div>
+ <p dir="auto">
+  <strong>
+   Эллиптические кривые
+  </strong>
+  (Elliptic Curve Cryptography, ECC) — один из самых эффективных
+        современных методов криптографии, основанный на сложных математических проблемах.
+ </p>
+ <p dir="auto">
+  В отличие от традиционных алгоритмов, таких как
+  <strong>
+   RSA
+  </strong>
+  , криптосистемы
+  <strong>
+   ECC
+  </strong>
+  обеспечивают высокий уровень безопасности при значительно меньших размерах ключей. Это
+        делает
+  <strong>
+   ECC
+  </strong>
+  привлекательным выбором для защищённого обмена данными, цифровых подписей и
+        аутентификации. Однако, несмотря на преимущества эллиптических кривых,
+  <strong>
+   ECC
+  </strong>
+  не являются
+        абсолютной защитой от криптоаналитических атак.
+ </p>
+ <p dir="auto">
+  В данной статье рассматриваются основные методы атак на
+  <strong>
+   ECC
+  </strong>
+  , включая атаки на
+        дискретный логарифм, атаки Полларда «ро», атаки на некорректные параметры и атаки по сторонним каналам. В
+        завершение проведён разбор задачи по данной теме.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм ECC
+  </h3>
+ </div>
+ <p dir="auto">
+  Основное преимущество ECC заключается в проблеме дискретного логарифма (
+  <strong>
+   ECDLP
+  </strong>
+  ) —
+        задаче нахождения числа
+  <code>
+   n
+  </code>
+  , такого что:
+ </p>
+ <p dir="auto">
+  <math-renderer class="js-display-math" data-catalyst="" data-run-id="0d8df33ef54b153822ff4ac02a7d663b" data-static-url="https://github.githubassets.com/static" style="display: block">
+   <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>
+     Q
+    </mi>
+    <mo>
+     =
+    </mo>
+    <mi>
+     n
+    </mi>
+    <mi>
+     G
+    </mi>
+   </math>
+  </math-renderer>
+ </p>
+ <p dir="auto">
+  где:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    G
+   </strong>
+   — фиксированная генераторная точка на эллиптической кривой,
+  </li>
+  <li>
+   <strong>
+    Q
+   </strong>
+   — публичный ключ (точка на кривой),
+  </li>
+  <li>
+   <strong>
+    n
+   </strong>
+   — закрытый ключ (скаляр, который мы хотим найти).
+  </li>
+ </ul>
+ <p dir="auto">
+  Основная сложность состоит в том, что даже при известном
+  <code>
+   G
+  </code>
+  и
+  <code>
+   Q
+  </code>
+  , вычислить
+  <code>
+   n
+  </code>
+  практически невозможно при достаточно больших значениях параметров.
+ </p>
+ <p dir="auto">
+  В общем виде эллиптическая кривая в конечном поле
+  <code>
+   GF(p)
+  </code>
+  задаётся уравнением:
+ </p>
+ <p dir="auto">
+  <math-renderer class="js-display-math" data-catalyst="" data-run-id="0d8df33ef54b153822ff4ac02a7d663b" data-static-url="https://github.githubassets.com/static" style="display: block">
+   <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+     <mi>
+      y
+     </mi>
+     <mn>
+      2
+     </mn>
+    </msup>
+    <mo>
+     ≡
+    </mo>
+    <msup>
+     <mi>
+      x
+     </mi>
+     <mn>
+      3
+     </mn>
+    </msup>
+    <mo>
+     +
+    </mo>
+    <mi>
+     a
+    </mi>
+    <mi>
+     x
+    </mi>
+    <mo>
+     +
+    </mo>
+    <mi>
+     b
+    </mi>
+    <mspace width="1em">
+    </mspace>
+    <mi>
+     mod
+    </mi>
+    <mstyle>
+     <mspace width="0.167em">
+     </mspace>
+    </mstyle>
+    <mstyle>
+     <mspace width="0.167em">
+     </mspace>
+    </mstyle>
+    <mi>
+     p
+    </mi>
+   </math>
+  </math-renderer>
+ </p>
+ <p dir="auto">
+  где
+  <code>
+   p
+  </code>
+  — простое число, а
+  <code>
+   a
+  </code>
+  и
+  <code>
+   b
+  </code>
+  — параметры кривой. Чтобы кривая
+        была корректной, должно выполняться условие:
+ </p>
+ <p dir="auto">
+  <math-renderer class="js-display-math" data-catalyst="" data-run-id="0d8df33ef54b153822ff4ac02a7d663b" data-static-url="https://github.githubassets.com/static" style="display: block">
+   <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mn>
+     4
+    </mn>
+    <msup>
+     <mi>
+      a
+     </mi>
+     <mn>
+      3
+     </mn>
+    </msup>
+    <mo>
+     +
+    </mo>
+    <mn>
+     27
+    </mn>
+    <msup>
+     <mi>
+      b
+     </mi>
+     <mn>
+      2
+     </mn>
+    </msup>
+    <mo>
+     ≢
+    </mo>
+    <mn>
+     0
+    </mn>
+    <mspace width="1em">
+    </mspace>
+    <mi>
+     mod
+    </mi>
+    <mstyle>
+     <mspace width="0.167em">
+     </mspace>
+    </mstyle>
+    <mstyle>
+     <mspace width="0.167em">
+     </mspace>
+    </mstyle>
+    <mi>
+     p
+    </mi>
+   </math>
+  </math-renderer>
+ </p>
+ <p dir="auto">
+  Это гарантирует, что уравнение действительно определяет эллиптическую кривую, а не особую форму
+        (сингулярную кривую).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Арифметика эллиптических кривых
+  </h3>
+ </div>
+ <p dir="auto">
+  Для работы с ECC определены три базовые операции:
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/ECC/4.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/ECC/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Сложение точек
+   </strong>
+   . Если даны две точки
+   <code>
+    P
+   </code>
+   и
+   <code>
+    Q
+   </code>
+   , то их сумма
+   <code>
+    R=P+Q
+   </code>
+   вычисляется по формулам, зависящим от положения точек на кривой.
+  </li>
+  <li>
+   <strong>
+    Удвоение точки
+   </strong>
+   . Операция
+   <code>
+    P+P
+   </code>
+   аналогична сложению, но требует других формул.
+  </li>
+  <li>
+   <strong>
+    Умножение точки на скаляр
+   </strong>
+   . Для вычисления
+   <code>
+    nG
+   </code>
+   используется метод двойного и
+            добавочного шагов, аналогичный быстрому возведению в степень.
+  </li>
+ </ol>
+ <p dir="auto">
+  Эти операции являются основой криптографических протоколов на эллиптических кривых.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Применение ECC в криптографии
+  </h3>
+ </div>
+ <p dir="auto">
+  Криптосистемы на эллиптических кривых широко применяются в:
+ </p>
+ <ul dir="auto">
+  <li>
+   протоколах обмена ключами (
+   <strong>
+    ECDH
+   </strong>
+   – Elliptic Curve Diffie-Hellman),
+  </li>
+  <li>
+   цифровых подписях (
+   <strong>
+    ECDSA
+   </strong>
+   – Elliptic Curve Digital Signature Algorithm),
+  </li>
+  <li>
+   шифровании данных (
+   <strong>
+    ECIES
+   </strong>
+   – Elliptic Curve Integrated Encryption Scheme).
+  </li>
+ </ul>
+ <p dir="auto">
+  Главное преимущество ECC перед классическими схемами (RSA, DSA) — это меньший размер ключа при
+        аналогичном уровне безопасности. Например:
+ </p>
+ <ul dir="auto">
+  <li>
+   <strong>
+    ECC-256
+   </strong>
+   даёт уровень безопасности, эквивалентный RSA-3072,
+  </li>
+  <li>
+   <strong>
+    ECC-384
+   </strong>
+   эквивалентен RSA-7680.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Атаки на ECC
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Атака Полларда «ро» на ECDLP
+   </p>
+   <p dir="auto">
+    Одним из наиболее мощных методов нахождения
+    <code>
+     n
+    </code>
+    является
+    <strong>
+     метод Полларда
+                    «ро»
+    </strong>
+    , использующий принцип поиска коллизий. Этот метод позволяет решать
+    <strong>
+     ECDLP
+    </strong>
+    за время
+    <code>
+     O(√n)
+    </code>
+    , что значительно быстрее полного перебора.
+   </p>
+   <p dir="auto">
+    Алгоритм:
+   </p>
+   <ul dir="auto">
+    <li>
+     создаётся случайное разбиение множества точек на эллиптической кривой,
+    </li>
+    <li>
+     генерируются две последовательности точек,
+     <code>
+      X_i
+     </code>
+     и
+     <code>
+      X_j
+     </code>
+     , с различными
+                    коэффициентами
+     <code>
+      a
+     </code>
+     и
+     <code>
+      b
+     </code>
+     , определяющими их представление в виде
+     <code>
+      X = aG + bQ
+     </code>
+     ,
+    </li>
+    <li>
+     вычисления выполняются до тех пор, пока не обнаружится коллизия
+     <code>
+      X_i = X_j
+     </code>
+     ,
+    </li>
+    <li>
+     используя полученные значения
+     <code>
+      a
+     </code>
+     и
+     <code>
+      b
+     </code>
+     , восстанавливается
+     <code>
+      n
+     </code>
+     с
+                    помощью модулярной арифметики.
+    </li>
+   </ul>
+   <p dir="auto">
+    <strong>
+     Метод Полларда
+    </strong>
+    применяется при атаках на ECC Diffie-Hellman, цифровые подписи
+                (
+    <strong>
+     ECDSA
+    </strong>
+    ) и схемы аутентификации.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Атака на некорректные параметры (Invalid Curve Attack)
+   </p>
+   <p dir="auto">
+    Некорректные параметры эллиптической кривой могут привести к ослаблению безопасности. В
+                частности, если атакующий может заставить жертву использовать кривую с
+    <strong>
+     низким
+    </strong>
+    порядком,
+                вычисление закрытого ключа становится тривиальной задачей.
+   </p>
+   <p dir="auto">
+    Пример атаки:
+   </p>
+   <ul dir="auto">
+    <li>
+     атакующий предлагает использовать заведомо слабую кривую с малым количеством точек,
+    </li>
+    <li>
+     жертва выполняет операции с этой кривой, не проверяя её корректность,
+    </li>
+    <li>
+     атакующий перебирает возможные закрытые ключи, поскольку их количество мало.
+    </li>
+   </ul>
+   <p dir="auto">
+    Такие атаки можно предотвратить проверкой параметров кривой и использованием только
+                утверждённых стандартов (например, NIST P-256, Curve25519).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Атаки по сторонним каналам (Side-Channel Attacks)
+   </p>
+   <p dir="auto">
+    Криптографические системы ECC могут быть уязвимы к атакам, использующим утечки информации
+                через потребление энергии, время выполнения операций или электромагнитное излучение.
+   </p>
+   <p dir="auto">
+    Примеры атак:
+   </p>
+   <ul dir="auto">
+    <li>
+     <strong>
+      атака по времени
+     </strong>
+     : анализ разницы времени выполнения сложения точек ECC позволяет
+                    восстановить закрытый ключ,
+    </li>
+    <li>
+     <strong>
+      атака по потреблению питания
+     </strong>
+     : измеряя колебания потребляемой энергии, можно
+                    определить операции скалярного умножения,
+    </li>
+    <li>
+     <strong>
+      электромагнитные атаки
+     </strong>
+     : регистрируя излучение устройства, можно извлечь информацию
+                    о ключах.
+    </li>
+   </ul>
+   <p dir="auto">
+    Противодействие таким атакам включает в себя использование константного времени вычислений,
+                специальных защитных схем и аппаратных решений для экранирования.
+   </p>
+  </li>
+ </ol>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Разбор задачи на криптографию эллиптических кривых
+  </h3>
+ </div>
+ <p dir="auto">
+  Эта задача связана с обменом ключами по эллиптической кривой (ECC Diffie-Hellman) и вычислением
+        SHA1-хэша общего секрета.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/ECC/1.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/ECC/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/ECC/2.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/ECC/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Условие
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Эллиптическая кривая:
+  </li>
+ </ul>
+ <p dir="auto">
+  <math-renderer class="js-display-math" data-catalyst="" data-run-id="0d8df33ef54b153822ff4ac02a7d663b" data-static-url="https://github.githubassets.com/static" style="display: block">
+   <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>
+     E
+    </mi>
+    <mo>
+     :
+    </mo>
+    <msup>
+     <mi>
+      y
+     </mi>
+     <mn>
+      2
+     </mn>
+    </msup>
+    <mo>
+     ≡
+    </mo>
+    <msup>
+     <mi>
+      x
+     </mi>
+     <mn>
+      3
+     </mn>
+    </msup>
+    <mo>
+     +
+    </mo>
+    <mn>
+     497
+    </mn>
+    <mi>
+     x
+    </mi>
+    <mo>
+     +
+    </mo>
+    <mn>
+     1768
+    </mn>
+    <mspace width="1em">
+    </mspace>
+    <mi>
+     mod
+    </mi>
+    <mstyle>
+     <mspace width="0.167em">
+     </mspace>
+    </mstyle>
+    <mstyle>
+     <mspace width="0.167em">
+     </mspace>
+    </mstyle>
+    <mn>
+     9739
+    </mn>
+   </math>
+  </math-renderer>
+ </p>
+ <ul dir="auto">
+  <li>
+   Генераторная точка:
+   <code>
+    G = (1804, 5368)
+   </code>
+   .
+  </li>
+  <li>
+   Публичный ключ Алисы:
+   <code>
+    Q_A = (815, 3190)
+   </code>
+   .
+  </li>
+  <li>
+   Секретный ключ Боба:
+   <code>
+    n_B = 1829
+   </code>
+   .
+  </li>
+ </ul>
+ <p dir="auto">
+  Необходимо вычислить
+  <strong>
+   общий секрет
+  </strong>
+  и взять
+  <strong>
+   SHA1-хэш
+  </strong>
+  от координаты
+  <code>
+   x
+  </code>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Полный код решения
+  </h3>
+ </div>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">from</span> <span class="pl-s1">hashlib</span> <span class="pl-k">import</span> <span class="pl-s1">sha1</span>
+    
+    
+    <span class="pl-k">def</span> <span class="pl-en">elliptic_addition</span>(<span class="pl-s1">params</span>, <span class="pl-c1">P</span>, <span class="pl-c1">Q</span>):
+        <span class="pl-s1">a</span>, <span class="pl-s1">b</span>, <span class="pl-s1">p</span> <span class="pl-c1">=</span> <span class="pl-s1">params</span>
+        <span class="pl-k">if</span> <span class="pl-c1">P</span> <span class="pl-c1">==</span> (<span class="pl-c1">0</span>, <span class="pl-c1">0</span>):
+            <span class="pl-k">return</span> <span class="pl-c1">Q</span>
+        <span class="pl-k">if</span> <span class="pl-c1">Q</span> <span class="pl-c1">==</span> (<span class="pl-c1">0</span>, <span class="pl-c1">0</span>):
+            <span class="pl-k">return</span> <span class="pl-c1">P</span>
+        <span class="pl-s1">x1</span>, <span class="pl-s1">y1</span> <span class="pl-c1">=</span> <span class="pl-c1">P</span>
+        <span class="pl-s1">x2</span>, <span class="pl-s1">y2</span> <span class="pl-c1">=</span> <span class="pl-c1">Q</span>
+    
+        <span class="pl-k">if</span> <span class="pl-s1">x1</span> <span class="pl-c1">==</span> <span class="pl-s1">x2</span> <span class="pl-c1">and</span> <span class="pl-s1">y1</span> <span class="pl-c1">==</span> <span class="pl-c1">-</span><span class="pl-s1">y2</span>:
+            <span class="pl-k">return</span> (<span class="pl-c1">0</span>, <span class="pl-c1">0</span>)
+    
+        <span class="pl-k">if</span> <span class="pl-c1">P</span> <span class="pl-c1">==</span> <span class="pl-c1">Q</span>:
+            <span class="pl-s1">slope</span> <span class="pl-c1">=</span> ((<span class="pl-c1">3</span> <span class="pl-c1">*</span> <span class="pl-s1">x1</span> <span class="pl-c1">**</span> <span class="pl-c1">2</span> <span class="pl-c1">+</span> <span class="pl-s1">a</span>) <span class="pl-c1">*</span> <span class="pl-en">pow</span>(<span class="pl-c1">2</span> <span class="pl-c1">*</span> <span class="pl-s1">y1</span>, <span class="pl-c1">-</span><span class="pl-c1">1</span>, <span class="pl-s1">p</span>)) <span class="pl-c1">%</span> <span class="pl-s1">p</span>
+        <span class="pl-k">else</span>:
+            <span class="pl-s1">slope</span> <span class="pl-c1">=</span> ((<span class="pl-s1">y2</span> <span class="pl-c1">-</span> <span class="pl-s1">y1</span>) <span class="pl-c1">*</span> <span class="pl-en">pow</span>(<span class="pl-s1">x2</span> <span class="pl-c1">-</span> <span class="pl-s1">x1</span>, <span class="pl-c1">-</span><span class="pl-c1">1</span>, <span class="pl-s1">p</span>)) <span class="pl-c1">%</span> <span class="pl-s1">p</span>
+    
+        <span class="pl-s1">x3</span> <span class="pl-c1">=</span> (<span class="pl-s1">slope</span> <span class="pl-c1">**</span> <span class="pl-c1">2</span> <span class="pl-c1">-</span> <span class="pl-s1">x1</span> <span class="pl-c1">-</span> <span class="pl-s1">x2</span>) <span class="pl-c1">%</span> <span class="pl-s1">p</span>
+        <span class="pl-s1">y3</span> <span class="pl-c1">=</span> (<span class="pl-s1">slope</span> <span class="pl-c1">*</span> (<span class="pl-s1">x1</span> <span class="pl-c1">-</span> <span class="pl-s1">x3</span>) <span class="pl-c1">-</span> <span class="pl-s1">y1</span>) <span class="pl-c1">%</span> <span class="pl-s1">p</span>
+    
+        <span class="pl-k">return</span> (<span class="pl-s1">x3</span>, <span class="pl-s1">y3</span>)
+    
+    
+    <span class="pl-k">def</span> <span class="pl-en">scalar_multiplication</span>(<span class="pl-s1">params</span>, <span class="pl-c1">P</span>, <span class="pl-s1">n</span>):
+        <span class="pl-s1">result</span> <span class="pl-c1">=</span> (<span class="pl-c1">0</span>, <span class="pl-c1">0</span>)
+        <span class="pl-s1">temp</span> <span class="pl-c1">=</span> <span class="pl-c1">P</span>
+        <span class="pl-k">while</span> <span class="pl-s1">n</span>:
+            <span class="pl-k">if</span> <span class="pl-s1">n</span> <span class="pl-c1">&amp;</span> <span class="pl-c1">1</span>:
+                <span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-en">elliptic_addition</span>(<span class="pl-s1">params</span>, <span class="pl-s1">result</span>, <span class="pl-s1">temp</span>)
+            <span class="pl-s1">temp</span> <span class="pl-c1">=</span> <span class="pl-en">elliptic_addition</span>(<span class="pl-s1">params</span>, <span class="pl-s1">temp</span>, <span class="pl-s1">temp</span>)
+            <span class="pl-s1">n</span> <span class="pl-c1">&gt;&gt;=</span> <span class="pl-c1">1</span>
+        <span class="pl-k">return</span> <span class="pl-s1">result</span>
+    
+    
+    <span class="pl-c"># Параметры кривой</span>
+    <span class="pl-s1">a</span>, <span class="pl-s1">b</span>, <span class="pl-s1">p</span> <span class="pl-c1">=</span> <span class="pl-c1">497</span>, <span class="pl-c1">1768</span>, <span class="pl-c1">9739</span>
+    <span class="pl-s1">curve_params</span> <span class="pl-c1">=</span> (<span class="pl-s1">a</span>, <span class="pl-s1">b</span>, <span class="pl-s1">p</span>)
+    
+    <span class="pl-c"># Заданные точки и скаляр</span>
+    <span class="pl-c1">Q_A</span> <span class="pl-c1">=</span> (<span class="pl-c1">815</span>, <span class="pl-c1">3190</span>)
+    <span class="pl-s1">n_B</span> <span class="pl-c1">=</span> <span class="pl-c1">1829</span>
+    
+    <span class="pl-s1">shared_secret</span> <span class="pl-c1">=</span> <span class="pl-en">str</span>(<span class="pl-en">scalar_multiplication</span>(<span class="pl-s1">curve_params</span>, <span class="pl-c1">Q_A</span>, <span class="pl-s1">n_B</span>)[<span class="pl-c1">0</span>])
+    
+    <span class="pl-s1">hash_obj</span> <span class="pl-c1">=</span> <span class="pl-en">sha1</span>()
+    <span class="pl-s1">hash_obj</span>.<span class="pl-c1">update</span>(<span class="pl-s1">shared_secret</span>.<span class="pl-c1">encode</span>())
+    <span class="pl-s1">hash_digest</span> <span class="pl-c1">=</span> <span class="pl-s1">hash_obj</span>.<span class="pl-c1">hexdigest</span>()
+    
+    <span class="pl-en">print</span>(<span class="pl-s">f"flag : crypto{{<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">hash_digest</span><span class="pl-kos">}</span></span>}}"</span>)</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Разбор кода
+  </h3>
+ </div>
+ <p dir="auto">
+  В данном коде реализован процесс нахождения общего секрета с использованием
+  <strong>
+   эллиптических
+            кривых (ECC)
+  </strong>
+  и
+  <strong>
+   хэш-функции SHA1
+  </strong>
+  . Код выполняет три ключевых операции:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Сложение точек на эллиптической кривой (
+     <code>
+      elliptic_addition
+     </code>
+     )
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     реализует сложение двух точек
+     <code>
+      P
+     </code>
+     и
+     <code>
+      Q
+     </code>
+     ,
+    </li>
+    <li>
+     использует разные формулы для сложения одинаковых и разных точек,
+    </li>
+    <li>
+     обрабатывает случай, когда точки противоположны (результат — точка на бесконечности).
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Умножение точки на число (
+     <code>
+      scalar_multiplication
+     </code>
+     )
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     реализует
+     <strong>
+      метод двойного и добавочного шагов
+     </strong>
+     ,
+    </li>
+    <li>
+     умножает публичный ключ Алисы
+     <code>
+      Q_A
+     </code>
+     на секретный ключ Боба
+     <code>
+      n_B
+     </code>
+     .
+    </li>
+   </ul>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     SHA1-хэширование полученного секрета
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     берёт
+     <strong>
+      <code>
+       x
+      </code>
+      -координату
+     </strong>
+     общего секрета,
+    </li>
+    <li>
+     применяет SHA1 и выводит
+     <strong>
+      флаг
+     </strong>
+     .
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p dir="auto">
+  Запустив код, получаем флаг.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/isohise/kk/blob/main/ECC/3.png" rel="noopener noreferrer" target="_blank">
+   <img alt="" src="https://github.com/isohise/kk/raw/main/ECC/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Эллиптические кривые (
+  <strong>
+   ECC
+  </strong>
+  ) являются мощным инструментом криптографии, обеспечивающим
+        высокую безопасность при сравнительно небольших размерах ключей. Однако, как и любая криптографическая система,
+        ECC не является полностью защищённой от атак.
+ </p>
+ <p dir="auto">
+  Основная безопасность ECC основана на
+  <strong>
+   сложности задачи дискретного логарифма в группе точек
+            эллиптической кривой (ECDLP)
+  </strong>
+  . Однако существуют методы, которые могут значительно уменьшить
+        сложность этой задачи, включая
+  <strong>
+   атаку Полларда "ро"
+  </strong>
+  ,
+  <strong>
+   атаку на некорректные
+            параметры
+  </strong>
+  и
+  <strong>
+   атаки по сторонним каналам
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  В рассмотренной задаче было продемонстрировано использование базовых операций ECC: сложение точек,
+        удвоение и умножение точки на скаляр. В результате был вычислен
+  <strong>
+   общий секрет
+  </strong>
+  между двумя
+        сторонами и получили
+  <strong>
+   SHA1-хэш
+  </strong>
+  от
+  <code>
+   x
+  </code>
+  -координаты точки общего секрета. Этот процесс
+        иллюстрирует, как ECC может быть использована в криптографических протоколах, таких как
+  <strong>
+   ECDH (Elliptic
+            Curve Diffie-Hellman)
+  </strong>
+  .
+ </p>
+</article>

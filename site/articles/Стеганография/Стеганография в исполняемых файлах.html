@@ -1,0 +1,468 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Стеганография в исполняемых файлах
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   1. Краткое введение в ELF
+  </h2>
+ </div>
+ <p dir="auto">
+  Стеганография в исполняемых файлах - это сокрытие информации внутри программ. Цель может быть разной:
+        от сокрытия вредоносного кода до защиты авторских прав.
+ </p>
+ <p dir="auto">
+  Мы будем фокусироваться на том, как это можно сделать в формате ELF (Executable and Linkable Format).
+ </p>
+ <p dir="auto">
+  ELF - это стандартный формат исполняемых файлов в Linux и других Unix-подобных системах. ELF-файл
+        содержит код, данные и информацию о том, как программа должна быть загружена и запущена.
+ </p>
+ <p dir="auto">
+  Ключевые элементы, которые нам понадобятся, это:
+ </p>
+ <p dir="auto">
+  • Заголовок (Header): Основная информация о файле.
+ </p>
+ <p dir="auto">
+  • Секции (Sections): Разделы файла, содержащие код (.text), данные (.data), неинициализированные
+        данные (.bss), строки (.rodata) и многое другое.
+ </p>
+ <p dir="auto">
+  • Программные заголовки (Program Headers): Описывают, как операционная система должна загрузить секции
+        в память.
+ </p>
+ <p dir="auto">
+  Чтобы посмотреть структуру ELF-файла, можно использовать следующие команды:
+ </p>
+ <p dir="auto">
+  • readelf -h - покажет заголовок.
+ </p>
+ <p dir="auto">
+  • readelf -S - покажет список секций.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   2. Padding в ELF
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   2.1 Что такое Padding?
+  </strong>
+ </p>
+ <p dir="auto">
+  В контексте ELF, padding – это неиспользуемое пространство внутри файла. Оно может находиться:
+ </p>
+ <p dir="auto">
+  • Между секциями: Для выравнивания начала следующей секции по определенной границе (например, по
+        границе страницы памяти). Это делается для повышения производительности при загрузке программы в память.
+ </p>
+ <p dir="auto">
+  • В конце секции: Хотя это встречается реже, padding может присутствовать и в конце секции.
+ </p>
+ <p dir="auto">
+  Padding не содержит полезных данных и игнорируется операционной системой при загрузке и выполнении
+        программы. Именно это делает его идеальным кандидатом для сокрытия информации.
+ </p>
+ <p dir="auto">
+  <strong>
+   Как найти Padding?
+  </strong>
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Используйте readelf -S : Эта команда выведет список всех секций в ELF-файле, их размеры (Size)
+                и смещения (Offset).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Сравните смещения и размеры соседних секций: Padding будет находиться между секцией A и
+                секцией B, если Offset(B) &gt; Offset(A) + Size(A). Размер padding будет равен Offset(B) - (Offset(A) +
+                Size(A)).
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  <strong>
+   Важно:
+  </strong>
+  Padding не является частью какой-либо секции. Это просто “пустое” место в
+        файле. Операционная система знает, где начинаются и заканчиваются секции, и не будет читать данные из области
+        padding.
+ </p>
+ <p dir="auto">
+  <strong>
+   2.2 Пример: Создание простого ELF-файла
+  </strong>
+ </p>
+ <p dir="auto">
+  Для начала создадим простую программу на C:
+ </p>
+ <div class="highlight highlight-source-c notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">#include</span> <span class="pl-s">&lt;stdio.h&gt;</span>
+    
+    <span class="pl-smi">int</span> <span class="pl-en">main</span>() {
+        <span class="pl-en">printf</span>(<span class="pl-s">"Hello, world!\n"</span>);
+        <span class="pl-k">return</span> <span class="pl-c1">0</span>;
+    }</pre>
+ </div>
+ <p dir="auto">
+  Сохраняем этот код в файл hello.c.
+ </p>
+ <p dir="auto">
+  Теперь скомпилируем его:
+ </p>
+ <p dir="auto">
+  <strong>
+   gcc hello.c -o hello
+  </strong>
+ </p>
+ <p dir="auto">
+  Эта команда создаст исполняемый файл hello в формате ELF.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/1.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/1.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   2.3 Анализ секций файла hello
+  </strong>
+ </p>
+ <p dir="auto">
+  Запускаем команду
+  <strong>
+   readelf -S hello
+  </strong>
+  и внимательно изучаем вывод.
+ </p>
+ <p dir="auto">
+  Обращаем внимание на колонки Offset (смещение секции от начала файла) и Size (размер секции в байтах).
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/2.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/2.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/3.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/3.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Здесь мы видим, что .comment заканчивается на: 0x3018 + 0x1f = 0x3037, а
+        .symtab начинается на: 0x3038
+ </p>
+ <p dir="auto">
+  Разница: 0x3038 - 0x3037 = 0x1 (1 байт padding - очень мало).
+ </p>
+ <p dir="auto">
+  Так как места у нас мало мы запишем символ “A” (0x41) в этот 1-байтный padding.
+ </p>
+ <p dir="auto">
+  Откроем файл hello в hex-редакторе.
+ </p>
+ <p dir="auto">
+  Перейдем к смещению 0x3037(в редакторе hexedit можно нажать ctlr+g и ввести смещение).
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/4.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/4.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Заменяем байт по этому смещению на 0x41 (шестнадцатеричное представление символа “A”).
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/5.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/5.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Итак, мы смогли спрятать одну букву, при этом не поломав сам файл (то есть скрипт должен запускаться).
+ </p>
+ <p dir="auto">
+  <strong>
+   Важно:
+  </strong>
+  Компоновщик (linker) может располагать секции по-разному в зависимости от
+        настроек компиляции, оптимизации и других факторов. Поэтому всегда проверяем вывод readelf -S для конкретного
+        файла.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   3. Обнаружение данных в Padding
+  </h2>
+ </div>
+ <p dir="auto">
+  Итак, мы спрятали сообщение в padding. Но как его найти?
+ </p>
+ <p dir="auto">
+  <strong>
+   3.1 Простой анализ секций
+  </strong>
+ </p>
+ <p dir="auto">
+  Первым делом, снова используем
+  <strong>
+   readelf -S hello
+  </strong>
+  и анализируем вывод. Ищем места, где
+        может быть padding. Сравниваем смещения и размеры секций, как мы это делали раньше.
+ </p>
+ <p dir="auto">
+  <strong>
+   3.2 Ручной анализ с помощью hex-редактора
+  </strong>
+ </p>
+ <p dir="auto">
+  Основной инструмент для обнаружения скрытых данных в padding - это наши глаза и hex-редактор.
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Открываем файл hello в hex-редакторе.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Переходим по смещению, где, по нашему мнению, находится padding. В нашем примере это 0x3037.
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  Что мы ищем?
+ </p>
+ <p dir="auto">
+  • ASCII-строки: Самый простой случай - если в padding записана обычная текстовая строка (как в нашем
+        примере). Мы увидим читаемые символы в hex-редакторе.
+ </p>
+ <p dir="auto">
+  • Необычные данные: Даже если данные зашифрованы или сжаты, они могут выделяться на фоне нулевых
+        байтов, которыми обычно заполнен padding.
+ </p>
+ <p dir="auto">
+  • Сигнатуры известных форматов: Если в padding спрятан другой файл (например, ZIP-архив или
+        изображение), мы можем увидеть сигнатуру этого формата (например, PK для ZIP).
+ </p>
+ <p dir="auto">
+  В нашем примере, если мы перейдем по смещению 0x3037, мы должны увидеть символ “А”. Это довольно
+        очевидно, поэтому такой метод стеганографии считается слабым.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/6.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/6.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   3.3 Анализ энтропии
+  </strong>
+ </p>
+ <p dir="auto">
+  Анализ энтропии - это более продвинутый метод, который может помочь выявить наличие скрытых данных,
+        даже если они зашифрованы или сжаты.
+ </p>
+ <p dir="auto">
+  Энтропия - это мера случайности данных. Области файла с высокой энтропией (близкой к 8) содержат более
+        случайные данные, чем области с низкой энтропией (близкой к 0).
+ </p>
+ <p dir="auto">
+  Шифрованные и сжатые данные обычно имеют высокую энтропию.
+ </p>
+ <p dir="auto">
+  Мы можем использовать инструмент binwalk для анализа энтропии ELF-файла. Запустите команду:
+ </p>
+ <p dir="auto">
+  <strong>
+   binwalk -E hello
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   binwalk
+  </strong>
+  построит график энтропии файла. Если в области padding находится
+        зашифрованная или сжатая информация, мы увидим всплеск энтропии в этой области.
+ </p>
+ <p dir="auto">
+  <a href="https://github.com/linafillippova/articles/blob/main/screens25-04-14/7.png" rel="noopener noreferrer" target="_blank">
+   <img src="https://github.com/linafillippova/articles/raw/main/screens25-04-14/7.png" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  <strong>
+   Важно:
+  </strong>
+  Высокая энтропия не всегда означает, что в файле есть скрытые данные. Это
+        может быть просто особенность программы. Однако это повод для более тщательного анализа.
+ </p>
+ <p dir="auto">
+  <strong>
+   3.4 Что делать, если данные зашифрованы?
+  </strong>
+ </p>
+ <p dir="auto">
+  Если мы обнаружили подозрительные данные в padding, но они выглядят как случайный набор байтов, это
+        может означать, что они зашифрованы. В этом случае нам нужно попытаться дешифровать данные.
+ </p>
+ <p dir="auto">
+  Для этого нам может понадобиться:
+ </p>
+ <p dir="auto">
+  • Ключ шифрования: Если программа использует какой-то ключ для шифрования данных, нам нужно его найти.
+        Ключ может быть жестко закодирован в программе, получен из пользовательского ввода или сгенерирован каким-то
+        алгоритмом.
+ </p>
+ <p dir="auto">
+  • Алгоритм шифрования: Нам нужно знать, какой алгоритм шифрования используется (например, AES, DES,
+        RC4).
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   4. Автоматизация процесса
+  </h2>
+ </div>
+ <p dir="auto">
+  Автоматизация может значительно ускорить процесс поиска padding и извлечения скрытых данных, особенно
+        если у нас много файлов для анализа.
+ </p>
+ <p dir="auto">
+  <strong>
+   4.1 Что такое LIEF?
+  </strong>
+ </p>
+ <p dir="auto">
+  LIEF (LIEF - Library to Instrument Executable Formats) - это кроссплатформенная библиотека для
+        анализа, модификации и абстракции исполняемых форматов (PE, ELF, Mach-O).
+ </p>
+ <p dir="auto">
+  Она позволяет легко получать доступ к различным элементам структуры исполняемых файлов, включая
+        секции, заголовки и т.д.
+ </p>
+ <p dir="auto">
+  Установка
+  <strong>
+   LIEF
+  </strong>
+  :
+ </p>
+ <p dir="auto">
+  <strong>
+   pip install lief
+  </strong>
+ </p>
+ <p dir="auto">
+  <strong>
+   4.2 Пример скрипта на Python для поиска Padding и извлечения данных:
+  </strong>
+ </p>
+ <div class="highlight highlight-source-python notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">import</span> <span class="pl-s1">lief</span>
+    
+    <span class="pl-k">def</span> <span class="pl-en">find_padding</span>(<span class="pl-s1">file_path</span>):
+        <span class="pl-s">"""</span>
+    <span class="pl-s">    Находит области padding в ELF-файле и пытается извлечь из них данные.</span>
+    <span class="pl-s">    """</span>
+        <span class="pl-k">try</span>:
+            <span class="pl-s1">binary</span> <span class="pl-c1">=</span> <span class="pl-s1">lief</span>.<span class="pl-c1">parse</span>(<span class="pl-s1">file_path</span>)
+            <span class="pl-k">if</span> <span class="pl-s1">binary</span> <span class="pl-c1">is</span> <span class="pl-c1">None</span>:
+                <span class="pl-en">print</span>(<span class="pl-s">f"Ошибка: Не удалось распарсить файл <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">file_path</span><span class="pl-kos">}</span></span>"</span>)
+                <span class="pl-k">return</span>
+    
+            <span class="pl-en">print</span>(<span class="pl-s">f"Анализ файла: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">file_path</span><span class="pl-kos">}</span></span>"</span>)
+    
+            <span class="pl-s1">sections</span> <span class="pl-c1">=</span> <span class="pl-s1">binary</span>.<span class="pl-c1">sections</span>
+            <span class="pl-k">for</span> <span class="pl-s1">i</span> <span class="pl-c1">in</span> <span class="pl-en">range</span>(<span class="pl-en">len</span>(<span class="pl-s1">sections</span>) <span class="pl-c1">-</span> <span class="pl-c1">1</span>):
+                <span class="pl-s1">current_section</span> <span class="pl-c1">=</span> <span class="pl-s1">sections</span>[<span class="pl-s1">i</span>]
+                <span class="pl-s1">next_section</span> <span class="pl-c1">=</span> <span class="pl-s1">sections</span>[<span class="pl-s1">i</span><span class="pl-c1">+</span><span class="pl-c1">1</span>]
+    
+                <span class="pl-s1">padding_size</span> <span class="pl-c1">=</span> <span class="pl-s1">next_section</span>.<span class="pl-c1">offset</span> <span class="pl-c1">-</span> (<span class="pl-s1">current_section</span>.<span class="pl-c1">offset</span> <span class="pl-c1">+</span> <span class="pl-s1">current_section</span>.<span class="pl-c1">size</span>)
+    
+                <span class="pl-k">if</span> <span class="pl-s1">padding_size</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span>:
+                    <span class="pl-en">print</span>(<span class="pl-s">f"  Padding найдено между секциями <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">current_section</span>.<span class="pl-c1">name</span><span class="pl-kos">}</span></span> и <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">next_section</span>.<span class="pl-c1">name</span><span class="pl-kos">}</span></span>"</span>)
+                    <span class="pl-en">print</span>(<span class="pl-s">f"    Смещение: 0x<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">current_section</span>.<span class="pl-c1">offset</span> <span class="pl-c1">+</span> <span class="pl-s1">current_section</span>.<span class="pl-c1">size</span>:x<span class="pl-kos">}</span></span>"</span>)
+                    <span class="pl-en">print</span>(<span class="pl-s">f"    Размер: 0x<span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">padding_size</span>:x<span class="pl-kos">}</span></span> байт"</span>)
+    
+                    <span class="pl-c"># Попытка извлечь ASCII-строку из padding</span>
+                    <span class="pl-k">with</span> <span class="pl-en">open</span>(<span class="pl-s1">file_path</span>, <span class="pl-s">"rb"</span>) <span class="pl-k">as</span> <span class="pl-s1">f</span>:
+                        <span class="pl-s1">f</span>.<span class="pl-c1">seek</span>(<span class="pl-s1">current_section</span>.<span class="pl-c1">offset</span> <span class="pl-c1">+</span> <span class="pl-s1">current_section</span>.<span class="pl-c1">size</span>)
+                        <span class="pl-s1">padding_data</span> <span class="pl-c1">=</span> <span class="pl-s1">f</span>.<span class="pl-c1">read</span>(<span class="pl-s1">padding_size</span>)
+                        <span class="pl-k">try</span>:
+                            <span class="pl-s1">decoded_string</span> <span class="pl-c1">=</span> <span class="pl-s1">padding_data</span>.<span class="pl-c1">decode</span>(<span class="pl-s">"ascii"</span>)
+                            <span class="pl-en">print</span>(<span class="pl-s">f"    Возможная ASCII-строка: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">decoded_string</span>.<span class="pl-c1">strip</span>()<span class="pl-kos">}</span></span>"</span>) <span class="pl-c"># strip() убирает лишние пробелы</span>
+                        <span class="pl-k">except</span> <span class="pl-v">UnicodeDecodeError</span>:
+                            <span class="pl-en">print</span>(<span class="pl-s">"    Не удалось декодировать как ASCII"</span>)
+    
+    
+        <span class="pl-k">except</span> <span class="pl-s1">lief</span>.<span class="pl-c1">lief_errors</span>.<span class="pl-c1">bad_file</span> <span class="pl-k">as</span> <span class="pl-s1">e</span>:
+            <span class="pl-en">print</span>(<span class="pl-s">f"Ошибка при обработке файла: <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">e</span><span class="pl-kos">}</span></span>"</span>)</pre>
+ </div>
+ <p dir="auto">
+  Что делает этот скрипт:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Импортирует библиотеку lief.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Определяет функцию find_padding(file_path), которая принимает путь к ELF-файлу в качестве
+                аргумента.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Парсит ELF-файл с помощью lief.parse(file_path).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Перебирает все секции в файле.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Для каждой пары соседних секций вычисляет размер padding между ними.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Если размер padding больше 0, выводит информацию о смещении и размере padding.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Пытается прочитать данные из области padding и декодировать их как ASCII-строку.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   5. Контрмеры
+  </h2>
+ </div>
+ <p dir="auto">
+  Как усложнить обнаружение стеганографии в padding?
+ </p>
+ <p dir="auto">
+  • Шифрование данных перед сокрытием: Это сделает невозможным чтение данных, если не известен ключ
+        шифрования.
+ </p>
+ <p dir="auto">
+  • Сжатие данных перед сокрытием: Это уменьшит размер данных и увеличит их энтропию, что затруднит
+        обнаружение.
+ </p>
+ <p dir="auto">
+  • Разбрасывание данных по разным областям padding: Вместо того, чтобы записывать все данные в одну
+        область padding, их можно разбить на части и разбросать по разным местам в файле.
+ </p>
+</article>

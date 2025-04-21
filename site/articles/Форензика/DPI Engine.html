@@ -1,0 +1,403 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Что такое DPI Engine
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h3>
+ </div>
+ <p dir="auto">
+  Технология DPI (Deep Packet Inspection) зачастую ассоциируется с блокировками, цензурой и различными
+        ограничениями. Однако DPI — это лишь инструмент глубокого анализа сетевого трафика. В отличие от простого
+        изучения отдельных уровней (например, только HTTP-заголовков), DPI анализирует пакет целиком, включая все уровни
+        модели OSI.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425997238-b89a60a4-2d23-49d5-a653-d0487689f3c6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTk3MjM4LWI4OWE2MGE0LTJkMjMtNDlkNS1hNjUzLWQwNDg3Njg5ZjNjNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jMzRkMDc3OWMwNGUwZjM2ODg2ODM3ODJhZTIwMzE1YmZmOTU3OWJhMDQ4MzE2MTQ4NjQ0YjVhYmI5ZmVmNmM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.q7aRLZFktxidcZRznAwXW729uxv2WdPukHTy0k58C_s" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425997238-b89a60a4-2d23-49d5-a653-d0487689f3c6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTk3MjM4LWI4OWE2MGE0LTJkMjMtNDlkNS1hNjUzLWQwNDg3Njg5ZjNjNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jMzRkMDc3OWMwNGUwZjM2ODg2ODM3ODJhZTIwMzE1YmZmOTU3OWJhMDQ4MzE2MTQ4NjQ0YjVhYmI5ZmVmNmM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.q7aRLZFktxidcZRznAwXW729uxv2WdPukHTy0k58C_s" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Важно понимать, что DPI — не только средство контроля и фильтрации. Подобные технологии лежат в основе
+        многих решений в области информационной безопасности и сетевого мониторинга. Они помогают администраторам
+        следить за активностью в сети, а операторам — оптимизировать тарифы и управлять пропускной способностью в
+        перегруженных сетях. Например, DPI позволяет корректно приоритизировать трафик во время массовых мероприятий,
+        обеспечивая равномерный доступ к критически важным сервисам.
+ </p>
+ <p dir="auto">
+  Кроме того, DPI-системы выполняют не только классификацию сетевых потоков, но и участвуют в
+        авторизации пользователей, применении политик доступа, ограничении скорости и контроле за соблюдением этих
+        правил. Постоянное развитие сервисов и сетевых технологий — от смены доменов и брендов до появления новых
+        протоколов и CDN — требует от DPI-решений гибкости и высокой точности. Этим задачам и посвящён отдельный класс
+        систем — DPI Engine, которые отвечают за глубокий анализ и динамическую классификацию трафика независимо от типа
+        сети.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что такое сетевой протокол, пакет и слой?
+  </h3>
+ </div>
+ <p dir="auto">
+  Прежде чем говорить о классификации трафика, стоит разобраться с основами. Даже если эти термины уже
+        знакомы, краткое напоминание будет полезным.
+ </p>
+ <p dir="auto">
+  <strong>
+   Пакет
+  </strong>
+  — это определённым образом организованный набор байт, который поступает или
+        отправляется через сетевой интерфейс.
+ </p>
+ <p dir="auto">
+  <strong>
+   Протокол
+  </strong>
+  — это свод правил, по которым данные передаются между различными
+        устройствами в сети. Протокол определяет, как именно данные должны быть упакованы, обработаны и переданы. Разные
+        протоколы выполняют разные задачи и регулируют различные аспекты передачи данных.
+ </p>
+ <p dir="auto">
+  <strong>
+   Слой
+  </strong>
+  — это часть пакета, которая соответствует какому-то конкретному протоколу. Один
+        и тот же байт не может относиться к нескольким протоколам одновременно — он принадлежит только одному слою.
+ </p>
+ <p dir="auto">
+  <strong>
+   Поле
+  </strong>
+  — это часть слоя, предназначенная для хранения определённой информации. Например,
+        в заголовке IPv4, который обычно занимает 20 байт, на 12-м байте начинается поле с адресом отправителя (4
+        байта), а с 16-го байта — поле с адресом получателя (также 4 байта).
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425988122-8b7be662-d957-4ce8-9921-a880b9842d2a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg4MTIyLThiN2JlNjYyLWQ5NTctNGNlOC05OTIxLWE4ODBiOTg0MmQyYS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hNGM1YjNmYzRhYTA2NjllNWEzMTY1MGQyOGUyODA3YzI2ZDc0ODcwM2UxNjVkYjdiMzJlNzE3NDkyMTQ3NzE1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PpjD-oHVUidjGyy0w8N8iZqbKHIPBpv8_Gt-QtRDoo8" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425988122-8b7be662-d957-4ce8-9921-a880b9842d2a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg4MTIyLThiN2JlNjYyLWQ5NTctNGNlOC05OTIxLWE4ODBiOTg0MmQyYS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hNGM1YjNmYzRhYTA2NjllNWEzMTY1MGQyOGUyODA3YzI2ZDc0ODcwM2UxNjVkYjdiMzJlNzE3NDkyMTQ3NzE1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PpjD-oHVUidjGyy0w8N8iZqbKHIPBpv8_Gt-QtRDoo8" style="max-width: 100%;"/>
+  </a>
+  <em>
+   Слои протоколов внутри пакета
+  </em>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   OSI
+  </h3>
+ </div>
+ <p dir="auto">
+  OSI (Open Systems Interconnection model) – иерархичная, многоуровневая модель сетевых протоколов,
+        каждый уровень которой имеет свою роль в рамках передачи данных.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425988562-6d562814-fe77-404a-805d-68aef9eca517.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg4NTYyLTZkNTYyODE0LWZlNzctNDA0YS04MDVkLTY4YWVmOWVjYTUxNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01ZmE0ZDFhMjNjYTUyMTc0ZjgxYTQwMzA4MzI1MmJiMWNlZGFkNjIyMjRlYTgxZTFjMmQ1NTI5ZTg3M2I2ZmFhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.fLb7naQfvgHLAA_jMCvaLA8SUORGpCD9b6_NpzkKJHo" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425988562-6d562814-fe77-404a-805d-68aef9eca517.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg4NTYyLTZkNTYyODE0LWZlNzctNDA0YS04MDVkLTY4YWVmOWVjYTUxNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01ZmE0ZDFhMjNjYTUyMTc0ZjgxYTQwMzA4MzI1MmJiMWNlZGFkNjIyMjRlYTgxZTFjMmQ1NTI5ZTg3M2I2ZmFhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.fLb7naQfvgHLAA_jMCvaLA8SUORGpCD9b6_NpzkKJHo" style="max-width: 100%;"/>
+  </a>
+  <em>
+   Модель OSI
+  </em>
+ </p>
+ <p dir="auto">
+  Упрощённо описывая уровни OSI модели, можно сказать следующее:
+ </p>
+ <p dir="auto">
+  Сетевой уровень отвечает за доставку данных на основе IP-адресов, то есть определяет маршрут к
+        получателю в сети.
+ </p>
+ <p dir="auto">
+  Транспортный уровень направляет данные не просто на устройство, но и в нужное приложение, используя
+        порты — своего рода «адреса» внутри устройства.
+ </p>
+ <p dir="auto">
+  Уровень представления заботится о том, как именно передаются данные: здесь происходит шифрование,
+        сжатие и другие преобразования.
+ </p>
+ <p dir="auto">
+  Прикладной уровень формализует обмен данными между клиентом и сервером. Например, HTTP определяет, как
+        именно должен быть оформлен запрос или ответ, какую информацию о ресурсе и формате данных нужно передать, чтобы
+        приложения на обеих сторонах могли корректно обработать эти данные. Это уровень, с которым напрямую работают
+        программы и сервисы.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425989084-2e1e45eb-568c-4212-98a5-943e350de6c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg5MDg0LTJlMWU0NWViLTU2OGMtNDIxMi05OGE1LTk0M2UzNTBkZTZjOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04ODA5NWQzMjhmYzlkMTcxNWZiZGYwMWUxNTAzYjNiMmMxYTk0ODE3N2U4NTMwNmE0Mjc1NzE0YjkyMGNmYWVkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PWLExyOpIOG0IIj-q1gFpQitlxQAHxFLl9eqAPO-DjY" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425989084-2e1e45eb-568c-4212-98a5-943e350de6c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg5MDg0LTJlMWU0NWViLTU2OGMtNDIxMi05OGE1LTk0M2UzNTBkZTZjOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04ODA5NWQzMjhmYzlkMTcxNWZiZGYwMWUxNTAzYjNiMmMxYTk0ODE3N2U4NTMwNmE0Mjc1NzE0YjkyMGNmYWVkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.PWLExyOpIOG0IIj-q1gFpQitlxQAHxFLl9eqAPO-DjY" style="max-width: 100%;"/>
+  </a>
+  <em>
+   Передача данных согласно модели OSI
+  </em>
+ </p>
+ <p dir="auto">
+  <strong>
+   Сетевой поток (network flow)
+  </strong>
+  — это логическая группа сетевых пакетов, которые
+        объединяются по определённым признакам. Если представить интернет как бесконечный поток разрозненных пакетов
+        между множеством устройств, то сетевой поток помогает навести порядок и разбить этот хаос на осмысленные группы.
+ </p>
+ <p dir="auto">
+  Например, если пакеты имеют одинаковые IP-адреса отправителя и получателя, их можно считать частью
+        одного IP потока. Если к этому добавить ещё совпадающие TCP или UDP порты, то речь уже идёт о конкретном TCP или
+        UDP соединении. У одного устройства может быть несколько таких соединений с другим устройством.
+ </p>
+ <p dir="auto">
+  Таким образом, поток — это нечто вроде условной трубы, по которой в одном направлении «летят» пакеты
+        от клиента к серверу, а по другой — обратно. Это удобно для анализа, мониторинга и управления трафиком.
+ </p>
+ <p dir="auto">
+  Важно не путать сетевой поток (flow) с потоком исполнения (thread) — это совершенно разные понятия.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425989282-e8028646-9b93-4e84-9e53-8b96db88d9f2.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg5MjgyLWU4MDI4NjQ2LTliOTMtNGU4NC05ZTUzLThiOTZkYjg4ZDlmMi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zZDhjYThhNmZjYTU3YTBiMTRmNDRjODY3ZWY5ZDFkMTA2YjU4MzUzYTc1NGE0Njg0MDNhOWJkYzQ4MDE1N2Q4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.9JOY3ITPD1WYt1eoe6qF5cfTg_DbBLtUT7LDA1heK-Q" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425989282-e8028646-9b93-4e84-9e53-8b96db88d9f2.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTg5MjgyLWU4MDI4NjQ2LTliOTMtNGU4NC05ZTUzLThiOTZkYjg4ZDlmMi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zZDhjYThhNmZjYTU3YTBiMTRmNDRjODY3ZWY5ZDFkMTA2YjU4MzUzYTc1NGE0Njg0MDNhOWJkYzQ4MDE1N2Q4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.9JOY3ITPD1WYt1eoe6qF5cfTg_DbBLtUT7LDA1heK-Q" style="max-width: 100%;"/>
+  </a>
+  <em>
+   Прямой и реверсивный потоки
+  </em>
+ </p>
+ <p dir="auto">
+  Пакеты в сети группируются по потокам по множеству причин. Это необходимо для сбора и анализа
+        статистики — количества пакетов, объёма данных, временных меток и других параметров, которые могут пригодиться
+        для классификации трафика или управления пропускной способностью (например, для ограничения скорости передачи
+        данных).
+ </p>
+ <p dir="auto">
+  Прямой и обратный потоки между двумя узлами обычно связываются в единую сессию. Сессия — это
+        совокупность общей информации, которая характерна для обоих потоков. Например, при установке TLS-соединения,
+        после рукопожатия и обмена ключами параметры вроде версии протокола, выбранного шифра, session_id и других
+        настроек становятся общими как для исходящего, так и для входящего потока.
+ </p>
+ <p dir="auto">
+  Когда DPI Engine получает очередной пакет, он должен определить, к какому потоку его отнести. Для
+        этого на основе данных пакета рассчитывается ключ потока. В зависимости от типа протокола, структура ключа может
+        отличаться. Потоки классифицируются на разные типы, но чаще всего встречаются следующие виды:
+ </p>
+ <markdown-accessiblity-table data-catalyst="">
+  <table>
+   <thead>
+    <tr>
+     <th align="left">
+      ТИП
+     </th>
+     <th align="center">
+      Описание
+     </th>
+     <th align="right">
+      Ключ
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td align="left">
+      Tuple3
+     </td>
+     <td align="center">
+      IPv4/IPv6 фрагментированный поток
+     </td>
+     <td align="right">
+      { src_ip, dst_ip, id }
+     </td>
+    </tr>
+    <tr>
+     <td align="left">
+      Tuple5
+     </td>
+     <td align="center">
+      IPv4/IPv6 поток с привязкой к портам и транспортному протоколу
+     </td>
+     <td align="right">
+      { src_ip, src_port, dst_ip, dst_port, protocol }
+     </td>
+    </tr>
+    <tr>
+     <td align="left">
+      Tuple6
+     </td>
+     <td align="center">
+      Тоннельный поток (VLAN-C-TAG, GRE, …)
+     </td>
+     <td align="right">
+      { src_ip, src_port, dst_ip, dst_port, protocol, tag }
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </markdown-accessiblity-table>
+ <p dir="auto">
+  То есть чтобы рассчитать ключ, нужно добраться до IP слоя, извлечь IP адреса, проверить, что поток не
+        фрагментирован (проверка offset-ов и MF флага). Если пакет IP фрагментирован – взять поле ID и собрать Tuple3
+        ключ. Если не фрагментирован – дойти до следующего за IP слоя, извлечь порты (если это транспортный слой, и они
+        есть) и собрать Tuple5 ключ.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425991141-cc6e3ed0-825e-4d3d-9a66-439dba0738b9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTkxMTQxLWNjNmUzZWQwLTgyNWUtNGQzZC05YTY2LTQzOWRiYTA3MzhiOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03OGUzM2VjNjJlMDliMmU2MjEyYjk3MjRjZWExY2E5NTIzOGQ1ODAwYjU2YjNkODU5MGQyYmRiODViMTRhYjU5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.AWQQFnjpbX8XSfz_2LskpKSYwkZnq0FXelvemgtBkm8" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425991141-cc6e3ed0-825e-4d3d-9a66-439dba0738b9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTkxMTQxLWNjNmUzZWQwLTgyNWUtNGQzZC05YTY2LTQzOWRiYTA3MzhiOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03OGUzM2VjNjJlMDliMmU2MjEyYjk3MjRjZWExY2E5NTIzOGQ1ODAwYjU2YjNkODU5MGQyYmRiODViMTRhYjU5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.AWQQFnjpbX8XSfz_2LskpKSYwkZnq0FXelvemgtBkm8" style="max-width: 100%;"/>
+  </a>
+  <em>
+   Пример таблицы потоков
+  </em>
+ </p>
+ <p dir="auto">
+  На схеме выше показано поле идентификатора для дальнейших ссылок, но фактически для поиска
+        используется только поле key.
+ </p>
+ <p dir="auto">
+  Ранее мы рассмотрели потоки с точки зрения их группировки по типу ключа — это важно для контроля
+        контекста потока (буферизация данных, сбор статистики и т.д.). Однако есть и другая классификация — по
+        плоскостям: Control Plane и User (или Data) Plane.
+ </p>
+ <p dir="auto">
+  <strong>
+   Control Plane поток
+  </strong>
+  — это поток, содержащий пакеты с управляющей (служебной)
+        информацией, которая не несёт пользовательских данных, а обеспечивает согласование параметров передачи.
+ </p>
+ <p dir="auto">
+  Например, в FTP протоколе: после установления TCP соединения клиент вводит логин/пароль, перемещается
+        по каталогам, запрашивает размеры файлов — всё это Control Plane. Когда же начинается передача файла (после
+        анонса сервером отдельного сокета), создаётся отдельный поток для передачи данных — это и есть User Plane поток.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Направление потоков
+  </h4>
+ </div>
+ <p dir="auto">
+  Потоки обычно делят на два направления: Client-To-Server (CTS) и Server-To-Client (STC). Чтобы
+        определить, кто клиент, нужно понять, кто инициировал соединение. Например, если в TCP пакете установлен только
+        флаг SYN — это первый пакет в сессии, а значит инициатором соединения является сокет src_ip:src_port. Этот поток
+        будет направлен от клиента к серверу (CTS). Соответственно, если инвертировать IP-адреса и порты, получится
+        поток от сервера к клиенту (STC).
+ </p>
+ <p dir="auto">
+  На схеме выше видно, как прямой и обратный потоки (с идентификаторами 1 и 2) формируют сессию. В
+        данном случае сервер — это устройство с адресом 192.168.1.33, на котором работает SSH-сервис на порту 22.
+ </p>
+ <p dir="auto">
+  В сетевых технологиях используются термины Uplink и Downlink для обозначения направлений данных
+        относительно сетевых интерфейсов. Uplink — это интерфейс, через который данные передаются из локальной сети в
+        более широкую сеть, например, в интернет. Downlink, наоборот, — это интерфейс, через который данные поступают
+        извне в локальную сеть.
+ </p>
+ <p dir="auto">
+  Кажется, что все пакеты, снятые с интерфейса Uplink, должны быть связаны с потоком CTS
+        (Client-To-Server), а пакеты, снятые с Downlink, — с потоком STC (Server-To-Client). Однако это не всегда так.
+        Например, если пользователь развернул мини-сервер у себя дома (с файловым хранилищем) и запросил статический
+        IP-адрес у провайдера, то когда он едет в отпуск и подключается к своему серверу через интернет, трафик от
+        сервера к пользователю (STC) будет идти по интерфейсу Uplink для провайдера, а трафик от пользователя к серверу
+        (CTS) — по интерфейсу Downlink.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425991900-472b0012-03f5-416e-bde2-17255cbf198b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTkxOTAwLTQ3MmIwMDEyLTAzZjUtNDE2ZS1iZGUyLTE3MjU1Y2JmMTk4Yi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04MzRhY2FkMDdjMmI5M2I1YWNkOGM4Mzk5OGI1ODNlYmU5OGI4M2I3MmM3ZmMyZmFjNGQ2MDZiZjQzMDQ5ZmU4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.DUihWdAFhXbDreHJ0A_WGmtEEbD68TDaPZIVBTQhMcM" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425991900-472b0012-03f5-416e-bde2-17255cbf198b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTkxOTAwLTQ3MmIwMDEyLTAzZjUtNDE2ZS1iZGUyLTE3MjU1Y2JmMTk4Yi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04MzRhY2FkMDdjMmI5M2I1YWNkOGM4Mzk5OGI1ODNlYmU5OGI4M2I3MmM3ZmMyZmFjNGQ2MDZiZjQzMDQ5ZmU4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.DUihWdAFhXbDreHJ0A_WGmtEEbD68TDaPZIVBTQhMcM" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  На схеме 6 изображены два устройства, подключённые к точке доступа (домашний роутер), которая, в свою
+        очередь, связана с провайдером интернета (ISP). Для роутера и ISP весь трафик, идущий от планшета и ноутбука,
+        будет считаться Uplink. Трафик, идущий от роутера к этим устройствам, будет Downlink.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Что такое reassembling?
+  </h4>
+ </div>
+ <p dir="auto">
+  Процесс
+  <em>
+   reassembling (пересборки)
+  </em>
+  в сетевых технологиях можно сравнить с тем, как перевозят
+        грузы на поездах, когда несколько вагонов используются для доставки одного большого объема. Например, если нужно
+        отправить 180 тонн угля, а вагон вмещает только 60 тонн, для доставки всей массы потребуется три вагона.
+        Аналогично, в сети данные могут быть слишком большими для отправки в одном пакете, и они могут быть разделены на
+        несколько частей, которые передаются отдельно. Когда все эти части (пакеты) приходят в пункт назначения, их
+        необходимо собрать в одно целое сообщение — это и есть процесс reassembling.
+ </p>
+ <p dir="auto">
+  В сетевом контексте reassembling относится к сборке данных, которые были разделены на несколько
+        пакетов, например, при передаче через TCP или при фрагментации на уровне IP. Важно отметить, что для того чтобы
+        извлечь информацию из разделенных пакетов (например, доменные имена, данные из полезной нагрузки и т.д.), нужно
+        сначала правильно собрать все части сообщения.
+ </p>
+ <p dir="auto">
+  <strong>
+   Сегментация и фрагментация
+  </strong>
+  происходят на разных уровнях модели OSI и включают в себя
+        такие протоколы, как IPv4/IPv6, TCP, DTLS, OpenVPN, QUIC, HTTP/2 и другие.
+ </p>
+ <p dir="auto">
+  Например, если в сети используется фрагментация на уровне IPv4/IPv6, задача reassembler-а усложняется,
+        так как он должен сначала собрать фрагменты на уровне IP, а потом – на транспортном уровне. В некоторых случаях,
+        особенно когда используются более высокоуровневые протоколы, может потребоваться и сборка на уровне приложения.
+ </p>
+ <p dir="auto">
+  Таким образом, для корректного анализа трафика, например, в DPI-решениях, необходимо выполнить процесс
+        reassembling, чтобы все фрагменты сообщения были восстановлены в единую цельную структуру перед дальнейшим
+        анализом.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Пример работы с reassembling в сети
+  </h4>
+ </div>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/114010875/425992322-477394f9-90b6-40c3-8e1e-2e7b7c9b4e46.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTkyMzIyLTQ3NzM5NGY5LTkwYjYtNDBjMy04ZTFlLTJlN2I3YzliNGU0Ni5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02ZTljYWU1OTI4NGE2NDQxM2I2YmVkOGEzMGM3ZjA0NDEwNzZlODBhNzQyZTU4NDUyOTdkOWJkMmNkY2RlNWUwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.GHN7qK49oz_1-mlq9Ft7QUSGkAnrRdlECaMD0NwKbLE" rel="noopener noreferrer" target="_blank">
+   <img alt="image" src="https://private-user-images.githubusercontent.com/114010875/425992322-477394f9-90b6-40c3-8e1e-2e7b7c9b4e46.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNTEzMjAsIm5iZiI6MTc0NTE1MTAyMCwicGF0aCI6Ii8xMTQwMTA4NzUvNDI1OTkyMzIyLTQ3NzM5NGY5LTkwYjYtNDBjMy04ZTFlLTJlN2I3YzliNGU0Ni5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMjEwMjBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02ZTljYWU1OTI4NGE2NDQxM2I2YmVkOGEzMGM3ZjA0NDEwNzZlODBhNzQyZTU4NDUyOTdkOWJkMmNkY2RlNWUwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.GHN7qK49oz_1-mlq9Ft7QUSGkAnrRdlECaMD0NwKbLE" style="max-width: 100%;"/>
+  </a>
+  <em>
+   Сборка сообщения
+  </em>
+ </p>
+ <p dir="auto">
+  На схеме показан упрощенный процесс сборки сообщения, который иллюстрирует, как работает механизм
+        reassembling в сетях с несколькими сегментами.
+ </p>
+ <p dir="auto">
+  На стадии 0 пользовательское устройство отправляет 4 TCP сегмента на точку доступа (AP). Однако, по
+        какой-то причине, точка доступа передает только 3 из них, и один сегмент задерживается. Затем, на стадии 1,
+        точка доступа передает эти 3 сегмента на Интернет-поставщика (ISP), но из-за каких-то причин ISP может передать
+        только два сегмента DPI-системе. На этом этапе, несмотря на то что часть сегментов уже передана, DPI-устройству
+        еще недостаточно информации для того, чтобы принять решение о пропуске трафика или его блокировке.
+ </p>
+ <p dir="auto">
+  На стадии 2 точка доступа (AP) отправляет недостающий первый сегмент в ISP, а ISP передает задержанный
+        на предыдущем шаге третий сегмент. Но даже в этом случае DPI все еще не может обработать все данные, так как
+        продолжает не хватать части информации для принятия окончательного решения.
+ </p>
+ <p dir="auto">
+  Только на стадии 3, когда все сегменты собраны, DPI получает полный набор данных, и теперь система
+        может провести анализ сообщения целиком и принять решение о том, пропускать ли трафик во внешнюю сеть. В данном
+        случае, после анализа, трафик признается легитимным, и он пропускается.
+ </p>
+ <p dir="auto">
+  Этот пример подчеркивает важность правильно собранных данных для корректного принятия решения в
+        процессе анализа трафика. Проблемы с фрагментацией, потерей пакетов или задержками могут повлиять на возможность
+        оперативной классификации и принятия решения о пропуске трафика, особенно в случае работы DPI-системы в реальном
+        времени.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Как reassembling влияет на классификацию трафика
+  </h4>
+ </div>
+ <p dir="auto">
+  Reassembling данных, или сборка пакетов, влияет на классификацию трафика, замедляя процесс. Если
+        трафик сегментирован, система DPI не может сразу классифицировать поток, а должна собирать все части, что
+        требует времени и ресурсов. Это создаёт нагрузку на память и процессор, поскольку каждый пакет проверяется на
+        наличие ключевой информации (например, доменного имени).
+ </p>
+ <p dir="auto">
+  Если потоку не удаётся классифицировать после определённого лимита времени или пакетов, назначается
+        политика по умолчанию. В крупных сервисах классификация может происходить по IP-адресу, минуя анализ доменных
+        имен.
+ </p>
+ <p dir="auto">
+  В итоге, reassembling замедляет классификацию и увеличивает нагрузку на систему DPI, особенно в случае
+        с большими объемами трафика.
+ </p>
+</article>

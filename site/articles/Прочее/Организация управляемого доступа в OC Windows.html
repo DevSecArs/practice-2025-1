@@ -1,0 +1,117 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Права и привилегии
+  </h3>
+ </div>
+ <p dir="auto">
+  Операционная система контролирует множество действий пользователей, например, вход в систему,
+        включение/выключение компьютера, изменение системного времени, загрузка драйверов и т. д.
+ </p>
+ <p dir="auto">
+  Для управления такими действиями, не связанными с доступом к конкретным объектам, система использует
+        два механизма:
+ </p>
+ <blockquote>
+  <p dir="auto">
+   [!tip] Право учетной записи (account right)
+            Разрешение или запрет на определенный вид входа в систему. Их бывает несколько: локальный, сетевой,
+            пакетный, вход в качестве службы и другие
+  </p>
+ </blockquote>
+ <blockquote>
+  <p dir="auto">
+   [!tip] Привилегия (privilege)
+            Разрешение или запрет определенных действий в системе, например, включение/выключение компьютера или
+            загрузка драйверов
+  </p>
+ </blockquote>
+ <p dir="auto">
+  <strong>
+   Список всех привилегий в системе можно посмотреть в оснастке MMC "Локальная политика
+            безопасности" (Local Security Policy), раздел "Локальные политики" – "Назначение прав пользователей" (Local
+            Policies – User Rights Assignment).
+  </strong>
+ </p>
+ <p dir="auto">
+  В UNIX управление привилегиями выглядит несколько иначе. В файловой системе существует разделение
+        привилегий на RWX – read (чтение), write (запись), execute (исполнение). Сам доступ также разделяется на три
+        блока:
+ </p>
+ <ul dir="auto">
+  <li>
+   владелец;
+  </li>
+  <li>
+   пользователи из группы владельца;
+  </li>
+  <li>
+   остальные.
+  </li>
+ </ul>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/91123949/372878451-8955dec3-c808-4805-8a35-c2716b97050f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4OTAsIm5iZiI6MTc0NTE0OTU5MCwicGF0aCI6Ii85MTEyMzk0OS8zNzI4Nzg0NTEtODk1NWRlYzMtYzgwOC00ODA1LThhMzUtYzI3MTZiOTcwNTBmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYzMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWEzZmMwMTZkNTgyMDYwNTlmYjU2Yzc4M2I3YWY3M2YwNWM4ZmY2NTM4ZWFkN2ZkOWU1M2Q3MDBjODIwYTk2NjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.DHhFK9y4J6nMgvfgCufUEYhZqZm6semJWGXEagUZJXQ" rel="noopener noreferrer" target="_blank">
+   <img alt="Pasted image 20240108151050" src="https://private-user-images.githubusercontent.com/91123949/372878451-8955dec3-c808-4805-8a35-c2716b97050f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4OTAsIm5iZiI6MTc0NTE0OTU5MCwicGF0aCI6Ii85MTEyMzk0OS8zNzI4Nzg0NTEtODk1NWRlYzMtYzgwOC00ODA1LThhMzUtYzI3MTZiOTcwNTBmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYzMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWEzZmMwMTZkNTgyMDYwNTlmYjU2Yzc4M2I3YWY3M2YwNWM4ZmY2NTM4ZWFkN2ZkOWU1M2Q3MDBjODIwYTk2NjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.DHhFK9y4J6nMgvfgCufUEYhZqZm6semJWGXEagUZJXQ" style="max-width: 100%;"/>
+  </a>
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Организация управляемого доступа к объектам Windows
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   В Windows учётная запись задаётся в виде SID. В целях удобства, каждому SID соответствует
+            псевдоним (alias), который мы как раз и видим как пользователи.
+  </strong>
+ </p>
+ <blockquote>
+  <p dir="auto">
+   [!tip] [[SID]] (Security Identifier)
+            Структура данных переменной длины, которая идентифицирует учётную запись пользователя.
+  </p>
+ </blockquote>
+ <p dir="auto">
+  Принцип организации управляемого безопасного доступа к объектам выглядит следующим образом. У каждого
+        пользователя в системе имеется свой маркер доступа (access token), в котором указан уникальный идентификатор
+        пользователя SID. Процессы, создаваемые пользователем, наследуют его маркер. Помните в блоке про PE и процессы
+        мы говорили о том, что процесс содержит в себе информацию о том с какими привилегиями он исполняется и от чьего
+        имени? Вот это оно.
+ </p>
+ <p dir="auto">
+  С другой стороны, все объекты в системе имеют структуру данных, которая называется дескриптор защиты
+        (security descriptor). В эту структуру входит список SID пользователей, которые могут (или не могут) получить
+        доступ к объекту, а также вид доступа (например, только чтение, чтение и запись или полный доступ и т.д.).
+        Структура данных, соответствующая дескриптору защиты, включает следующие основные поля:
+ </p>
+ <ul dir="auto">
+  <li>
+   Owner – SID владельца;
+  </li>
+  <li>
+   Dacl – список управления избирательным доступом (Разрешения);
+  </li>
+  <li>
+   Sacl – системный список управления доступом.
+  </li>
+ </ul>
+ <p dir="auto">
+  Список управления избирательным доступом (DACL, Discretionary Access-Control List) определяет
+        пользователей, которые могут получать доступ к объекту, а также указывает тип доступа. В системном списке
+        управления доступом (SACL, System Access-control List) перечислены пользователи и операции, которые должны
+        учитываться в журнале аудита безопасности (security audit log).
+ </p>
+ <p dir="auto">
+  При попытке доступа процесса к объекту идентификатор из маркера доступа процесса сравнивается с
+        идентификаторами, содержащимися в дескрипторе защиты объекта, и на основании результатов сравнения доступ
+        разрешается или запрещается.
+ </p>
+ <p dir="auto">
+  <a href="https://private-user-images.githubusercontent.com/91123949/372878597-c7b0d552-589f-4500-b82c-b1899ebd82a1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4OTAsIm5iZiI6MTc0NTE0OTU5MCwicGF0aCI6Ii85MTEyMzk0OS8zNzI4Nzg1OTctYzdiMGQ1NTItNTg5Zi00NTAwLWI4MmMtYjE4OTllYmQ4MmExLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYzMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVhNjQ0Njk1ZjExZmU3ZjYyODQxMjQzNWYwMGEzOWRjMDBhMThiMmJiMjQ2ODM1MmM0N2VlZTg4NDgzZTljNzImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.IIHaXa9Ss0CvC1kpPIp7nL-0KLFJwxbQu7ccQHDxCWg" rel="noopener noreferrer" target="_blank">
+   <img alt="Pasted image 20240109130724" src="https://private-user-images.githubusercontent.com/91123949/372878597-c7b0d552-589f-4500-b82c-b1899ebd82a1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDUxNDk4OTAsIm5iZiI6MTc0NTE0OTU5MCwicGF0aCI6Ii85MTEyMzk0OS8zNzI4Nzg1OTctYzdiMGQ1NTItNTg5Zi00NTAwLWI4MmMtYjE4OTllYmQ4MmExLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MjAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDIwVDExNDYzMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVhNjQ0Njk1ZjExZmU3ZjYyODQxMjQzNWYwMGEzOWRjMDBhMThiMmJiMjQ2ODM1MmM0N2VlZTg4NDgzZTljNzImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.IIHaXa9Ss0CvC1kpPIp7nL-0KLFJwxbQu7ccQHDxCWg" style="max-width: 100%;"/>
+  </a>
+  <sup>
+   Схема доступа к объекту Windows
+  </sup>
+ </p>
+</article>

@@ -1,0 +1,744 @@
+<article class="markdown-body entry-content container-lg" itemprop="text">
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Nmap
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Пример команды для сканирования портов, которые могут быть использованы в AD:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>nmap -p 88,389,445,636,3268 <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   Порты:
+   <ul dir="auto">
+    <li>
+     88 — Kerberos
+    </li>
+    <li>
+     389 — LDAP
+    </li>
+    <li>
+     445 — SMB
+    </li>
+    <li>
+     636 — LDAP с SSL
+    </li>
+    <li>
+     3268 — Global Catalog
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p dir="auto">
+  Это поможет найти активные сервисы AD и настроить цели для дальнейшего анализа.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Enum4linux
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Пример команды для получения списка пользователей в домене:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>enum4linux -U <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Для получения информации о группах:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>enum4linux -G <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Если нужно собрать информацию о домене:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>enum4linux -S <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Этот инструмент полезен, когда тебе нужно узнать, кто является администратором, какие у пользователей
+        права и какие группы существуют в домене.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    LDAP Search
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   ldapsearch
+  </strong>
+  позволяет делать запросы к LDAP-серверам и получать всю структуру домена.
+ </p>
+ <p dir="auto">
+  Пример команды для выполнения базового запроса:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>ldapsearch -x -h <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span> -b <span class="pl-s"><span class="pl-pds">"</span>dc=example,dc=com<span class="pl-pds">"</span></span></pre>
+ </div>
+ <p dir="auto">
+  Эта команда вернет информацию обо всех объектах в домене
+  <strong>
+   example.com
+  </strong>
+  . Ты можешь
+        искать учетные записи, группы и другие объекты.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    BloodHound
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   BloodHound
+  </strong>
+  — это мощный инструмент для анализа и эксплуатации прав доступа в Active
+        Directory. Он помогает выявить
+  <strong>
+   петли доверия
+  </strong>
+  и
+  <strong>
+   перехват прав
+  </strong>
+  через слабые
+        настройки в домене.
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>BloodHound -ip <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span> -u <span class="pl-k">&lt;</span>user<span class="pl-k">&gt;</span> -p <span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span></pre>
+ </div>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    SecretsDump (Impacket)
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Если ты уже получил доступ к машине,
+  <strong>
+   SecretsDump
+  </strong>
+  поможет тебе извлечь хеши паролей с
+        целевой машины:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>secretsdump.py <span class="pl-k">&lt;</span>domain<span class="pl-k">&gt;</span>/<span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span>:<span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span>@<span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Это полезно для сбора учетных данных и их дальнейшего использования в атаках
+  <strong>
+   Pass-the-Hash
+  </strong>
+  .
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    WMI и DCOM
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Если тебе нужно выполнить команды на удаленной машине, можно использовать
+  <strong>
+   WMI
+  </strong>
+  или
+  <strong>
+   DCOM
+  </strong>
+  для удаленного выполнения команд. Пример с использованием
+  <strong>
+   WMI
+  </strong>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>wmiexec.py <span class="pl-k">&lt;</span>domain<span class="pl-k">&gt;</span>/<span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span>:<span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span>@<span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Этот инструмент позволяет запускать команды на удаленных хостах без необходимости взаимодействовать с
+        ними напрямую.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h2 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Эксплуатация уязвимостей
+   </strong>
+  </h2>
+ </div>
+ <p dir="auto">
+  Давай сосредоточимся на трех самых популярных и мощных инструментах, которые чаще всего используются в
+        решении задач с Active Directory в
+        CTF:
+  <strong>
+   Rubeus
+  </strong>
+  ,
+  <strong>
+   Mimikatz
+  </strong>
+  и
+  <strong>
+   Impacket
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   **1. Rubeus
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Rubeus
+  </strong>
+  — это инструмент, который специализируется на эксплуатации
+  <strong>
+   Kerberos
+  </strong>
+  в Windows-сетях. Kerberos — это основной механизм аутентификации в доменах Windows, и
+        если его неправильно настроить или использовать уязвимости, можно легко получить доступ к различным ресурсам
+        внутри сети. Rubeus позволяет работать с тикетами
+  <strong>
+   Kerberos
+  </strong>
+  (TGT, TGS), выполнять атаки, такие
+        как
+  <strong>
+   Pass-the-Ticket
+  </strong>
+  (PTT), а также извлекать билеты из памяти.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Получение TGT (Ticket Granting Ticket)
+  </h3>
+ </div>
+ <p dir="auto">
+  Первая задача, с которой ты столкнешься при работе с Rubeus — это получение
+  <strong>
+   TGT
+  </strong>
+  (Ticket Granting Ticket). Если у тебя есть хеш пароля пользователя в домене, ты можешь запросить TGT для этого
+        пользователя. Это своего рода первый шаг для аутентификации в системе и получения доступа к другим сервисам.
+ </p>
+ <p dir="auto">
+  Пример команды для получения TGT:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>Rubeus asktgt /user:<span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> /rc4:<span class="pl-k">&lt;</span>password-hash<span class="pl-k">&gt;</span></pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   <code>
+    /user:&lt;username&gt;
+   </code>
+   — указываешь имя пользователя, для которого ты хочешь получить тикет.
+  </li>
+  <li>
+   <code>
+    /rc4:&lt;password-hash&gt;
+   </code>
+   — передаешь хеш пароля этого пользователя, который используется для
+            генерации тикета.
+  </li>
+ </ul>
+ <p dir="auto">
+  Когда ты выполнешь эту команду, Rubeus вернет тебе TGT, который можно использовать для дальнейших атак
+        или для аутентификации на других системах, требующих
+  <strong>
+   Kerberos
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Pass-the-Ticket (PTT)
+  </h3>
+ </div>
+ <p dir="auto">
+  Теперь, когда у тебя есть TGT, можно использовать его в атаке
+  <strong>
+   Pass-the-Ticket
+  </strong>
+  (PTT).
+        Это позволяет обойти традиционную аутентификацию, используя уже сгенерированный тикет для доступа к другим
+        сервисам в сети.
+ </p>
+ <p dir="auto">
+  Вот как это делается:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>Rubeus tgtdeleg /ticket:<span class="pl-k">&lt;</span>path-to-ticket<span class="pl-k">&gt;</span></pre>
+ </div>
+ <ul dir="auto">
+  <li>
+   <code>
+    /ticket:&lt;path-to-ticket&gt;
+   </code>
+   — это путь к файлу с тикетом, который ты хочешь передать.
+            Например, это может быть путь к TGT, который ты только что сгенерировал.
+  </li>
+ </ul>
+ <p dir="auto">
+  С помощью этой команды ты можешь взять тикет и передать его на другую машину в сети, чтобы получить
+        доступ к сервисам, которые требуют
+  <strong>
+   Kerberos
+  </strong>
+  аутентификацию. Важно, что с помощью PTT можно
+        «передать» тикет в другую сессию или сервер, что дает возможность работать с сервисами без повторной
+        аутентификации.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Извлечение билетов из памяти
+  </h3>
+ </div>
+ <p dir="auto">
+  Если ты уже получил доступ к системе и у тебя есть нужные привилегии, ты можешь извлечь
+  <strong>
+   Kerberos
+  </strong>
+  билеты прямо из памяти компьютера. Это позволяет получить тикеты без необходимости их
+        заново запрашивать.
+ </p>
+ <p dir="auto">
+  Команда для извлечения билетов из памяти:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>Rubeus dump</pre>
+ </div>
+ <p dir="auto">
+  Просто запускаешь эту команду, и Rubeus извлечет все тикеты
+  <strong>
+   Kerberos
+  </strong>
+  , которые
+        находятся в памяти на целевой машине. Это полезно, если ты хочешь получить доступ к сервисам, использующим
+  <strong>
+   Kerberos
+  </strong>
+  аутентификацию, и уже имеешь скомпрометированную машину.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    2. Mimikatz
+   </strong>
+  </h3>
+ </div>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Извлечение паролей из памяти
+  </h3>
+ </div>
+ <p dir="auto">
+  Одной из самых популярных функций Mimikatz является извлечение паролей из памяти. Когда пользователи
+        входят в систему, пароли могут храниться в памяти Windows, и Mimikatz позволяет извлечь эти данные, включая хеши
+        паролей.
+ </p>
+ <p dir="auto">
+  Для того чтобы извлечь пароли, можно использовать команду:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>mimikatz sekurlsa::logonpasswords</pre>
+ </div>
+ <p dir="auto">
+  Эта команда позволяет Mimikatz отобразить все сохраненные пароли, а также хеши пользователей, которые
+        в данный момент вошли в систему.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Pass-the-Hash (PTH)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Pass-the-Hash
+  </strong>
+  — это атака, в ходе которой атакующий использует хеш пароля для
+        аутентификации, не зная самого пароля. Mimikatz позволяет выполнить такую атаку с помощью хешей паролей,
+        полученных из памяти или захваченных другим способом.
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>mimikatz sekurlsa::pth /user:<span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> /domain:<span class="pl-k">&lt;</span>domain<span class="pl-k">&gt;</span> /rc4:<span class="pl-k">&lt;</span>password-hash<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  <code>
+   /user:&lt;username&gt;
+  </code>
+  — имя пользователя, для которого будет выполнена аутентификация.
+  <code>
+   /domain:&lt;domain&gt;
+  </code>
+  — домен, в котором находится учетная запись.
+  <code>
+   /rc4:&lt;password-hash&gt;
+  </code>
+  — хеш пароля в формате RC4, который будет использоваться для
+        аутентификации.
+ </p>
+ <p dir="auto">
+  После выполнения этой команды можно будет аутентифицироваться в системе с использованием только хеша
+        пароля, обойдя обычную процедуру ввода пароля.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Pass-the-Ticket (PTT)
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   Pass-the-Ticket
+  </strong>
+  — это атака, в которой используется уже сгенерированный
+        Kerberos-тикет для доступа к сервисам в сети. Mimikatz поддерживает работу с тикетами
+  <strong>
+   Kerberos
+  </strong>
+  ,
+        что позволяет проводить атаки PTT.
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>mimikatz kerberos::ptt /ticket:<span class="pl-k">&lt;</span>path-to-ticket<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  <code>
+   /ticket:&lt;path-to-ticket&gt;
+  </code>
+  — путь к файлу с Kerberos тикетом, который ты хочешь
+        использовать для аутентификации.
+ </p>
+ <p dir="auto">
+  Эта команда позволяет атакующему передавать тикет для аутентификации без повторной проверки пароля,
+        что полезно при атаках на сетевые ресурсы, требующие аутентификации с использованием
+  <strong>
+   Kerberos
+  </strong>
+  .
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Извлечение учетных данных из процесса LSASS
+  </h3>
+ </div>
+ <p dir="auto">
+  <strong>
+   LSASS
+  </strong>
+  (Local Security Authority Subsystem Service) — это процесс, который управляет
+        аутентификацией в Windows. Извлечение учетных данных из LSASS может дать атакующему доступ к важным данным,
+        таким как пароли и хеши, которые используются для входа в систему.
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>mimikatz sekurlsa::minidump <span class="pl-k">&lt;</span>path-to-LSASS.dmp<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  <code>
+   &lt;path-to-LSASS.dmp&gt;
+  </code>
+  — путь к дампу памяти процесса LSASS. Чтобы его создать, нужно
+        сначала получить дамп процесса LSASS с помощью инструментов вроде
+  <strong>
+   ProcDump
+  </strong>
+  или других утилит.
+ </p>
+ <p dir="auto">
+  После выполнения этой команды Mimikatz может извлечь учетные данные из дампа, включая пароли и хеши.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Повышение привилегий
+  </h3>
+ </div>
+ <p dir="auto">
+  Mimikatz предоставляет возможность повышать привилегии, захватывая токены безопасности и привилегии с
+        помощью следующих команд:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>mimikatz token::list</pre>
+ </div>
+ <p dir="auto">
+  Эта команда позволяет вывести список всех токенов безопасности, которые существуют в текущем процессе.
+        Можно выбрать токен, который дает более высокие привилегии, и использовать его для повышения прав.
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>mimikatz token::impersonate /sid:<span class="pl-k">&lt;</span>sid-of-target<span class="pl-k">&gt;</span> /user:<span class="pl-k">&lt;</span>user-to-impersonate<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  <code>
+   /sid:&lt;sid-of-target&gt;
+  </code>
+  — SID целевой учетной записи, с которой ты хочешь работать.
+  <code>
+   /user:&lt;user-to-impersonate&gt;
+  </code>
+  — имя пользователя, чьи привилегии ты хочешь принять.
+ </p>
+ <p dir="auto">
+  Эта команда позволяет атакующему принять токен целевой учетной записи и выполнять действия с ее
+        привилегиями.
+ </p>
+ <hr/>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    3. Impacket
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Impacket — это библиотека для Python, которая позволяет тебе напрямую работать с различными сетевыми
+        протоколами Windows.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   SMB Enumeration — Основы взаимодействия с сетью
+  </h3>
+ </div>
+ <p dir="auto">
+  С помощью инструмента Impacket ты можешь быстро получить информацию о системе, например, о версиях
+  <strong>
+   SMB
+  </strong>
+  сервисов или о доменных учетных записях.
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>impacket-smbclient //<span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span>/C$ -username <span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> -password <span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  <code>
+   //&lt;target-ip&gt;/C$
+  </code>
+  — это путь к удаленной системе через SMB (обычно это скрытый
+        ресурс C:).
+  <code>
+   -username &lt;username&gt;
+  </code>
+  — указываешь имя пользователя.
+  <code>
+   -password &lt;password&gt;
+  </code>
+  — указываешь пароль или хеш, если используешь Pass-the-Hash.
+ </p>
+ <p dir="auto">
+  Если все настроено правильно, ты получишь доступ к удаленной системе через SMB, что даст тебе
+        возможность увидеть файловую систему, запрашивать файлы и т.д.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   NTLM Relay Attacks — Relay атакой через SMB и другие
+            протоколы
+  </h3>
+ </div>
+ <p dir="auto">
+  Теперь давай углубимся в одну из самых популярных атак в Windows-сетях —
+  <strong>
+   NTLM Relay
+            Attacks
+  </strong>
+  .
+  <strong>
+   NTLM Relay
+  </strong>
+  позволяет атакующему перехватить аутентификацию NTLM и
+        «переправить» ее на другие серверы. Это особенно опасно, потому что можно «перехватить» сессию, не зная пароля.
+ </p>
+ <p dir="auto">
+  Impacket предоставляет удобные инструменты для этой атаки. Например, ты можешь использовать утилиту
+  <strong>
+   <code>
+    ntlmrelayx.py
+   </code>
+  </strong>
+  для проведения
+  <strong>
+   NTLM Relay Attack
+  </strong>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 impacket/examples/ntlmrelayx.py -t smb://<span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span> -smb2support</pre>
+ </div>
+ <p dir="auto">
+  <code>
+   -t smb://&lt;target-ip&gt;
+  </code>
+  — указываешь целевой IP, на который будет осуществляться
+        передача NTLM аутентификации.
+  <code>
+   -smb2support
+  </code>
+  — добавляет поддержку SMB2, что актуально для новых систем.
+ </p>
+ <p dir="auto">
+  Что происходит при этом? Ты настраиваешь
+  <strong>
+   NTLM Relay
+  </strong>
+  на своем компьютере, который
+        будет принимать аутентификацию NTLM от клиента и передавать её на другой сервер, например, на SMB или
+        веб-сервер. Атака позволяет получить доступ к сервисам, где требуется только правильная аутентификация, но не
+        обязательна защита от ретрансляций.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   Kerberos Attacks — Атаки через Kerberos
+  </h3>
+ </div>
+ <p dir="auto">
+  Impacket также позволяет работать с
+  <strong>
+   Kerberos
+  </strong>
+  аутентификацией, что дает тебе
+        возможность проводить более сложные атаки, такие как
+  <strong>
+   Pass-the-Ticket
+  </strong>
+  и
+  <strong>
+   Kerberoasting
+  </strong>
+  .
+ </p>
+ <p dir="auto">
+  Для использования Kerberos в Impacket есть специальная утилита
+  <strong>
+   <code>
+    GetTGT.py
+   </code>
+  </strong>
+  , которая позволяет тебе получить
+  <strong>
+   Ticket Granting Ticket
+            (TGT)
+  </strong>
+  для пользователя, если у тебя есть хеш пароля:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 impacket/examples/GetTGT.py <span class="pl-k">&lt;</span>domain<span class="pl-k">&gt;</span>/<span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span>:<span class="pl-k">&lt;</span>password-hash<span class="pl-k">&gt;</span> -dc-ip <span class="pl-k">&lt;</span>domain-controller-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  <code>
+   &lt;domain&gt;/&lt;username&gt;
+  </code>
+  — имя пользователя и домен.
+  <code>
+   &lt;password-hash&gt;
+  </code>
+  — хеш пароля.
+  <code>
+   -dc-ip &lt;domain-controller-ip&gt;
+  </code>
+  — IP адрес контроллера домена, с которым нужно
+        взаимодействовать.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    Kerberoasting — Получение сервисных
+                тикетов
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Одним из мощных инструментов для атак на
+  <strong>
+   Kerberos
+  </strong>
+  является
+  <strong>
+   Kerberoasting
+  </strong>
+  . Это атака, при которой ты запрашиваешь сервисные тикеты для сервисных аккаунтов,
+        а затем пытаешься их расшифровать офлайн, если сервис использует слабые пароли. С помощью Impacket ты можешь
+        выполнить
+  <strong>
+   Kerberoasting
+  </strong>
+  с помощью утилиты
+  <strong>
+   <code>
+    GetUserSPNs.py
+   </code>
+  </strong>
+  .
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 impacket/examples/GetUserSPNs.py <span class="pl-k">&lt;</span>domain<span class="pl-k">&gt;</span>/<span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span>:<span class="pl-k">&lt;</span>password-hash<span class="pl-k">&gt;</span> -dc-ip <span class="pl-k">&lt;</span>domain-controller-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  После выполнения ты получишь
+  <strong>
+   Service Principal Names (SPNs)
+  </strong>
+  , которые можно
+        использовать для дальнейших атак, например, для добычи паролей с использованием атак на слабые хеши.
+ </p>
+ <div class="markdown-heading" dir="auto">
+  <h3 class="heading-element" dir="auto" tabindex="-1">
+   <strong>
+    LDAP и DCOM — Манипуляции с каталогами и удаленными
+                сервисами
+   </strong>
+  </h3>
+ </div>
+ <p dir="auto">
+  Impacket также позволяет работать с
+  <strong>
+   LDAP
+  </strong>
+  и
+  <strong>
+   DCOM
+  </strong>
+  , что полезно для
+        получения информации о пользователях и группах в домене, а также для удаленного выполнения команд. Например, с
+        помощью
+  <strong>
+   <code>
+    ldapsearch.py
+   </code>
+  </strong>
+  можно запросить LDAP-сервер, чтобы извлечь информацию о
+        пользователях:
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 impacket/examples/ldapsearch.py -u <span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> -p <span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span> -h <span class="pl-k">&lt;</span>ldap-server-ip<span class="pl-k">&gt;</span></pre>
+ </div>
+ <p dir="auto">
+  Также есть утилита для выполнения удаленных команд с помощью
+  <strong>
+   DCOM
+  </strong>
+  :
+ </p>
+ <div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto">
+  <pre>python3 impacket/examples/smbexec.py <span class="pl-k">&lt;</span>target-ip<span class="pl-k">&gt;</span> -username <span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> -password <span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span></pre>
+ </div>
+</article>
