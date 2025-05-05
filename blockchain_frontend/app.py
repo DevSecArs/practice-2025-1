@@ -30,6 +30,24 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        if password != confirm_password:
+            flash('Passwords do not match', 'danger')
+        elif username in users:
+            flash('Username already exists', 'danger')
+        else:
+            users[username] = {"password": password, "role": "user", "wallet": "NewWalletAddress"}
+            flash('Registration successful! Please login.', 'success')
+            return redirect(url_for('login'))
+
+    return render_template('register.html')
+
 @app.route('/user', methods=['GET', 'POST'])
 def user_dashboard():
     balance = 500.00  # Example data
