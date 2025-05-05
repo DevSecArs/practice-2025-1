@@ -1,0 +1,35 @@
+/* Темная тема */
+body.dark-theme {
+    background-color: #212529; /* Dark Bootstrap background */
+    color: #f8f9fa; /* Light Bootstrap text */
+}
+
+body.dark-theme .navbar .nav-link {
+    color: #f8f9fa;
+}
+
+body.dark-theme .btn-outline-secondary {
+    border-color: #f8f9fa;
+    color: #f8f9fa;
+}
+
+body.dark-theme .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Карточки Bootstrap */
+body.dark-theme .card {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+/* Таблицы */
+body.dark-theme .table {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+body.dark-theme .table th, body.dark-theme .table td {
+    border-color: #454d55;
+}
