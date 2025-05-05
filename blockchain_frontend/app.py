@@ -48,6 +48,10 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/user', methods=['GET', 'POST'])
 def user_dashboard():
     balance = 500.00  # Example data
