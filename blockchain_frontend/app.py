@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import qrcode
 import io
 import base64
-from flask import send_file
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # Replace with a secure key
@@ -14,6 +13,8 @@ users = {
 
 @app.route('/')
 def home():
+    if "username" in session:
+        return redirect(url_for('user_dashboard'))
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -21,9 +22,11 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        
+
         user = users.get(username)
         if user and user['password'] == password:
+            session['username'] = username
+            flash('Login successful!', 'success')
             return redirect(url_for('user_dashboard'))
         else:
             flash('Invalid username or password', 'danger')
@@ -54,8 +57,14 @@ def about():
 
 @app.route('/user', methods=['GET', 'POST'])
 def user_dashboard():
+    if "username" not in session:
+        flash('Please login to access this page.', 'warning')
+        return redirect(url_for('login'))
+
+    username = session['username']
+    user = users.get(username)
     balance = 500.00  # Example data
-    wallet_address = users['user']['wallet']
+    wallet_address = user['wallet']
     transactions = [  # Example data
         {"id": "1", "status": "Success", "amount": -50, "timestamp": "2025-05-04T10:00:00Z"},
         {"id": "2", "status": "Success", "amount": 150, "timestamp": "2025-05-04T15:00:00Z"}
@@ -75,7 +84,12 @@ def user_dashboard():
 
 @app.route('/user/receive')
 def receive():
-    wallet_address = users['user']['wallet']
+    if "username" not in session:
+        flash('Please login to access this page.', 'warning')
+        return redirect(url_for('login'))
+
+    username = session['username']
+    wallet_address = users[username]['wallet']
     qr = qrcode.QRCode(box_size=10, border=4)
     qr.add_data(wallet_address)
     qr.make(fit=True)
@@ -90,6 +104,7 @@ def receive():
 
 @app.route('/logout')
 def logout():
+    session.pop('username', None)
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
