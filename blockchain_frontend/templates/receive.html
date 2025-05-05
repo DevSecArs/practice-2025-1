@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Receive Funds{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <h1 class="mb-4">Receive Funds</h1>
+        <p>Scan the QR code or copy your wallet address below:</p>
+
+        <div class="mb-4">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid">
+        </div>
+
+        <div class="mb-3">
+            <input type="text" class="form-control text-center" value="{{ wallet_address }}" readonly>
+            <button class="btn btn-primary mt-2" onclick="navigator.clipboard.writeText('{{ wallet_address }}')">Copy Address</button>
+        </div>
+
+        <a href="/user" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
