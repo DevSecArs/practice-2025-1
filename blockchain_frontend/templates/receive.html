@@ -1,23 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Receive Funds{% endblock %}
+{% block title %}Receive Cryptocurrency{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6 text-center">
-        <h1 class="mb-4">Receive Funds</h1>
-        <p>Scan the QR code or copy your wallet address below:</p>
-
-        <div class="mb-4">
-            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid">
-        </div>
-
-        <div class="mb-3">
-            <input type="text" class="form-control text-center" value="{{ wallet_address }}" readonly>
-            <button class="btn btn-primary mt-2" onclick="navigator.clipboard.writeText('{{ wallet_address }}')">Copy Address</button>
-        </div>
-
-        <a href="/user" class="btn btn-secondary mt-3">Back to Dashboard</a>
+<div class="d-flex justify-content-center">
+    <div class="text-center">
+        <h2 class="mb-4">Receive Cryptocurrency</h2>
+        <p>Your Wallet Address:</p>
+        <p><strong>{{ wallet_address }}</strong></p>
+        <button class="btn btn-primary mb-3" onclick="copyToClipboard('{{ wallet_address }}')">Copy Address</button>
+        <hr class="w-50 mx-auto">
+        <h4 class="mb-3">Your QR Code:</h4>
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid">
     </div>
 </div>
+
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Wallet address copied to clipboard!");
+        });
+    }
+</script>
 {% endblock %}
