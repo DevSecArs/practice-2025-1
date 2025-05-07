@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Receive Cryptocurrency{% endblock %}
+{% block title %}Получить криптовалюту{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-center">
     <div class="text-center">
-        <h2 class="mb-4">Receive Cryptocurrency</h2>
-        <p>Your Wallet Address:</p>
+        <h2 class="mb-4">Получить криптовалюту</h2>
+        <p>Адрес вашего кошелька:</p>
         <p><strong>{{ wallet_address }}</strong></p>
-        <button class="btn btn-primary mb-3" onclick="copyToClipboard('{{ wallet_address }}')">Copy Address</button>
+        <button class="btn btn-primary mb-3" onclick="copyToClipboard('{{ wallet_address }}')">Скопировать адрес</button>
         <hr class="w-50 mx-auto">
-        <h4 class="mb-3">Your QR Code:</h4>
+        <h4 class="mb-3">Ваш QR Код:</h4>
         <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid">
     </div>
 </div>
@@ -18,7 +18,7 @@
 <script>
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            alert("Wallet address copied to clipboard!");
+            alert("Адрес кошелька скопирован!");
         });
     }
 </script>

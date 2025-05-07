@@ -5,9 +5,9 @@ import io
 import base64
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Replace with a secure key
+app.secret_key = "supersecretkey"  # Нужно заменить на свой ключ
 
-API_BASE_URL = "http://localhost:8000"  # Example URL
+API_BASE_URL = "http://localhost:8000"  # URL вашего сервера с блокчейном
 
 @app.route('/')
 def home():
@@ -26,6 +26,7 @@ def login():
         if response.status_code == 200:
             data = response.json()
             session['username'] = username
+            session['password'] = password
             session['wallet_address'] = data['address']
             flash('Вход успешный!', 'success')
             return redirect(url_for('user_dashboard'))
@@ -66,10 +67,11 @@ def user_dashboard():
         return redirect(url_for('login'))
 
     username = session['username']
+    password = session['password']
     wallet_address = session['wallet_address']
 
     # Получение баланса и транзакций
-    balance_response = requests.post(f"{API_BASE_URL}/balance", json={"username": username, "password": request.form.get('password')})
+    balance_response = requests.post(f"{API_BASE_URL}/balance", json={"username": username, "password": password})
     transactions_response = requests.get(f"{API_BASE_URL}/transactions/{wallet_address}")
 
     if balance_response.status_code == 200:
@@ -92,7 +94,7 @@ def user_dashboard():
             if recipient and amount:
                 transaction_response = requests.post(f"{API_BASE_URL}/transaction", json={
                     "sender_username": username,
-                    "sender_password": request.form.get('password'),
+                    "sender_password": password,
                     "sender_address": wallet_address,
                     "recipient_address": recipient,
                     "amount": float(amount)
@@ -106,8 +108,19 @@ def user_dashboard():
                     flash('Транзакция не осуществилась. Недостаточно средств.', 'danger')
             else:
                 flash('Транзакция не осуществилась. Проверьте баланс или попробуйте позже.', 'danger')
+        if action == 'borrow':
+            amount = request.form.get('amount')
+            if amount:
+                transaction_response = requests.post(f"{API_BASE_URL}/credit", json={
+                    "recipient_address": wallet_address,
+                    "amount": float(amount)
+                })
+                if transaction_response.status_code == 201:
+                    flash('Кредит оформлен успешно!', 'success')
+                else:
+                    flash('Неудалось получить кредит. Попробуйте позже.', 'danger')
 
-    return render_template('user.html', balance=balance, transactions=transactions, wallet_address=wallet_address)
+    return render_template('user.html', balance=balance, transactions=transactions, wallet_address=wallet_address, username=username)
 
 @app.route('/user/receive')
 def receive():

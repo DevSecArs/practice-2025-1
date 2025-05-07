@@ -33,3 +33,8 @@ body.dark-theme .table {
 body.dark-theme .table th, body.dark-theme .table td {
     border-color: #454d55;
 }
+
+#btn-borrow {
+    background-color: orangered;
+    border-color: rgb(194 66 0);;
+}

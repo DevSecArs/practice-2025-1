@@ -1,51 +1,68 @@
 {% extends "base.html" %}
 
-{% block title %}User Dashboard{% endblock %}
+{% block title %}Главная{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <h1 class="text-center">Welcome, User</h1>
+        <h1 class="text-center">Добро пожаловать, {{ username }}</h1>
 
         <div class="card my-4">
             <div class="card-body">
-                <h5 class="card-title">Wallet Balance</h5>
+                <h5 class="card-title">Баланс</h5>
                 <p class="card-text">{{ balance }} USD</p>
             </div>
         </div>
 
         <div class="d-flex justify-content-between">
             <form method="GET" action="/user/receive">
-                <button class="btn btn-secondary">Receive</button>
+                <button class="btn btn-secondary">Получить</button>
             </form>
 
-            <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#sendForm">Send</button>
+            <button id="btn-borrow" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#BorrowForm">Занять</button>
+
+            <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#sendForm">Отправить</button>
+        </div>
+
+        <div class="collapse mt-3" id="BorrowForm">
+            <form method="POST" action="/user">
+                <input type="hidden" name="action" value="borrow">
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Количество</label>
+                    <input type="number" id="amount" name="amount" class="form-control" step="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-success">Отправить</button>
+            </form>
         </div>
 
         <div class="collapse mt-3" id="sendForm">
             <form method="POST" action="/user">
                 <input type="hidden" name="action" value="send">
                 <div class="mb-3">
-                    <label for="recipient" class="form-label">Recipient Wallet Address</label>
+                    <label for="recipient" class="form-label">Адрес кошелька получателя</label>
                     <input type="text" id="recipient" name="recipient" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="amount" class="form-label">Amount</label>
+                    <label for="amount" class="form-label">Количество</label>
                     <input type="number" id="amount" name="amount" class="form-control" step="0.01" required>
                 </div>
-                <button type="submit" class="btn btn-success">Send</button>
+                <button type="submit" class="btn btn-success">Отправить</button>
             </form>
         </div>
 
         <div class="mt-4">
-            <h5>Transaction History</h5>
             <ul class="list-group">
-                {% for transaction in transactions %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ transaction.timestamp }} - {{ transaction.status }}
-                    <span>{{ transaction.amount }} USD</span>
-                </li>
-                {% endfor %}
+                {% if transaction|length > 0 %}
+                    <h5>История транзакций</h5>
+                        {% for transaction in transactions %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ transaction.timestamp }} - {{ transaction.status }}
+                            <span>{{ transaction.amount }} USD</span>
+                        </li>
+                        {% endfor %}
+                {% else %}
+                    <h5>История транзакций пуста.</h5>
+                {% endif %}
             </ul>
         </div>
 
