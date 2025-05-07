@@ -120,6 +120,7 @@ def user_dashboard():
                     flash('Кредит оформлен успешно!', 'success')
                 else:
                     flash('Неудалось получить кредит. Попробуйте позже.', 'danger')
+                return redirect(url_for('user_dashboard'))
 
     return render_template('user.html', balance=balance, transactions=transactions, wallet_address=wallet_address, username=username, password=password)
 

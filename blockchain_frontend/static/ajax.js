@@ -24,6 +24,21 @@ function updateBalance(username, password) {
         .catch(error => console.error("Ошибка:", error));
 }
 
+function parseTransaction(transactionString) {
+    const regex = /^(.+) -> (.+): ([\d.]+)$/; // Регулярное выражение для разбора строки
+    const match = transactionString.match(regex);
+
+    if (match) {
+        return {
+            sender: match[1].trim(),
+            recipient: match[2].trim(),
+            amount: match[3].trim()
+        };
+    }
+    console.error(`Не удалось разобрать транзакцию: ${transactionString}`);
+    return null;
+}
+
 function updateTransactions(walletAddress) {
     fetch(`${host}/transactions/${walletAddress}`)
         .then(response => {
@@ -64,14 +79,17 @@ function updateTransactions(walletAddress) {
 
                     const reversedTransactions = [...data.transactions].reverse();
                     reversedTransactions.forEach((transaction, index) => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <th scope="row">${index + 1}</th>
-                            <td>${transaction.sender}</td>
-                            <td>${transaction.recipient}</td>
-                            <td>${transaction.amount}</td>
-                        `;
-                        tbody.appendChild(row);
+                        const parsedTransaction = parseTransaction(transaction);
+                        if (parsedTransaction) {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <th scope="row">${index + 1}</th>
+                                <td>${parsedTransaction.sender}</td>
+                                <td>${parsedTransaction.recipient}</td>
+                                <td>${parsedTransaction.amount}</td>
+                            `;
+                            tbody.appendChild(row);
+                        }
                     });
 
                     table.appendChild(tbody);
