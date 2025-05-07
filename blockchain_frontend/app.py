@@ -108,6 +108,7 @@ def user_dashboard():
                     flash('Транзакция не осуществилась. Недостаточно средств.', 'danger')
             else:
                 flash('Транзакция не осуществилась. Проверьте баланс или попробуйте позже.', 'danger')
+            return redirect(url_for('user_dashboard'))
         if action == 'borrow':
             amount = request.form.get('amount')
             if amount:
@@ -120,7 +121,7 @@ def user_dashboard():
                 else:
                     flash('Неудалось получить кредит. Попробуйте позже.', 'danger')
 
-    return render_template('user.html', balance=balance, transactions=transactions, wallet_address=wallet_address, username=username)
+    return render_template('user.html', balance=balance, transactions=transactions, wallet_address=wallet_address, username=username, password=password)
 
 @app.route('/user/receive')
 def receive():

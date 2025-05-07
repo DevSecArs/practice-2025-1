@@ -38,3 +38,7 @@ body.dark-theme .table th, body.dark-theme .table td {
     background-color: orangered;
     border-color: rgb(194 66 0);;
 }
+
+#transactions-history {
+    overflow: auto;
+}

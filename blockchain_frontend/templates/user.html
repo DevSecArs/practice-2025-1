@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Главная{% endblock %}
+{% block extensions %}<script src="{{ url_for('static', filename='ajax.js') }}"></script>{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -10,7 +11,7 @@
         <div class="card my-4">
             <div class="card-body">
                 <h5 class="card-title">Баланс</h5>
-                <p class="card-text">{{ balance }} USD</p>
+                <p id="wallet-balance" class="card-text"></p>
             </div>
         </div>
 
@@ -50,20 +51,9 @@
             </form>
         </div>
 
-        <div class="mt-4">
-            <ul class="list-group">
-                {% if transaction|length > 0 %}
-                    <h5>История транзакций</h5>
-                        {% for transaction in transactions %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ transaction.timestamp }} - {{ transaction.status }}
-                            <span>{{ transaction.amount }} USD</span>
-                        </li>
-                        {% endfor %}
-                {% else %}
-                    <h5>История транзакций пуста.</h5>
-                {% endif %}
-            </ul>
+        <div id="transactions-history" class="mt-4">
+            <div id="transactions-container">
+            </div>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -77,4 +67,15 @@
         {% endwith %}
     </div>
 </div>
+
+<script>
+    const username = "{{ username }}";
+    const password = "{{ password }}";
+    const walletAddress = "{{ wallet_address }}";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        startUpdating(username, password, walletAddress);
+    });
+</script>
+
 {% endblock %}
