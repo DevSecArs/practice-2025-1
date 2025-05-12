@@ -2,6 +2,10 @@
 
 {% block title %}Получить криптовалюту{% endblock %}
 
+{% block extensions %}
+<script src="{{ url_for('static', filename='copy.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="d-flex justify-content-center">
     <div class="text-center">
@@ -13,13 +17,6 @@
         <h4 class="mb-3">Ваш QR Код:</h4>
         <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid">
     </div>
+    <div id="toast" class="toast"></div>
 </div>
-
-<script>
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Адрес кошелька скопирован!");
-        });
-    }
-</script>
 {% endblock %}
