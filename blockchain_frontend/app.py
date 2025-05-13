@@ -21,19 +21,22 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Запрос к API для логина
-        response = requests.post(f"{API_BASE_URL}/login", json={"username": username, "password": password})
-        if response.status_code == 200:
-            data = response.json()
-            session['username'] = username
-            session['password'] = password
-            session['wallet_address'] = data['address']
-            flash('Вход успешный!', 'success')
-            return redirect(url_for('user_dashboard'))
-        elif response.status_code == 401:
-            flash('Неправильный логин или пароль.', 'danger')
-        else:
-            flash('Непредвиденная ошибка.', 'danger')
+        try:
+            # Запрос к API для логина
+            response = requests.post(f"{API_BASE_URL}/login", json={"username": username, "password": password})
+            if response.status_code == 200:
+                data = response.json()
+                session['username'] = username
+                session['password'] = password
+                session['wallet_address'] = data['address']
+                flash('Вход успешный!', 'success')
+                return redirect(url_for('user_dashboard'))
+            elif response.status_code == 401:
+                flash('Неправильный логин или пароль.', 'danger')
+            else:
+                flash('Непредвиденная ошибка.', 'danger')
+        except requests.exceptions.RequestException:
+            flash('Не удалось подключиться к серверу. Попробуйте позже.', 'danger')
 
     return render_template('login.html')
 
@@ -47,12 +50,15 @@ def register():
         if password != confirm_password:
             flash('Пароли не совпадают.', 'danger')
         else:
-            response = requests.post(f"{API_BASE_URL}/register", json={"username": username, "password": password})
-            if response.status_code == 201:
-                flash('Регистрация успешна! Войдите, чтобы войти в кошелёк.', 'success')
-                return redirect(url_for('login'))
-            elif response.status_code == 400:
-                flash('Пользователь уже существует.', 'danger')
+            try:
+                response = requests.post(f"{API_BASE_URL}/register", json={"username": username, "password": password})
+                if response.status_code == 201:
+                    flash('Регистрация успешна! Войдите, чтобы войти в кошелёк.', 'success')
+                    return redirect(url_for('login'))
+                elif response.status_code == 400:
+                    flash('Пользователь уже существует.', 'danger')
+            except requests.exceptions.RequestException:
+                flash('Не удалось подключиться к серверу. Попробуйте позже.', 'danger')
             
     return render_template('register.html')
 
@@ -70,21 +76,26 @@ def user_dashboard():
     password = session['password']
     wallet_address = session['wallet_address']
 
-    # Получение баланса и транзакций
-    balance_response = requests.post(f"{API_BASE_URL}/balance", json={"username": username, "password": password})
-    transactions_response = requests.get(f"{API_BASE_URL}/transactions/{wallet_address}")
+    try:
+        # Получение баланса и транзакций
+        balance_response = requests.post(f"{API_BASE_URL}/balance", json={"username": username, "password": password})
+        transactions_response = requests.get(f"{API_BASE_URL}/transactions/{wallet_address}")
 
-    if balance_response.status_code == 200:
-        balance = balance_response.json().get('balance', 0)
-    else:
-        balance = 0
-        flash("Невозможно загрузить данные о балансе.", "danger")
+        if balance_response.status_code == 200:
+            balance = balance_response.json().get('balance', 0)
+        else:
+            balance = 0
+            flash("Невозможно загрузить данные о балансе.", "danger")
 
-    if transactions_response.status_code == 200:
-        transactions = transactions_response.json().get('transactions', [])
-    else:
-        transactions = []
-        flash("Невозможно загрузить данные о транзакциях.", "danger")
+        if transactions_response.status_code == 200:
+            transactions = transactions_response.json().get('transactions', [])
+        else:
+            transactions = []
+            flash("Невозможно загрузить данные о транзакциях.", "danger")
+    except requests.exceptions.RequestException:
+            balance = 0
+            transactions = []
+            flash('Не удалось подключиться к серверу. Попробуйте позже.', 'danger')
 
     if request.method == 'POST':
         action = request.form.get('action')
@@ -92,20 +103,23 @@ def user_dashboard():
             recipient = request.form.get('recipient')
             amount = request.form.get('amount')
             if recipient and amount:
-                transaction_response = requests.post(f"{API_BASE_URL}/transaction", json={
-                    "sender_username": username,
-                    "sender_password": password,
-                    "sender_address": wallet_address,
-                    "recipient_address": recipient,
-                    "amount": float(amount)
-                })
-                if transaction_response.status_code == 201:
-                    flash('Транзакция прошла успешно!', 'success')
-                elif transaction_response.status_code == 401:
-                    flash('Транзакция не осуществилась. Необходимо пройти аутентификацию.', 'warning')
-                    return redirect(url_for('login'))
-                else:
-                    flash('Транзакция не осуществилась. Недостаточно средств.', 'danger')
+                try:
+                    transaction_response = requests.post(f"{API_BASE_URL}/transaction", json={
+                        "sender_username": username,
+                        "sender_password": password,
+                        "sender_address": wallet_address,
+                        "recipient_address": recipient,
+                        "amount": float(amount)
+                    })
+                    if transaction_response.status_code == 201:
+                        flash('Транзакция прошла успешно!', 'success')
+                    elif transaction_response.status_code == 401:
+                        flash('Транзакция не осуществилась. Необходимо пройти аутентификацию.', 'warning')
+                        return redirect(url_for('login'))
+                    else:
+                        flash('Транзакция не осуществилась. Недостаточно средств.', 'danger')
+                except requests.exceptions.RequestException:
+                    flash('Не удалось подключиться к серверу. Попробуйте позже.', 'danger')
             else:
                 flash('Транзакция не осуществилась. Проверьте баланс или попробуйте позже.', 'danger')
             return redirect(url_for('user_dashboard'))
