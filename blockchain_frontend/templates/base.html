@@ -6,12 +6,14 @@
     <title>{% block title %}FrontChain{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
+    <script src="{{ url_for('static', filename='base.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='theme.js') }}"></script>
     {% block extensions %}{% endblock %}
 </head>
 <body>
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav id="navbar" class="navbar border-light navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('home') }}">FrontChain</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,5 +36,12 @@
     <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
+
+    <footer id="footer" class="footer border-light bg-light d-flex align-items-center justify-content-center mt-3 pt-4 px-1">
+            <p>© 2025 Студент и разработчик DevSecArs<br>
+                <a href="https://github.com/DevSecArs/practice-2025-1/blockchain_frontend/" target="_blank">Проект на GitHub</a>
+            </p>
+    </footer>
+
 </body>
 </html>
