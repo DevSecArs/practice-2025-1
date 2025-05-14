@@ -226,6 +226,11 @@ function parseTransaction(transactionString) {
 
 ---
 
+## Блокчейн на Python для тестирования FrontChain
+[Ссылка на репозиторий блокчейна на Python](https://github.com/lyna917/practice-2025-1/tree/backend_blockchain)
+
+---
+
 ## Участники команды
 
-- [Агаев Арслан]: Разработчик данного веб-сайта.
+Агаев Арслан: Студент группы 241-353.
