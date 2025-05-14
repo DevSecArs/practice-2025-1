@@ -32,7 +32,7 @@
 ## Структура проекта
 
 ```plaintext
-project/
+blockchain_frontend/
 ├── static/
 │   ├── ajax.js        # Логика AJAX-запросов и обработки транзакций
 │   ├── base.css       # Базовые стили приложения
@@ -109,53 +109,35 @@ function parseTransaction(transactionString) {
 }
 ```
 
-### 7. Обновление таблицы транзакций
-Форматирование транзакций для отображения в таблице:
-```javascript
-function updateTransactions(data) {
-    const transactionsContainer = document.getElementById('transactions-container');
-    transactionsContainer.innerHTML = '';
-
-    if (data.transactions.length === 0) {
-        const emptyMessage = document.createElement('p');
-        emptyMessage.textContent = "История транзакций отсутствует.";
-        transactionsContainer.appendChild(emptyMessage);
-    } else {
-        const table = document.createElement('table');
-        table.className = 'table table-striped table-dark'; // Поддержка темы
-        const thead = document.createElement('thead');
-        thead.innerHTML = `
-            <tr>
-                <th>#</th>
-                <th>Отправитель</th>
-                <th>Получатель</th>
-                <th>Сумма (USD)</th>
-            </tr>
-        `;
-        table.appendChild(thead);
-
-        const tbody = document.createElement('tbody');
-        data.transactions.forEach((transaction, index) => {
-            const parsedTransaction = parseTransaction(transaction);
-            if (parsedTransaction) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${parsedTransaction.sender}</td>
-                    <td>${parsedTransaction.recipient}</td>
-                    <td>${parsedTransaction.amount}</td>
-                `;
-                tbody.appendChild(row);
-            }
-        });
-        table.appendChild(tbody);
-        transactionsContainer.appendChild(table);
-    }
-}
-```
 ---
 ## Журнал прогресса
+14.05.2025 : Добавлен отчёт в формате markdown
 
+14.05.2025 : Добавлено лого, footer, контент для страницы about, Проверка на минимальную длину пароля при регистрации, Улучшен дизайн страницы и подправлены мелкие ошибки
+
+14.05.2025 : Добавлены оповещения в случае отсутствия соединения с сервером блокчейна
+
+12.05.2025 : Был изменён JS код для копирования адреса кошелька Он не поддерживался на мобильных устройствах.
+
+07.05.2025 : Изменён формат принимаемых данных: - В блокчейне изменён тип возвращаемых данных на строку, теперь реализована функция для парсинга данных из строки.
+
+07.05.2025 : Добавлены AJAX запросы для обновления в реальном времени баланса и истории транзакций.
+
+07.05.2025 : Добавлен функционал для функции займа в блокчейне.
+
+07.05.2025 : Вместо заглушек появились запросы на блокчеин с обработками http ответов и выводом успеха/ошибок.
+
+05.05.2025 : Добавлена возможность смены темы на тёмную
+
+05.05.2025 : Добавлено создание сессии
+
+05.05.2025 : Добавлена страница "о нас"
+
+05.05.2025 : Добавлена авторизация в app.py и переделана структура в html файле
+
+05.05.2025 : Был написан код для страниц.
+
+05.05.2025 : Начало проекта "FrontEnd для blockhain на python"
 ---
 
 ## Возможные улучшения

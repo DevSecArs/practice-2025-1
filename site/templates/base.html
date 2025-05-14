@@ -9,7 +9,10 @@
 <body>
     <header>
         {% block leftLinks %}{% endblock %}
-        <h1>{% block header %}{% endblock %}</h1>
+        <div>
+            <h1>{% block header %}{% endblock %}</h1>
+            {% block bottomlinks %}{% endblock %}
+        </div>
         {% block rightLinks %}{% endblock %}
     </header>
 
