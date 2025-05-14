@@ -216,6 +216,7 @@ function parseTransaction(transactionString) {
 05.05.2025 : Был написан код для страниц.
 
 05.05.2025 : Начало проекта "FrontEnd для blockhain на python"
+
 ---
 
 ## Возможные улучшения
