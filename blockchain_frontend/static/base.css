@@ -1,0 +1,114 @@
+html, body {height: 100%;}
+
+body {padding-top: 56px; /* Отступ равен высоте меню (56px по умолчанию для Bootstrap navbar) */}
+
+/* Темная тема */
+body.dark-theme {
+    background-color: #212529; /* Dark Bootstrap background */
+    color: #f8f9fa; /* Light Bootstrap text */
+}
+
+body.dark-theme .navbar .nav-link {
+    color: #f8f9fa;
+}
+
+body.dark-theme .btn-outline-secondary {
+    border-color: #f8f9fa;
+    color: #f8f9fa;
+}
+
+body.dark-theme .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Карточки Bootstrap */
+body.dark-theme .card {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+/* Таблицы */
+body.dark-theme .table {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+body.dark-theme .table th, body.dark-theme .table td {
+    border-color: #454d55;
+}
+
+.btn-third {
+    background-color: orangered;
+    border-color: rgb(194 66 0);;
+}
+
+#transactions-history {
+    overflow: auto;
+    max-height: 50vh;
+}
+
+/* Стили для уведомления */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    max-width: 90%;
+    text-align: center;
+    display: none; /* Сначала скрываем */
+}
+
+.toast.show {
+    opacity: 1;
+    display: block;
+}
+
+.toast.error {
+    background-color: #f44336;
+}
+
+#navbar {
+    border-radius: 25px;
+}
+
+#navbar.border-dark {
+    border-bottom: 1px solid black;
+}
+
+#navbar.border-light {
+    border-bottom: 1px solid white;
+}
+
+.footer {
+    margin-top: auto; /* Отодвигает футер вниз */
+    width: 100%;
+    height: 50px; /* Задаёт высоту футера */
+    text-align: center;
+    border-radius: 25px;
+}
+
+.footer.absolute {
+    position: absolute;
+    bottom: 0;
+}
+
+.footer.relative {
+    position: relative;
+}
+
+#footer.border-dark {
+    border-top: 1px solid black;
+}
+
+#footer.border-light {
+    border-top: 1px solid white;
+}

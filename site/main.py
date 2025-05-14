@@ -63,6 +63,9 @@ def journal():
 def resources():
     return render_template("resources.html")
 
+@app.route("/frontchain")
+def frontchain():
+    return render_template("frontchain.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

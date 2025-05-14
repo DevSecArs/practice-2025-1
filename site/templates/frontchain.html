@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block css_url %}{{ url_for('static', filename='index.css') }}{% endblock %}
+{% block title %}Главная - Anakta CTF{% endblock %}
+
+{% block leftLinks %}
+<a href="./about">О проекте</a> <a href="./members">Участники</a>
+{% endblock %}
+
+{% block header %}Anakta CTF{% endblock %}
+{% block bottomlinks %}<a href="./">Главная</a>{% endblock %}
+
+{% block rightLinks %}
+<a href="./journal">Журнал</a> <a href="./resources">Ресурсы</a>
+{% endblock %}
+
+{% block content %}
+<article class="frontchain" itemprop="text">
+    <h1>Проект: Frontend для подключение к Blockchain на Python: FrontChain</h1>
+    <h3><a href="https://github.com/DevSecArs/practice-2025-1/blockchain_frontend">GitHub - DevSecArs/practice-2025-1/blockchain_frontend</a></h3>
+    <div>
+        <h2 id="-">Описание проекта</h2>
+        <p>Проект представляет собой веб-приложение, написанное на Python с использованием Flask, для управления
+            пользовательскими кошельками и взаимодействия с транзакциями. Приложение поддерживает авторизацию, регистрацию,
+            отображение баланса кошелька, историю транзакций и их осуществление, а также предоставляет пользователю
+            интерфейс для изменения темы на светлую или тёмную.</p>
+    </div>
+    <hr>
+    <div>
+        <h2 id="-">Выполненные задачи</h2>
+        <ol>
+            <li>
+                <p><strong>Создание структуры приложения:</strong></p>
+                <ul>
+                    <li>Проект организован в соответствии с рекомендациями Flask. Статические файлы хранятся в папке
+                        <code>static</code>, а HTML-шаблоны — в папке <code>templates</code>.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Разработка интерфейса:</strong></p>
+                <ul>
+                    <li>Реализован базовый HTML-шаблон <code>base.html</code> с подключаемыми скриптами и стилями.</li>
+                    <li>Созданы пользовательские страницы для входа, регистрации, информации о кошельке и транзакциях.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Темизация интерфейса:</strong></p>
+                <ul>
+                    <li>Добавлена поддержка переключения темы (светлая/тёмная) с помощью JavaScript. Выбор темы сохраняется
+                        в <code>localStorage</code>.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>AJAX-запросы:</strong></p>
+                <ul>
+                    <li>Реализовано динамическое обновление данных о балансе и транзакциях с использованием
+                        <code>fetch</code>.</li>
+                    <li>Обработка данных о транзакциях, включая их форматирование и отображение в таблице Bootstrap.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Регулярные обновления:</strong></p>
+                <ul>
+                    <li>Реализовано автоматическое обновление данных каждые 10 секунд.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Обработка данных:</strong></p>
+                <ul>
+                    <li>Реализована логика парсинга транзакций с форматом вида
+                        <code>&quot;SYSTEM -&gt; ADDR_xxx: yyy&quot;</code>.</li>
+                    <li>Добавлен вывод в виде таблицы с нумерацией и детализацией.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <hr>
+    <div>
+        <h2 id="-">Структура проекта</h2>
+        <pre><code class="lang-plaintext">blockchain_frontend/
+    ├── <span class="hljs-keyword">static</span>/
+    │   ├── ajax.js        <span class="hljs-meta"># Логика AJAX-запросов и обработки транзакций</span>
+    │   ├── <span class="hljs-keyword">base</span>.css       <span class="hljs-meta"># Базовые стили приложения</span>
+    │   ├── <span class="hljs-keyword">base</span>.js        <span class="hljs-meta"># Скрипт для правильного позиционирования footer'а</span>
+    |   ├── copy.js        <span class="hljs-meta"># Скрипт для копирования данных (при необходимости)</span>
+    |   ├── logo.png       <span class="hljs-meta"># Логотип для страниц</span>
+    │   ├── theme.js       <span class="hljs-meta"># Скрипт для управления темами</span>
+    ├── templates/
+    │   ├── about.html     <span class="hljs-meta"># Страница "О приложении"</span>
+    │   ├── <span class="hljs-keyword">base</span>.html      <span class="hljs-meta"># Базовый HTML-шаблон</span>
+    │   ├── login.html     <span class="hljs-meta"># Страница входа</span>
+    │   ├── receive.html   <span class="hljs-meta"># Страница получения данных (опционально)</span>
+    │   ├── register.html  <span class="hljs-meta"># Страница регистрации</span>
+    │   ├── user.html      <span class="hljs-meta"># Основной интерфейс пользователя</span>
+    ├── .gitignore         <span class="hljs-meta"># Файл игнорирования для Git</span>
+    ├── app.py             <span class="hljs-meta"># Основной файл приложения Flask</span>
+    ├── requirements.txt   <span class="hljs-meta"># Список зависимостей Python</span>
+    └── venv/              <span class="hljs-meta"># Виртуальное окружение (может быть исключено из репозитория)</span>
+    </code></pre>
+    </div>
+    <hr>
+    <div>
+        <h2 id="-">Подробная документация</h2>
+        <h3 id="1-">1. Настройка окружения</h3>
+        <p>Перед запуском приложения необходимо установить зависимости:</p>
+        <pre><code class="lang-bash">pip <span class="hljs-keyword">install</span> -r requirements.txt
+    </code></pre>
+        <h3 id="2-">2. Запуск приложения</h3>
+        <p>Для запуска приложения выполните:</p>
+        <pre><code class="lang-bash"><span class="hljs-keyword">python</span> main.<span class="hljs-keyword">py</span>
+    </code></pre>
+        <h3 id="3-">3. Основные страницы</h3>
+        <ul>
+            <li><code>/login</code> — Страница входа в систему.</li>
+            <li><code>/register</code> — Страница регистрации нового пользователя.</li>
+            <li><code>/user</code> — Интерфейс пользователя с отображением баланса и транзакций.</li>
+            <li><code>/about</code> — Страница информации о приложении.</li>
+        </ul>
+        <h3 id="4-ajax-">4. Функционал AJAX-запросов</h3>
+        <ul>
+            <li>Обновление баланса:
+                <pre><code class="lang-javascript"><span class="hljs-selector-tag">fetch</span>(<span class="hljs-built_in">`${host}/balance`</span>, {
+        <span class="hljs-attribute">method</span>: <span class="hljs-string">'POST'</span>,
+        <span class="hljs-attribute">headers</span>: { <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span> },
+        <span class="hljs-attribute">body</span>: JSON.stringify({ username, password })
+    });
+    </code></pre>
+            </li>
+            <li>Обновление транзакций:
+                <pre><code class="lang-javascript">fetch(`<span class="hljs-variable">${host}</span><span class="hljs-regexp">/transactions/</span><span class="hljs-variable">${walletAddress}</span>`);
+    </code></pre>
+            </li>
+        </ul>
+        <h3 id="5-">5. Логика смены темы</h3>
+        <p>Смена темы реализована с сохранением состояния в <code>localStorage</code>:</p>
+        <pre><code class="lang-javascript">document.<span class="hljs-keyword">body</span>.classList.toggle(<span class="hljs-symbol">'dark</span>-theme');
+    localStorage.setItem(<span class="hljs-symbol">'theme</span>', <span class="hljs-keyword">body</span>.classList.contains(<span class="hljs-symbol">'dark</span>-theme') ? <span class="hljs-symbol">'dark</span>' : '<span class="hljs-type">light</span>');
+    </code></pre>
+        <h3 id="6-">6. Форматирование транзакций</h3>
+        <p>Транзакции обрабатываются с использованием регулярного выражения:</p>
+        <pre><code class="lang-javascript">function parseTransaction(transactionString) {
+        <span class="hljs-keyword">const</span> regex = /^(.+) -&gt; (.+): ([\d.]+)$/;
+        <span class="hljs-keyword">const</span> <span class="hljs-built_in">match</span> = transactionString.<span class="hljs-built_in">match</span>(regex);
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">match</span>) {
+            <span class="hljs-keyword">return</span> { sender: <span class="hljs-built_in">match</span>[<span class="hljs-number">1</span>], recipient: <span class="hljs-built_in">match</span>[<span class="hljs-number">2</span>], amount: <span class="hljs-built_in">match</span>[<span class="hljs-number">3</span>] };
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    }
+    </code></pre>
+    </div>
+    <hr>
+    <div>
+        <h2 id="-">Журнал прогресса</h2>
+        <p>14.05.2025 : Добавлен отчёт в формате markdown (без журнала прогресса)</p>
+        <p>14.05.2025 : Добавлено лого, footer, контент для страницы about, Проверка на минимальную длину пароля при
+            регистрации, Улучшен дизайн страницы и подправлены мелкие ошибки</p>
+        <p>14.05.2025 : Добавлены оповещения в случае отсутствия соединения с сервером блокчейна</p>
+        <p>12.05.2025 : Был изменён JS код для копирования адреса кошелька Он не поддерживался на мобильных устройствах.</p>
+        <p>07.05.2025 : Изменён формат принимаемых данных: - В блокчейне изменён тип возвращаемых данных на строку, теперь
+            реализована функция для парсинга данных из строки.</p>
+        <p>07.05.2025 : Добавлены AJAX запросы для обновления в реальном времени баланса и истории транзакций.</p>
+        <p>07.05.2025 : Добавлен функционал для функции займа в блокчейне.</p>
+        <p>07.05.2025 : Вместо заглушек появились запросы на блокчеин с обработками http ответов и выводом успеха/ошибок.
+        </p>
+        <p>05.05.2025 : Добавлена возможность смены темы на тёмную</p>
+        <p>05.05.2025 : Добавлено создание сессии</p>
+        <p>05.05.2025 : Добавлена страница &quot;о нас&quot;</p>
+        <p>05.05.2025 : Добавлена авторизация в app.py и переделана структура в html файле</p>
+        <p>05.05.2025 : Был написан код для страниц.</p>
+        <p>05.05.2025 : Начало проекта &quot;FrontEnd для blockhain на python&quot;</p>
+    </div>
+    <div>
+        <h2 id="-">Возможные улучшения</h2>
+        <ol>
+            <li><strong>Реализация REST API для улучшения логики взаимодействия с сервером.</strong></li>
+            <li><strong>Поддержка мультиязычности интерфейса.</strong></li>
+            <li><strong>Страница с графиком цен и возможностью покупки и продажи криптовалюты.</strong></li>
+        </ol>
+    </div>
+</article>
+{% endblock %}

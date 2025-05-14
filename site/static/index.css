@@ -67,6 +67,13 @@ article.resources a:hover {
     color: blue;
 }
 
+article.frontchain h1, article.frontchain h2 {text-align: center;}
+article.frontchain div {display: inline-block; text-align: justify; width: 60%;}
+article.frontchain a {font-weight: bold; color: cornflowerblue;}
+article.frontchain a:hover {
+    color: blue;
+}
+
 ul {padding: 0;}
 ul li {list-style-type: none;}
 
